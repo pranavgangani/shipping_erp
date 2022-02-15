@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.shipping.web;
+package com.shipping.web.crew;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,19 +23,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.shipping.service.HelloWorldService;
 
 @Controller
-public class MainController {
+@RequestMapping(value="/crew")
+public class CrewController {
+	//@Autowired private HelloWorldService helloWorldService;
 	
-
-    @GetMapping(value = { "/", "/index" })
-    public String index(Model model) {
-        String message = "Hello Spring Boot + JSP";
-        model.addAttribute("message", message);
-        return "index";
+    @GetMapping(value = "/crew_list")
+    public ModelAndView crewList(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/crew_list");
+        return mv;
     }
-
- 
+    
+    @GetMapping(value = "/add_crew")
+    public ModelAndView addCrew(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_crew");
+        return mv;
+    }
+    
+    
+    @GetMapping(value = "/profile")
+    public ModelAndView profile(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/profile");
+        return mv;
+    }
+	/*
+	 * 
+	 * 
+	 * @GetMapping("/hello")
+	 * 
+	 * @ResponseBody public String helloWorld() {
+	 * System.out.println("helloWorld..."); return
+	 * this.helloWorldService.getHelloMessage(); }
+	 */
 }
