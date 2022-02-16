@@ -25,12 +25,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shipping.service.CrewService;
 import com.shipping.service.HelloWorldService;
 
 @Controller
 @RequestMapping(value="/crew")
 public class CrewController {
-	//@Autowired private HelloWorldService helloWorldService;
+	@Autowired private CrewService crewService;
 	
     @GetMapping(value = "/crew_list")
     public ModelAndView crewList(Model model) {
