@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shipping.crew.service.CrewService;
-import com.shipping.service.HelloWorldService;
 
 @Controller
 @RequestMapping(value="/crew")
