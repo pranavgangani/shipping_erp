@@ -1,4 +1,4 @@
-package com.shipping.service;
+package com.shipping.crew.service;
 
 import java.util.List;
 

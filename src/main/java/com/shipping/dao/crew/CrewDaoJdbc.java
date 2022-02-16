@@ -1,4 +1,4 @@
-package com.shipping.dao;
+package com.shipping.dao.crew;
 
 import org.springframework.stereotype.Repository;
 

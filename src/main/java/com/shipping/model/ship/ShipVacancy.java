@@ -1,6 +1,6 @@
 package com.shipping.model.ship;
 
-import com.shipping.company.User;
+import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
 
 public class ShipVacancy {
@@ -11,7 +11,7 @@ public class ShipVacancy {
 	private DateTime startDate;
 	private DateTime endDate;
 	
-	private User enteredBy;
+	private Employee enteredBy;
 	private DateTime enteredDateTime;
 
 }

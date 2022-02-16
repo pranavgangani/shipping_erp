@@ -1,5 +1,5 @@
 package com.shipping.company;
 
-public class UserRole {
+public class EmployeeRight {
 
 }

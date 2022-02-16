@@ -1,5 +1,5 @@
 package com.shipping.company;
 
-public class UserGoal {
+public class EmployeeRating {
 
 }

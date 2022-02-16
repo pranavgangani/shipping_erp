@@ -1,6 +1,6 @@
 package com.shipping.model.ship;
 
-import com.shipping.company.User;
+import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
 
 public class Document {
@@ -10,6 +10,6 @@ public class Document {
 	private DateTime validityEndDate;
 	private boolean isActive;
 	
-	private User enteredBy;
+	private Employee enteredBy;
 	private DateTime enteredDateTime;
 }

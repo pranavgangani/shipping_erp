@@ -1,4 +1,4 @@
-package com.shipping.dao;
+package com.shipping.dao.crew;
 
 import com.shipping.model.crew.Crew;
 
