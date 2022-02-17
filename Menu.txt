@@ -1,0 +1,101 @@
+-Dashboard
+	-Crew List
+	-
+
+-Crew
+	-Crew List
+		-Crew Details 
+			-Personal Details
+				-Name
+				-Rank
+				-Address
+				-Passport No.
+				-Visa No.
+				-Salary
+				-Payscale
+				-Distinguishing Mark
+				-File No.
+				-Status
+				-DOJ
+				-Manning Office
+			-License Details
+			-Contract
+				-Active Contract
+				-Past Contracts
+			-Documents
+				-Doc Name
+				-Category/Sub-Category
+				-Status		
+				-Validity			
+			-Courses(tab)
+				-Course Name
+				-Category/Sub-Category
+				-Status		
+				-Validity						
+			-Request History(tab)
+				-Medical Request
+					-Requested By
+					-Status
+				-Travel Request
+					-Requested By
+					-Status
+				-Training Request
+					-Requested By
+					-Status
+			-Employement History (tab)
+				-Employer Name
+				-Experience, Start/End Date
+				-Country
+				-Roles & Responsibilities
+			-Medical History(tab)
+				-Medical Name
+				-Category/Sub-Category
+				-Status		
+				-Validity
+			-Travel History(tab)
+				-Travel Name
+				-Category/Sub-Category
+				-Status		
+				-Validity
+			-Education History(tab)
+			-KYC			
+				-Nominee Details(tab)
+					-Major Nominee with %
+					-Minor Nominee with %	
+				-Bank Account
+				
+-Ship Management
+	-Ship
+		-Ship List
+			-Ship Details			
+		-Ship Vacancy
+			-Add Vacancy
+			-Vacancy List
+				-Vacancy Details
+				
+	-Ship Manager
+		-Ship Manager List
+			-Manager Details
+
+-Documents
+	-Document List
+		-Document Details
+
+-Evaluation
+	-Appraisals
+	-Briefing
+	-Assessment
+	-Feedback
+	-Promotion Summary
+	-Reference
+	-Events
+	
+-Requests
+	-Request List
+		-Request Details		
+	-Raise Medical Request		
+	-Raise Travel Request
+	-Raise Training Request		
+	
+-Reports
+	-Pending Approvals
