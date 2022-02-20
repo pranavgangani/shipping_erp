@@ -46,9 +46,9 @@
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavPagesMenu">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/crew/add_crew">Add New Crew</a>
-                                            <a class="nav-link" href="account-billing.html">Documents</a>
-                                            <a class="nav-link" href="account-security.html">Medicals</a>
-                                            <a class="nav-link" href="account-notifications.html">Notifications</a>
+                                            <a class="nav-link" href="account-billing.html">Documents List</a>
+                                            <!-- <a class="nav-link" href="account-security.html">Medicals</a>
+                                            <a class="nav-link" href="account-notifications.html">Notifications</a> -->
                                         </nav>
                                     </div>                                    
                                 </nav>
@@ -56,26 +56,28 @@
                             <!-- Sidenav Accordion (Applications)-->
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseApps" aria-expanded="false" aria-controls="collapseApps">
                                 <div class="nav-link-icon"><i data-feather="globe"></i></div>
-                                Travel
+                                Ship Management
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseApps" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavAppsMenu">
+                                	<a class="nav-link" href="/ship/ship_list">Ship List</a>
+                                	<a class="nav-link" href="/ship/ship_manager_list">Ship Manager List</a>
+                                
+                                
                                     <!-- Nested Sidenav Accordion (Apps -> Knowledge Base)-->
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#appsCollapseKnowledgeBase" aria-expanded="false" aria-controls="appsCollapseKnowledgeBase">
-                                        Knowledge Base
+                                        Add New
                                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
                                     <div class="collapse" id="appsCollapseKnowledgeBase" data-bs-parent="#accordionSidenavAppsMenu">
                                         <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="knowledge-base-home-1.html">Home 1</a>
-                                            <a class="nav-link" href="knowledge-base-home-2.html">Home 2</a>
-                                            <a class="nav-link" href="knowledge-base-category.html">Category</a>
-                                            <a class="nav-link" href="knowledge-base-article.html">Article</a>
+                                        	<a class="nav-link" href="/ship/add_ship">Ship</a>
+                                            <a class="nav-link" href="/ship/add_ship_manager">Ship Manager</a>                                            
                                         </nav>
                                     </div>
                                     <!-- Nested Sidenav Accordion (Apps -> User Management)-->
-                                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#appsCollapseUserManagement" aria-expanded="false" aria-controls="appsCollapseUserManagement">
+                                    <!-- <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#appsCollapseUserManagement" aria-expanded="false" aria-controls="appsCollapseUserManagement">
                                         User Management
                                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
@@ -87,9 +89,9 @@
                                             <a class="nav-link" href="user-management-groups-list.html">Groups List</a>
                                             <a class="nav-link" href="user-management-org-details.html">Organization Details</a>
                                         </nav>
-                                    </div>
+                                    </div> -->
                                     <!-- Nested Sidenav Accordion (Apps -> Posts Management)-->
-                                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#appsCollapsePostsManagement" aria-expanded="false" aria-controls="appsCollapsePostsManagement">
+                                    <!-- <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#appsCollapsePostsManagement" aria-expanded="false" aria-controls="appsCollapsePostsManagement">
                                         Posts Management
                                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
@@ -100,7 +102,7 @@
                                             <a class="nav-link" href="blog-management-edit-post.html">Edit Post</a>
                                             <a class="nav-link" href="blog-management-posts-admin.html">Posts Admin</a>
                                         </nav>
-                                    </div>
+                                    </div> -->
                                 </nav>
                             </div>
                             <!-- Sidenav Accordion (Flows)-->

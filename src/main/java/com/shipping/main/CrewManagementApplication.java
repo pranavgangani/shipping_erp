@@ -12,7 +12,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @SpringBootApplication
 @Configuration
 //@ImportResource({"classpath*:spring/appServlet/servlet-context.xml"})
-@ComponentScan(basePackages = "com.shipping.web.crew, com.shipping.crew.service, com.shipping.dao.crew")
+@ComponentScan(basePackages = 
+		  "com.shipping.web.*,"
+		+ "com.shipping.service.*,"
+		+ "com.shipping.dao.*")
 public class CrewManagementApplication {
 
 	public static void main(String[] args) {

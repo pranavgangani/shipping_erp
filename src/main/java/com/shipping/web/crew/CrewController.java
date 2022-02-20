@@ -15,17 +15,22 @@
  */
 package com.shipping.web.crew;
 
+import java.net.http.HttpRequest;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.shipping.crew.service.CrewService;
+import com.shipping.service.crew.CrewService;
 
 @Controller
 @RequestMapping(value="/crew")
@@ -47,6 +52,13 @@ public class CrewController {
     @GetMapping(value = "/add_employment")
     public ModelAndView addEmployment(Model model) {
     	ModelAndView mv = new ModelAndView("crew/add_employment");
+        return mv;
+    }
+    
+    @PostMapping(value = "/add_employment")
+    public ModelAndView addEmployment(HttpServletRequest req) {
+    	ModelAndView mv = new ModelAndView("crew/add_employment");
+    	int crewId = Integer.parseInt(req.getParameter("crewId"));
         return mv;
     }
     
