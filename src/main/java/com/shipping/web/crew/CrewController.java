@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shipping.model.crew.Crew;
 import com.shipping.service.crew.CrewService;
 
 @Controller
@@ -40,6 +41,7 @@ public class CrewController {
     @GetMapping(value = "/crew_list")
     public ModelAndView crewList(Model model) {
     	ModelAndView mv = new ModelAndView("crew/crew_list");
+    	
         return mv;
     }
     

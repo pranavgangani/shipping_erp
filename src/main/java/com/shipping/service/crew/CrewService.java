@@ -15,7 +15,7 @@ public class CrewService {
 	private CrewDao crewDao;
 	
 	void addCrew(Crew crew) {
-		crewDao.add(crew);		  	
+		crewDao.insert(crew);		  	
 	}
 	
 	void deleteCrew(Crew filterCrew) {
@@ -23,11 +23,11 @@ public class CrewService {
 	}
 	
 	void updateCrew(Crew filterCrew) {
-		crewDao.update(filterCrew);
+		crewDao.save(filterCrew);
 	}
 	
 	List<Crew> getCrewList(Crew filterCrew) {
-		return crewDao.getFilteredList(filterCrew);
+		return crewDao.findAll();
 	}
 	
 }

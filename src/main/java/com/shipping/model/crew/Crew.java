@@ -2,11 +2,14 @@ package com.shipping.model.crew;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+
 import com.shipping.common.Gender;
 import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
-
+ 
 public class Crew {
+	@Id
 	private int crewId;
 	private String fName, lName, mName;
 	private int genderId;

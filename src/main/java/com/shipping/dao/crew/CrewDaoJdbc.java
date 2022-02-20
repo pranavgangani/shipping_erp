@@ -5,50 +5,160 @@ import org.springframework.stereotype.Repository;
 import com.shipping.model.crew.Crew;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Repository("crewDao")
 public class CrewDaoJdbc implements CrewDao {
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	MongoTemplate mongoTemplate;
+
 
 	@Override
-	public void add(Crew crew) {
-		jdbcTemplate.update("insert into crew(name, price) values(?,?)", crew.getCrewId(), crew.getfName());
-	}
-
-	@Override
-	public void delete(Crew filterCrew) {
+	public <S extends Crew> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(Crew filterCrew) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Crew get(Crew filterCrew) {
-		/*
-		 * return jdbcTemplate.query("select * from books where id = ?", new Object[] {
-		 * filterCrew.getCrewId() }, (rs, rowNum) -> { Crew crew = new Crew(); });
-		 */
 		return null;
 	}
 
 	@Override
-	public List<Crew> getFilteredList(Crew filterCrew) {
-		/*
-		 * return
-		 * jdbcTemplate.query("select * from books where name like ? and price <= ?",
-		 * new Object[] { "%" + filterCrew.getfName() + "%", filterCrew }, (rs, rowNum)
-		 * -> { Crew crew = new Crew(); });
-		 */
+	public List<Crew> findAll() {
+		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Crew> findAll(Sort sort) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Crew> S insert(S entity) {
+		mongoTemplate.insert(entity, "user");
+		return null;
+	}
+
+	@Override
+	public <S extends Crew> List<S> insert(Iterable<S> entities) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Crew> List<S> findAll(Example<S> example) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Crew> List<S> findAll(Example<S> example, Sort sort) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<Crew> findAll(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Crew> S save(S entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Optional<Crew> findById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean existsById(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterable<Crew> findAllById(Iterable<String> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long count() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void deleteById(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAllById(Iterable<? extends String> ids) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAll(Iterable<? extends Crew> entities) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <S extends Crew> Optional<S> findOne(Example<S> example) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Crew> Page<S> findAll(Example<S> example, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends Crew> long count(Example<S> example) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public <S extends Crew> boolean exists(Example<S> example) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public <S extends Crew, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Crew entity) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
