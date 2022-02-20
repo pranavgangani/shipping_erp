@@ -44,10 +44,46 @@ public class CrewController {
         return mv;
     }
     
+    @GetMapping(value = "/add_employment")
+    public ModelAndView addEmployment(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_employment");
+        return mv;
+    }
     
-    @GetMapping(value = "/profile")
-    public ModelAndView profile(Model model) {
-    	ModelAndView mv = new ModelAndView("crew/profile");
+    @GetMapping(value = "/add_education")
+    public ModelAndView addEducation(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_education");
+        return mv;
+    }
+    
+    @GetMapping(value = "/add_passport_visa")
+    public ModelAndView addPassportVisa(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_passport_visa");
+        return mv;
+    }
+    
+    @GetMapping(value = "/add_medical")
+    public ModelAndView addMedical(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_medical");
+        return mv;
+    }
+    
+    
+    @GetMapping(value = "/add_bank_account")
+    public ModelAndView addBankAccount(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_bank_account");
+        return mv;
+    }
+    
+    @GetMapping(value = "/add_nominee")
+    public ModelAndView addNominee(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_nominee");
+        return mv;
+    }
+    
+    @GetMapping(value = "/add_other_docs")
+    public ModelAndView addOtherDocs(Model model) {
+    	ModelAndView mv = new ModelAndView("crew/add_other_docs");
         return mv;
     }
 	/*

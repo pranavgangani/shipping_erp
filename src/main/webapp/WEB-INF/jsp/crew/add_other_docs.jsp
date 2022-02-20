@@ -45,14 +45,14 @@
                     <div class="container-xl px-4 mt-4">
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
-                            <a class="nav-link active ms-0" href="/crew/add_crew">Profile</a>
+                           <a class="nav-link" href="/crew/add_crew">Profile</a>
                             <a class="nav-link" href="/crew/add_employment">Employment</a>
                             <a class="nav-link" href="/crew/add_education">Education</a>
                             <a class="nav-link" href="/crew/add_passport_visa">Passport/Visa</a>
                             <a class="nav-link" href="/crew/add_medical">Medical</a>
                             <a class="nav-link" href="/crew/add_bank_account">Bank Account</a>
                             <a class="nav-link" href="/crew/add_nominee">Nominee</a>
-                            <a class="nav-link" href="/crew/add_other_docs">Other Documents</a>
+                            <a class="nav-link active ms-0" href="/crew/add_other_docs">Other Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
@@ -63,17 +63,13 @@
                                     <div class="card-body text-center">
                                         <!-- Profile picture image-->
                                         <img class="img-account-profile rounded-circle mb-2" src="../assets/img/illustrations/profiles/profile-1.png" alt="" />
-                                        <!-- Profile picture help block-->
-                                        <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                                        <!-- Profile picture upload button-->
-                                        <button class="btn btn-primary" type="button">Upload new image</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-10">
                                 <!-- Account details card-->
                                 <div class="card mb-6">
-                                    <div class="card-header">Add Profile</div>
+                                    <div class="card-header">Add Other Docs</div>
                                     <div class="card-body">
                                         <form>
                                             <div class="row gx-3 mb-3">

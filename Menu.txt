@@ -4,6 +4,7 @@
 
 -Crew
 	-Crew List
+		-Add New Crew -> Add Details -> Upload Education -> Upload Employment -> Upload Documents -> Upload License  
 		-Crew Details 
 			-Personal Details
 				-Name
@@ -65,17 +66,19 @@
 				-Bank Account
 				
 -Ship Management
+	-Ship Manager
+		-Ship Manager List
+			-Add New Ship Manager -> Add Ship
+			-Manager Details
 	-Ship
 		-Ship List
+			-Add Ship	-> Add Ship Vacancy
 			-Ship Details			
 		-Ship Vacancy
 			-Add Vacancy
 			-Vacancy List
 				-Vacancy Details
 				
-	-Ship Manager
-		-Ship Manager List
-			-Manager Details
 
 -Documents
 	-Document List
@@ -99,3 +102,7 @@
 	
 -Reports
 	-Pending Approvals
+	
+-Settings
+	-Role List
+		-Add Role	
