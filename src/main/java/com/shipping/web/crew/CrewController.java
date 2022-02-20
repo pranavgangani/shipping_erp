@@ -51,6 +51,22 @@ public class CrewController {
         return mv;
     }
     
+    @PostMapping(value = "/add_crew")
+    public ModelAndView addCrew(HttpServletRequest req) {
+    	ModelAndView mv = new ModelAndView("/crew/add_employment");
+    	String fName = req.getParameter("fName");
+    	String mName = req.getParameter("mName");
+    	String lName = req.getParameter("lName");
+    	System.out.println("add_crew: "+fName);
+
+    	Crew crew = new Crew();
+    	crew.setfName(fName);
+    	crewService.addCrew(crew);
+    	
+    	mv.addObject("1", "crewId");
+        return mv;
+    }
+    
     @GetMapping(value = "/add_employment")
     public ModelAndView addEmployment(Model model) {
     	ModelAndView mv = new ModelAndView("crew/add_employment");

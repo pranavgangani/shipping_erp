@@ -56,30 +56,25 @@
                                 <div class="card mb-6">
                                     <div class="card-header">Add Profile</div>
                                     <div class="card-body">
-                                        <form>
+                                        <form action="/crew/add_crew" method="POST">
                                             <div class="row gx-3 mb-3">
-                                                <!-- Form Group (first name)-->
                                                 <div class="col-md-4">
-                                                    <label class="small mb-1" for="inputFirstName">First name</label>
-                                                    <input class="form-control" id="inputFirstName" type="text" placeholder="Enter first name" value="" />
+                                                    <label class="small mb-1" for="fName">First name</label>
+                                                    <input class="form-control" name="fName" type="text" placeholder="Enter first name" value="" />
                                                 </div>
-                                                <!-- Form Group (middle name)-->
                                                 <div class="col-md-4">
-                                                    <label class="small mb-1" for="inputMiddleName">Middle name</label>
-                                                    <input class="form-control" id="inputMiddleName" type="text" placeholder="Enter middle name" value="" />
+                                                    <label class="small mb-1" for="mName">Middle name</label>
+                                                    <input class="form-control" name="mName" type="text" placeholder="Enter middle name" value="" />
                                                 </div>
-                                                <!-- Form Group (last name)-->
                                                 <div class="col-md-4">
-                                                    <label class="small mb-1" for="inputLastName">Last name</label>
-                                                    <input class="form-control" id="inputLastName" type="text" placeholder="Enter last name" value="" />
+                                                    <label class="small mb-1" for="lName">Last name</label>
+                                                    <input class="form-control" name="lName" type="text" placeholder="Enter last name" value="" />
                                                 </div>
                                             </div>
 										<div class="row gx-3 mb-3">
-											<!-- Form Group (first name)-->
 											<div class="col-md-4">
-												<label class="small mb-1" for="inputFirstName">Rank</label>
-												<select class="form-select"
-													aria-label="Default select example">
+												<label class="small mb-1" for="rank">Rank</label>
+												<select class="form-select" name="rank" aria-label="Default select example">
 													<option selected disabled>Select a Rank:</option>
 													<option value="1">Captain/Master</option>
 													<option value="2">Chief Officer</option>
@@ -89,24 +84,20 @@
 													<option value="6">Bosun</option>
 												</select>
 											</div>
-											<!-- Form Group (gender)-->
 											<div class="col-md-4">
-												<label class="small mb-1" for="inputMiddleName">Gender</label>
+												<label class="small mb-1" for="gender">Gender</label>
 												<div class="form-check">
-													<input class="form-check-input" id="male" type="radio"
-														name="gender" checked /> <label class="form-check-label"
+													<input class="form-check-input" id="male" type="radio" name="gender" checked /> <label class="form-check-label"
 														for="male">Male</label>
 												</div>
 												<div class="form-check">
-													<input class="form-check-input" id="female" type="radio"
-														name="gender" /> <label class="form-check-label"
+													<input class="form-check-input" id="female" type="radio" name="gender" /> <label class="form-check-label"
 														for="female">Female</label>
 												</div>
 											</div>
 											<div class="col-md-4">
-												<label class="small mb-1" for="inputManningOffice">Manning
-													Office</label> <input class="form-control" id="inputManningOffice"
-													type="text" placeholder="Enter Office" value="" />
+												<label class="small mb-1" for="manningOffice">Manning Office</label> 
+												<input class="form-control" name="manningOffice" type="text" placeholder="Enter Office" value="" />
 											</div>
 										</div>
 										<div class="row gx-3 mb-3">
@@ -114,11 +105,11 @@
 												Distinguishing Mark <i class="text-muted" data-feather="info"
 													data-bs-toggle="tooltip" data-bs-placement="left"
 													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
-												<textarea class="lh-base form-control" type="text"
+												<textarea name="distinguishingMark" class="lh-base form-control" type="text"
 													placeholder="" rows="4"></textarea>
 											</div>
 											<div class="col-md-4">
-												<label class="small mb-1" for="inputFirstName">Crew Status</label>
+												<label class="small mb-1" for="crewStatusId">Crew Status</label>
 												<select class="form-select"
 													aria-label="Default select example">
 													<option selected disabled>Select a Status:</option>
@@ -129,7 +120,7 @@
 											</div>
 										</div>
 										<!-- Save changes button-->
-                                            <button class="btn btn-primary" type="button">Next</button>
+                                            <button class="btn btn-primary" type="submit">Next</button>
                                         </form>
                                     </div>
                                 </div>

@@ -14,19 +14,19 @@ public class CrewService {
 	@Autowired
 	private CrewDao crewDao;
 	
-	void addCrew(Crew crew) {
+	public void addCrew(Crew crew) {
 		crewDao.insert(crew);		  	
 	}
 	
-	void deleteCrew(Crew filterCrew) {
+	public void deleteCrew(Crew filterCrew) {
 		crewDao.delete(filterCrew);
 	}
 	
-	void updateCrew(Crew filterCrew) {
+	public void updateCrew(Crew filterCrew) {
 		crewDao.save(filterCrew);
 	}
 	
-	List<Crew> getCrewList(Crew filterCrew) {
+	public List<Crew> getCrewList(Crew filterCrew) {
 		return crewDao.findAll();
 	}
 	
