@@ -63,7 +63,7 @@
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavAppsMenu">
                                 	<a class="nav-link" href="/ship/ship_list">Ship List</a>
                                 	<a class="nav-link" href="/ship/ship_manager_list">Ship Manager List</a>
-                                
+                                <a class="nav-link" href="/ship/ship_manager_list">Ship Vacancy List</a>
                                 
                                     <!-- Nested Sidenav Accordion (Apps -> Knowledge Base)-->
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#appsCollapseKnowledgeBase" aria-expanded="false" aria-controls="appsCollapseKnowledgeBase">
@@ -74,6 +74,7 @@
                                         <nav class="sidenav-menu-nested nav">
                                         	<a class="nav-link" href="/ship/add_ship">Ship</a>
                                             <a class="nav-link" href="/ship/add_ship_manager">Ship Manager</a>                                            
+                                            <a class="nav-link" href="/ship/add_ship_vacancy">Ship Vacancy</a>
                                         </nav>
                                     </div>
                                     <!-- Nested Sidenav Accordion (Apps -> User Management)-->
@@ -108,13 +109,13 @@
                             <!-- Sidenav Accordion (Flows)-->
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
                                 <div class="nav-link-icon"><i data-feather="repeat"></i></div>
-                                Request
+                                Document
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseFlows" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav">
-                                    <a class="nav-link" href="multi-tenant-select.html">Multi-Tenant Registration</a>
-                                    <a class="nav-link" href="wizard.html">Wizard</a>
+                                    <a class="nav-link" href="/ship/doc_list">Ship Document List</a>
+                                    <a class="nav-link" href="/crew/doc_list">Crew Document List</a>
                                 </nav>
                             </div>
                             <!-- Sidenav Heading (UI Toolkit)-->
