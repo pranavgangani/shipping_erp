@@ -11,7 +11,7 @@ import com.shipping.util.DateTime;
 @org.springframework.data.mongodb.core.mapping.Document(collection="Crew")
 public class Crew {
 	@Id
-	private int crewId;
+	private int id;
 	private String fName, lName, mName;
 	private int genderId;
 	private Gender gender;
@@ -37,11 +37,11 @@ public class Crew {
 	
 	private DateTime enteredDateTime;
 	private Employee enteredByEmp;
-	public int getCrewId() {
-		return crewId;
+	public int getId() {
+		return id;
 	}
-	public void setCrewId(int crewId) {
-		this.crewId = crewId;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getfName() {
 		return fName;

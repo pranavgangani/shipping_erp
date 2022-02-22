@@ -25,10 +25,10 @@ import com.mongodb.client.MongoClients;
 @Configuration
 //@EnableAutoConfiguration
 @EnableAutoConfiguration(exclude = { MongoAutoConfiguration.class, MongoDataAutoConfiguration.class })
-//@EnableMongoRepositories(basePackages = "com.shipping.dao.crew")
+@EnableMongoRepositories(basePackages = "com.shipping.dao.crew")
 //@ImportResource({"classpath*:spring/appServlet/servlet-context.xml"})
 //@ImportResource("classpath:spring.xml")
-@ComponentScan(basePackages = "com.shipping.web.*, com.shipping.service.*, com.shipping.dao.*")
+@ComponentScan(basePackages = "com.shipping.web.*, com.shipping.service.*")
 public class CrewManagementApplication extends AbstractMongoClientConfiguration {
 
 	public static void main(String[] args) {

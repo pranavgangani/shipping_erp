@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.shipping.dao.crew.CrewDao;
-import com.shipping.dao.crew.CrewDaoJdbc;
 import com.shipping.model.crew.Crew;
 
 @Service("crewService")
