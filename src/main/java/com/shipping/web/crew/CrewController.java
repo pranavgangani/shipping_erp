@@ -59,6 +59,8 @@ public class CrewController {
 
     	Crew crew = new Crew();
     	crew.setfName(fName);
+    	crew.setmName(mName);
+    	crew.setlName(lName);
     	crewService.addCrew(crew);
     	
     	mv.addObject("1", "crewId");

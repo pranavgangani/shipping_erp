@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
+import com.querydsl.core.annotations.QueryEntity;
 import com.shipping.common.Gender;
 import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@org.springframework.data.mongodb.core.mapping.Document(collection="Crew")
+@QueryEntity 
+@Document(collection="crew")
 public class Crew {
 	@Id
 	private int id;
@@ -169,6 +172,6 @@ public class Crew {
 	public void setEnteredByEmp(Employee enteredByEmp) {
 		this.enteredByEmp = enteredByEmp;
 	}
-	
+
 	
 }

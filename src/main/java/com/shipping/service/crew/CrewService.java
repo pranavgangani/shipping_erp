@@ -15,9 +15,7 @@ public class CrewService {
 	private CrewRepository crewDao;
 	
 	public void addCrew(Crew crew) {
-		System.out.print("Trying to add crew...");
 		crewDao.insert(crew);		  	
-		System.out.print("Addedd crew.");
 	}
 	
 	public void deleteCrew(Crew filterCrew) {

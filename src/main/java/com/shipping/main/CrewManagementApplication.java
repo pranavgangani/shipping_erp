@@ -1,6 +1,5 @@
 package com.shipping.main;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +22,7 @@ import com.shipping.dao.crew.CrewRepository;
 @Configuration
 //@EnableAutoConfiguration
 @EnableAutoConfiguration(exclude = { MongoAutoConfiguration.class, MongoDataAutoConfiguration.class })
-@EnableMongoRepositories(basePackageClasses  = CrewRepository.class)
+@EnableMongoRepositories(basePackageClasses = CrewRepository.class)
 //@ImportResource({"classpath*:spring/appServlet/servlet-context.xml"})
 //@ImportResource("classpath:spring.xml")
 @ComponentScan(basePackages = "com.shipping.web.*, com.shipping.service.*")
@@ -55,4 +54,8 @@ public class CrewManagementApplication extends AbstractMongoClientConfiguration 
 		return new MongoTemplate(mongoClient(), getDatabaseName());
 	}
 
+	@Override
+	protected boolean autoIndexCreation() {
+		return true;
+	}
 }
