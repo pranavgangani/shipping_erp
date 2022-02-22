@@ -45,7 +45,7 @@ public class CrewDaoJdbc implements CrewDao {
 	public <S extends Crew> S insert(S entity) {
 		System.out.println("IN insert");
 		//System.out.println("mongoTemplate is null? "+mongoTemplate.getCollectionNames().toString());
-		mongoTemplate.insert(entity, "crew");
+		mongoTemplate.insert(entity);
 		System.out.println("After insert");
 		return entity;
 	}
