@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.shipping.model.crew.Crew;
 
-public interface CrewDao extends MongoRepository<Crew, String> {
-	public Crew save(Crew crew);
+public interface CrewRepository extends MongoRepository<Crew, Integer> {
+	//public Crew save(Crew crew);
 
-	public Crew findByFirstName(String firstName);
+	//public Crew findByFirstName(String firstName);
 
-	public List<Crew> findByLastName(String lastName);
+	//public List<Crew> findByLastName(String lastName);
 
 }

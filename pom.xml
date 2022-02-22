@@ -17,7 +17,10 @@
 	<description>Crew Management Module</description>
 	<properties>
 		<java.version>1.9</java.version>
-		 <spring.version>5.3.16</spring.version>
+		<!-- <spring.version>5.3.16</spring.version> -->
+		<spring.framework.version>5.3.16</spring.framework.version>
+		<mongodb-driver.version>4.0.5</mongodb-driver.version>
+		<org.springframework.data.version>3.0.3.RELEASE</org.springframework.data.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -53,7 +56,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-		</dependency> 
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -66,22 +69,37 @@
 			<version>1.2.17</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
-		<!-- <dependency> 
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.4</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>commons-dbcp</groupId> <artifactId>commons-dbcp</artifactId> 
+			<version>1.4</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-		
-        <!-- mongodb java driver -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>2.11.0</version>
-        </dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>${org.springframework.data.version}</version>
+		</dependency>
+
+		<!-- mongodb java driver -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-mongodb</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mongodb</groupId>
+					<artifactId>mongo-java-driver</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- <dependency> <groupId>org.mongodb</groupId> <artifactId>mongodb-driver-sync</artifactId> 
+			<version>${mongodb-driver.version}</version> </dependency> -->
 
 	</dependencies>
 

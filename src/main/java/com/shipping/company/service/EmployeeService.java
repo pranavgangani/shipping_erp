@@ -3,13 +3,10 @@ package com.shipping.company.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.shipping.company.Employee;
 import com.shipping.dao.company.EmployeeDao;
-import com.shipping.dao.crew.CrewDao;
-import com.shipping.model.crew.Crew;
 
 @Service("employeeService")
 public class EmployeeService {
