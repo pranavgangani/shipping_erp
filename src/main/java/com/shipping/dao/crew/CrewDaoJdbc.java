@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-//@Repository("crewDao")
+@Repository("crewDao")
 public class CrewDaoJdbc implements CrewDao {
 	@Autowired
 	MongoTemplate mongoTemplate;

@@ -7,8 +7,8 @@ import org.springframework.data.annotation.Id;
 import com.shipping.common.Gender;
 import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
- 
-//@Document(collection="Crew")
+
+@org.springframework.data.mongodb.core.mapping.Document(collection="Crew")
 public class Crew {
 	@Id
 	private int crewId;
