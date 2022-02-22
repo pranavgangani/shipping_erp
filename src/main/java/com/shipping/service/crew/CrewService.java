@@ -8,16 +8,19 @@ import org.springframework.stereotype.Service;
 
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.model.crew.Crew;
+import com.shipping.service.common.SequenceGeneratorService;
 
 @Service("crewService")
 public class CrewService {
 	@Autowired
 	private CrewRepository crewDao;
+	@Autowired
+	private SequenceGeneratorService sequenceGenerator;
+	
 	
 	public void addCrew(Crew crew) {
-		System.out.print("Trying to add crew...");
-		crewDao.insert(crew);		  	
-		System.out.print("Addedd crew.");
+		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+		crewDao.insert(crew);
 	}
 	
 	public void deleteCrew(Crew filterCrew) {

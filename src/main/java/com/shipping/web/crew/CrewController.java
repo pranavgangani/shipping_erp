@@ -59,9 +59,11 @@ public class CrewController {
 
     	Crew crew = new Crew();
     	crew.setfName(fName);
+    	crew.setlName(lName);
+    	crew.setmName(mName);    	
     	crewService.addCrew(crew);
-    	
-    	mv.addObject("1", "crewId");
+    	System.out.println("crew.getId() ---> "+crew.getId());
+    	mv.addObject("crewId", crew.getId());
         return mv;
     }
     
