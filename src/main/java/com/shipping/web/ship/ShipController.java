@@ -15,7 +15,6 @@
  */
 package com.shipping.web.ship;
 
-import java.net.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
 

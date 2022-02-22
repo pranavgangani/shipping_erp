@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.shipping.dao.crew.CrewDao;
+import com.shipping.dao.crew.CrewDaoJdbc;
 import com.shipping.model.crew.Crew;
 
 @Service("crewService")
@@ -15,7 +16,9 @@ public class CrewService {
 	private CrewDao crewDao;
 	
 	public void addCrew(Crew crew) {
+		System.out.print("Trying to add crew...");
 		crewDao.insert(crew);		  	
+		System.out.print("Addedd crew.");
 	}
 	
 	public void deleteCrew(Crew filterCrew) {

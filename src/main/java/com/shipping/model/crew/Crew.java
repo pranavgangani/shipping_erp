@@ -8,6 +8,7 @@ import com.shipping.common.Gender;
 import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
  
+//@Document(collection="Crew")
 public class Crew {
 	@Id
 	private int crewId;

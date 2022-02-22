@@ -14,14 +14,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-@Repository("crewDao")
+//@Repository("crewDao")
 public class CrewDaoJdbc implements CrewDao {
 	@Autowired
 	MongoTemplate mongoTemplate;
-
 
 	@Override
 	public <S extends Crew> List<S> saveAll(Iterable<S> entities) {
@@ -43,8 +43,11 @@ public class CrewDaoJdbc implements CrewDao {
 
 	@Override
 	public <S extends Crew> S insert(S entity) {
-		mongoTemplate.insert(entity, "user");
-		return null;
+		System.out.println("IN insert");
+		//System.out.println("mongoTemplate is null? "+mongoTemplate.getCollectionNames().toString());
+		mongoTemplate.insert(entity, "crew");
+		System.out.println("After insert");
+		return entity;
 	}
 
 	@Override

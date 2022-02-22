@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.shipping.model.crew.Crew;
 
-public interface CrewDao  extends MongoRepository<Crew, String> {
+public interface CrewDao extends MongoRepository<Crew, String> {
 	
 
 }
