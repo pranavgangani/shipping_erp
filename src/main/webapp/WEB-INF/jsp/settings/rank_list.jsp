@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,31 +21,31 @@
 	<div id="layoutSidenav">
 		<%@ include file="../includes/sidebar.jsp"%>
 		<div id="layoutSidenav_content">
-		
-				<header
-	class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
-	<div class="container-fluid px-4">
-		<div class="page-header-content">
-			<div class="row align-items-center justify-content-between pt-3">
-				 <div class="col-auto mb-3">
-					<h1 class="page-header-title">
-						<!-- <div class="page-header-icon">
+
+			<header
+				class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+				<div class="container-fluid px-4">
+					<div class="page-header-content">
+						<div class="row align-items-center justify-content-between pt-3">
+							<div class="col-auto mb-3">
+								<h1 class="page-header-title">
+									<!-- <div class="page-header-icon">
 							<i data-feather="user-plus"></i>
 						</div> -->
-						Rank
-					</h1>
-				</div> 
-				<div class="col-12 col-xl-auto mb-3">
-					<a class="btn btn-sm btn-light text-primary"
-						href="/settings/add_rank"> <i class="me-1"
-						data-feather="arrow-right"></i> Add New Rank
-					</a>
+									Rank
+								</h1>
+							</div>
+							<div class="col-12 col-xl-auto mb-3">
+								<a class="btn btn-sm btn-light text-primary"
+									href="/settings/add_rank"> <i class="me-1"
+									data-feather="arrow-right"></i> Add New Rank
+								</a>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-</header>
-				
+			</header>
+
 			<main>
 
 				<!-- Main page content-->
@@ -61,7 +61,7 @@
 										<th>Sub-Category</th> -->
 										<th>Position</th>
 										<th>Status</th>
-									</tr> 
+									</tr>
 								</thead>
 								<tfoot>
 									<tr>
@@ -73,26 +73,47 @@
 									</tr>
 								</tfoot>
 								<tbody>
-								
-								<c:forEach items="${list}" var="rank">
-								    <tr>
-								    	<td>${rank.id}</td>
-										<%-- <td>${rank.rankCategory.name}</td> --%>
-										<td>${rank.name}</td>										
-										<td>
-											<button
-												class="btn btn-datatable btn-icon btn-transparent-dark me-2">
-												<i data-feather="more-vertical"></i>
-											</button>
-											<button
-												class="btn btn-datatable btn-icon btn-transparent-dark">
-												<i data-feather="trash-2"></i>
-											</button>
-										</td>
-									</tr>
-								</c:forEach>
-									
-									
+
+									<c:forEach items="${list}" var="rank">
+										<tr>
+											<td>${rank.id}</td>
+											<%-- <td>${rank.rankCategory.name}</td> --%>
+											<td>${rank.name}</td>
+											<td>
+												<button
+													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
+													id="dropdownMenuButton" type="button"
+													data-bs-toggle="dropdown" aria-haspopup="true"
+													aria-expanded="false">
+													<i data-feather="more-vertical"></i>
+												</button>
+
+												<div class="dropdown-menu">
+													<a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="user"></i>
+														</div> Profile
+													</a><a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="settings"></i>
+														</div> Settings
+													</a>
+													<div class="dropdown-divider"></div>
+													<a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="log-out"></i>
+														</div> Logout
+													</a>
+												</div>
+												<button
+													class="btn btn-datatable btn-icon btn-transparent-dark">
+													<i data-feather="trash-2"></i>
+												</button>
+											</td>
+										</tr>
+									</c:forEach>
+
+
 								</tbody>
 							</table>
 						</div>

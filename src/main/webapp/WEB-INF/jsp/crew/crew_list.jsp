@@ -156,11 +156,31 @@
 										<td>$320,800</td>
 										<td><div class="badge bg-primary text-white rounded-pill">Full-time</div></td>
 										<td>
-											<button
-												class="btn btn-datatable btn-icon btn-transparent-dark me-2">
-												<i data-feather="more-vertical"></i>
-											</button>
-											<button
+										<button
+													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
+													id="dropdownMenuButton" type="button"
+													data-bs-toggle="dropdown" aria-haspopup="true"
+													aria-expanded="false">
+													<i data-feather="more-vertical"></i>
+												</button>
+											<div class="dropdown-menu">
+													<a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="user"></i>
+														</div> Profile
+													</a><a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="settings"></i>
+														</div> Settings
+													</a>
+													<div class="dropdown-divider"></div>
+													<a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="log-out"></i>
+														</div> Logout
+													</a>
+												</div>
+												<button
 												class="btn btn-datatable btn-icon btn-transparent-dark">
 												<i data-feather="trash-2"></i>
 											</button>
