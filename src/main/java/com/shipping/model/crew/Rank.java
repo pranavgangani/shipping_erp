@@ -10,15 +10,16 @@ public class Rank {
 	public static final String SEQUENCE_NAME = "Rank";
 	
 	@Id
-	private int id;	
+	private long id;	
 	private String name;
 	private RankCategory rankCategory;
+	private int rankSubCategoryId;
 	private int rankCategoryId;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -33,24 +34,27 @@ public class Rank {
 	public void setRankCategory(RankCategory rankCategory) {
 		this.rankCategory = rankCategory;
 	}
+	
+	public int getRankSubCategoryId() {
+		return rankSubCategoryId;
+	}
+	public void setRankSubCategoryId(int rankSubCategoryId) {
+		this.rankSubCategoryId = rankSubCategoryId;
+	}
 	public int getRankCategoryId() {
 		return rankCategoryId;
 	}
 	public void setRankCategoryId(int rankCategoryId) {
 		this.rankCategoryId = rankCategoryId;
 	}
-	
-	@Override
-	public String toString() {
-		return "Rank [id=" + id + ", name=" + name + ", rankCategory=" + rankCategory + "]";
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + rankCategoryId;
+		result = prime * result + rankSubCategoryId;
 		return result;
 	}
 	@Override
@@ -71,8 +75,14 @@ public class Rank {
 			return false;
 		if (rankCategoryId != other.rankCategoryId)
 			return false;
+		if (rankSubCategoryId != other.rankSubCategoryId)
+			return false;
 		return true;
 	}
+	
+	
+	
+	
 	
 	
 }

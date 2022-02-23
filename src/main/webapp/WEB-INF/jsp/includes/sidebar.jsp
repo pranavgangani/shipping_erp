@@ -122,22 +122,22 @@
                             <div class="sidenav-menu-heading">Admin</div>
                             <!-- Sidenav Accordion (Layout)-->
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="nav-link-icon"><i data-feather="layout"></i></div>
-                                Layout
+                                <div class="nav-link-icon"><i data-feather="tool"></i></div>
+                                Settings
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavLayout">
                                     <!-- Nested Sidenav Accordion (Layout -> Navigation)-->
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseLayoutSidenavVariations" aria-expanded="false" aria-controls="collapseLayoutSidenavVariations">
-                                        Navigation
+                                        Manage
                                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
                                     <div class="collapse" id="collapseLayoutSidenavVariations" data-bs-parent="#accordionSidenavLayout">
                                         <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="layout-static.html">Static Sidenav</a>
-                                            <a class="nav-link" href="layout-dark.html">Dark Sidenav</a>
-                                            <a class="nav-link" href="layout-rtl.html">RTL Layout</a>
+                                            <a class="nav-link" href="/settings/ranks">Rank</a>
+                                            <a class="nav-link" href="/settings/rank_categories">Rank Category</a>
+                                            <a class="nav-link" href="/settings/ranks_sub_categories">Rank Sub-Category</a>
                                         </nav>
                                     </div>
                                     <!-- Nested Sidenav Accordion (Layout -> Container Options)-->
@@ -177,50 +177,8 @@
                                         </nav>
                                     </div>
                                 </nav>
-                            </div>
-                            <!-- Sidenav Accordion (Components)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseComponents" aria-expanded="false" aria-controls="collapseComponents">
-                                <div class="nav-link-icon"><i data-feather="package"></i></div>
-                                Components
-                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseComponents" data-bs-parent="#accordionSidenav">
-                                <nav class="sidenav-menu-nested nav">
-                                    <a class="nav-link" href="alerts.html">Alerts</a>
-                                    <a class="nav-link" href="avatars.html">Avatars</a>
-                                    <a class="nav-link" href="badges.html">Badges</a>
-                                    <a class="nav-link" href="buttons.html">Buttons</a>
-                                    <a class="nav-link" href="cards.html">
-                                        Cards
-                                        <span class="badge bg-primary-soft text-primary ms-auto">Updated</span>
-                                    </a>
-                                    <a class="nav-link" href="dropdowns.html">Dropdowns</a>
-                                    <a class="nav-link" href="forms.html">
-                                        Forms
-                                        <span class="badge bg-primary-soft text-primary ms-auto">Updated</span>
-                                    </a>
-                                    <a class="nav-link" href="modals.html">Modals</a>
-                                    <a class="nav-link" href="navigation.html">Navigation</a>
-                                    <a class="nav-link" href="progress.html">Progress</a>
-                                    <a class="nav-link" href="step.html">Step</a>
-                                    <a class="nav-link" href="timeline.html">Timeline</a>
-                                    <a class="nav-link" href="toasts.html">Toasts</a>
-                                    <a class="nav-link" href="tooltips.html">Tooltips</a>
-                                </nav>
-                            </div>
-                            <!-- Sidenav Accordion (Utilities)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseUtilities" aria-expanded="false" aria-controls="collapseUtilities">
-                                <div class="nav-link-icon"><i data-feather="tool"></i></div>
-                                Settings
-                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseUtilities" data-bs-parent="#accordionSidenav">
-                                <nav class="sidenav-menu-nested nav">
-                                    <a class="nav-link" href="animations.html">Document Category</a>
-                                    <a class="nav-link" href="background.html">Payscale</a>
-                                    <a class="nav-link" href="borders.html">Training</a>
-                                </nav>
-                            </div>
+                            </div>                           
+                                                  
                         </div>
                     </div>
                     <!-- Sidenav Footer-->

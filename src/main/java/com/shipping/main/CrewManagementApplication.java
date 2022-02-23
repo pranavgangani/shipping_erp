@@ -25,7 +25,7 @@ import com.shipping.dao.crew.CrewRepository;
 @Configuration
 //@EnableAutoConfiguration
 @EnableAutoConfiguration(exclude = { MongoAutoConfiguration.class, MongoDataAutoConfiguration.class })
-@EnableMongoRepositories(basePackages = "com.shipping.dao.crew")
+@EnableMongoRepositories(basePackages = "com.shipping.dao")
 //@ImportResource({"classpath*:spring/appServlet/servlet-context.xml"})
 //@ImportResource("classpath:spring.xml")
 @ComponentScan(basePackages = "com.shipping.web.*, com.shipping.service.*")
