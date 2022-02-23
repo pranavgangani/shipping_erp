@@ -65,26 +65,43 @@ public class CrewController {
 	public ModelAndView addCrew(@RequestParam("fName") String fName, 
 			@RequestParam("mName") String mName, 
 			@RequestParam("lName") String lName, 
-			@RequestParam("image") MultipartFile image, Model model) {
+			@RequestParam("rankId") int rankId, 
+			@RequestParam("genderId") int genderId, 
+			@RequestParam("manningOffice") String manningOffice, 
+			@RequestParam("image") MultipartFile image, 
+			Model model) {
 		ModelAndView mv = new ModelAndView("/crew/add_employment");
 		System.out.println("add_crew: " + fName);
 		System.out.println("image: " + image);
 		
+		Crew crew = new Crew();
+		crew.setfName(fName); 
+		crew.setlName(lName);
+		crew.setmName(mName);
+		crew.setRankId(rankId);
+		crew.setGenderId(genderId);
+		crewService.addCrew(crew);
+		
+		long crewId = crew.getId();
+		System.out.println("New crewId ---> " + crewId);
+		mv.addObject("crewId", crewId);
+		
 		try {
-			String id = photoService.addPhoto("test", image);
+			Photo photo = new Photo(crewId, fName + " " +mName +" "+ lName);
+			String photoId = photoService.addPhoto(photo, image);
+			System.out.println("CrewId ---> " + crewId + " Photo ID: "+photoId);
+			
+			photo = photoService.getPhoto(photoId);
+			//model.addAttribute("title", photo.getTitle());
+			model.addAttribute("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 //		return "redirect:/photos/" + id;
 
-		Crew crew = new Crew();
-		crew.setfName(fName);
-		crew.setlName(lName);
-		crew.setmName(mName);
-		crewService.addCrew(crew);
-		System.out.println("crew.getId() ---> " + crew.getId());
-		mv.addObject("crewId", crew.getId());
+
 		return mv;
 	}
 
@@ -151,10 +168,10 @@ public class CrewController {
 		return "uploadPhoto";
 	}
 
-	@PostMapping("/photos/add")
-	public String addPhoto(@RequestParam("title") String title, @RequestParam("image") MultipartFile image, Model model)
-			throws IOException {
-		String id = photoService.addPhoto(title, image);
-		return "redirect:/photos/" + id;
-	}
+	/*
+	 * @PostMapping("/photos/add") public String addPhoto(@RequestParam("title")
+	 * String title, @RequestParam("image") MultipartFile image, Model model) throws
+	 * IOException { String id = photoService.addPhoto(title, image); return
+	 * "redirect:/photos/" + id; }
+	 */
 }

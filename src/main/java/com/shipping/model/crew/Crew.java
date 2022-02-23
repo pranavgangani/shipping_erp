@@ -10,18 +10,22 @@ import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "crew")
+@Document(collection = "Crew")
 public class Crew {
 	@Transient
-	public static final String SEQUENCE_NAME = "crew";
+	public static final String SEQUENCE_NAME = "Crew";
 	
 	@Id
 	private long id;
 	private String fName, lName, mName;
-	private int genderId;
+	private String passportNumber, visaNumber;
+	private int genderId, rankId;
+	private long manningOfficeId;
+	
 	private Gender gender;
-	private int rankId;
 	private Rank rank;
+	private ManningOffice manningOffice;
+	
 
 	// Past
 	private List<Employment> employeeHistory;
@@ -217,6 +221,44 @@ public class Crew {
 
 	public void setEnteredByEmp(Employee enteredByEmp) {
 		this.enteredByEmp = enteredByEmp;
+	}
+
+	public String getPassportNumber() {
+		return passportNumber;
+	}
+
+	public void setPassportNumber(String passportNumber) {
+		this.passportNumber = passportNumber;
+	}
+
+	public String getVisaNumber() {
+		return visaNumber;
+	}
+
+	public void setVisaNumber(String visaNumber) {
+		this.visaNumber = visaNumber;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Crew other = (Crew) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 }

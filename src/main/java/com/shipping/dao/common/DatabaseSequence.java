@@ -3,7 +3,7 @@ package com.shipping.dao.common;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "database_sequences")
+@Document(collection = "Database_Sequence")
 public class DatabaseSequence {
 
     @Id

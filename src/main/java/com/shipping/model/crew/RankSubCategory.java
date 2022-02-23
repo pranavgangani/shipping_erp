@@ -4,16 +4,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Rank")
-public class Rank {
+@Document(collection = "RankSubCategory")
+public class RankSubCategory {
 	@Transient
-	public static final String SEQUENCE_NAME = "Rank";
+	public static final String SEQUENCE_NAME = "RankSubCategory";
 	
 	@Id
 	private int id;	
 	private String name;
-	private RankCategory rankCategory;
 	private int rankCategoryId;
+	private RankCategory rankCategory;
 	
 	public int getId() {
 		return id;
@@ -27,30 +27,23 @@ public class Rank {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public RankCategory getRankCategory() {
-		return rankCategory;
-	}
-	public void setRankCategory(RankCategory rankCategory) {
-		this.rankCategory = rankCategory;
-	}
 	public int getRankCategoryId() {
 		return rankCategoryId;
 	}
 	public void setRankCategoryId(int rankCategoryId) {
 		this.rankCategoryId = rankCategoryId;
 	}
-	
-	@Override
-	public String toString() {
-		return "Rank [id=" + id + ", name=" + name + ", rankCategory=" + rankCategory + "]";
+	public RankCategory getRankCategory() {
+		return rankCategory;
+	}
+	public void setRankCategory(RankCategory rankCategory) {
+		this.rankCategory = rankCategory;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + rankCategoryId;
 		return result;
 	}
 	@Override
@@ -61,17 +54,14 @@ public class Rank {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Rank other = (Rank) obj;
+		RankSubCategory other = (RankSubCategory) obj;
 		if (id != other.id)
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (rankCategoryId != other.rankCategoryId)
-			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return "RankSubCategory [id=" + id + ", name=" + name + ", rankCategory=" + rankCategory + "]";
 	}
 	
 	

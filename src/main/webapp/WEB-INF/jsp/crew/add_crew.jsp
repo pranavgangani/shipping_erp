@@ -86,7 +86,7 @@
 										<div class="row gx-3 mb-3">
 											<div class="col-md-4">
 												<label class="small mb-1" for="rank">Rank</label>
-												<select class="form-select" name="rank" aria-label="Default select example">
+												<select class="form-select" name="rankId" aria-label="Default select example">
 													<option selected disabled>Select a Rank:</option>
 													<option value="1">Captain/Master</option>
 													<option value="2">Chief Officer</option>
@@ -99,11 +99,11 @@
 											<div class="col-md-4">
 												<label class="small mb-1" for="gender">Gender</label>
 												<div class="form-check">
-													<input class="form-check-input" id="male" type="radio" name="gender" checked /> <label class="form-check-label"
+													<input class="form-check-input" id="male" value="1" type="radio" name="genderId" checked /> <label class="form-check-label"
 														for="male">Male</label>
 												</div>
 												<div class="form-check">
-													<input class="form-check-input" id="female" type="radio" name="gender" /> <label class="form-check-label"
+													<input class="form-check-input" id="female" value="0" type="radio" name="genderId" /> <label class="form-check-label"
 														for="female">Female</label>
 												</div>
 											</div>

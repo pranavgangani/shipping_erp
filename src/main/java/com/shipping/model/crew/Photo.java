@@ -4,18 +4,21 @@ import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "photo")
+@Document(collection = "Photo")
 public class Photo {
     
     @Id
     private String id;
     
+    private long crewId;
+    
     private String title;
          
     private Binary image;
 
-    public Photo(String title) {
+    public Photo(long crewId, String title) {
         super();
+        this.crewId = crewId;
         this.title = title;
     }
 
@@ -43,9 +46,18 @@ public class Photo {
         this.image = image;
     }
 
-    @Override
-    public String toString() {
-        return "Photo [id=" + id + ", title=" + title + ", image=" + image + "]";
-    }
-    
+    public long getCrewId() {
+		return crewId;
+	}
+
+	public void setCrewId(long crewId) {
+		this.crewId = crewId;
+	}
+
+	@Override
+	public String toString() {
+		return "Photo [id=" + id + ", crewId=" + crewId + ", title=" + title + ", image=" + image + "]";
+	}
+
+
 }

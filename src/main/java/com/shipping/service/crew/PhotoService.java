@@ -22,8 +22,7 @@ public class PhotoService {
         return photoDao.findById(id).get();
     }
 
-    public String addPhoto(String title, MultipartFile file) throws IOException {
-        Photo photo = new Photo(title);
+    public String addPhoto(Photo photo, MultipartFile file) throws IOException {        
         photo.setImage(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
         photo = photoDao.insert(photo);
         return photo.getId();
