@@ -1,5 +1,7 @@
 package com.shipping.main;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -23,12 +25,13 @@ import com.shipping.dao.crew.CrewRepository;
 @Configuration
 //@EnableAutoConfiguration
 @EnableAutoConfiguration(exclude = { MongoAutoConfiguration.class, MongoDataAutoConfiguration.class })
-@EnableMongoRepositories(basePackages  = "com.shipping.dao.crew")
+@EnableMongoRepositories(basePackages = "com.shipping.dao.crew")
 //@ImportResource({"classpath*:spring/appServlet/servlet-context.xml"})
 //@ImportResource("classpath:spring.xml")
 @ComponentScan(basePackages = "com.shipping.web.*, com.shipping.service.*")
-public class CrewManagementApplication extends AbstractMongoClientConfiguration {
-
+public class CrewManagementApplication extends AbstractMongoClientConfiguration implements ServletContextListener {
+	private MongoClient mongoClient;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CrewManagementApplication.class, args);
 	}
@@ -46,13 +49,24 @@ public class CrewManagementApplication extends AbstractMongoClientConfiguration 
 		// ConnectionString("mongodb://localhost:27017/admin");
 		MongoClientSettings mongoClientSettings = MongoClientSettings.builder().applyConnectionString(connectionString)
 				.build();
-
-		return MongoClients.create(mongoClientSettings);
+		mongoClient = MongoClients.create(mongoClientSettings);
+		return mongoClient;
 	}
 
 	@Bean
 	public MongoTemplate mongoTemplate() throws Exception {
-		return new MongoTemplate(mongoClient(), getDatabaseName());
+		return new MongoTemplate(mongoClient, getDatabaseName());
+	}
+
+	@Override
+	public void contextDestroyed(ServletContextEvent event) {
+		System.out.println("Callback triggered - ContextListener.");
+		mongoClient.close();
+	}
+
+	@Override
+	public void contextInitialized(ServletContextEvent event) {
+		// Triggers when context initializes
 	}
 
 }

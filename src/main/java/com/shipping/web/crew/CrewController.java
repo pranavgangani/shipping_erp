@@ -17,6 +17,7 @@ package com.shipping.web.crew;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,7 +52,8 @@ public class CrewController {
 	@GetMapping(value = "/crew_list")
 	public ModelAndView crewList(Model model) {
 		ModelAndView mv = new ModelAndView("crew/crew_list");
-
+		List<Crew> list = crewService.getCrewList(new Crew());
+		mv.addObject("list", list);
 		return mv;
 	}
 
