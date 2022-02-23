@@ -80,7 +80,8 @@
 													<option selected disabled>Select a Rank Sub-Category:</option>
 													<option value="1">Officers</option>
 													<option value="2">Ratings</option>
-													<option value="3">Other</option>
+													<option value="3">Engineers</option>
+													<option value="0">Other</option>
 												</select>
 											</div>
 											 <div class="row gx-3 mb-3">
