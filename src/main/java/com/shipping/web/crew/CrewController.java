@@ -21,6 +21,7 @@ import java.util.Base64;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,13 +61,22 @@ public class CrewController {
 		return mv;
 	}
 
-	@PostMapping(value = "/add_crew")
-	public ModelAndView addCrew(HttpServletRequest req) {
+	@PostMapping(value = "/add_crew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ModelAndView addCrew(@RequestParam("fName") String fName, 
+			@RequestParam("mName") String mName, 
+			@RequestParam("lName") String lName, 
+			@RequestParam("image") MultipartFile image, Model model) {
 		ModelAndView mv = new ModelAndView("/crew/add_employment");
-		String fName = req.getParameter("fName");
-		String mName = req.getParameter("mName");
-		String lName = req.getParameter("lName");
 		System.out.println("add_crew: " + fName);
+		System.out.println("image: " + image);
+		
+		try {
+			String id = photoService.addPhoto("test", image);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		return "redirect:/photos/" + id;
 
 		Crew crew = new Crew();
 		crew.setfName(fName);
