@@ -93,7 +93,7 @@ public class CrewController {
 			
 			photo = photoService.getPhoto(photoId);
 			//model.addAttribute("title", photo.getTitle());
-			model.addAttribute("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+			mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

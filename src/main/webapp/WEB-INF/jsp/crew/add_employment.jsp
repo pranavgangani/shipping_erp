@@ -10,6 +10,8 @@
     
         <%@ include file="../includes/header_includes.jsp" %>
     </head>
+
+<input type="hidden" name="crewId" value="${crewId}">    
     <body class="nav-fixed">
     <%@ include file="../includes/top_nav_bar.jsp" %>
        
