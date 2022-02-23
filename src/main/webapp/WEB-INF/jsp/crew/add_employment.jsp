@@ -45,7 +45,9 @@
                                     <div class="card-header">Profile Picture</div>
                                     <div class="card-body text-center">
                                         <!-- Profile picture image-->
-                                        <img class="img-account-profile rounded-circle mb-2" src="../assets/img/illustrations/profiles/profile-1.png" alt="" />
+                                        <img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}"/>
+                                        
+                                        <!-- <img class="img-account-profile rounded-circle mb-2" src="../assets/img/illustrations/profiles/profile-1.png" alt="" /> -->
                                     </div>
                                 </div>
                             </div>
