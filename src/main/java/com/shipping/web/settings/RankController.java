@@ -61,13 +61,69 @@ public class RankController {
 	}
 	
 	
-	@GetMapping(value = "/assign_training_courses")
-	public ModelAndView assignTrainingCourses(@RequestParam("rankId") int rankId, Model model) {
+	@GetMapping(value = "/assign_certifications")
+	public ModelAndView assignCertifications(@RequestParam("rankId") int rankId, Model model) {
 		Rank rank = new Rank();
 		rank.setId(rankId);
 		Optional<Rank> optRank = rankService.get(rank);
 		rank = optRank.get();		
-		ModelAndView mv = new ModelAndView("settings/assign_training_courses");
+		ModelAndView mv = new ModelAndView("settings/assign_certifications");
+		mv.addObject("rank", rank);
+		
+		List<Rank> list = rankService.getRankList(new Rank());
+		mv.addObject("list", list);
+		return mv;
+	}
+	
+	@GetMapping(value = "/assign_medicals")
+	public ModelAndView assignMedicals(@RequestParam("rankId") int rankId, Model model) {
+		Rank rank = new Rank();
+		rank.setId(rankId);
+		Optional<Rank> optRank = rankService.get(rank);
+		rank = optRank.get();		
+		ModelAndView mv = new ModelAndView("settings/assign_medicals");
+		mv.addObject("rank", rank);
+		
+		List<Rank> list = rankService.getRankList(new Rank());
+		mv.addObject("list", list);
+		return mv;
+	}
+	
+	@GetMapping(value = "/assign_licenses")
+	public ModelAndView assignLicenses(@RequestParam("rankId") int rankId, Model model) {
+		Rank rank = new Rank();
+		rank.setId(rankId);
+		Optional<Rank> optRank = rankService.get(rank);
+		rank = optRank.get();		
+		ModelAndView mv = new ModelAndView("settings/assign_licenses");
+		mv.addObject("rank", rank);
+		
+		List<Rank> list = rankService.getRankList(new Rank());
+		mv.addObject("list", list);
+		return mv;
+	}
+	
+	@GetMapping(value = "/assign_documents")
+	public ModelAndView assignDocuments(@RequestParam("rankId") int rankId, Model model) {
+		Rank rank = new Rank();
+		rank.setId(rankId);
+		Optional<Rank> optRank = rankService.get(rank);
+		rank = optRank.get();		
+		ModelAndView mv = new ModelAndView("settings/assign_documents");
+		mv.addObject("rank", rank);
+		
+		List<Rank> list = rankService.getRankList(new Rank());
+		mv.addObject("list", list);
+		return mv;
+	}
+	
+	@GetMapping(value = "/assign_surveys")
+	public ModelAndView assignSurveys(@RequestParam("rankId") int rankId, Model model) {
+		Rank rank = new Rank();
+		rank.setId(rankId);
+		Optional<Rank> optRank = rankService.get(rank);
+		rank = optRank.get();		
+		ModelAndView mv = new ModelAndView("settings/assign_surveys");
 		mv.addObject("rank", rank);
 		
 		List<Rank> list = rankService.getRankList(new Rank());

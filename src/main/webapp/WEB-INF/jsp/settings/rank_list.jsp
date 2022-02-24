@@ -89,33 +89,33 @@
 												</button>
 
 												<div class="dropdown-menu">
-													<a class="dropdown-item" href="/settings/assign_training_courses?rankId=${rank.id}">
+													<a class="dropdown-item" href="/settings/assign_certifications?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Assign Training/Courses
+														</div> Assign Certifications
 													</a>
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/settings/assign_medicals?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
 														</div> Assign Medical Tests
 													</a>													
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/settings/assign_licenses?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
-														</div> Assign Licences
+														</div> Assign Licenses
 													</a>
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/settings/assign_documents?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
 														</div> Assign Documents
 													</a>
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/settings/assign_surveys?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
 														</div> Assign Surveys
 													</a>
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/settings/edit_rank?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
