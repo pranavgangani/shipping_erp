@@ -7,10 +7,13 @@ import org.springframework.data.annotation.Transient;
 
 import com.shipping.common.Gender;
 import com.shipping.company.Employee;
+import com.shipping.model.crew.Rank;
+import com.shipping.model.crew.RankCertification;
+import com.shipping.model.crew.RankDocument;
+import com.shipping.model.crew.RankMedical;
 import com.shipping.util.DateTime;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Crew")
+@org.springframework.data.mongodb.core.mapping.Document(collection = "Crew")
 public class Crew {
 	@Transient
 	public static final String SEQUENCE_NAME = "Crew";
@@ -30,8 +33,9 @@ public class Crew {
 	// Past
 	private List<Employment> employeeHistory;
 	private List<Education> educatonHistory;
-	private List<Document> documents;
-	private List<Medical> medicalHistory;
+	private List<RankDocument> documents;
+	private List<RankCertification> certifications;
+	private List<RankMedical> medicalHistory;
 
 	// KYC
 	private List<Nominee> nominees;
@@ -127,19 +131,19 @@ public class Crew {
 		this.educatonHistory = educatonHistory;
 	}
 
-	public List<Document> getDocuments() {
+	public List<RankDocument> getDocuments() {
 		return documents;
 	}
 
-	public void setDocuments(List<Document> documents) {
+	public void setDocuments(List<RankDocument> documents) {
 		this.documents = documents;
 	}
 
-	public List<Medical> getMedicalHistory() {
+	public List<RankMedical> getMedicalHistory() {
 		return medicalHistory;
 	}
 
-	public void setMedicalHistory(List<Medical> medicalHistory) {
+	public void setMedicalHistory(List<RankMedical> medicalHistory) {
 		this.medicalHistory = medicalHistory;
 	}
 

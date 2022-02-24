@@ -1,5 +1,5 @@
 package com.shipping.model.ship;
 
-public class Flag {
+public class ShipCertification {
 
 }

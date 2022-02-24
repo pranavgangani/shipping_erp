@@ -1,5 +1,7 @@
 package com.shipping.model.ship;
 
+import com.shipping.common.Flag;
+
 public class Ship {
 	private int shipId;
 	private ShipType shipType;	
