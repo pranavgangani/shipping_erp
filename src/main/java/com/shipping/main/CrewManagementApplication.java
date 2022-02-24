@@ -28,8 +28,8 @@ import com.shipping.dao.crew.CrewRepository;
 @EnableMongoRepositories(basePackages = "com.shipping.dao")
 //@ImportResource({"classpath*:spring/appServlet/servlet-context.xml"})
 //@ImportResource("classpath:spring.xml")
-@ComponentScan(basePackages = ""
-		+ "com.shipping.web.*,"
+@ComponentScan(basePackages = 
+			"com.shipping.web.*,"
 		+ "com.shipping.service.*")
 public class CrewManagementApplication extends AbstractMongoClientConfiguration implements ServletContextListener {
 	private MongoClient mongoClient;
