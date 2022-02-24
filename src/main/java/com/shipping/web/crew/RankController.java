@@ -1,4 +1,4 @@
-package com.shipping.web.settings;
+package com.shipping.web.crew;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.Photo;
 import com.shipping.model.crew.Rank;
-import com.shipping.service.settings.RankService;
+import com.shipping.service.crew.RankService;
 
 @Controller
 @RequestMapping(value = "/settings")
@@ -31,7 +31,7 @@ public class RankController {
 	public ModelAndView rankList(Model model) {
 		ModelAndView mv = new ModelAndView("settings/rank_list");
 		List<Rank> list = rankService.getRankList(new Rank());
-		//list.forEach(i -> System.out.println("-----%%%%%%%%%%% "+i.getName()));
+		list.forEach(i -> System.out.println("-----%%%%%%%%%%% "+i.getName()));
 		mv.addObject("list", list);
 		return mv;
 	}
@@ -60,20 +60,6 @@ public class RankController {
 		return mv;
 	}
 	
-	
-	@GetMapping(value = "/assign_certifications")
-	public ModelAndView assignCertifications(@RequestParam("rankId") int rankId, Model model) {
-		Rank rank = new Rank();
-		rank.setId(rankId);
-		Optional<Rank> optRank = rankService.get(rank);
-		rank = optRank.get();		
-		ModelAndView mv = new ModelAndView("settings/assign_certifications");
-		mv.addObject("rank", rank);
-		
-		List<Rank> list = rankService.getRankList(new Rank());
-		mv.addObject("list", list);
-		return mv;
-	}
 	
 	@GetMapping(value = "/assign_medicals")
 	public ModelAndView assignMedicals(@RequestParam("rankId") int rankId, Model model) {

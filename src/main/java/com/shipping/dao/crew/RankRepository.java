@@ -1,4 +1,4 @@
-package com.shipping.dao.settings;
+package com.shipping.dao.crew;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

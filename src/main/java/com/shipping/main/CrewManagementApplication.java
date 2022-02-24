@@ -28,7 +28,9 @@ import com.shipping.dao.crew.CrewRepository;
 @EnableMongoRepositories(basePackages = "com.shipping.dao")
 //@ImportResource({"classpath*:spring/appServlet/servlet-context.xml"})
 //@ImportResource("classpath:spring.xml")
-@ComponentScan(basePackages = "com.shipping.web.*, com.shipping.service.*")
+@ComponentScan(basePackages = ""
+		+ "com.shipping.web.*,"
+		+ "com.shipping.service.*")
 public class CrewManagementApplication extends AbstractMongoClientConfiguration implements ServletContextListener {
 	private MongoClient mongoClient;
 	
@@ -61,7 +63,7 @@ public class CrewManagementApplication extends AbstractMongoClientConfiguration 
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
 		System.out.println("Callback triggered - ContextListener.");
-		mongoClient.close();
+		if(mongoClient!=null) mongoClient.close();
 	}
 
 	@Override

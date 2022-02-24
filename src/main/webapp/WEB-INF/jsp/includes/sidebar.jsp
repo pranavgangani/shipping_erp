@@ -136,8 +136,11 @@
                                     <div class="collapse" id="collapseLayoutSidenavVariations" data-bs-parent="#accordionSidenavLayout">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/settings/ranks">Rank</a>
-                                            <a class="nav-link" href="/settings/rank_categories">Rank Category</a>
-                                            <a class="nav-link" href="/settings/ranks_sub_categories">Rank Sub-Category</a>
+                                            <a class="nav-link" href="/settings/certifications">Certifications</a>
+                                            <a class="nav-link" href="/settings/medicals">Medicals</a>
+                                            <a class="nav-link" href="/settings/licenses">Licenses</a>
+                                            <a class="nav-link" href="/settings/surveys">Surveys</a>
+                                            <a class="nav-link" href="/settings/documents">Documents</a>                                            
                                         </nav>
                                     </div>
                                     <!-- Nested Sidenav Accordion (Layout -> Container Options)-->

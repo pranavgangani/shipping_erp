@@ -1,4 +1,4 @@
-package com.shipping.service.settings;
+package com.shipping.service.crew;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.shipping.dao.settings.RankRepository;
+import com.shipping.dao.crew.RankRepository;
 import com.shipping.model.crew.Rank;
 import com.shipping.service.common.SequenceGeneratorService;
 
-@Service
+@Service("rankService")
 public class RankService {
 	@Autowired
 	private RankRepository rankDao;
