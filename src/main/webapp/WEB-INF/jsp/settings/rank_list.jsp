@@ -89,20 +89,36 @@
 												</button>
 
 												<div class="dropdown-menu">
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/settings/assign_training_courses?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Profile
-													</a><a class="dropdown-item" href="#!">
+														</div> Assign Training/Courses
+													</a>
+													<a class="dropdown-item" href="#!">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
-														</div> Settings
+														</div> Assign Medical Tests
+													</a>													
+													<a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="settings"></i>
+														</div> Assign Licences
+													</a>
+													<a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="settings"></i>
+														</div> Assign Documents
+													</a>
+													<a class="dropdown-item" href="#!">
+														<div class="dropdown-item-icon">
+															<i data-feather="settings"></i>
+														</div> Assign Surveys
 													</a>
 													<div class="dropdown-divider"></div>
 													<a class="dropdown-item" href="#!">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
-														</div> Logout
+														</div> Edit
 													</a>
 												</div>
 												<button

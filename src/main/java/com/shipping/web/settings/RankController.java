@@ -1,8 +1,9 @@
-package com.shipping.service.settings;
+package com.shipping.web.settings;
 
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.Photo;
 import com.shipping.model.crew.Rank;
+import com.shipping.service.settings.RankService;
 
 @Controller
 @RequestMapping(value = "/settings")
@@ -33,7 +35,7 @@ public class RankController {
 		mv.addObject("list", list);
 		return mv;
 	}
-	
+
 	@GetMapping(value = "/add_rank")
 	public ModelAndView addRank(Model model) {
 		ModelAndView mv = new ModelAndView("settings/add_rank");
@@ -57,5 +59,27 @@ public class RankController {
 		mv.addObject("crewId", rankId);
 		return mv;
 	}
+	
+	
+	@GetMapping(value = "/assign_training_courses")
+	public ModelAndView assignTrainingCourses(@RequestParam("rankId") int rankId, Model model) {
+		Rank rank = new Rank();
+		rank.setId(rankId);
+		Optional<Rank> optRank = rankService.get(rank);
+		rank = optRank.get();		
+		ModelAndView mv = new ModelAndView("settings/assign_training_courses");
+		mv.addObject("rank", rank);
+		
+		List<Rank> list = rankService.getRankList(new Rank());
+		mv.addObject("list", list);
+		return mv;
+	}
+	
+	@PostMapping(value = "/assign_training_courses")
+	public ModelAndView assignTrainingCourseToRank(Model model) {
+		ModelAndView mv = new ModelAndView("settings/assign_training_courses");
+		return mv;
+	}
+	
 
 }

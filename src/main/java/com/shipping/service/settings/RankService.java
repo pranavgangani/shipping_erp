@@ -1,6 +1,7 @@
 package com.shipping.service.settings;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class RankService {
 	
 	public List<Rank> getRankList(Rank filterRank) {
 		return rankDao.findAll();
+	}
+	
+	public Optional<Rank> get(Rank filterRank) {
+		return rankDao.findById((int) filterRank.getId());
 	}
 }
