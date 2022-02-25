@@ -37,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shipping.model.crew.Crew;
-import com.shipping.model.crew.Photo;
+import com.shipping.model.crew.CrewPhoto;
 import com.shipping.service.crew.CrewService;
 import com.shipping.service.crew.PhotoService;
 
@@ -89,8 +89,8 @@ public class CrewController {
 		mv.addObject("crewId", crewId);
 		
 		try {
-			Photo photo = new Photo(crewId, fName + " " +mName +" "+ lName);
-			String photoId = photoService.addPhoto(photo, image);
+			CrewPhoto photo = new CrewPhoto(crewId, fName + " " +mName +" "+ lName);
+			long photoId = photoService.addPhoto(photo, image);
 			System.out.println("CrewId ---> " + crewId + " Photo ID: "+photoId);
 			
 			photo = photoService.getPhoto(photoId);
@@ -157,8 +157,8 @@ public class CrewController {
 	}
 
 	@GetMapping("/photos/{id}")
-	public String getPhoto(@PathVariable String id, Model model) {
-		Photo photo = photoService.getPhoto(id);
+	public String getPhoto(@PathVariable long id, Model model) {
+		CrewPhoto photo = photoService.getPhoto(id);
 		model.addAttribute("title", photo.getTitle());
 		model.addAttribute("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 		return "photos";

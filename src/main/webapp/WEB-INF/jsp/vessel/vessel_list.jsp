@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Ship List</title>
+<title>Vessel List</title>
 
 <%@ include file="../includes/header_includes.jsp"%>
 
@@ -146,9 +146,9 @@
 								</tfoot>
 								<tbody>
 								
-								<c:forEach items="${list}" var="ship">
+								<c:forEach items="${list}" var="crew">
 								    <tr>
-										<td>${ship.fName}</td>
+										<td>${crew.fName}</td>
 										<td>System Architect</td>
 										<td>Edinburgh</td>
 										<td>61</td>

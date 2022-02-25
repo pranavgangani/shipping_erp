@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Add Crew</title>
+        <title>Add Next to Kin</title>
     
         <%@ include file="../includes/header_includes.jsp" %>
     </head>
@@ -50,7 +50,7 @@
                             <div class="col-xl-10">
                                 <!-- Account details card-->
                                 <div class="card mb-6">
-                                    <div class="card-header">Add Nominee</div>
+                                    <div class="card-header">Add Next to Kin</div>
                                     <div class="card-body">
                                         <form>
                                             <div class="row gx-3 mb-3">

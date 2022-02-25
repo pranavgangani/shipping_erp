@@ -2,31 +2,33 @@ package com.shipping.model.crew;
 
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Photo")
-public class Photo {
-    
+import com.shipping.common.Collection;
+
+@Document(collection = Collection.CREW_PHOTO)
+public class CrewPhoto {
+	@Transient
+	public static final String SEQUENCE_NAME = Collection.CREW_PHOTO;
+	
     @Id
-    private String id;
-    
-    private long crewId;
-    
-    private String title;
-         
+    private long id;    
+    private long crewId;   
+    private String title;         
     private Binary image;
 
-    public Photo(long crewId, String title) {
+    public CrewPhoto(long crewId, String title) {
         super();
         this.crewId = crewId;
         this.title = title;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

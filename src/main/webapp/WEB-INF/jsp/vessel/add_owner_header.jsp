@@ -8,13 +8,13 @@
 						<div class="page-header-icon">
 							<i data-feather="user-plus"></i>
 						</div>
-						Add New Crew
+						Add New Vessel Owner 
 					</h1>
 				</div>
 				<div class="col-12 col-xl-auto mb-3">
 					<a class="btn btn-sm btn-light text-primary"
-						href="/crew/crew_list"> <i class="me-1"
-						data-feather="arrow-left"></i> Go to Crew List
+						href="/vessel/vessel_owner_list"> <i class="me-1"
+						data-feather="arrow-left"></i> Go to Vessel Owner List
 					</a>
 				</div>
 			</div>

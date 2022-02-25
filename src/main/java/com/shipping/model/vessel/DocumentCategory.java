@@ -1,4 +1,4 @@
-package com.shipping.model.ship;
+package com.shipping.model.vessel;
 
 public class DocumentCategory {
 

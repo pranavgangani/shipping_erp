@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
+import com.shipping.common.Collection;
 import com.shipping.common.Gender;
 import com.shipping.company.Employee;
 import com.shipping.model.crew.Rank;
@@ -13,10 +14,10 @@ import com.shipping.model.crew.RankDocument;
 import com.shipping.model.crew.RankMedical;
 import com.shipping.util.DateTime;
 
-@org.springframework.data.mongodb.core.mapping.Document(collection = "Crew")
+@org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
 public class Crew {
 	@Transient
-	public static final String SEQUENCE_NAME = "Crew";
+	public static final String SEQUENCE_NAME = Collection.CREW;
 	
 	@Id
 	private long id;

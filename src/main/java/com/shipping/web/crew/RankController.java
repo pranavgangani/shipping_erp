@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shipping.model.crew.Crew;
-import com.shipping.model.crew.Photo;
+import com.shipping.model.crew.CrewPhoto;
 import com.shipping.model.crew.Rank;
 import com.shipping.service.crew.RankService;
 

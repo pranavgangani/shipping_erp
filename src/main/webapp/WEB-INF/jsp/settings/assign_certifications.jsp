@@ -116,19 +116,27 @@
 											<div class="row gx-3 mb-3">
 												<div class="form-check mb-2">
                                                     <input class="form-check-input" id="checkRequiresCert" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkRequiresCert">Requires Certification</label>
+                                                    <label class="form-check-label" for="checkRequiresCert">Requires Certification</label><i class="text-muted" data-feather="info"
+													data-bs-toggle="tooltip" data-bs-placement="left"
+													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
                                                 </div>
                                                 <div class="form-check mb-2">
                                                     <input class="form-check-input" id="checkAccountGroups" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkAccountGroups">Requires Physical Training</label>
+                                                    <label class="form-check-label" for="checkAccountGroups">Requires Physical Training</label><i class="text-muted" data-feather="info"
+													data-bs-toggle="tooltip" data-bs-placement="left"
+													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
                                                 </div>
                                                 <div class="form-check mb-2">
                                                     <input class="form-check-input" id="checkProductUpdates" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkProductUpdates">Paid Certification</label>
+                                                    <label class="form-check-label" for="checkProductUpdates">Paid Certification</label><i class="text-muted" data-feather="info"
+													data-bs-toggle="tooltip" data-bs-placement="left"
+													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
                                                 </div>
                                                 <div class="form-check mb-2">
                                                     <input class="form-check-input" id="checkProductNew" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkProductNew">Company sponsored</label>
+                                                    <label class="form-check-label" for="checkProductNew">Company sponsored</label><i class="text-muted" data-feather="info"
+													data-bs-toggle="tooltip" data-bs-placement="left"
+													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
                                                 </div>
                                                 <div class="form-check mb-2">
                                                     <input class="form-check-input" id="checkPromotional" type="checkbox" />
