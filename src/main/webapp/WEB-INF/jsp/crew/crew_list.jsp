@@ -10,11 +10,9 @@
 <meta name="author" content="" />
 <title>Crew List</title>
 
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%@ include file="../includes/header_includes.jsp"%>
 
-<link
-	href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
-	rel="stylesheet" />
 </head>
 <body class="nav-fixed">
 	<%@ include file="../includes/top_nav_bar.jsp"%>

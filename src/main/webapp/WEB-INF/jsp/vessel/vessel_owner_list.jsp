@@ -10,17 +10,16 @@
 <meta name="author" content="" />
 <title>Vessel Owner List</title>
 
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%@ include file="../includes/header_includes.jsp"%>
-
-<link
-	href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
-	rel="stylesheet" />
+       
 </head>
 <body class="nav-fixed">
 	<%@ include file="../includes/top_nav_bar.jsp"%>
 	<div id="layoutSidenav">
 		<%@ include file="../includes/sidebar.jsp"%>
 		<div id="layoutSidenav_content">
+			<main>			
 			<header
 				class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
 
@@ -112,7 +111,6 @@
 				</div>
 
 			</header>
-			<main>
 
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
@@ -208,5 +206,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="../js/datatables/datatables-simple-demo.js"></script>
+	
+        
 </body>
 </html>
