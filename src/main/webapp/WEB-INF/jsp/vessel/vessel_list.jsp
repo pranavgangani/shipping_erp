@@ -12,13 +12,14 @@
 
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%@ include file="../includes/header_includes.jsp"%>
-
+       
 </head>
 <body class="nav-fixed">
 	<%@ include file="../includes/top_nav_bar.jsp"%>
 	<div id="layoutSidenav">
 		<%@ include file="../includes/sidebar.jsp"%>
 		<div id="layoutSidenav_content">
+			<main>			
 			<header
 				class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
 
@@ -36,7 +37,7 @@
 								<div class="card-body text-left">
 									<div class="row gx-3 mb-3">
 										<div class="col-md-4">
-											<label class="small mb-1" for="inputFirstName">Crew Name</label> 
+											<label class="small mb-1" for="inputFirstName">Vessel Name</label> 
 											<input class="form-control" id="inputFirstName"
 												type="text" placeholder="Enter first name" value="" />
 										</div>
@@ -86,7 +87,7 @@
 										</div>
 										<!-- Form Group (last name)-->
 										<div class="col-md-4">
-											<label class="small mb-1" for="inputLastName">Crew Status</label> 
+											<label class="small mb-1" for="inputLastName">Vessel Status</label> 
 											<select class="form-select"
 												aria-label="Default select example">
 												<option selected disabled>Select a Status:</option>
@@ -110,49 +111,52 @@
 				</div>
 
 			</header>
-			<main>
 
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
 					<div class="card mb-4">
-						<div class="card-header">Crew List</div>
+						<div class="card-header">Vessel List</div>
 						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
 									<tr>
-										<th>Name</th>
-										<th>Position</th>
-										<th>Office</th>
-										<th>Age</th>
-										<th>Start date</th>
-										<th>Salary</th>
-										<th>Status</th>
+										<th>Vessel Name</th>
+										<th>Capacity</th>
+										<th>Built Year</th>
+										<th>Gross Tonnage</th>
+										<th>Dimensions</th>
+										<th>IMO</th>
+										<th>MMSI</th>
+										<th>Call Sign</th>
 										<th>Actions</th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th>Name</th>
-										<th>Position</th>
-										<th>Office</th>
-										<th>Age</th>
-										<th>Start date</th>
-										<th>Salary</th>
-										<th>Status</th>
+										<th>Vessel Name</th>
+										<th>Capacity</th>
+										<th>Built Year</th>
+										<th>Gross Tonnage</th>
+										<th>Dimensions</th>
+										<th>IMO</th>
+										<th>MMSI</th>
+										<th>Call Sign</th>
 										<th>Actions</th>
 									</tr>
 								</tfoot>
 								<tbody>
 								
-								<c:forEach items="${list}" var="crew">
+								<c:forEach items="${list}" var="vessel">
 								    <tr>
-										<td>${crew.fName}</td>
-										<td>System Architect</td>
-										<td>Edinburgh</td>
-										<td>61</td>
-										<td>2011/04/25</td>
-										<td>$320,800</td>
-										<td><div class="badge bg-primary text-white rounded-pill">Full-time</div></td>
+										<td>${vessel.vesselName}</td>
+										<td>${vessel.capacity}</td>
+										<td>${vessel.yearOfBuilt}</td>
+										<td>${vessel.grossTonnage}</td>
+										<td>${vessel.length}m - ${vessel.beam}m - ${vessel.draught}m</td>
+										<td>${vessel.imo}</td>
+										<td>${vessel.mmsi}</td>
+										<td>${vessel.callSign}</td>
+										<!-- <td><div class="badge bg-primary text-white rounded-pill">Full-time</div></td> -->
 										<td>
 										<button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
@@ -202,5 +206,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="../js/datatables/datatables-simple-demo.js"></script>
+	
+        
 </body>
 </html>

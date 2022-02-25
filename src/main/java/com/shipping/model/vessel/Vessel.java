@@ -17,7 +17,7 @@ public class Vessel {
 	private VesselType vesselType;
 	private VesselSubType vesselSubType;
 	private int vesselTypeId, vesselSubTypeId;
-	private int vesselOwnerId;
+	private long vesselOwnerId;
 	
 	private String vesselName;
 	private int capacity;
@@ -161,10 +161,10 @@ public class Vessel {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	public int getVesselOwnerId() {
+	public long getVesselOwnerId() {
 		return vesselOwnerId;
 	}
-	public void setVesselOwnerId(int vesselOwnerId) {
+	public void setVesselOwnerId(long vesselOwnerId) {
 		this.vesselOwnerId = vesselOwnerId;
 	}
 	

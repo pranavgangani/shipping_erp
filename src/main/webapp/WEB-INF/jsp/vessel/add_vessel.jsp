@@ -20,7 +20,7 @@
         <%@ include file="../includes/sidebar.jsp" %>
             
             <div id="layoutSidenav_content">
-                <main>
+                <main>                
                 <form method="POST" enctype="multipart/form-data" action="/vessel/add_vessel">
                 <%@ include file="add_vessel_header.jsp" %>
                     
@@ -61,19 +61,34 @@
                                 <div class="card mb-6">
                                     <div class="card-header">Add Profile</div>
                                     <div class="card-body">
-                                        <form>
-                                            <div class="row gx-3 mb-3">
+                                        <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="vesselName">Vessel Name</label>
-                                                    <input class="form-control" id="vesselName" type="text" placeholder="Enter vessel name" value="" />
+                                                    <input class="form-control" name="vesselName" type="text" placeholder="Enter vessel name" value="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="imo">IMO</label>
-                                                    <input class="form-control" id="imo" type="text" placeholder="Enter IMO" value="" />
+                                                    <select class="form-select" aria-label="Default select example" name="vesselOwnerId">
+														<option selected disabled>Select Owner of this Vessel:</option>
+														<c:forEach items="${vesselOwners}" var="owner">
+															<option value="${owner.id}">${owner.ownerName}</option>
+														</c:forEach>
+												</select>
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="row gx-3 mb-3">
+                                                <div class="col-md-4">
+                                                 <label class="small mb-1" for="callSign">CallSign</label>
+                                                 <input class="form-control" name="callSign" type="text" placeholder="Enter call sign" value="" />
+                                          		 </div>
+                                                <div class="col-md-4">
+                                                    <label class="small mb-1" for="imo">IMO</label>
+                                                    <input class="form-control" name="imo" type="text" placeholder="Enter IMO" value="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="mmsi">MMSI</label>
-                                                    <input class="form-control" id="mmsi" type="text" placeholder="Enter MMSI" value="" />
+                                                    <input class="form-control" name="mmsi" type="text" placeholder="Enter MMSI" value="" />
                                                 </div>
                                             </div>
 										<div class="row gx-3 mb-3">
@@ -116,25 +131,25 @@
 										<div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="length">Length Overall (m)</label>
-                                                    <input class="form-control" id="length" type="text" placeholder="Enter Overall Lenth in meters" value="" />
+                                                    <input class="form-control" id="length" name="length" type="text" placeholder="Enter Overall Lenth in meters" value="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="beam">Beam (m)</label>
-                                                    <input class="form-control" id="beam" type="text" placeholder="Enter Beam length in meters" value="" />
+                                                    <input class="form-control" id="beam" name="beam" type="text" placeholder="Enter Beam length in meters" value="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="draught">Draught (m)</label>
-                                                    <input class="form-control" id="draught" type="text" placeholder="Enter Draught length in meters" value="" />
+                                                    <input class="form-control" id="draught" name="draught" type="text" placeholder="Enter Draught length in meters" value="" />
                                                 </div>                                                
                                             </div>
                                             <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="yearOfBuilt">Year of Built</label>
-                                                    <input class="form-control" id="yearOfBuilt" type="text" placeholder="Enter Gross Tonnage" value="" />
+                                                    <input class="form-control" id="yearOfBuilt" name="yearOfBuilt" type="text" placeholder="Enter Gross Tonnage" value="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="length">Homeport</label>
-                                                    <select class="form-select" aria-label="Select a Home-Port" name="homeport">
+                                                    <select class="form-select" aria-label="Select a Home-Port" name="homeportId">
 														<option selected disabled>Select a Home-Port</option>
 														<option value="1">Port 1</option>
 														<option value="2">Port 2</option>
@@ -143,14 +158,11 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="grossTon">Gross Tonnage</label>
-                                                    <input class="form-control" id="grossTon" type="text" placeholder="Enter vessel name" value="" />
+                                                    <input class="form-control" name="grossTon" type="text" placeholder="Enter vessel name" value="" />
                                                 </div>
                                             </div>
 										<div class="row gx-3 mb-3">
-											<div class="col-md-4">
-                                                 <label class="small mb-1" for="callSign">CallSign</label>
-                                                 <input class="form-control" id="callSign" type="text" placeholder="Enter call sign" value="" />
-                                            </div>
+											
 											<div class="col-md-4">
 												Vessel Description <i class="text-muted" data-feather="info"
 													data-bs-toggle="tooltip" data-bs-placement="left"
@@ -160,14 +172,12 @@
 										</div>
 										<!-- Save changes button-->
                                             <button class="btn btn-primary" type="submit">Next</button>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                </form>    
+                    </div>      
+                    </form>                                 
                 </main>
                 
                 <%@ include file="../includes/copyright.jsp" %>

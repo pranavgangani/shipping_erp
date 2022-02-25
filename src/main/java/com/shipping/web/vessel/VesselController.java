@@ -76,6 +76,7 @@ public class VesselController {
     	ModelAndView mv = new ModelAndView("vessel/add_vessel");
     	mv.addObject("vesselTypes", VesselType.values());    	
     	mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
+    	mv.addObject("vesselOwners", vesselService.getVesselOwnerList(null));
         return mv;
     }
     
@@ -87,11 +88,12 @@ public class VesselController {
     
     @PostMapping(value = "/add_vessel", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ModelAndView addVessel(@RequestParam("vesselName") String vesselName, 
-			@RequestParam("imo") String imo, 
+			@RequestParam("imo") String imo,
+			@RequestParam("vesselOwnerId") long vesselOwnerId,
 			@RequestParam("mmsi") String mmsi, 
 			@RequestParam("flag") String flag,
 			@RequestParam("callSign") String callSign,
-			@RequestParam("homePort") String homePort, 
+			//@RequestParam("homePort") int homeportId, 
 			@RequestParam("vesselTypeId") int vesselTypeId, 
 			@RequestParam("vesselSubTypeId") int vesselSubTypeId,
 			@RequestParam("length") int length,
@@ -107,6 +109,7 @@ public class VesselController {
 		
 		Vessel vessel = new Vessel();
 		vessel.setVesselName(vesselName);
+		vessel.setVesselOwnerId(vesselOwnerId);
 		vessel.setImo(imo);
 		vessel.setMmsi(mmsi);
 		//vessel.setFlag(flag);
