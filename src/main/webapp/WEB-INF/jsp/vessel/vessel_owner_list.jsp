@@ -173,14 +173,14 @@
 													</a><a class="dropdown-item" href="#!">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
-														</div> Settings
+														</div> Documents
 													</a>
-													<div class="dropdown-divider"></div>
+													<!-- <div class="dropdown-divider"></div>
 													<a class="dropdown-item" href="#!">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Logout
-													</a>
+													</a> -->
 												</div>
 												<button
 												class="btn btn-datatable btn-icon btn-transparent-dark">

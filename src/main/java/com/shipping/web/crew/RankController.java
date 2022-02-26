@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shipping.dao.crew.RankRepository;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewPhoto;
 import com.shipping.model.crew.Rank;
@@ -25,12 +26,12 @@ import com.shipping.service.crew.RankService;
 @RequestMapping(value = "/settings")
 public class RankController {
 	@Autowired
-	private RankService rankService;
+	private RankRepository rankDao;
 	
 	@GetMapping(value = "/ranks")
 	public ModelAndView rankList(Model model) {
 		ModelAndView mv = new ModelAndView("settings/rank_list");
-		List<Rank> list = rankService.getRankList(new Rank());
+		List<Rank> list = rankDao.findAll();
 		list.forEach(i -> System.out.println("-----%%%%%%%%%%% "+i.getName()));
 		mv.addObject("list", list);
 		return mv;
@@ -42,81 +43,60 @@ public class RankController {
 		return mv;
 	}
 	
-	@PostMapping(value = "/add_rank")
-	public ModelAndView addRank(@RequestParam("rankName") String rankName, 
-			@RequestParam("rankCategoryId") int rankCategoryId, 
-			@RequestParam("rankSubCategoryId") int rankSubCategoryId) {
-		ModelAndView mv = new ModelAndView("settings/rank_list");
-		System.out.println("rankName: " + rankName);
-		
-		Rank rank = new Rank();
-		rank.setName(rankName);
-		rank.setRankCategoryId(rankCategoryId);
-		rank.setRankSubCategoryId(rankSubCategoryId);
-		rankService.addRank(rank);
-		int rankId = (int) rank.getId();
-		System.out.println("New rankId ---> " + rankId);
-		mv.addObject("crewId", rankId);
-		return mv;
-	}
+	/*
+	 * @PostMapping(value = "/add_rank") public ModelAndView
+	 * addRank(@RequestParam("rankName") String rankName,
+	 * 
+	 * @RequestParam("rankCategoryId") int rankCategoryId,
+	 * 
+	 * @RequestParam("rankSubCategoryId") int rankSubCategoryId) { ModelAndView mv =
+	 * new ModelAndView("settings/rank_list"); System.out.println("rankName: " +
+	 * rankName);
+	 * 
+	 * Rank rank = new Rank(); rank.setName(rankName);
+	 * rank.setRankCategoryId(rankCategoryId);
+	 * rank.setRankSubCategoryId(rankSubCategoryId); rankService.addRank(rank); int
+	 * rankId = (int) rank.getId(); System.out.println("New rankId ---> " + rankId);
+	 * mv.addObject("crewId", rankId); return mv; }
+	 */
 	
-	
-	@GetMapping(value = "/assign_medicals")
-	public ModelAndView assignMedicals(@RequestParam("rankId") int rankId, Model model) {
-		Rank rank = new Rank();
-		rank.setId(rankId);
-		Optional<Rank> optRank = rankService.get(rank);
-		rank = optRank.get();		
-		ModelAndView mv = new ModelAndView("settings/assign_medicals");
-		mv.addObject("rank", rank);
-		
-		List<Rank> list = rankService.getRankList(new Rank());
-		mv.addObject("list", list);
-		return mv;
-	}
-	
-	@GetMapping(value = "/assign_licenses")
-	public ModelAndView assignLicenses(@RequestParam("rankId") int rankId, Model model) {
-		Rank rank = new Rank();
-		rank.setId(rankId);
-		Optional<Rank> optRank = rankService.get(rank);
-		rank = optRank.get();		
-		ModelAndView mv = new ModelAndView("settings/assign_licenses");
-		mv.addObject("rank", rank);
-		
-		List<Rank> list = rankService.getRankList(new Rank());
-		mv.addObject("list", list);
-		return mv;
-	}
-	
-	@GetMapping(value = "/assign_documents")
-	public ModelAndView assignDocuments(@RequestParam("rankId") int rankId, Model model) {
-		Rank rank = new Rank();
-		rank.setId(rankId);
-		Optional<Rank> optRank = rankService.get(rank);
-		rank = optRank.get();		
-		ModelAndView mv = new ModelAndView("settings/assign_documents");
-		mv.addObject("rank", rank);
-		
-		List<Rank> list = rankService.getRankList(new Rank());
-		mv.addObject("list", list);
-		return mv;
-	}
-	
-	@GetMapping(value = "/assign_surveys")
-	public ModelAndView assignSurveys(@RequestParam("rankId") int rankId, Model model) {
-		Rank rank = new Rank();
-		rank.setId(rankId);
-		Optional<Rank> optRank = rankService.get(rank);
-		rank = optRank.get();		
-		ModelAndView mv = new ModelAndView("settings/assign_surveys");
-		mv.addObject("rank", rank);
-		
-		List<Rank> list = rankService.getRankList(new Rank());
-		mv.addObject("list", list);
-		return mv;
-	}
-	
+	/*
+	 * @GetMapping(value = "/assign_medicals") public ModelAndView
+	 * assignMedicals(@RequestParam("rankId") int rankId, Model model) { Rank rank =
+	 * new Rank(rankId); rank.setId(rankId); Optional<Rank> optRank =
+	 * rankService.get(rank); rank = optRank.get(); ModelAndView mv = new
+	 * ModelAndView("settings/assign_medicals"); mv.addObject("rank", rank);
+	 * 
+	 * List<Rank> list = rankService.getRankList(new Rank()); mv.addObject("list",
+	 * list); return mv; }
+	 * 
+	 * @GetMapping(value = "/assign_licenses") public ModelAndView
+	 * assignLicenses(@RequestParam("rankId") int rankId, Model model) { Rank rank =
+	 * new Rank(); rank.setId(rankId); Optional<Rank> optRank =
+	 * rankService.get(rank); rank = optRank.get(); ModelAndView mv = new
+	 * ModelAndView("settings/assign_licenses"); mv.addObject("rank", rank);
+	 * 
+	 * List<Rank> list = rankService.getRankList(new Rank()); mv.addObject("list",
+	 * list); return mv; }
+	 * 
+	 * @GetMapping(value = "/assign_documents") public ModelAndView
+	 * assignDocuments(@RequestParam("rankId") int rankId, Model model) { Rank rank
+	 * = new Rank(); rank.setId(rankId); Optional<Rank> optRank =
+	 * rankService.get(rank); rank = optRank.get(); ModelAndView mv = new
+	 * ModelAndView("settings/assign_documents"); mv.addObject("rank", rank);
+	 * 
+	 * List<Rank> list = rankService.getRankList(new Rank()); mv.addObject("list",
+	 * list); return mv; }
+	 * 
+	 * @GetMapping(value = "/assign_surveys") public ModelAndView
+	 * assignSurveys(@RequestParam("rankId") int rankId, Model model) { Rank rank =
+	 * new Rank(); rank.setId(rankId); Optional<Rank> optRank =
+	 * rankService.get(rank); rank = optRank.get(); ModelAndView mv = new
+	 * ModelAndView("settings/assign_surveys"); mv.addObject("rank", rank);
+	 * 
+	 * List<Rank> list = rankService.getRankList(new Rank()); mv.addObject("list",
+	 * list); return mv; }
+	 */
 	@PostMapping(value = "/assign_training_courses")
 	public ModelAndView assignTrainingCourseToRank(Model model) {
 		ModelAndView mv = new ModelAndView("settings/assign_training_courses");

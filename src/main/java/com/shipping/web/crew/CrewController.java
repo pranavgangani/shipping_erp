@@ -18,6 +18,7 @@ package com.shipping.web.crew;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,6 +39,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewPhoto;
+import com.shipping.model.crew.Rank;
+import com.shipping.model.vessel.VesselSubType;
 import com.shipping.service.crew.CrewService;
 import com.shipping.service.crew.PhotoService;
 
@@ -60,11 +63,19 @@ public class CrewController {
 	@GetMapping(value = "/add_crew")
 	public ModelAndView addCrew(Model model) {
 		ModelAndView mv = new ModelAndView("crew/add_crew");
+		/*
+		 * Map<String, List<Rank>> rankMap = Rank.getByGroup();
+		 * rankMap.keySet().forEach(k->rankMap.get(k).forEach(v-> { System.out.println(k
+		 * + " - " +v.getName()); }));
+		 */
+		
+		mv.addObject("rankMap", Rank.getByGroup());
 		return mv;
 	}
 
 	@PostMapping(value = "/add_crew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ModelAndView addCrew(@RequestParam("fName") String fName, 
+	public ModelAndView addCrew(
+			@RequestParam("fName") String fName, 
 			@RequestParam("mName") String mName, 
 			@RequestParam("lName") String lName, 
 			@RequestParam("rankId") int rankId, 
@@ -80,7 +91,7 @@ public class CrewController {
 		crew.setfName(fName); 
 		crew.setlName(lName);
 		crew.setmName(mName);
-		crew.setRankId(rankId);
+		crew.setRank(Rank.createFromId(rankId));
 		crew.setGenderId(genderId);
 		crewService.addCrew(crew);
 		

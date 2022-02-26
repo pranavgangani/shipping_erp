@@ -119,12 +119,6 @@
 												       </c:forEach>                                                          
 												       </optgroup>
 												    </c:forEach>
-												    
-													<c:forEach items="${vesselSubTypes}" var="vesselSubType">
-														<optgroup label="Cargo">
-															<option value="${vesselSubType.typeId}">${vesselSubType.desc}</option>
-														</optgroup>
-													</c:forEach>
 												</select>
 											</div>
 										</div>

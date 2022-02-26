@@ -54,6 +54,7 @@
                                 </nav>
                             </div>
                             <!-- Sidenav Accordion (Applications)-->
+                            <div class="sidenav-menu-heading">Vessel</div>
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseApps" aria-expanded="false" aria-controls="collapseApps">
                                 <div class="nav-link-icon"><i data-feather="globe"></i></div>
                                 Vessel Management
@@ -107,6 +108,7 @@
                                 </nav>
                             </div>
                             <!-- Sidenav Accordion (Flows)-->
+                            <div class="sidenav-menu-heading">Document</div>
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
                                 <div class="nav-link-icon"><i data-feather="repeat"></i></div>
                                 Document

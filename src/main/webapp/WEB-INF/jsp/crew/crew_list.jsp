@@ -122,6 +122,7 @@
 									<tr>
 										<th>Name</th>
 										<th>Position</th>
+										<th>Department</th>
 										<th>Office</th>
 										<th>Age</th>
 										<th>Start date</th>
@@ -134,6 +135,7 @@
 									<tr>
 										<th>Name</th>
 										<th>Position</th>
+										<th>Department</th>
 										<th>Office</th>
 										<th>Age</th>
 										<th>Start date</th>
@@ -146,8 +148,9 @@
 								
 								<c:forEach items="${list}" var="crew">
 								    <tr>
-										<td>${crew.fName}</td>
-										<td>System Architect</td>
+										<td>${crew.fName} ${crew.mName} ${crew.lName}</td>
+										<td>${crew.rank.name}</td>
+										<td>${crew.rank.rankCategory.name}</td>										
 										<td>Edinburgh</td>
 										<td>61</td>
 										<td>2011/04/25</td>

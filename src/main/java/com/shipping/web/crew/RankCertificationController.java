@@ -36,20 +36,16 @@ public class RankCertificationController {
 	}
 
 
-	
-	@GetMapping(value = "/assign_certifications")
-	public ModelAndView assignCertifications(@RequestParam("rankId") int rankId, Model model) {
-		Rank rank = new Rank();
-		rank.setId(rankId);
-		Optional<Rank> optRank = rankService.get(rank);
-		rank = optRank.get();		
-		ModelAndView mv = new ModelAndView("settings/assign_certifications");
-		mv.addObject("rank", rank);
-		
-		List<Rank> list = rankService.getRankList(new Rank());
-		mv.addObject("list", list);
-		return mv;
-	}
+	/*
+	 * @GetMapping(value = "/assign_certifications") public ModelAndView
+	 * assignCertifications(@RequestParam("rankId") int rankId, Model model) { Rank
+	 * rank = new Rank(); rank.setId(rankId); Optional<Rank> optRank =
+	 * rankService.get(rank); rank = optRank.get(); ModelAndView mv = new
+	 * ModelAndView("settings/assign_certifications"); mv.addObject("rank", rank);
+	 * 
+	 * List<Rank> list = rankService.getRankList(new Rank()); mv.addObject("list",
+	 * list); return mv; }
+	 */
 	
 	@PostMapping(value = "/add_certification")
 	public ModelAndView addRank(@RequestParam("certName") String certName,			

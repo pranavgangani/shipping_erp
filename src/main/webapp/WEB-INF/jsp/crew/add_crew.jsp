@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -68,7 +69,6 @@
                                 <div class="card mb-6">
                                     <div class="card-header">Add Profile</div>
                                     <div class="card-body">
-                                        <form action="/crew/add_crew" method="POST">
                                             <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="fName">First name</label>
@@ -88,12 +88,13 @@
 												<label class="small mb-1" for="rank">Rank</label>
 												<select class="form-select" name="rankId" aria-label="Default select example">
 													<option selected disabled>Select a Rank:</option>
-													<option value="1">Captain/Master</option>
-													<option value="2">Chief Officer</option>
-													<option value="3">Second Officer</option>
-													<option value="4">Third Officer</option>
-													<option value="5">Deck Cadet (Trainee Officer)</option>
-													<option value="6">Bosun</option>
+													<c:forEach var="optionGroup" items="${rankMap}">
+												       <optgroup label="${optionGroup.key}">
+												       <c:forEach var="option" items="${optionGroup.value}">
+												          <option value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>                             
+												       </c:forEach>                                                          
+												       </optgroup>
+												    </c:forEach>
 												</select>
 											</div>
 											<div class="col-md-4">
@@ -133,7 +134,6 @@
 										</div>
 										<!-- Save changes button-->
                                             <button class="btn btn-primary" type="submit">Next</button>
-                                        </form>
                                     </div>
                                 </div>
                             </div>

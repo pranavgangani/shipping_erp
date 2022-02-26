@@ -18,7 +18,6 @@ public class RankService {
 	private SequenceGeneratorService sequenceGenerator;
 	
 	public void addRank(Rank rank) {
-		rank.setId(sequenceGenerator.generateSequence(Rank.SEQUENCE_NAME));
 		rankDao.insert(rank);
 	}
 	

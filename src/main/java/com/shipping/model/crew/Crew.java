@@ -23,11 +23,11 @@ public class Crew {
 	private long id;
 	private String fName, lName, mName;
 	private String passportNumber, visaNumber;
-	private int genderId, rankId;
+	private int genderId;
+	private Rank rank;
 	private long manningOfficeId;
 	
 	private Gender gender;
-	private Rank rank;
 	private ManningOffice manningOffice;
 	
 
@@ -100,13 +100,6 @@ public class Crew {
 		this.gender = gender;
 	}
 
-	public int getRankId() {
-		return rankId;
-	}
-
-	public void setRankId(int rankId) {
-		this.rankId = rankId;
-	}
 
 	public Rank getRank() {
 		return rank;
