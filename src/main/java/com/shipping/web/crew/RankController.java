@@ -16,23 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.shipping.dao.crew.RankRepository;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewPhoto;
 import com.shipping.model.crew.Rank;
-import com.shipping.service.crew.RankService;
 
 @Controller
 @RequestMapping(value = "/settings")
 public class RankController {
-	@Autowired
-	private RankRepository rankDao;
-	
+
 	@GetMapping(value = "/ranks")
 	public ModelAndView rankList(Model model) {
 		ModelAndView mv = new ModelAndView("settings/rank_list");
-		List<Rank> list = rankDao.findAll();
-		list.forEach(i -> System.out.println("-----%%%%%%%%%%% "+i.getName()));
+		List<Rank> list = Rank.getList();
 		mv.addObject("list", list);
 		return mv;
 	}

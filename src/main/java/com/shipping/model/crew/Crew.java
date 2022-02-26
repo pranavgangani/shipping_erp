@@ -9,9 +9,9 @@ import com.shipping.common.Collection;
 import com.shipping.common.Gender;
 import com.shipping.company.Employee;
 import com.shipping.model.crew.Rank;
-import com.shipping.model.crew.RankCertification;
-import com.shipping.model.crew.RankDocument;
-import com.shipping.model.crew.RankMedical;
+import com.shipping.model.crew.Certification;
+import com.shipping.model.crew.Document;
+import com.shipping.model.crew.Medical;
 import com.shipping.util.DateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
@@ -34,9 +34,9 @@ public class Crew {
 	// Past
 	private List<Employment> employeeHistory;
 	private List<Education> educatonHistory;
-	private List<RankDocument> documents;
-	private List<RankCertification> certifications;
-	private List<RankMedical> medicalHistory;
+	private List<Document> documents;
+	private List<Certification> certifications;
+	private List<Medical> medicalHistory;
 
 	// KYC
 	private List<Nominee> nominees;
@@ -125,19 +125,19 @@ public class Crew {
 		this.educatonHistory = educatonHistory;
 	}
 
-	public List<RankDocument> getDocuments() {
+	public List<Document> getDocuments() {
 		return documents;
 	}
 
-	public void setDocuments(List<RankDocument> documents) {
+	public void setDocuments(List<Document> documents) {
 		this.documents = documents;
 	}
 
-	public List<RankMedical> getMedicalHistory() {
+	public List<Medical> getMedicalHistory() {
 		return medicalHistory;
 	}
 
-	public void setMedicalHistory(List<RankMedical> medicalHistory) {
+	public void setMedicalHistory(List<Medical> medicalHistory) {
 		this.medicalHistory = medicalHistory;
 	}
 

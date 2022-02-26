@@ -9,6 +9,7 @@ public class Collection {
 	public final static String VESSEL_PHOTO = "VesselPhoto";
 	public final static String VESSEL_OWNER_PHOTO = "VesselOwnerPhoto";
 	public final static String AUDIT_TRAIL = "AuditTrail";
+	public final static String CERTIFICATION = "Certification";
 	
 	private String name;
 	

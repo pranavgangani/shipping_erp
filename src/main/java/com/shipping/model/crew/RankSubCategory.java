@@ -1,5 +1,10 @@
 package com.shipping.model.crew;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -7,17 +12,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselType;
 
-@Document(collection = "RankSubCategory")
 public class RankSubCategory {
-	@Transient
-	public static final String SEQUENCE_NAME = "RankSubCategory";
-	
 	public static final RankSubCategory OFFICER = new RankSubCategory(1, "Officer");
 	public static final RankSubCategory RATING = new RankSubCategory(2, "Rating");
 	public static final RankSubCategory ENGINEER = new RankSubCategory(3, "Engineer");
-	public static final RankSubCategory OTHER = new RankSubCategory(0, "Other");
-	
-	
+	public static final RankSubCategory OTHER = new RankSubCategory(4, "Other");
+		
 	@Id
 	private int id;	
 	private String name;
@@ -66,5 +66,11 @@ public class RankSubCategory {
 		return "RankSubCategory [id=" + id + ", name=" + name + "]";
 	}
 	
+	public static List<RankSubCategory> getList(){
+		return new ArrayList<>(Arrays.asList(OFFICER, RATING, ENGINEER, OTHER));
+	}
 	
+	public static RankSubCategory createFromId(int typeId) {
+		return ((RankSubCategory)(getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
+	}	
 }

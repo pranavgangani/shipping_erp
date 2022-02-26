@@ -13,11 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.shipping.model.vessel.VesselSubType;
 
-@Document(collection = "Rank")
 public class Rank {
-	@Transient
-	public static final String SEQUENCE_NAME = "Rank";
-	
 	@Id
 	private long id;	
 	private String name;

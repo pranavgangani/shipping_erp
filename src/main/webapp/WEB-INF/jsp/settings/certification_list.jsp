@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Rank List</title>
+<title>Certification List</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%@ include file="../includes/header_includes.jsp"%>
 </head>
@@ -28,13 +28,13 @@
 									<!-- <div class="page-header-icon">
 							<i data-feather="user-plus"></i>
 						</div> -->
-									Rank
+									Certification
 								</h1>
 							</div>
 							<div class="col-12 col-xl-auto mb-3">
 								<a class="btn btn-sm btn-light text-primary"
 									href="/settings/add_rank"> <i class="me-1"
-									data-feather="arrow-right"></i> Add New Rank
+									data-feather="arrow-right"></i> Add New Certification
 								</a>
 							</div>
 						</div>
@@ -52,27 +52,33 @@
 							<table id="datatablesSimple">
 								<thead>
 									<tr>
-										<th>Category</th>
-										<th>Sub-Category</th>
-										<th>Rank</th>
+										<th>Certification Name</th>
+										<th>Duration</th>
+										<th>Rank Category</th>
+										<th>Rank Sub-Category</th>
+										<th>Rank</th>																		
 										<th>Action</th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th>Category</th>
-										<th>Sub-Category</th>
+										<th>Certification Name</th>
+										<th>Duration</th>
+										<th>Rank Category</th>
+										<th>Rank Sub-Category</th>
 										<th>Rank</th>
 										<th>Action</th>
 									</tr>
 								</tfoot>
 								<tbody>
 
-									<c:forEach items="${list}" var="rank">
+									<c:forEach items="${list}" var="cert">
 										<tr>
-											<td>${rank.rankCategory.name}</td>
-											<td>${rank.rankSubCategory.name}</td>
-											<td>${rank.name}</td>
+											<td>${cert.name}</td>
+											<td>${cert.validity} ${cert.durationType.typeName}</td>
+											<td>${cert.rankCategory.name}</td>
+											<td>${cert.rankSubCategory.name}</td>
+											<td>${cert.rank.name}</td>
 											<td>
 												<button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
@@ -80,36 +86,10 @@
 													data-bs-toggle="dropdown" aria-haspopup="true"
 													aria-expanded="false">
 													<i data-feather="more-vertical"></i>
-												</button>
-
+												</button>												
 												<div class="dropdown-menu">
-													<a class="dropdown-item" href="/settings/assign_certifications?rankId=${rank.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="user"></i>
-														</div> Assign Certifications
-													</a>
-													<a class="dropdown-item" href="/settings/assign_medicals?rankId=${rank.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Assign Medical Tests
-													</a>													
-													<a class="dropdown-item" href="/settings/assign_licenses?rankId=${rank.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Assign Licenses
-													</a>
-													<a class="dropdown-item" href="/settings/assign_documents?rankId=${rank.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Assign Documents
-													</a>
-													<a class="dropdown-item" href="/settings/assign_surveys?rankId=${rank.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Assign Surveys
-													</a>
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/settings/edit_rank?rankId=${rank.id}">
+													<a class="dropdown-item" href="/settings/edit_rank?rankId=${cert.rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit

@@ -2,7 +2,7 @@ package com.shipping.model.crew;
 
 import java.util.List;
 
-import com.shipping.model.crew.RankDocument;
+import com.shipping.model.crew.Document;
 import com.shipping.util.DateTime;
 
 public class CrewContract {
@@ -16,7 +16,7 @@ public class CrewContract {
 	private DateTime contractStartDate;
 	private DateTime contractEndDate;
 	
-	private List<RankDocument> documents; 
+	private List<Document> documents; 
 	
 	private List<ContractRule> contractRules;
 }

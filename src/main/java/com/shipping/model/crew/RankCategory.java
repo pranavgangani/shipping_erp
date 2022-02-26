@@ -1,5 +1,10 @@
 package com.shipping.model.crew;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -69,5 +74,12 @@ public class RankCategory {
 		return "RankCategory [id=" + id + ", name=" + name + "]";
 	}
 	
+	public static List<RankCategory> getList(){
+		return new ArrayList<>(Arrays.asList(DECK_DEPARTMENT, ENGINE_DEPARTMENT, GALLEY_DEPARTMENT));
+	}
+	
+	public static RankCategory createFromId(int typeId) {
+		return ((RankCategory)(getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
+	}	
 	
 }

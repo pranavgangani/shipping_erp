@@ -1,20 +1,24 @@
 package com.shipping.model.crew;
 
+import com.shipping.common.Collection;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.shipping.model.common.DurationType;
 
-@Document(collection = "RankCertification")
-public class RankCertification {
+@Document(collection = Collection.CERTIFICATION)
+public class Certification {
 	@Transient
-	public static final String SEQUENCE_NAME = "RankCertification";
+	public static final String SEQUENCE_NAME = Collection.CERTIFICATION;
 	
 	@Id
 	private long id;
 	private String name, desc;
-	
+
+	private Rank rank;
+	private RankCategory rankCategory;
+	private RankSubCategory rankSubCategory;
 	private int rankSubCategoryId;
 	private int rankCategoryId;
 	private int rankId;
@@ -69,6 +73,24 @@ public class RankCertification {
 	}
 	public void setDurationType(DurationType durationType) {
 		this.durationType = durationType;
+	}
+	public Rank getRank() {
+		return rank;
+	}
+	public void setRank(Rank rank) {
+		this.rank = rank;
+	}
+	public RankCategory getRankCategory() {
+		return rankCategory;
+	}
+	public void setRankCategory(RankCategory rankCategory) {
+		this.rankCategory = rankCategory;
+	}
+	public RankSubCategory getRankSubCategory() {
+		return rankSubCategory;
+	}
+	public void setRankSubCategory(RankSubCategory rankSubCategory) {
+		this.rankSubCategory = rankSubCategory;
 	}
 	
 	

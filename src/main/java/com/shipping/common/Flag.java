@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
-import com.shipping.model.crew.RankCertification;
+import com.shipping.model.crew.Certification;
 import com.shipping.model.vessel.VesselCertification;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.FLAG)
@@ -17,6 +17,6 @@ public class Flag {
 	private long id;
 	private String name;
 	
-	private List<RankCertification> rankCertifications;
+	private List<Certification> rankCertifications;
 	private List<VesselCertification> shipCertifications;
 }

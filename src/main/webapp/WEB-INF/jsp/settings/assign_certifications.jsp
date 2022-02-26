@@ -23,7 +23,7 @@
 
 		<div id="layoutSidenav_content">
 			<main>
-
+				<form method="POST" enctype="multipart/form-data" action="/settings/add_certification">
 				<header
 					class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
 					<div class="container-fluid px-4">
@@ -66,8 +66,7 @@
                                     <div class="card-header">
                                         Add New Certification                                        
                                     </div>
-                                    <div class="card-body">
-                                        <form>
+                                    <div class="card-body">                                        
                                             <div class="row gx-3 mb-3">
 											<div class="row gx-3 mb-3">
 												<div class="col-md-8">
@@ -106,10 +105,9 @@
                                                     <label class="small mb-1" for="mName">Duration Type</label>
                                                     <select class="form-select" name="durationTypeId" aria-label="Default select example">
 															<option selected disabled>Select Duration Type</option>
-															<option value="1">Hours</option>
-															<option value="2">Days</option>
-															<option value="3">Months</option>
-															<option value="4">Years</option>
+															<c:forEach var="durationType" items="${durationTypes}">
+																<option value="${durationType.id }">${durationType.typeName}</option>
+															</c:forEach>
 														</select>
                                                 </div>
                                             </div>                                          
@@ -165,8 +163,7 @@
                                 <!-- Notifications preferences card-->
                                 <div class="card">
                                     <div class="card-header">For Rank</div>
-                                    <div class="card-body">
-                                        <form>
+                                    <div class="card-body">                                        
                                             <!-- Form Group (notification preference checkboxes)-->
 											<div class="mb-3">
 												<label class="small mb-1" for="rankCategoryId">Rank
@@ -174,13 +171,13 @@
 													aria-label="Default select example">
 													<option selected disabled>Select a Rank Category:</option>
 													<option
-														<c:if test="${rank.rankCategoryId==1}">selected</c:if>
+														<c:if test="${rank.rankCategory.id==1}">selected</c:if>
 														value="1">Deck Department</option>
 													<option
-														<c:if test="${rank.rankCategoryId==2}">selected</c:if>
+														<c:if test="${rank.rankCategory.id==2}">selected</c:if>
 														value="2">Engine Department</option>
 													<option
-														<c:if test="${rank.rankCategoryId==3}">selected</c:if>
+														<c:if test="${rank.rankCategory.id==3}">selected</c:if>
 														value="3">Galley Department</option>
 												</select>
 											</div>
@@ -193,16 +190,16 @@
 													<option selected disabled>Select a Rank
 														Sub-Category:</option>
 													<option
-														<c:if test="${rank.rankSubCategoryId==1}">selected</c:if>
+														<c:if test="${rank.rankSubCategory.id==1}">selected</c:if>
 														value="1">Officers</option>
 													<option
-														<c:if test="${rank.rankSubCategoryId==2}">selected</c:if>
+														<c:if test="${rank.rankSubCategory.id==2}">selected</c:if>
 														value="2">Ratings</option>
 													<option
-														<c:if test="${rank.rankSubCategoryId==3}">selected</c:if>
+														<c:if test="${rank.rankSubCategory.id==3}">selected</c:if>
 														value="3">Engineers</option>
 													<option
-														<c:if test="${rank.rankSubCategoryId==0}">selected</c:if>
+														<c:if test="${rank.rankSubCategory.id==0}">selected</c:if>
 														value="0">Other</option>
 												</select>
 											</div>
@@ -212,18 +209,21 @@
 													aria-label="Default select example">
 													<option selected disabled>Select a Rank:</option>
 													<option value="0">All</option>
-													<c:forEach items="${list}" var="r">
-														<option <c:if test="${rank.id==r.id}">selected</c:if>
-															value="${r.id}">${r.name}</option>
-													</c:forEach>
+													<c:forEach var="optionGroup" items="${rankMap}">
+												       <optgroup label="${optionGroup.key}">
+												       <c:forEach var="option" items="${optionGroup.value}">
+												          <option <c:if test="${rank.id==option.id}">selected</c:if> value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>                             
+												       </c:forEach>                                                          
+												       </optgroup>
+												    </c:forEach>
 												</select>
 											</div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
+                    </form>                    
 			</main>
 
 			<%@ include file="../includes/copyright.jsp"%>
