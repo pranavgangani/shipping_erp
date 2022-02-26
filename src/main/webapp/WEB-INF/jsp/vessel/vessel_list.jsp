@@ -121,6 +121,8 @@
 								<thead>
 									<tr>
 										<th>Vessel Name</th>
+										<th>Vessel Type</th>
+										<th>Vessel Owner</th>
 										<th>Capacity</th>
 										<th>Built Year</th>
 										<th>Gross Tonnage</th>
@@ -134,6 +136,8 @@
 								<tfoot>
 									<tr>
 										<th>Vessel Name</th>
+										<th>Vessel Type</th>
+										<th>Vessel Owner</th>
 										<th>Capacity</th>
 										<th>Built Year</th>
 										<th>Gross Tonnage</th>
@@ -149,6 +153,8 @@
 								<c:forEach items="${list}" var="vessel">
 								    <tr>
 										<td>${vessel.vesselName}</td>
+										<td>${vessel.vesselSubType.desc} (${vessel.vesselSubType.vesselType.desc})</td>
+										<td>${vessel.vesselOwner.ownerName}</td>
 										<td>${vessel.capacity}</td>
 										<td>${vessel.yearOfBuilt}</td>
 										<td>${vessel.grossTonnage}</td>

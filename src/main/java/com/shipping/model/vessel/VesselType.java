@@ -1,25 +1,41 @@
 package com.shipping.model.vessel;
 
-public enum VesselType {
-	CARGO(1, "Cargo"), 
-	TANKER(2, "Tanker"), 
-	PASSENGER(3, "Passenger/Cruise"), 
-	OTHER(0, "Other");
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-	private int typeId;
+import org.springframework.data.annotation.Id;
+
+public class VesselType {
+	public final static VesselType CARGO = new VesselType(1, "Cargo");
+	public final static VesselType TANKER = new VesselType(2, "Tanker");
+	public final static VesselType PASSENGER = new VesselType(3, "Passenger/Cruise");
+	public final static VesselType OTHER = new VesselType(0, "Other");
+	
+	@Id
+	private int id;
 	private String desc;
 
-	VesselType(int typeId, String desc) {
-		this.typeId = typeId;
+	VesselType(int id, String desc) {
+		this.id = id;
 		this.desc = desc;
 	}
 
-	public int getTypeId() {
-		return typeId;
+	public int getId() {
+		return id;
 	}
 
 	public String getDesc() {
 		return desc;
+	}
+	
+	public static List<VesselType> getList(){
+		return new ArrayList<>(Arrays.asList(CARGO, TANKER, PASSENGER, OTHER));
+	}
+	
+	public static VesselType createFromId(int typeId) {
+		return ((VesselType)(getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
 	}
 	
 }

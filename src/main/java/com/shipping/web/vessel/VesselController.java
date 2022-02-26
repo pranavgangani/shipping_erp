@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shipping.dao.vessel.VesselOwnerRepository;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewPhoto;
 import com.shipping.model.vessel.Vessel;
@@ -55,6 +56,8 @@ import com.shipping.service.vessel.VesselService;
 @RequestMapping(value="/vessel")
 public class VesselController {
 	@Autowired private VesselService vesselService;
+	@Autowired
+	private VesselOwnerRepository vesselOwnerDao;
 	@Autowired private VesselPhotoService vesselPhotoService;
 	@Autowired private VesselOwnerPhotoService vesselOwnerPhotoService;
 	
@@ -74,7 +77,7 @@ public class VesselController {
     @GetMapping(value = "/add_vessel")
     public ModelAndView addVessel(Model model) {
     	ModelAndView mv = new ModelAndView("vessel/add_vessel");
-    	mv.addObject("vesselTypes", VesselType.values());    	
+    	mv.addObject("vesselTypes", VesselType.getList());    	
     	mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
     	mv.addObject("vesselOwners", vesselService.getVesselOwnerList(null));
         return mv;
@@ -94,7 +97,7 @@ public class VesselController {
 			@RequestParam("flag") String flag,
 			@RequestParam("callSign") String callSign,
 			//@RequestParam("homePort") int homeportId, 
-			@RequestParam("vesselTypeId") int vesselTypeId, 
+			//@RequestParam("vesselTypeId") int vesselTypeId, 
 			@RequestParam("vesselSubTypeId") int vesselSubTypeId,
 			@RequestParam("length") int length,
 			@RequestParam("beam") int beam,
@@ -104,17 +107,17 @@ public class VesselController {
 			@RequestParam("vesselDesc") String vesselDesc,			
 			@RequestParam("image") MultipartFile image, 
 			Model model) {
-		ModelAndView mv = new ModelAndView("/vessel/vessel_owner_list");
+		ModelAndView mv = new ModelAndView("redirect:/vessel/vessel_list");
 		System.out.println("vesselName: " + vesselName);
 		
 		Vessel vessel = new Vessel();
 		vessel.setVesselName(vesselName);
-		vessel.setVesselOwnerId(vesselOwnerId);
+		vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
 		vessel.setImo(imo);
 		vessel.setMmsi(mmsi);
 		//vessel.setFlag(flag);
-		vessel.setVesselTypeId(vesselTypeId);
-		vessel.setVesselSubTypeId(vesselSubTypeId);
+		//vessel.setVesselType(VesselType.createFromId(vesselTypeId));
+		vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
 		vessel.setLength(length);
 		vessel.setBeam(beam);
 		vessel.setDraught(draught);
@@ -134,7 +137,7 @@ public class VesselController {
 			
 			photo = vesselPhotoService.getPhoto(photoId);
 			//model.addAttribute("title", photo.getTitle());
-			mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+			//mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

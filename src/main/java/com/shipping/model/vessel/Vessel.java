@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Transient;
 
 import com.shipping.common.Collection;
 import com.shipping.common.Flag;
+import com.shipping.util.DateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL)
 public class Vessel {
@@ -14,10 +15,9 @@ public class Vessel {
 	@Id
 	private long id;
 
-	private VesselType vesselType;
+	//private VesselType vesselType;
 	private VesselSubType vesselSubType;
-	private int vesselTypeId, vesselSubTypeId;
-	private long vesselOwnerId;
+	private VesselOwner vesselOwner;
 	
 	private String vesselName;
 	private int capacity;
@@ -32,6 +32,8 @@ public class Vessel {
 	private Flag flag;
 	private VesselStatus vesselStatus;
 	private boolean isActive;
+	private DateTime enteredDateTime;
+	private String enteredByEmpId;
 	
 	
 	public long getId() {
@@ -40,12 +42,11 @@ public class Vessel {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public VesselType getVesselType() {
-		return vesselType;
-	}
-	public void setVesselType(VesselType vesselType) {
-		this.vesselType = vesselType;
-	}
+
+	/*
+	 * public VesselType getVesselType() { return vesselType; } public void
+	 * setVesselType(VesselType vesselType) { this.vesselType = vesselType; }
+	 */
 	public String getVesselName() {
 		return vesselName;
 	}
@@ -137,18 +138,7 @@ public class Vessel {
 	public void setVesselSubType(VesselSubType vesselSubType) {
 		this.vesselSubType = vesselSubType;
 	}
-	public int getVesselTypeId() {
-		return vesselTypeId;
-	}
-	public void setVesselTypeId(int vesselTypeId) {
-		this.vesselTypeId = vesselTypeId;
-	}
-	public int getVesselSubTypeId() {
-		return vesselSubTypeId;
-	}
-	public void setVesselSubTypeId(int vesselSubTypeId) {
-		this.vesselSubTypeId = vesselSubTypeId;
-	}
+
 	public VesselStatus getVesselStatus() {
 		return vesselStatus;
 	}
@@ -161,13 +151,25 @@ public class Vessel {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	public long getVesselOwnerId() {
-		return vesselOwnerId;
+	public VesselOwner getVesselOwner() {
+		return vesselOwner;
 	}
-	public void setVesselOwnerId(long vesselOwnerId) {
-		this.vesselOwnerId = vesselOwnerId;
+	public void setVesselOwner(VesselOwner vesselOwner) {
+		this.vesselOwner = vesselOwner;
 	}
 	
+	public DateTime getEnteredDateTime() {
+		return enteredDateTime;
+	}
+	public void setEnteredDateTime(DateTime enteredDateTime) {
+		this.enteredDateTime = enteredDateTime;
+	}
+	public String getEnteredByEmpId() {
+		return enteredByEmpId;
+	}
+	public void setEnteredByEmpId(String enteredByEmpId) {
+		this.enteredByEmpId = enteredByEmpId;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -190,7 +192,7 @@ public class Vessel {
 	}
 	@Override
 	public String toString() {
-		return "Vessel [id=" + id + ", vesselOwnerId=" + vesselOwnerId + ", imo=" + imo + ", mmsi=" + mmsi
+		return "Vessel [id=" + id + ", vesselOwner=" + vesselOwner + ", imo=" + imo + ", mmsi=" + mmsi
 				+ ", callSign=" + callSign + "]";
 	}
 	
