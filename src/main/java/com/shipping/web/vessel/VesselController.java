@@ -24,6 +24,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -38,7 +40,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shipping.dao.vessel.VesselOwnerPhotoRepository;
 import com.shipping.dao.vessel.VesselOwnerRepository;
+import com.shipping.dao.vessel.VesselPhotoRepository;
+import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewPhoto;
 import com.shipping.model.vessel.Vessel;
@@ -47,30 +52,32 @@ import com.shipping.model.vessel.VesselOwnerPhoto;
 import com.shipping.model.vessel.VesselPhoto;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselType;
-import com.shipping.service.crew.CrewService;
-import com.shipping.service.vessel.VesselOwnerPhotoService;
-import com.shipping.service.vessel.VesselPhotoService;
-import com.shipping.service.vessel.VesselService;
+import com.shipping.service.common.SequenceGeneratorService;
 
 @Controller
 @RequestMapping(value="/vessel")
 public class VesselController {
-	@Autowired private VesselService vesselService;
+	@Autowired
+	private VesselRepository vesselDao;
 	@Autowired
 	private VesselOwnerRepository vesselOwnerDao;
-	@Autowired private VesselPhotoService vesselPhotoService;
-	@Autowired private VesselOwnerPhotoService vesselOwnerPhotoService;
+	@Autowired
+	private SequenceGeneratorService sequenceGenerator;	
+	@Autowired
+	private VesselOwnerPhotoRepository vesselOwnerPhotoDao;
+	@Autowired
+	private VesselPhotoRepository vesselPhotoDao;
 	
     @GetMapping(value = "/vessel_list")
     public ModelAndView vesselList(Model model) {
     	ModelAndView mv = new ModelAndView("vessel/vessel_list");
-    	mv.addObject("list", vesselService.getVesselList(null));
+    	mv.addObject("list", vesselDao.findAll());
         return mv;
     }
     @GetMapping(value = "/vessel_owner_list")
-    public ModelAndView vesselManagerList(Model model) {
+    public ModelAndView vesselOwnerList(Model model) {
     	ModelAndView mv = new ModelAndView("vessel/vessel_owner_list");
-    	mv.addObject("list", vesselService.getVesselOwnerList(null));
+    	mv.addObject("list", vesselOwnerDao.findAll());
         return mv;
     }
     
@@ -79,7 +86,7 @@ public class VesselController {
     	ModelAndView mv = new ModelAndView("vessel/add_vessel");
     	mv.addObject("vesselTypes", VesselType.getList());    	
     	mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
-    	mv.addObject("vesselOwners", vesselService.getVesselOwnerList(null));
+    	mv.addObject("vesselOwners", vesselOwnerDao.findAll());
         return mv;
     }
     
@@ -123,8 +130,9 @@ public class VesselController {
 		vessel.setDraught(draught);
 		vessel.setCallSign(callSign);
 		vessel.setGrossTonnage(grossTon);
-		vessel.setYearOfBuilt(yearOfBuilt);		
-		vesselService.addVessel(vessel);
+		vessel.setYearOfBuilt(yearOfBuilt);
+		vessel.setId(sequenceGenerator.generateSequence(Vessel.SEQUENCE_NAME));
+		vesselDao.insert(vessel);
 		
 		long vesselId = vessel.getId();
 		System.out.println("New vesselId ---> " + vesselId);
@@ -132,10 +140,13 @@ public class VesselController {
 		
 		try {
 			VesselPhoto photo = new VesselPhoto(vesselId, String.valueOf(vesselId));
-			long photoId = vesselPhotoService.addPhoto(photo, image);
+			photo.setId(sequenceGenerator.generateSequence(VesselPhoto.SEQUENCE_NAME));
+			photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+			photo = vesselPhotoDao.insert(photo);
+			long photoId = photo.getId(); 
 			System.out.println("VesselId ---> " + vesselId + " Photo ID: "+photoId);
 			
-			photo = vesselPhotoService.getPhoto(photoId);
+			photo = vesselPhotoDao.findById(photoId).get();
 			//model.addAttribute("title", photo.getTitle());
 			//mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 			
@@ -172,7 +183,8 @@ public class VesselController {
 		owner.setYearOfStart(yearOfStart);
 		owner.setPrimaryAddress(primaryAddr);
 		owner.setRegisterdAddress(regAddr);
-		vesselService.addVesselOwner(owner);
+		owner.setId(sequenceGenerator.generateSequence(VesselOwner.SEQUENCE_NAME));
+		vesselOwnerDao.insert(owner);
 		
 		long ownerId = owner.getId();
 		System.out.println("New ownerId ---> " + ownerId);
@@ -180,10 +192,13 @@ public class VesselController {
 		
 		try {
 			VesselOwnerPhoto photo = new VesselOwnerPhoto(ownerId, String.valueOf(ownerId));
-			long photoId = vesselOwnerPhotoService.addPhoto(photo, image);
+			photo.setId(sequenceGenerator.generateSequence(VesselOwnerPhoto.SEQUENCE_NAME));
+			photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+			photo = vesselOwnerPhotoDao.insert(photo);
+			long photoId = photo.getId();
 			System.out.println("OwnerId ---> " + ownerId + " Photo ID: "+photoId);
 			
-			photo = vesselOwnerPhotoService.getPhoto(photoId);
+			photo = vesselOwnerPhotoDao.findById(photoId).get();
 			//model.addAttribute("title", photo.getTitle());
 			mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 			

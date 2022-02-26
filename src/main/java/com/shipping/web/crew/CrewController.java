@@ -22,6 +22,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -37,25 +39,28 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shipping.dao.crew.CrewRepository;
+import com.shipping.dao.crew.PhotoRepository;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewPhoto;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.vessel.VesselSubType;
-import com.shipping.service.crew.CrewService;
-import com.shipping.service.crew.PhotoService;
+import com.shipping.service.common.SequenceGeneratorService;
 
 @Controller
 @RequestMapping(value = "/crew")
 public class CrewController {
 	@Autowired
-	private CrewService crewService;
+	private CrewRepository crewDao;
+    @Autowired
+    private PhotoRepository photoDao;
 	@Autowired
-	private PhotoService photoService;
+	private SequenceGeneratorService sequenceGenerator;	
 
 	@GetMapping(value = "/crew_list")
 	public ModelAndView crewList(Model model) {
 		ModelAndView mv = new ModelAndView("crew/crew_list");
-		List<Crew> list = crewService.getCrewList(new Crew());
+		List<Crew> list = crewDao.findAll();
 		mv.addObject("list", list);
 		return mv;
 	}
@@ -93,18 +98,21 @@ public class CrewController {
 		crew.setmName(mName);
 		crew.setRank(Rank.createFromId(rankId));
 		crew.setGenderId(genderId);
-		crewService.addCrew(crew);
+		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+		crewDao.insert(crew);
 		
 		long crewId = crew.getId();
 		System.out.println("New crewId ---> " + crewId);
 		mv.addObject("crewId", crewId);
 		
 		try {
-			CrewPhoto photo = new CrewPhoto(crewId, fName + " " +mName +" "+ lName);
-			long photoId = photoService.addPhoto(photo, image);
-			System.out.println("CrewId ---> " + crewId + " Photo ID: "+photoId);
+			CrewPhoto photo = new CrewPhoto(crewId, fName + " " +mName +" "+ lName);			
+			photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
+	        photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+	        photo = photoDao.insert(photo);
+			System.out.println("CrewId ---> " + crewId + " Photo ID: "+photo.getId());
 			
-			photo = photoService.getPhoto(photoId);
+			photo = photoDao.findById(photo.getId()).get();
 			//model.addAttribute("title", photo.getTitle());
 			mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 			
@@ -169,7 +177,7 @@ public class CrewController {
 
 	@GetMapping("/photos/{id}")
 	public String getPhoto(@PathVariable long id, Model model) {
-		CrewPhoto photo = photoService.getPhoto(id);
+		CrewPhoto photo = photoDao.findById(id).get();
 		model.addAttribute("title", photo.getTitle());
 		model.addAttribute("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 		return "photos";
