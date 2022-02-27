@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
+import com.shipping.common.AuditTrail;
 import com.shipping.common.Collection;
+import com.shipping.common.Comment;
+import com.shipping.common.Person;
 import com.shipping.company.Employee;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.crew.Certification;
@@ -14,15 +17,14 @@ import com.shipping.model.crew.Medical;
 import com.shipping.util.DateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
-public class Crew {
+public class Crew extends Person {
 	@Transient
 	public static final String SEQUENCE_NAME = Collection.CREW;
 	
 	@Id
 	private long id;
-	private String fName, lName, mName;
 	private String passportNumber, visaNumber;
-	private String gender, distinguishMark;
+	private String distinguishMark;
 	private Rank rank;
 	private long manningOfficeId;
 	private ManningOffice manningOffice;
@@ -31,9 +33,14 @@ public class Crew {
 	// Past
 	private List<Employment> employeeHistory;
 	private List<Education> educatonHistory;
+	private List<Medical> medicalHistory;
+	private List<Travel> travelHistory;
+	
+	//Current
+	private List<Course> trainings;
 	private List<Document> documents;
 	private List<Certification> certifications;
-	private List<Medical> medicalHistory;
+	private List<License> licenses;
 
 	// KYC
 	private List<Nominee> nominees;
@@ -42,12 +49,18 @@ public class Crew {
 	private DateTime dob;
 
 	// Requests
-	private List<TrainingRequest> trainingRequests;
+	private List<CourseRequest> trainingRequests;
 	private List<TravelRequest> travelRequests;
 	private List<MedicalRequest> medicalRequests;
+	
+	//Audit
+	private List<Comment> comments;
+	private List<AuditTrail> auditTails;
 
-	private DateTime enteredDateTime;
 	private Employee enteredByEmp;
+	private DateTime enteredDateTime;	
+	private Employee reviewedByEmp;
+	private DateTime reviewedDateTime;	
 
 	public long getId() {
 		return id;
@@ -170,11 +183,11 @@ public class Crew {
 		this.dob = dob;
 	}
 
-	public List<TrainingRequest> getTrainingRequests() {
+	public List<CourseRequest> getTrainingRequests() {
 		return trainingRequests;
 	}
 
-	public void setTrainingRequests(List<TrainingRequest> trainingRequests) {
+	public void setTrainingRequests(List<CourseRequest> trainingRequests) {
 		this.trainingRequests = trainingRequests;
 	}
 

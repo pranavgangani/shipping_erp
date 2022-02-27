@@ -18,7 +18,6 @@ public class DocumentSubCategory {
 	@Id
 	private long id;
 	private String catName;
-	private DateTime expiryDate;
 	private boolean isValid;
 }
 

@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.shipping.model.common.DurationType;
+import com.shipping.util.DateTime;
 
 @Document(collection = Collection.CERTIFICATION)
 public class Certification {
@@ -22,6 +23,8 @@ public class Certification {
 	private int rankSubCategoryId;
 	private int rankCategoryId;
 	private int rankId;
+	
+	private DateTime completionDateTime;
 	
 	private int validity;
 	private DurationType durationType;
