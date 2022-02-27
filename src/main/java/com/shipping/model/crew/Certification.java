@@ -23,6 +23,7 @@ public class Certification {
 	private int rankSubCategoryId;
 	private int rankCategoryId;
 	private int rankId;
+	private boolean isRenewalRequired;
 	
 	private DateTime completionDateTime;
 	

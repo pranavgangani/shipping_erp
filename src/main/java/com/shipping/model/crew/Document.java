@@ -20,18 +20,36 @@ public class Document {
 	private long id;
 	private String name, desc;
 
-	private int validity;
-	private DurationType durationType;	
-	private DateTime expiryDate;
-
-	private DocumentCategory docCategory;	
-	private DocumentSubCategory docSubCategory;
-
+	//Validity Level
 	private int rankSubCategoryId;
 	private int rankCategoryId;
 	private int rankId;
-	
+	private String gender;
+
+	//Doc details
 	private String docTitle;
+	private String docNumber;
+	private DocumentCategory docCategory;	
+	private DocumentSubCategory docSubCategory;
+	private String givenName;
+
+	//Other datapoints
+	private int validity;
+	private DurationType durationType;	
+	private DateTime issueDate, expiryDate;	
+	private String type;
+	private String docRemarks;
 	
+	//Passport specific	
+	private String nationality, countryCode;
+	
+	//Visa specific
+	private String entries, issingPostName, annotation, controlNumber;
+	
+	//Contract
+	private boolean isRequiredForContract, isDeclaration, isPassport, isVisa ,isBriefing;
+	private List<ContractRule> contractRules;
+		
+	//Required when storing against Crew
 	private List<Comment> comments;
 }

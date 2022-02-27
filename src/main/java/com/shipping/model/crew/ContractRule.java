@@ -1,12 +1,17 @@
 package com.shipping.model.crew;
 
+import org.springframework.data.annotation.Id;
+
 import com.shipping.company.Employee;
 import com.shipping.util.DateTime;
 
 public class ContractRule {
-	private int contractRuleId;
-	private String contractRuleName;
-	private String contractRule;
+	@Id
+	private int id;
+	private String ruleName;
+	private String ruleHeadingText;
+	private String ruleText;
+	private int rulePriority;
 	
 	private DateTime enteredDateTime;
 	private Employee enteredByEmp;
