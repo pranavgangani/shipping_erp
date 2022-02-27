@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.shipping.model.crew.Crew;
 
-public interface CrewRepository extends MongoRepository<Crew, Integer> {
+public interface CrewRepository extends MongoRepository<Crew, Long> {
 	//public Crew save(Crew crew);
 
 	//public Crew findByFirstName(String firstName);

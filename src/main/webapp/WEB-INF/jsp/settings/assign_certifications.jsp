@@ -149,7 +149,12 @@
 										
 										<div class="row gx-3 mb-3">
 												<div class="col-md-8">
-													<label class="small mb-1" for="papPoints">PAP (Professional Attitude Points)</label> 
+													<label class="small mb-1" for="papPoints">PAP
+														<i class="text-muted" data-feather="info"
+														data-bs-toggle="tooltip" data-bs-placement="left"
+														title="Professional Attitude Points"></i>
+													</label> 
+													
 													<input class="form-control" name="papPoints" type="text" placeholder="Enter PAP points" value="" />
 												</div>
 											</div>

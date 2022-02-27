@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.crew.PhotoRepository;
@@ -46,18 +48,19 @@ import com.shipping.model.crew.CrewPhoto;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.service.common.SequenceGeneratorService;
+import com.shipping.util.ParamUtil;
 
-@Controller
+@RestController
 @RequestMapping(value = "/crew")
 public class CrewController {
 	@Autowired
 	private CrewRepository crewDao;
-    @Autowired
-    private PhotoRepository photoDao;
 	@Autowired
-	private SequenceGeneratorService sequenceGenerator;	
+	private PhotoRepository photoDao;
+	@Autowired
+	private SequenceGeneratorService sequenceGenerator;
 
-	@GetMapping(value = "/crew_list")
+	@GetMapping(value = "/list")
 	public ModelAndView crewList(Model model) {
 		ModelAndView mv = new ModelAndView("crew/crew_list");
 		List<Crew> list = crewDao.findAll();
@@ -65,63 +68,81 @@ public class CrewController {
 		return mv;
 	}
 
-	@GetMapping(value = "/add_crew")
+	@GetMapping(value = "/add")
 	public ModelAndView addCrew(Model model) {
 		ModelAndView mv = new ModelAndView("crew/add_crew");
-		/*
-		 * Map<String, List<Rank>> rankMap = Rank.getByGroup();
-		 * rankMap.keySet().forEach(k->rankMap.get(k).forEach(v-> { System.out.println(k
-		 * + " - " +v.getName()); }));
-		 */
-		
+		mv.addObject("rankMap", Rank.getByGroup());
+		return mv;
+	}
+	
+	@GetMapping(value = "/edit")
+	public ModelAndView editCrew(HttpServletRequest req) {
+		ModelAndView mv = new ModelAndView("/crew/add_crew");
+		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+		if (crewId > 0) {
+			Crew crew = crewDao.findById(crewId).get();
+			mv.addObject("crew", crew);
+			
+			CrewPhoto photo = null;
+
+			try {
+				photo = photoDao.findById(crew.getPhotoId()).get();
+				//mv.addObject("title", photo.getTitle());
+				mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+			} catch (NoSuchElementException e) {
+				
+			}
+
+		}
 		mv.addObject("rankMap", Rank.getByGroup());
 		return mv;
 	}
 
 	@PostMapping(value = "/add_crew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ModelAndView addCrew(
-			@RequestParam("fName") String fName, 
-			@RequestParam("mName") String mName, 
-			@RequestParam("lName") String lName, 
-			@RequestParam("rankId") int rankId, 
-			@RequestParam("genderId") int genderId, 
-			@RequestParam("manningOffice") String manningOffice, 
-			@RequestParam("image") MultipartFile image, 
+	public ModelAndView addCrew(@RequestParam("fName") String fName, @RequestParam("mName") String mName,
+			@RequestParam("lName") String lName, @RequestParam("rankId") int rankId,
+			@RequestParam("gender") String gender, @RequestParam("distinguishMark") String distinguishMark,
+			@RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
 			Model model) {
 		ModelAndView mv = new ModelAndView("/crew/add_employment");
 		System.out.println("add_crew: " + fName);
 		System.out.println("image: " + image);
-		
+
+		//Add New Crew 
 		Crew crew = new Crew();
-		crew.setfName(fName); 
+		crew.setfName(fName);
 		crew.setlName(lName);
 		crew.setmName(mName);
 		crew.setRank(Rank.createFromId(rankId));
-		crew.setGenderId(genderId);
+		crew.setGender(gender);
+		crew.setDistinguishMark(distinguishMark);
 		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
 		crewDao.insert(crew);
-		
+
 		long crewId = crew.getId();
 		System.out.println("New crewId ---> " + crewId);
 		mv.addObject("crewId", crewId);
-		
+
 		try {
-			CrewPhoto photo = new CrewPhoto(crewId, fName + " " +mName +" "+ lName);			
+			//Add Crew Photo
+			CrewPhoto photo = new CrewPhoto(crewId, fName + " " + mName + " " + lName);
 			photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
-	        photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-	        photo = photoDao.insert(photo);
-			System.out.println("CrewId ---> " + crewId + " Photo ID: "+photo.getId());
+			photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+			photo = photoDao.insert(photo);
+			long photoId = photo.getId();
+			System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
+			photo = photoDao.findById(photoId).get();
 			
-			photo = photoDao.findById(photo.getId()).get();
-			//model.addAttribute("title", photo.getTitle());
+			//Save PhotoId to Crew
+			crew.setPhotoId(photoId);
+			crewDao.save(crew);			
 			mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 //		return "redirect:/photos/" + id;
-
 
 		return mv;
 	}

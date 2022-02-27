@@ -22,7 +22,7 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                <form method="POST" enctype="multipart/form-data" action="/crew/add_crew"> 
+                <form method="POST" enctype="multipart/form-data" action="/crew/add"> 
                 
                 <%@ include file="add_crew_header.jsp" %>
                     
@@ -47,15 +47,20 @@
                                     <div class="card-header">Profile Picture</div>
                                     <div class="card-body text-center">
 										<!-- Profile picture image-->
-										 <img class="img-account-profile rounded-circle mb-2"
-											src="../assets/img/illustrations/profiles/profile-1.png"
-											alt="" id='preview'/> 
-											
-											<input type='file' id='file-input' hidden name="image">																						
-											
+										<input type='file' id='file-input' hidden name="image">																																	
 										<div id='container'>
 											<!-- Profile picture help block-->
-											<div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+											<c:choose>
+												<c:when test="${crew.photoId>0}">
+													<img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}" alt="" id='preview' />													
+												</c:when>
+												<c:otherwise>
+													<img class="img-account-profile rounded-circle mb-2"
+														src="../assets/img/illustrations/profiles/profile-1.png"
+														alt="" id='preview' />
+													<div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+												</c:otherwise>
+											</c:choose>
 											<!-- Profile picture upload button-->
 											<button id="myBtn" class="btn btn-primary" type="button">Upload an image</button>
 											
@@ -72,15 +77,15 @@
                                             <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="fName">First name</label>
-                                                    <input class="form-control" name="fName" type="text" placeholder="Enter first name" value="" />
+                                                    <input class="form-control" name="fName" type="text" placeholder="Enter first name" value="${crew.fName}" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="mName">Middle name</label>
-                                                    <input class="form-control" name="mName" type="text" placeholder="Enter middle name" value="" />
+                                                    <input class="form-control" name="mName" type="text" placeholder="Enter middle name" value="${crew.mName}" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="lName">Last name</label>
-                                                    <input class="form-control" name="lName" type="text" placeholder="Enter last name" value="" />
+                                                    <input class="form-control" name="lName" type="text" placeholder="Enter last name" value="${crew.lName}" />
                                                 </div>
                                             </div>
 										<div class="row gx-3 mb-3">
@@ -100,11 +105,11 @@
 											<div class="col-md-4">
 												<label class="small mb-1" for="gender">Gender</label>
 												<div class="form-check">
-													<input class="form-check-input" id="male" value="1" type="radio" name="genderId" checked /> <label class="form-check-label"
+													<input class="form-check-input" id="male" value="male" type="radio" name="gender" checked /> <label class="form-check-label"
 														for="male">Male</label>
 												</div>
 												<div class="form-check">
-													<input class="form-check-input" id="female" value="0" type="radio" name="genderId" /> <label class="form-check-label"
+													<input class="form-check-input" id="female" value="female" type="radio" name="gender" /> <label class="form-check-label"
 														for="female">Female</label>
 												</div>
 											</div>
@@ -115,10 +120,8 @@
 										</div>
 										<div class="row gx-3 mb-3">
 											<div class="col-md-4">
-												Distinguishing Mark <i class="text-muted" data-feather="info"
-													data-bs-toggle="tooltip" data-bs-placement="left"
-													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
-												<textarea name="distinguishingMark" class="lh-base form-control" type="text"
+												Distinguishing Mark
+												<textarea name="distinguishMark" class="lh-base form-control" type="text"
 													placeholder="" rows="4"></textarea>
 											</div>
 											<div class="col-md-4">

@@ -36,7 +36,7 @@
                             </a>
                             <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
-                                	<a class="nav-link" href="/crew/crew_list">Crew List</a>                                    
+                                	<a class="nav-link" href="/crew/list">Crew List</a>                                    
                                 
                                     <!-- Nested Sidenav Accordion (Pages -> Account)-->
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAccount" aria-expanded="false" aria-controls="pagesCollapseAccount">
@@ -45,7 +45,7 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavPagesMenu">
                                         <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="/crew/add_crew">Add New Crew</a>
+                                            <a class="nav-link" href="/crew/add">Add New Crew</a>
                                             <a class="nav-link" href="account-billing.html">Documents List</a>
                                             <!-- <a class="nav-link" href="account-security.html">Medicals</a>
                                             <a class="nav-link" href="account-notifications.html">Notifications</a> -->

@@ -45,8 +45,8 @@
 											<select class="form-select"
 												aria-label="Default select example">
 												<option selected disabled>Select a Gender:</option>
-												<option value="1">Male</option>
-												<option value="0">Female</option>
+												<option value="male">Male</option>
+												<option value="female">Female</option>
 											</select>
 										</div>
 										<!-- Form Group (last name)-->
@@ -165,20 +165,37 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/crew/add_certifications?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Profile
-													</a><a class="dropdown-item" href="#!">
+														</div> Add Certifications
+													</a>
+													<a class="dropdown-item" href="/crew/add_medicals?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
-														</div> Settings
+														</div> Add Medical Tests
+													</a>													
+													<a class="dropdown-item" href="/crew/add_licenses?crewId=${crew.id}">
+														<div class="dropdown-item-icon">
+															<i data-feather="settings"></i>
+														</div> Add Licenses
 													</a>
+													<a class="dropdown-item" href="/crew/add_documents?crewId=${crew.id}">
+														<div class="dropdown-item-icon">
+															<i data-feather="settings"></i>
+														</div> Add Documents
+													</a>													
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/crew/edit?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
-														</div> Logout
+														</div> Edit
+													</a>
+													<div class="dropdown-divider"></div>
+													<a class="dropdown-item" href="/crew/sign_off_on?crewId=${crew.id}">
+														<div class="dropdown-item-icon">
+															<i data-feather="log-out"></i>
+														</div> Sign-On/Sign-Off
 													</a>
 												</div>
 												<button

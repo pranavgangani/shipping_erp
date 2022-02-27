@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import com.shipping.common.Collection;
-import com.shipping.common.Gender;
 import com.shipping.company.Employee;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.crew.Certification;
@@ -23,14 +22,12 @@ public class Crew {
 	private long id;
 	private String fName, lName, mName;
 	private String passportNumber, visaNumber;
-	private int genderId;
+	private String gender, distinguishMark;
 	private Rank rank;
 	private long manningOfficeId;
-	
-	private Gender gender;
 	private ManningOffice manningOffice;
+	private long photoId;
 	
-
 	// Past
 	private List<Employment> employeeHistory;
 	private List<Education> educatonHistory;
@@ -84,19 +81,11 @@ public class Crew {
 		this.mName = mName;
 	}
 
-	public int getGenderId() {
-		return genderId;
-	}
-
-	public void setGenderId(int genderId) {
-		this.genderId = genderId;
-	}
-
-	public Gender getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
@@ -235,6 +224,22 @@ public class Crew {
 
 	public void setVisaNumber(String visaNumber) {
 		this.visaNumber = visaNumber;
+	}
+
+	public String getDistinguishMark() {
+		return distinguishMark;
+	}
+
+	public void setDistinguishMark(String distinguishMark) {
+		this.distinguishMark = distinguishMark;
+	}
+
+	public long getPhotoId() {
+		return photoId;
+	}
+
+	public void setPhotoId(long photoId) {
+		this.photoId = photoId;
 	}
 
 	@Override

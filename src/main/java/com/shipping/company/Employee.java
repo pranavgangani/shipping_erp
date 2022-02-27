@@ -1,11 +1,9 @@
 package com.shipping.company;
 
-import com.shipping.common.Gender;
-
 public class Employee {
 	private int userId;
 	private int genderId, designationId, departmentId, officeId;
-	private Gender gender;
+	private String gender;
 	private String fName, mName, lName;
 	private String userName, password;
 	private String emailId;
