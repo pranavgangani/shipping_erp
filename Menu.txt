@@ -1,7 +1,22 @@
+------------------------------------
+Phase-1
+------------------------------------
 -Dashboard
+	-Crew On-Boarding Status(Card# 1)
+		-Pending Medicals
+		-Pending Courses
+		-Pending NOK
+		-On-Boarded
+	-Audit Trail(Card# 2)
+	-Crew Status(Card# 3)
+		-New Recruit
+		-Ready for Sing-on
+		-On-Boarded	
+		-Ready for Sign-off
+		-Signed-off
+		-Visit Crew List		 	
 	-Crew List
-	-
-
+	
 -Crew
 	-Crew List
 		-Add New Crew -> Add Details -> Upload Education -> Upload Employment -> Upload Documents -> Upload License  
@@ -84,6 +99,13 @@
 	-Document List
 		-Document Details
 
+-Settings
+	-Role List
+		-Add Role	
+
+------------------------------------		
+Phase-2
+------------------------------------
 -Evaluation
 	-Appraisals
 	-Briefing
@@ -103,6 +125,3 @@
 -Reports
 	-Pending Approvals
 	
--Settings
-	-Role List
-		-Add Role	

@@ -17,7 +17,35 @@ public class DocumentSubCategory {
 	
 	@Id
 	private long id;
-	private String catName;
+	private String name;
 	private boolean isValid;
+	private DocumentCategory documentCategory;
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public boolean isValid() {
+		return isValid;
+	}
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
+	}
+
+	public DocumentCategory getDocumentCategory() {
+		return documentCategory;
+	}
+
+	public void setDocumentCategory(DocumentCategory documentCategory) {
+		this.documentCategory = documentCategory;
+	}
 }
 

@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shipping.dao.common.FlagRepository;
 import com.shipping.dao.vessel.VesselOwnerPhotoRepository;
 import com.shipping.dao.vessel.VesselOwnerRepository;
 import com.shipping.dao.vessel.VesselPhotoRepository;
@@ -67,6 +68,8 @@ public class VesselController {
 	private VesselOwnerPhotoRepository vesselOwnerPhotoDao;
 	@Autowired
 	private VesselPhotoRepository vesselPhotoDao;
+	@Autowired
+	private FlagRepository flagDao;
 	
     @GetMapping(value = "/vessel_list")
     public ModelAndView vesselList(Model model) {
@@ -84,6 +87,7 @@ public class VesselController {
     @GetMapping(value = "/add_vessel")
     public ModelAndView addVessel(Model model) {
     	ModelAndView mv = new ModelAndView("vessel/add_vessel");
+    	mv.addObject("flags", flagDao.findAll());
     	mv.addObject("vesselTypes", VesselType.getList());    	
     	mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
     	mv.addObject("vesselOwners", vesselOwnerDao.findAll());

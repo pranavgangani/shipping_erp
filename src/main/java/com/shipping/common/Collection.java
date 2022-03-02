@@ -18,9 +18,11 @@ public class Collection {
 	public final static String FLAG = "Flag";
 
 	//Document 
-	public final static String DOCUMENT = "Document";
-	public final static String CERTIFICATION = "Certification";
-	public final static String DOC_SUB_CAT = "DocumentSubCategory";
+	public final static String CREW_DOCUMENT = "CrewDocument";
+	public final static String CREW_CERTIFICATION = "CrewCertification";
+	public final static String CREW_DOCUMENT_TAG = "CrewDocumentTag";
+	//public final static String CERTIFICATION = "Certification";
+	public final static String DOC_SUB_CAT = "CrewDocumentSubCategory";
 	
 	//Audit 
 	public final static String AUDIT_TRAIL = "AuditTrail";

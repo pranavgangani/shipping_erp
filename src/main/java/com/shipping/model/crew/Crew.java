@@ -8,12 +8,11 @@ import org.springframework.data.annotation.Transient;
 import com.shipping.common.AuditTrail;
 import com.shipping.common.Collection;
 import com.shipping.common.Comment;
+import com.shipping.common.Flag;
 import com.shipping.common.Person;
 import com.shipping.company.Employee;
 import com.shipping.model.crew.Rank;
-import com.shipping.model.crew.Certification;
 import com.shipping.model.crew.Document;
-import com.shipping.model.crew.Medical;
 import com.shipping.util.DateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
@@ -26,8 +25,7 @@ public class Crew extends Person {
 	private String passportNumber, visaNumber;
 	private String distinguishMark;
 	private Rank rank;
-	private long manningOfficeId;
-	private ManningOffice manningOffice;
+	private Flag manningOffice;
 	private long photoId;
 	
 	// Past
@@ -37,21 +35,26 @@ public class Crew extends Person {
 	private List<Travel> travelHistory;
 	
 	//Current
-	private List<Course> trainings;
+	private List<Document> trainings;
 	private List<Document> documents;
-	private List<Certification> certifications;
-	private List<License> licenses;
+	private List<Document> certifications;
+	private List<Document> licenses;
+	private List<Document> visas;
+	private List<Document> passports;
+	
+	//Medical
+	private List<IllnessAndInjury> illnessInjury;
 
 	// KYC
-	private List<Nominee> nominees;
+	private List<NextOfKin> nextOfKins;
 	private List<Bank> banks;
 	private String passportNum, visaNum;
 	private DateTime dob;
 
 	// Requests
-	private List<CourseRequest> trainingRequests;
+	/*private List<CourseRequest> trainingRequests;
 	private List<TravelRequest> travelRequests;
-	private List<MedicalRequest> medicalRequests;
+	private List<MedicalRequest> medicalRequests;*/
 	
 	//Audit
 	private List<Comment> comments;
@@ -141,14 +144,14 @@ public class Crew extends Person {
 
 	public void setMedicalHistory(List<Medical> medicalHistory) {
 		this.medicalHistory = medicalHistory;
+	}	
+
+	public List<NextOfKin> getNextOfKins() {
+		return nextOfKins;
 	}
 
-	public List<Nominee> getNominees() {
-		return nominees;
-	}
-
-	public void setNominees(List<Nominee> nominees) {
-		this.nominees = nominees;
+	public void setNextOfKins(List<NextOfKin> nextOfKins) {
+		this.nextOfKins = nextOfKins;
 	}
 
 	public List<Bank> getBanks() {
@@ -182,30 +185,7 @@ public class Crew extends Person {
 	public void setDob(DateTime dob) {
 		this.dob = dob;
 	}
-
-	public List<CourseRequest> getTrainingRequests() {
-		return trainingRequests;
-	}
-
-	public void setTrainingRequests(List<CourseRequest> trainingRequests) {
-		this.trainingRequests = trainingRequests;
-	}
-
-	public List<TravelRequest> getTravelRequests() {
-		return travelRequests;
-	}
-
-	public void setTravelRequests(List<TravelRequest> travelRequests) {
-		this.travelRequests = travelRequests;
-	}
-
-	public List<MedicalRequest> getMedicalRequests() {
-		return medicalRequests;
-	}
-
-	public void setMedicalRequests(List<MedicalRequest> medicalRequests) {
-		this.medicalRequests = medicalRequests;
-	}
+	
 
 	public DateTime getEnteredDateTime() {
 		return enteredDateTime;
@@ -253,6 +233,102 @@ public class Crew extends Person {
 
 	public void setPhotoId(long photoId) {
 		this.photoId = photoId;
+	}	
+
+	public Flag getManningOffice() {
+		return manningOffice;
+	}
+
+	public void setManningOffice(Flag manningOffice) {
+		this.manningOffice = manningOffice;
+	}
+
+	public List<Travel> getTravelHistory() {
+		return travelHistory;
+	}
+
+	public void setTravelHistory(List<Travel> travelHistory) {
+		this.travelHistory = travelHistory;
+	}
+
+	public List<Document> getTrainings() {
+		return trainings;
+	}
+
+	public void setTrainings(List<Document> trainings) {
+		this.trainings = trainings;
+	}
+
+	public List<Document> getCertifications() {
+		return certifications;
+	}
+
+	public void setCertifications(List<Document> certifications) {
+		this.certifications = certifications;
+	}
+
+	public List<Document> getLicenses() {
+		return licenses;
+	}
+
+	public void setLicenses(List<Document> licenses) {
+		this.licenses = licenses;
+	}
+
+	public List<Document> getVisas() {
+		return visas;
+	}
+
+	public void setVisas(List<Document> visas) {
+		this.visas = visas;
+	}
+
+	public List<Document> getPassports() {
+		return passports;
+	}
+
+	public void setPassports(List<Document> passports) {
+		this.passports = passports;
+	}
+
+	public List<IllnessAndInjury> getIllnessInjury() {
+		return illnessInjury;
+	}
+
+	public void setIllnessInjury(List<IllnessAndInjury> illnessInjury) {
+		this.illnessInjury = illnessInjury;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<AuditTrail> getAuditTails() {
+		return auditTails;
+	}
+
+	public void setAuditTails(List<AuditTrail> auditTails) {
+		this.auditTails = auditTails;
+	}
+
+	public Employee getReviewedByEmp() {
+		return reviewedByEmp;
+	}
+
+	public void setReviewedByEmp(Employee reviewedByEmp) {
+		this.reviewedByEmp = reviewedByEmp;
+	}
+
+	public DateTime getReviewedDateTime() {
+		return reviewedDateTime;
+	}
+
+	public void setReviewedDateTime(DateTime reviewedDateTime) {
+		this.reviewedDateTime = reviewedDateTime;
 	}
 
 	@Override

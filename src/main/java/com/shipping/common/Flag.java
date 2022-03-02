@@ -1,12 +1,9 @@
 package com.shipping.common;
 
-import java.util.List;
-
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
-import com.shipping.model.crew.Certification;
-import com.shipping.model.vessel.VesselCertification;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.FLAG)
 public class Flag {
@@ -14,9 +11,47 @@ public class Flag {
 	public static final String SEQUENCE_NAME = Collection.FLAG;
 	
 	@Id
-	private long id;
-	private String name;
+	private ObjectId id;
+	private String name, code, image, emoji, unicode;
 	
-	private List<Certification> rankCertifications;
-	private List<VesselCertification> shipCertifications;
+	public ObjectId getId() {
+		return id;
+	}
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public String getEmoji() {
+		return emoji;
+	}
+	public void setEmoji(String emoji) {
+		this.emoji = emoji;
+	}
+	public String getUnicode() {
+		return unicode;
+	}
+	public void setUnicode(String unicode) {
+		this.unicode = unicode;
+	}
+	
+	
+	//private List<Certification> rankCertifications;
+	//private List<VesselCertification> shipCertifications;
 }

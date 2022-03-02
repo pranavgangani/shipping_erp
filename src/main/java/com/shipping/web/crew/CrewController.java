@@ -98,7 +98,7 @@ public class CrewController {
 		return mv;
 	}
 
-	@PostMapping(value = "/add_crew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@PostMapping(value = "/add", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ModelAndView addCrew(@RequestParam("fName") String fName, @RequestParam("mName") String mName,
 			@RequestParam("lName") String lName, @RequestParam("rankId") int rankId,
 			@RequestParam("gender") String gender, @RequestParam("distinguishMark") String distinguishMark,

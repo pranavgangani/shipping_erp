@@ -81,9 +81,9 @@
 													aria-expanded="false">
 													<i data-feather="more-vertical"></i>
 												</button>
-
+ 
 												<div class="dropdown-menu">
-													<a class="dropdown-item" href="/settings/assign_certifications?rankId=${rank.id}">
+													<a class="dropdown-item" href="/settings/assign_certification?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
 														</div> Assign Certifications

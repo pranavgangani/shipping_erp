@@ -42,7 +42,7 @@
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAccount" aria-expanded="false" aria-controls="pagesCollapseAccount">
                                         Account
                                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
+                                    </a> 
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavPagesMenu">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/crew/add">Add New Crew</a>
@@ -143,6 +143,7 @@
                                             <a class="nav-link" href="/settings/licenses">Licenses</a>
                                             <a class="nav-link" href="/settings/surveys">Surveys</a>
                                             <a class="nav-link" href="/settings/documents">Documents</a>                                            
+                                            <a class="nav-link" href="/settings/add_doc_certification">Add Certifications</a>
                                         </nav>
                                     </div>
                                     <!-- Nested Sidenav Accordion (Layout -> Container Options)-->

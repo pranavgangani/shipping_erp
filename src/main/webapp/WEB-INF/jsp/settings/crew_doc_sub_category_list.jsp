@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Certification List</title>
+<title>Crew Document Sub-Category List</title>
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%@ include file="../includes/header_includes.jsp"%>
 </head>
@@ -28,13 +28,13 @@
 									<!-- <div class="page-header-icon">
 							<i data-feather="user-plus"></i>
 						</div> -->
-									Certification
+									Crew Document Sub-Category List
 								</h1>
 							</div>
 							<div class="col-12 col-xl-auto mb-3">
 								<a class="btn btn-sm btn-light text-primary"
-									href="/settings/assign_certification"> <i class="me-1"
-									data-feather="arrow-right"></i> Add New Certification
+									href="/settings/add_crew_doc_sub_category"> <i class="me-1"
+									data-feather="arrow-right"></i> Add New Sub-Category
 								</a>
 							</div>
 						</div>
@@ -47,38 +47,32 @@
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
 					<div class="card mb-4">
-						<div class="card-header">Rank List</div>
+						<div class="card-header">Sub-Category List</div>
 						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
 									<tr>
-										<th>Certification Name</th>
-										<th>Duration</th>
-										<th>Rank Category</th>
-										<th>Rank Sub-Category</th>
-										<th>Rank</th>																		
+										<th>Category</th>
+										<th>Sub-Category</th>
+										<th>Active</th>
 										<th>Action</th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th>Certification Name</th>
-										<th>Duration</th>
-										<th>Rank Category</th>
-										<th>Rank Sub-Category</th>
-										<th>Rank</th>
+										<th>Category</th>
+										<th>Sub-Category</th>
+										<th>Active</th>
 										<th>Action</th>
 									</tr>
 								</tfoot>
 								<tbody>
 
-									<c:forEach items="${list}" var="cert">
+									<c:forEach items="${subDocumentCategoryList}" var="subCat">
 										<tr>
-											<td>${cert.name}</td>
-											<td>${cert.validity} ${cert.durationType.typeName}</td>
-											<td>${cert.rankCategory.name}</td>
-											<td>${cert.rankSubCategory.name}</td>
-											<td>${cert.rank.name}</td>
+											<td>${subCat.documentCategory.name}</td>
+											<td>${subCat.name}</td>
+											<td>${subCat.valid}</td>
 											<td>
 												<button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
@@ -86,12 +80,12 @@
 													data-bs-toggle="dropdown" aria-haspopup="true"
 													aria-expanded="false">
 													<i data-feather="more-vertical"></i>
-												</button>												
+												</button>
+
 												<div class="dropdown-menu">
-													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/settings/edit_rank?rankId=${cert.rank.id}">
+													<a class="dropdown-item" href="/settings/assign_certification?rankId=${rank.id}">
 														<div class="dropdown-item-icon">
-															<i data-feather="log-out"></i>
+															<i data-feather="user"></i>
 														</div> Edit
 													</a>
 												</div>

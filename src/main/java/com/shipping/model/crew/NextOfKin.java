@@ -1,6 +1,6 @@
 package com.shipping.model.crew;
 
-public class Nominee {
+public class NextOfKin {
 	private int nomineeId;
 	private String nomineeName;
 	private RelationType relationType;
