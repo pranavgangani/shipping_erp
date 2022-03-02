@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Add New Training/Course Doc</title>
+<title>Add New Training/Course Document</title>
 
 <%@ include file="../includes/header_includes.jsp"%>
 </head>
@@ -23,7 +23,7 @@
 
 		<div id="layoutSidenav_content">
 			<main>
-				<form method="POST" enctype="multipart/form-data" action="/settings/add_doc_certification">
+				<form method="POST" action="/settings/add_doc_certification">
 				<header
 					class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
 					<div class="container-fluid px-4">
@@ -34,7 +34,7 @@
 										<div class="page-header-icon">
 											<i data-feather="user-plus"></i>
 										</div>
-										Add Training/Course Document
+										Add New Training/Course Document
 									</h1>
 								</div>
 								<div class="col-12 col-xl-auto mb-3">
@@ -72,32 +72,58 @@
                                             <div class="row gx-3 mb-3">
 											<div class="row gx-3 mb-3">
 												<div class="col-md-8">
-													<label class="small mb-1" for="certName">Certification Name</label> 
+													<label class="small mb-1" for="certName">Training Course Name</label>
 													<input class="form-control" name="certName"
 														type="text" placeholder="Enter certification name" value="" />
 												</div>
 											</div>
 											<div class="row gx-3 mb-3">
 												<div class="col-md-8">
-													<label class="small mb-1" for="certDesc">Certification Description</label>
+													<label class="small mb-1" for="certDesc">Training Course Description</label>
 													<textarea name="certDesc" class="lh-base form-control"
 														type="text" placeholder="" rows="4"></textarea>
 												</div>
 											</div>
-											<!-- <div class="row gx-3 mb-3">
+											<div class="row gx-3 mb-3">
+                                                <div class="col-md-8">
+                                                    <label class="small mb-1" for="certType">Training Type</label>
+                                                    <input class="form-control" name="certType"
+                                                        type="text" placeholder="Enter type name" value="" />
+                                                </div>
+                                            </div>
+											<div class="row gx-3 mb-3">
+                                            <div class="col-md-8">
+                                                <label class="small mb-1" for="regulationDetails">Regulation Name</label>
+                                                <input class="form-control" name="regulationDetails"
+                                                    type="text" placeholder="Enter regulation name" value="" />
+                                            </div>
+                                        </div>
+                                        <div class="row gx-3 mb-3">
+                                                <div class="col-md-8">
+                                                    <label class="small mb-1" for="sectionDetails">Section Name</label>
+                                                    <input class="form-control" name="sectionDetails"
+                                                        type="text" placeholder="Enter section name" value="" />
+                                                </div>
+                                            </div>
+                                            <div class="row gx-3 mb-3">
+                                                <div class="col-md-8">
+                                                    <label class="small mb-1" for="chapterDetails">Chapter Name</label>
+                                                    <input class="form-control" name="chapterDetails"
+                                                        type="text" placeholder="Enter chapter name" value="" />
+                                                </div>
+                                            </div>
+											<div class="row gx-3 mb-3">
 												<div class="form-check">
-													<input class="form-check-input" id="radioRequiresCert"
-														type="radio" name="radioReqCert" checked /> <label
-														class="form-check-label" for="radioRequiresCert">Requires
-														Certification</label>
+													<input class="form-check-input" id="radioEmp"
+														type="radio" name="radio_CourseSponsor" checked />
+														<label class="form-check-label" for="radio_CourseSponsor">Employment Sponsored</label>
 												</div>
 												<div class="form-check">
-													<input class="form-check-input" id="radioRequiresNoCert"
-														type="radio" name="radioReqCert" /> <label
-														class="form-check-label" for="radioRequiresNoCert">Does
-														not require Certification</label>
+													<input class="form-check-input" id="radioSelf"
+														type="radio" name="radio_CourseSponsor" /> <label
+														class="form-check-label" for="radio_CourseSponsor">Self Sponsored</label>
 												</div>
-											</div> -->
+											</div>
 											 <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="certDuration">Certification Duration</label> 
@@ -108,43 +134,37 @@
                                                     <select class="form-select" name="durationTypeId" aria-label="Default select example">
 															<option selected disabled>Select Duration Type</option>
 															<c:forEach var="durationType" items="${durationTypes}">
-																<option value="${durationType.id }">${durationType.typeName}</option>
+																<option value="${durationType.id}">${durationType.typeName}</option>
 															</c:forEach>
 														</select>
                                                 </div>
                                             </div>                                          
 											<div class="row gx-3 mb-3">
 												<div class="form-check mb-2">
-                                                    <input class="form-check-input" id="checkRequiresCert" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkRequiresCert">Requires Certification</label><i class="text-muted" data-feather="info"
+                                                    <input class="form-check-input" name="isRecertRequired" type="checkbox" checked />
+                                                    <label class="form-check-label" for="isRecertRequired">Requires Re-Certification</label><i class="text-muted" data-feather="info"
 													data-bs-toggle="tooltip" data-bs-placement="left"
 													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" id="checkAccountGroups" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkAccountGroups">Requires Physical Training</label><i class="text-muted" data-feather="info"
+                                                    <input class="form-check-input" name="isPhysical" type="checkbox" checked />
+                                                    <label class="form-check-label" for="isPhysical">Requires Physical Training</label><i class="text-muted" data-feather="info"
 													data-bs-toggle="tooltip" data-bs-placement="left"
 													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" id="checkProductUpdates" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkProductUpdates">Paid Certification</label><i class="text-muted" data-feather="info"
+                                                    <input class="form-check-input" name="isPaid" type="checkbox" checked />
+                                                    <label class="form-check-label" for="isPaid">Paid Certification</label><i class="text-muted" data-feather="info"
 													data-bs-toggle="tooltip" data-bs-placement="left"
 													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
                                                 </div>
                                                 <div class="form-check mb-2">
-                                                    <input class="form-check-input" id="checkProductNew" type="checkbox" checked />
-                                                    <label class="form-check-label" for="checkProductNew">Company sponsored</label><i class="text-muted" data-feather="info"
-													data-bs-toggle="tooltip" data-bs-placement="left"
-													title="The post preview text shows below the post title, and is the post summary on blog pages."></i>
-                                                </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" id="checkPromotional" type="checkbox" />
-                                                    <label class="form-check-label" for="checkPromotional">The course involves handling of hazardous equipments, study tours ashore and offshore and adventure trips</label>
+                                                    <input class="form-check-input" name="isHazardous" type="checkbox" />
+                                                    <label class="form-check-label" for="isHazardous">The course involves handling of hazardous equipments, study tours ashore and offshore and adventure trips</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" id="checkSecurity" type="checkbox" checked disabled />
-                                                    <label class="form-check-label" for="checkSecurity">Requires Medical Fitness Certificate</label>
+                                                    <input class="form-check-input" name="isMandatory" type="checkbox" checked value=""/>
+                                                    <label class="form-check-label" for="isMandatory">Mandatory Training Course</label>
                                                 </div>
 											</div>
 										</div>
@@ -171,10 +191,10 @@
                                     <div class="card-header">For Vessel & Rank</div>
                                     <div class="card-body">
                                     <div class="mb-3">
-												<label class="small mb-1" for="vesselType" for="exampleFormControlSelect2">Vessel
+												<label class="small mb-1" for="chk_vesselTypeId" for="exampleFormControlSelect2">Vessel
 													Type</label> 
 													<select multiple="" class="form-select"
-													aria-label="Default select example" name="vesselType">
+													aria-label="Default select example" name="chk_vesselTypeId">
 													<option value="0" selected>All</option>
 													<c:forEach var="vesselType" items="${vesselTypeList}">
 														<option value="${vesselType.id}">${vesselType.desc}</option>
@@ -182,9 +202,9 @@
 												</select>
 										</div>
 										<div class="mb-3">
-												<label class="small mb-1" for="vesselSubType">Vessel
+												<label class="small mb-1" for="chk_vesselSubTypeId">Vessel
 													Sub Type</label> <select multiple="" class="form-select"
-													aria-label="Default select example" name="vesselSubType">
+													aria-label="Default select example" name="chk_vesselSubTypeId">
 													<option value="0" selected>All</option>
 													<c:forEach var="vesselSubType" items="${vesselSubTypeList}">
 														<option value="${vesselSubType.id}">${vesselSubType.desc}</option>
@@ -193,9 +213,9 @@
 											
 										</div>                                        
 											<div class="mb-3">
-												<label class="small mb-1" for="rankCategory">Rank
+												<label class="small mb-1" for="chk_rankCategoryId">Rank
 												Category Type</label> <select multiple="" class="form-select"
-												aria-label="Default select example" name="rankCategory">
+												aria-label="Default select example" name="chk_rankCategoryId">
 												<option value="0" selected>All</option>
 												<c:forEach var="rankCategory" items="${rankCategoryList}">
 													<option value="${rankCategory.id}">${rankCategory.name}</option>
@@ -204,10 +224,10 @@
 											</div>
 											<!-- Form Group (new password)-->
 											<div class="mb-3">
-												<label class="small mb-1" for="rankSubCategory">Rank
+												<label class="small mb-1" for="chk_rankSubCategoryId">Rank
 												Sub-Category</label> 
 												<select multiple="" class="form-select"
-												name="rankSubCategory" aria-label="Default select example">
+												name="chk_rankSubCategoryId" aria-label="Default select example">
 												<option value="0" selected>All</option>
 												<c:forEach var="rankSubCategory"
 													items="${rankSubCategoryList}">
@@ -216,8 +236,8 @@
 											</select>
 											</div>
 											<div class="mb-3">
-												<label class="small mb-1" for="rankSubCategoryId">Rank</label>
-												<select class="form-select" multiple="" name="rankId"
+												<label class="small mb-1" for="chk_rankId">Rank</label>
+												<select class="form-select" multiple="" name="chk_rankId"
 													aria-label="Default select example">
 													<option value="0">All</option>
 													<c:forEach var="option" items="${rankList}">

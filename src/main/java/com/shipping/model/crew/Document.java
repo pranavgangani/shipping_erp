@@ -26,6 +26,7 @@ public class Document {
 	//Doc details
 	private String docTitle;
 	private String docNumber;
+	private String docType;
 	private DocumentCategory docCategory;	
 	private DocumentSubCategory docSubCategory;
 	private String givenName;
@@ -33,24 +34,25 @@ public class Document {
 	//Other datapoints
 	private int validity;
 	private DurationType durationType;	
-	private DateTime issueDate, expiryDate;	
-	private String type;
+	private DateTime issueDate, expiryDate;
 	private String docRemarks;
-	
+
 	//Passport specific	
 	private String nationality, countryCode;
 	
 	//Visa specific
-	private String entries, issingPostName, annotation, controlNumber;
+	private String entries, issuingPostName, annotation, controlNumber;
 	
 	//Training course specific
-	private String regulation, sectionTable;
-	
+	private String regulation, sectionTable, chapter;
+	private int pap;//Professional Attitude Points
+	private boolean isPhysical, isRecertRequired, isPaid;
+
 	//Contract
-	private boolean isMandatory;
-	private DocumentTag documentTag;
 	private List<ContractRule> contractRules;
-		
+
+	private boolean isMandatory;
+
 	//Required when storing against Crew
 	private List<Comment> comments;
 
@@ -78,6 +80,14 @@ public class Document {
 		this.desc = desc;
 	}
 
+	public DocumentMatrix getDocumentMatrix() {
+		return documentMatrix;
+	}
+
+	public void setDocumentMatrix(DocumentMatrix documentMatrix) {
+		this.documentMatrix = documentMatrix;
+	}
+
 	public String getDocTitle() {
 		return docTitle;
 	}
@@ -92,6 +102,14 @@ public class Document {
 
 	public void setDocNumber(String docNumber) {
 		this.docNumber = docNumber;
+	}
+
+	public String getDocType() {
+		return docType;
+	}
+
+	public void setDocType(String docType) {
+		this.docType = docType;
 	}
 
 	public DocumentCategory getDocCategory() {
@@ -150,14 +168,6 @@ public class Document {
 		this.expiryDate = expiryDate;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public String getDocRemarks() {
 		return docRemarks;
 	}
@@ -190,12 +200,12 @@ public class Document {
 		this.entries = entries;
 	}
 
-	public String getIssingPostName() {
-		return issingPostName;
+	public String getIssuingPostName() {
+		return issuingPostName;
 	}
 
-	public void setIssingPostName(String issingPostName) {
-		this.issingPostName = issingPostName;
+	public void setIssuingPostName(String issuingPostName) {
+		this.issuingPostName = issuingPostName;
 	}
 
 	public String getAnnotation() {
@@ -214,6 +224,38 @@ public class Document {
 		this.controlNumber = controlNumber;
 	}
 
+	public String getRegulation() {
+		return regulation;
+	}
+
+	public void setRegulation(String regulation) {
+		this.regulation = regulation;
+	}
+
+	public String getSectionTable() {
+		return sectionTable;
+	}
+
+	public void setSectionTable(String sectionTable) {
+		this.sectionTable = sectionTable;
+	}
+
+	public String getChapter() {
+		return chapter;
+	}
+
+	public void setChapter(String chapter) {
+		this.chapter = chapter;
+	}
+
+	public boolean isMandatory() {
+		return isMandatory;
+	}
+
+	public void setMandatory(boolean mandatory) {
+		isMandatory = mandatory;
+	}
+
 	public List<ContractRule> getContractRules() {
 		return contractRules;
 	}
@@ -230,46 +272,35 @@ public class Document {
 		this.comments = comments;
 	}
 
-
-	public boolean isMandatory() {
-		return isMandatory;
+	public int getPap() {
+		return pap;
 	}
 
-	public void setMandatory(boolean isMandatory) {
-		this.isMandatory = isMandatory;
+	public void setPap(int pap) {
+		this.pap = pap;
 	}
 
-	public DocumentMatrix getDocumentMatrix() {
-		return documentMatrix;
+	public boolean isPhysical() {
+		return isPhysical;
 	}
 
-	public void setDocumentMatrix(DocumentMatrix documentMatrix) {
-		this.documentMatrix = documentMatrix;
+	public void setPhysical(boolean physical) {
+		isPhysical = physical;
 	}
 
-	public DocumentTag getDocumentTag() {
-		return documentTag;
+	public boolean isRecertRequired() {
+		return isRecertRequired;
 	}
 
-	public void setDocumentTag(DocumentTag documentTag) {
-		this.documentTag = documentTag;
+	public void setRecertRequired(boolean recertRequired) {
+		isRecertRequired = recertRequired;
 	}
 
-	public String getRegulation() {
-		return regulation;
+	public boolean isPaid() {
+		return isPaid;
 	}
 
-	public void setRegulation(String regulation) {
-		this.regulation = regulation;
+	public void setPaid(boolean paid) {
+		isPaid = paid;
 	}
-
-	public String getSectionTable() {
-		return sectionTable;
-	}
-
-	public void setSectionTable(String sectionTable) {
-		this.sectionTable = sectionTable;
-	}
-	
-	
 }

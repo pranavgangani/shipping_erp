@@ -1,8 +1,6 @@
 package com.shipping.web.crew;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.shipping.util.ParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +22,10 @@ import com.shipping.model.crew.Document;
 import com.shipping.model.crew.DocumentCategory;
 import com.shipping.model.crew.DocumentMatrix;
 import com.shipping.model.crew.DocumentSubCategory;
-import com.shipping.model.crew.DocumentTag;
 import com.shipping.service.common.SequenceGeneratorService;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping(value = "/settings")
@@ -37,6 +37,12 @@ public class DocumentController {
 	@Autowired
 	private CrewSubDocumentCategoryRepository subDocumentCategoryDao;
 
+	@GetMapping(value = "/crew_doc_category_list")
+	public ModelAndView crewDocCategoryList(Model model) {
+		ModelAndView mv = new ModelAndView("settings/crew_doc_category_list");
+		mv.addObject("docCategoryList", DocumentCategory.getList());
+		return mv;
+	}
 	@GetMapping(value = "/add_crew_doc_sub_category")
 	public ModelAndView addDocSubCategory(Model model) {
 		ModelAndView mv = new ModelAndView("settings/add_crew_doc_sub_category");
@@ -77,6 +83,7 @@ public class DocumentController {
 		mv.addObject("rankCategoryList", RankCategory.getList());
 		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
 		mv.addObject("rankList", Rank.getList());
+		mv.addObject("durationTypes", DurationType.getList());
 		return mv;
 	} 
 	
@@ -142,48 +149,55 @@ public class DocumentController {
 		return mv;
 	}
 
-	
-	@GetMapping(value = "/assign_certification")
-	public ModelAndView assignCertifications(@RequestParam("rankId") int rankId, Model model) {
-		ModelAndView mv = new ModelAndView("settings/assign_certifications");
-		mv.addObject("durationTypes", DurationType.getList());
-		mv.addObject("rank", Rank.createFromId(rankId));
-		mv.addObject("rankMap", Rank.getByGroup());
-		return mv;
-	}
-	
-
 	@PostMapping(value = "/add_doc_certification")
 	public ModelAndView addCertification(
-			@RequestParam("rankId") int rankId,
-			@RequestParam("rankCategoryId") int rankCategoryId,
-			@RequestParam("rankSubCategoryId") int rankSubCategoryId,
 			@RequestParam("certDuration") int certDuration,
 			@RequestParam("durationTypeId") int durationTypeId,
 			@RequestParam("certName") String certName,
-			@RequestParam("certDesc") String certDesc) {
+			@RequestParam("certType") String certType,
+			@RequestParam("regulationDetails") String regulationDetails,
+			@RequestParam("chapterDetails") String chapterDetails,
+			@RequestParam("sectionDetails") String sectionDetails,
+			@RequestParam("isMandatory") String isMandatory,
+			@RequestParam("isPaid") String isPaid,
+			@RequestParam("isPhysical") String isPhysical,
+			@RequestParam("isRecertRequired") String isRecertRequired,
+			@RequestParam("certDesc") String certDesc,
+
+			@RequestParam("chk_vesselTypeId") String[] vesselTypes,
+			@RequestParam("chk_vesselSubTypeId") String[] vesselSubTypes,
+			@RequestParam("chk_rankCategoryId") String[] rankCategories,
+			@RequestParam("chk_rankSubCategoryId") String[] rankSubCategories,
+			@RequestParam("chk_rankId") String[] ranks,
+			@RequestParam("papPoints")int pap) {
 		ModelAndView mv = new ModelAndView("redirect:/settings/certifications");
 		System.out.println("certName: " + certName);
 
 		Document cert = new Document();
 		cert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
 		cert.setName(certName);
-		
-		DocumentMatrix docMatrix = new DocumentMatrix();
-		
-		/*
-		 * docMatrix.setVesselSubTypeIds();
-		 * 
-		 * cert.setRankCategoryId(rankCategoryId);
-		 * cert.setRankSubCategoryId(rankSubCategoryId); cert.setRankId(rankId);
-		 */
+		cert.setDesc(certDesc);
+		cert.setDocType(certType);
+		cert.setRegulation(regulationDetails);
+		cert.setSectionTable(sectionDetails);
+		cert.setChapter(chapterDetails);
 		cert.setValidity(certDuration);
 		cert.setDurationType(DurationType.createFromId(durationTypeId));
-		cert.setDocumentTag(DocumentTag.CERTIFICATION);
+		cert.setPap(pap);
+		cert.setDocCategory(DocumentCategory.ON_BOARDING);
+		cert.setDocSubCategory(subDocumentCategoryDao.findById(12L).get());
+		cert.setRecertRequired(ParamUtil.parseBoolean(isRecertRequired, false));
+		cert.setPhysical(ParamUtil.parseBoolean(isPhysical, false));
+		cert.setPaid(ParamUtil.parseBoolean(isPaid, false));
+		cert.setMandatory(ParamUtil.parseBoolean(isMandatory, false));
+		DocumentMatrix docMatrix = new DocumentMatrix();
+
+		//Arrays.stream(vesselTypes).forEach(o->Integer.parseInt());
+		//docMatrix.setVesselTypeIds(new ArrayList<Integer>(Arrays.asList(vesselTypes)));
+		cert.setDocumentMatrix(docMatrix);
 		docRepository.insert(cert);
-		long certId = cert.getId();
-		System.out.println("New certId ---> " + certId);
-		mv.addObject("certId", certId);
+		long docId = cert.getId();
+		mv.addObject("docId", docId);
 		return mv;
 	}
 	

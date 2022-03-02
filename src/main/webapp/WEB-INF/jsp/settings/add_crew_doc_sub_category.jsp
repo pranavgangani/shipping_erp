@@ -38,7 +38,7 @@
 									</div>
 									<div class="col-12 col-xl-auto mb-3">
 										<a class="btn btn-sm btn-light text-primary"
-											href="/crew/crew_list"> <i class="me-1"
+											href="/settings/crew_doc_sub_category_list"> <i class="me-1"
 											data-feather="arrow-left"></i> Go to Doc Sub-Category List
 										</a>
 									</div>
@@ -52,8 +52,8 @@
                     <div class="container-fluid px-4">
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
-                            <a class="nav-link" href="/settings/rank_category">Document Category</a>
-                            <a class="nav-link active ms-0" href="/settings/rank_sub_category">Document Sub-Category</a>
+                            <a class="nav-link" href="/settings/crew_doc_category_list">Document Category</a>
+                            <a class="nav-link active ms-0">Document Sub-Category</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">

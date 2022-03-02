@@ -142,8 +142,14 @@
                                             <a class="nav-link" href="/settings/medicals">Medicals</a>
                                             <a class="nav-link" href="/settings/licenses">Licenses</a>
                                             <a class="nav-link" href="/settings/surveys">Surveys</a>
-                                            <a class="nav-link" href="/settings/documents">Documents</a>                                            
+                                            <a class="nav-link" href="/settings/documents">Documents</a>
                                             <a class="nav-link" href="/settings/add_doc_certification">Add Certifications</a>
+                                            <a class="nav-link" href="/settings/add_doc_medicals">Add Medicals</a>
+                                            <a class="nav-link" href="/settings/add_doc_passport">Add Passport</a>
+                                            <a class="nav-link" href="/settings/add_doc_visa">Add Visa</a>
+                                            <a class="nav-link" href="/settings/add_doc_declarations"></a>
+                                            <a class="nav-link" href="/settings/crew_doc_sub_category_list">Crew Document Sub-Categories</a>
+                                            <a class="nav-link" href="/settings/add_crew_doc_sub_category">Add Crew Document Sub-Category</a>
                                         </nav>
                                     </div>
                                     <!-- Nested Sidenav Accordion (Layout -> Container Options)-->
