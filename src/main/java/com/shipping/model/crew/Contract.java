@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
-import com.shipping.model.crew.Document;
 import com.shipping.util.DateTime;
 
 public class Contract {
@@ -17,7 +16,7 @@ public class Contract {
 	private DateTime endDate;
 	private String placeOfContract;
 	
-	private List<Document> documents; 	
+	private List<Document> documents;
 	private List<ContractRule> otherContractRules;
 	private BigDecimal monthlyWage;
 	private String wageCurrency;

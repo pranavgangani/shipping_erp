@@ -11,8 +11,6 @@ import com.shipping.common.Comment;
 import com.shipping.common.Flag;
 import com.shipping.common.Person;
 import com.shipping.company.Employee;
-import com.shipping.model.crew.Rank;
-import com.shipping.model.crew.Document;
 import com.shipping.util.DateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)

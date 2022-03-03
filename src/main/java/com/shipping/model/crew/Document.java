@@ -2,6 +2,10 @@ package com.shipping.model.crew;
 
 import java.util.List;
 
+import com.shipping.model.crew.ContractRule;
+import com.shipping.model.crew.DocumentCategory;
+import com.shipping.model.crew.DocumentMatrix;
+import com.shipping.model.crew.DocumentSubCategory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -27,7 +31,7 @@ public class Document {
 	private String docTitle;
 	private String docNumber;
 	private String docType;
-	private DocumentCategory docCategory;	
+	private DocumentCategory docCategory;
 	private DocumentSubCategory docSubCategory;
 	private String givenName;
 

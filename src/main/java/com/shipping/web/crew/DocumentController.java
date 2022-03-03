@@ -24,9 +24,6 @@ import com.shipping.model.crew.DocumentMatrix;
 import com.shipping.model.crew.DocumentSubCategory;
 import com.shipping.service.common.SequenceGeneratorService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 @Controller
 @RequestMapping(value = "/settings")
 public class DocumentController {
@@ -184,7 +181,7 @@ public class DocumentController {
 		cert.setValidity(certDuration);
 		cert.setDurationType(DurationType.createFromId(durationTypeId));
 		cert.setPap(pap);
-		cert.setDocCategory(DocumentCategory.ON_BOARDING);
+		cert.setDocCategory(DocumentCategory.TRAVEL);
 		cert.setDocSubCategory(subDocumentCategoryDao.findById(12L).get());
 		cert.setRecertRequired(ParamUtil.parseBoolean(isRecertRequired, false));
 		cert.setPhysical(ParamUtil.parseBoolean(isPhysical, false));

@@ -8,18 +8,13 @@ import java.util.stream.Collectors;
 import org.springframework.data.annotation.Id;
 
 public class DocumentCategory {
-	public final static DocumentCategory ON_BOARDING = new DocumentCategory(1, "On-Boarding Documents");
-	public final static DocumentCategory KYC = new DocumentCategory(2, "KYC");
-	/*public final static DocumentCategory ADDRESS_AND_CONTACT = new DocumentCategory(1, "Address and Contact");
-	public final static DocumentCategory APPROVALS = new DocumentCategory(2, "Approval, Contracts and Agreements");
-	public final static DocumentCategory AUDITS = new DocumentCategory(3, "Audits");
-	public final static DocumentCategory BANK_DOCS = new DocumentCategory(4, "Bank Documents");
-	public final static DocumentCategory DUE_DILIGENCE = new DocumentCategory(5, "On-Boarding Documents");
-	public final static DocumentCategory GOVERNING_DOCS = new DocumentCategory(6, "Governing Documents");
-	public final static DocumentCategory TAX_DOCS = new DocumentCategory(7, "Tax Documents");
-	public final static DocumentCategory FINANCIALS = new DocumentCategory(8, "Financials");
-	public final static DocumentCategory KYC = new DocumentCategory(9, "KYC");
-	public final static DocumentCategory MISC = new DocumentCategory(10, "Miscallaneous");*/
+	public final static DocumentCategory TRAVEL = new DocumentCategory(1, "Travel");
+	public final static DocumentCategory EDUCATION = new DocumentCategory(2, "Education");
+	public final static DocumentCategory TRAINING = new DocumentCategory(3, "Training");
+	public final static DocumentCategory MEDICAL = new DocumentCategory(4, "Medical");
+	public final static DocumentCategory FINANCIAL = new DocumentCategory(5, "Financial");
+	public final static DocumentCategory INFORMATION = new DocumentCategory(6, "Information");
+	public final static DocumentCategory MISC = new DocumentCategory(7, "Miscellaneous");
 
 	@Id
 	private int id;	
@@ -70,7 +65,7 @@ public class DocumentCategory {
 	}
 	
 	public static List<DocumentCategory> getList(){
-		return new ArrayList<>(Arrays.asList(ON_BOARDING, KYC));
+		return new ArrayList<>(Arrays.asList(TRAVEL, TRAINING, MEDICAL, MISC, EDUCATION, INFORMATION, FINANCIAL));
 	}
 	
 	public static DocumentCategory createFromId(int typeId) {
