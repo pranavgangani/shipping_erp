@@ -7,6 +7,8 @@ import com.shipping.common.Collection;
 import com.shipping.common.Flag;
 import com.shipping.util.DateTime;
 
+import java.util.List;
+
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL)
 public class Vessel {
 	@Transient
@@ -34,6 +36,7 @@ public class Vessel {
 	private boolean isActive;
 	private DateTime enteredDateTime;
 	private String enteredByEmpId;
+	private List<VesselVacancy> vacancies;
 	
 	
 	public long getId() {
@@ -47,6 +50,15 @@ public class Vessel {
 	 * public VesselType getVesselType() { return vesselType; } public void
 	 * setVesselType(VesselType vesselType) { this.vesselType = vesselType; }
 	 */
+
+	public List<VesselVacancy> getVacancies() {
+		return vacancies;
+	}
+
+	public void setVacancies(List<VesselVacancy> vacancies) {
+		this.vacancies = vacancies;
+	}
+
 	public String getVesselName() {
 		return vesselName;
 	}
