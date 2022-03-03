@@ -1,4 +1,4 @@
-package com.shipping.model.crew;
+package com.shipping.model.common.document.category;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,8 @@ public class DocumentCategory {
 	public final static DocumentCategory MEDICAL = new DocumentCategory(4, "Medical");
 	public final static DocumentCategory FINANCIAL = new DocumentCategory(5, "Financial");
 	public final static DocumentCategory INFORMATION = new DocumentCategory(6, "Information");
-	public final static DocumentCategory MISC = new DocumentCategory(7, "Miscellaneous");
+	public final static DocumentCategory EMPLOYMENT = new DocumentCategory(7, "Employment");
+	public final static DocumentCategory MISC = new DocumentCategory(0, "Miscellaneous");
 
 	@Id
 	private int id;	
@@ -65,7 +66,7 @@ public class DocumentCategory {
 	}
 	
 	public static List<DocumentCategory> getList(){
-		return new ArrayList<>(Arrays.asList(TRAVEL, TRAINING, MEDICAL, MISC, EDUCATION, INFORMATION, FINANCIAL));
+		return new ArrayList<>(Arrays.asList(TRAVEL, EMPLOYMENT, TRAINING, MEDICAL, MISC, EDUCATION, INFORMATION, FINANCIAL));
 	}
 	
 	public static DocumentCategory createFromId(int typeId) {

@@ -1,6 +1,6 @@
 package com.shipping.model.common.document;
 
-import com.shipping.model.common.document.category.Document;
+import com.shipping.model.common.document.category.EducationDocument;
 
-public class Certificate extends Document {
+public class Certificate extends EducationDocument {
 }

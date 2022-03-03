@@ -3,20 +3,25 @@ package com.shipping.model.common.document.category;
 import com.shipping.common.Collection;
 import com.shipping.common.Comment;
 import com.shipping.common.Flag;
-import com.shipping.model.crew.DocumentCategory;
+import com.shipping.model.common.DurationType;
 import com.shipping.model.crew.DocumentMatrix;
 import com.shipping.util.DateTime;
+import org.bson.types.Binary;
+import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW_DOCUMENT)
 public abstract class Document {
+    @Transient
+    public static final String SEQUENCE_NAME = Collection.CREW_DOCUMENT;
+
     @org.springframework.data.annotation.Id
     protected long Id;
     protected String _type;
     protected DocumentCategory documentCategory;
     private Flag flag;
-    private boolean isMandatory;
+    private boolean isMandatory, isRequiredBeforeJoining, isRequiredAfterJoining, isUploaded;
 
     //Doc details
     protected String docName, docDesc;
@@ -27,11 +32,18 @@ public abstract class Document {
     private String remarks;
     private DateTime dateOfIssue, dateOfExpiry;
 
+    private int validity;
+    private DurationType durationType;
+
     //Validity Level
     private DocumentMatrix documentMatrix;
 
     //Required when storing against Crew
     private List<Comment> comments;
+
+    //Physical File
+    private String fileTitle;
+    private Binary file;
 
     public long getId() {
         return Id;
@@ -159,5 +171,61 @@ public abstract class Document {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public int getValidity() {
+        return validity;
+    }
+
+    public void setValidity(int validity) {
+        this.validity = validity;
+    }
+
+    public DurationType getDurationType() {
+        return durationType;
+    }
+
+    public void setDurationType(DurationType durationType) {
+        this.durationType = durationType;
+    }
+
+    public String getFileTitle() {
+        return fileTitle;
+    }
+
+    public void setFileTitle(String fileTitle) {
+        this.fileTitle = fileTitle;
+    }
+
+    public Binary getFile() {
+        return file;
+    }
+
+    public void setFile(Binary file) {
+        this.file = file;
+    }
+
+    public boolean isRequiredBeforeJoining() {
+        return isRequiredBeforeJoining;
+    }
+
+    public void setRequiredBeforeJoining(boolean requiredBeforeJoining) {
+        isRequiredBeforeJoining = requiredBeforeJoining;
+    }
+
+    public boolean isRequiredAfterJoining() {
+        return isRequiredAfterJoining;
+    }
+
+    public void setRequiredAfterJoining(boolean requiredAfterJoining) {
+        isRequiredAfterJoining = requiredAfterJoining;
+    }
+
+    public boolean isUploaded() {
+        return isUploaded;
+    }
+
+    public void setUploaded(boolean uploaded) {
+        isUploaded = uploaded;
     }
 }

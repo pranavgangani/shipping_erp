@@ -1,5 +1,6 @@
 package com.shipping.web.crew;
 
+import com.shipping.model.common.document.category.Document;
 import com.shipping.util.ParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,7 @@ import com.shipping.model.crew.RankSubCategory;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselType;
 import com.shipping.model.common.DurationType;
-import com.shipping.model.crew.Document;
-import com.shipping.model.crew.DocumentCategory;
+import com.shipping.model.common.document.category.DocumentCategory;
 import com.shipping.model.crew.DocumentMatrix;
 import com.shipping.model.crew.DocumentSubCategory;
 import com.shipping.service.common.SequenceGeneratorService;
@@ -170,7 +170,7 @@ public class DocumentController {
 		ModelAndView mv = new ModelAndView("redirect:/settings/certifications");
 		System.out.println("certName: " + certName);
 
-		Document cert = new Document();
+		/*Document cert = new Document();
 		cert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
 		cert.setName(certName);
 		cert.setDesc(certDesc);
@@ -194,7 +194,7 @@ public class DocumentController {
 		cert.setDocumentMatrix(docMatrix);
 		docRepository.insert(cert);
 		long docId = cert.getId();
-		mv.addObject("docId", docId);
+		mv.addObject("docId", docId);*/
 		return mv;
 	}
 	

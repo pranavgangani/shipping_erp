@@ -9,65 +9,70 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateTime implements Cloneable, Comparable, Serializable {
-	private Calendar calender;
-	private SimpleDateFormat format;
+    private Calendar calender;
+    private SimpleDateFormat format;
+	private Date date;
 
-	public DateTime() {
-		this.calender = Calendar.getInstance();
-	}
+    public DateTime() {
+        this.calender = Calendar.getInstance();
+    }
 
-	/*
-	 * public DateTime(String dateStr) { SimpleDateFormat sdf = new
-	 * SimpleDateFormat("dd/MM/yyyy"); try { date = sdf.parse(dateStr); } catch
-	 * (ParseException e) { // TODO Auto-generated catch block e.printStackTrace();
-	 * } }
-	 */
 
-	public Date getDate() {
-		return this.calender.getTime();
-	}
+    public DateTime(String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+			date = sdf.parse(dateStr);
+        } catch
+        (ParseException e) { // TODO Auto-generated catch block e.printStackTrace();
+        }
+    }
 
-	public String getDateStr() {
-		return (new SimpleDateFormat("dd-MMM-yyyy")).format(this.calender.getTime());
-	}
 
-	public void setTimeZone(TimeZone tz) {
-		this.calender.setTimeZone(tz);
-	}
+    public Date getDate() {
+        return this.calender.getTime();
+    }
 
-	public Timestamp getTimestamp() {
-		Timestamp result = null;
-		if (this.calender != null) {
-			long ts = this.calender.getTime().getTime();
-			result = new Timestamp(ts);
-		}
-		return result;
-	}
+    public String getDateStr() {
+        return (new SimpleDateFormat("dd-MMM-yyyy")).format(this.calender.getTime());
+    }
 
-	public int hashCode() {
-		return this.getDate().hashCode();
-	}
+    public void setTimeZone(TimeZone tz) {
+        this.calender.setTimeZone(tz);
+    }
 
-	public boolean equals(Object obj) {
-		if (obj instanceof DateTime) {
-			DateTime dt = (DateTime) obj;
-			if (dt.getDate().getTime() == this.getDate().getTime()) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public Timestamp getTimestamp() {
+        Timestamp result = null;
+        if (this.calender != null) {
+            long ts = this.calender.getTime().getTime();
+            result = new Timestamp(ts);
+        }
+        return result;
+    }
 
-	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    public int hashCode() {
+        return this.getDate().hashCode();
+    }
 
-	@Override
-	public String toString() {
-		return "DateTime [getDateStr()=" + getDateStr() + "]";
-	}
-	
-	
+    public boolean equals(Object obj) {
+        if (obj instanceof DateTime) {
+            DateTime dt = (DateTime) obj;
+            if (dt.getDate().getTime() == this.getDate().getTime()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "DateTime [getDateStr()=" + getDateStr() + "]";
+    }
+
+
 }

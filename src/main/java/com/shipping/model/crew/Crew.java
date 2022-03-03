@@ -2,6 +2,7 @@ package com.shipping.model.crew;
 
 import java.util.List;
 
+import com.shipping.model.common.document.category.Document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -27,18 +28,14 @@ public class Crew extends Person {
 	private long photoId;
 	
 	// Past
-	private List<Employment> employeeHistory;
-	private List<Education> educatonHistory;
+	private List<Employment> employmentHistory;
+	private List<Education> educationHistory;
 	private List<Medical> medicalHistory;
 	private List<Travel> travelHistory;
 	
 	//Current
-	private List<Document> trainings;
-	private List<Document> documents;
-	private List<Document> certifications;
-	private List<Document> licenses;
-	private List<Document> visas;
-	private List<Document> passports;
+	private List<Document> preJoiningDocuments;
+	private List<Document> postJoiningDocuments;
 	
 	//Medical
 	private List<IllnessAndInjury> illnessInjury;
@@ -112,28 +109,60 @@ public class Crew extends Person {
 		this.rank = rank;
 	}
 
-	public List<Employment> getEmployeeHistory() {
-		return employeeHistory;
+	public List<Employment> getEmploymentHistory() {
+		return employmentHistory;
 	}
 
-	public void setEmployeeHistory(List<Employment> employeeHistory) {
-		this.employeeHistory = employeeHistory;
+	public void setEmploymentHistory(List<Employment> employmentHistory) {
+		this.employmentHistory = employmentHistory;
 	}
 
-	public List<Education> getEducatonHistory() {
-		return educatonHistory;
+	public List<Education> getEducationHistory() {
+		return educationHistory;
 	}
 
-	public void setEducatonHistory(List<Education> educatonHistory) {
-		this.educatonHistory = educatonHistory;
+	public void setEducationHistory(List<Education> educationHistory) {
+		this.educationHistory = educationHistory;
 	}
 
-	public List<Document> getDocuments() {
-		return documents;
+	public String getPassportNumber() {
+		return passportNumber;
 	}
 
-	public void setDocuments(List<Document> documents) {
-		this.documents = documents;
+	public void setPassportNumber(String passportNumber) {
+		this.passportNumber = passportNumber;
+	}
+
+	public String getVisaNumber() {
+		return visaNumber;
+	}
+
+	public void setVisaNumber(String visaNumber) {
+		this.visaNumber = visaNumber;
+	}
+
+	public String getDistinguishMark() {
+		return distinguishMark;
+	}
+
+	public void setDistinguishMark(String distinguishMark) {
+		this.distinguishMark = distinguishMark;
+	}
+
+	public Flag getManningOffice() {
+		return manningOffice;
+	}
+
+	public void setManningOffice(Flag manningOffice) {
+		this.manningOffice = manningOffice;
+	}
+
+	public long getPhotoId() {
+		return photoId;
+	}
+
+	public void setPhotoId(long photoId) {
+		this.photoId = photoId;
 	}
 
 	public List<Medical> getMedicalHistory() {
@@ -142,7 +171,39 @@ public class Crew extends Person {
 
 	public void setMedicalHistory(List<Medical> medicalHistory) {
 		this.medicalHistory = medicalHistory;
-	}	
+	}
+
+	public List<Travel> getTravelHistory() {
+		return travelHistory;
+	}
+
+	public void setTravelHistory(List<Travel> travelHistory) {
+		this.travelHistory = travelHistory;
+	}
+
+	public List<Document> getPreJoiningDocuments() {
+		return preJoiningDocuments;
+	}
+
+	public void setPreJoiningDocuments(List<Document> preJoiningDocuments) {
+		this.preJoiningDocuments = preJoiningDocuments;
+	}
+
+	public List<Document> getPostJoiningDocuments() {
+		return postJoiningDocuments;
+	}
+
+	public void setPostJoiningDocuments(List<Document> postJoiningDocuments) {
+		this.postJoiningDocuments = postJoiningDocuments;
+	}
+
+	public List<IllnessAndInjury> getIllnessInjury() {
+		return illnessInjury;
+	}
+
+	public void setIllnessInjury(List<IllnessAndInjury> illnessInjury) {
+		this.illnessInjury = illnessInjury;
+	}
 
 	public List<NextOfKin> getNextOfKins() {
 		return nextOfKins;
@@ -183,119 +244,6 @@ public class Crew extends Person {
 	public void setDob(DateTime dob) {
 		this.dob = dob;
 	}
-	
-
-	public DateTime getEnteredDateTime() {
-		return enteredDateTime;
-	}
-
-	public void setEnteredDateTime(DateTime enteredDateTime) {
-		this.enteredDateTime = enteredDateTime;
-	}
-
-	public Employee getEnteredByEmp() {
-		return enteredByEmp;
-	}
-
-	public void setEnteredByEmp(Employee enteredByEmp) {
-		this.enteredByEmp = enteredByEmp;
-	}
-
-	public String getPassportNumber() {
-		return passportNumber;
-	}
-
-	public void setPassportNumber(String passportNumber) {
-		this.passportNumber = passportNumber;
-	}
-
-	public String getVisaNumber() {
-		return visaNumber;
-	}
-
-	public void setVisaNumber(String visaNumber) {
-		this.visaNumber = visaNumber;
-	}
-
-	public String getDistinguishMark() {
-		return distinguishMark;
-	}
-
-	public void setDistinguishMark(String distinguishMark) {
-		this.distinguishMark = distinguishMark;
-	}
-
-	public long getPhotoId() {
-		return photoId;
-	}
-
-	public void setPhotoId(long photoId) {
-		this.photoId = photoId;
-	}	
-
-	public Flag getManningOffice() {
-		return manningOffice;
-	}
-
-	public void setManningOffice(Flag manningOffice) {
-		this.manningOffice = manningOffice;
-	}
-
-	public List<Travel> getTravelHistory() {
-		return travelHistory;
-	}
-
-	public void setTravelHistory(List<Travel> travelHistory) {
-		this.travelHistory = travelHistory;
-	}
-
-	public List<Document> getTrainings() {
-		return trainings;
-	}
-
-	public void setTrainings(List<Document> trainings) {
-		this.trainings = trainings;
-	}
-
-	public List<Document> getCertifications() {
-		return certifications;
-	}
-
-	public void setCertifications(List<Document> certifications) {
-		this.certifications = certifications;
-	}
-
-	public List<Document> getLicenses() {
-		return licenses;
-	}
-
-	public void setLicenses(List<Document> licenses) {
-		this.licenses = licenses;
-	}
-
-	public List<Document> getVisas() {
-		return visas;
-	}
-
-	public void setVisas(List<Document> visas) {
-		this.visas = visas;
-	}
-
-	public List<Document> getPassports() {
-		return passports;
-	}
-
-	public void setPassports(List<Document> passports) {
-		this.passports = passports;
-	}
-
-	public List<IllnessAndInjury> getIllnessInjury() {
-		return illnessInjury;
-	}
-
-	public void setIllnessInjury(List<IllnessAndInjury> illnessInjury) {
-		this.illnessInjury = illnessInjury;
-	}
 
 	public List<Comment> getComments() {
 		return comments;
@@ -311,6 +259,22 @@ public class Crew extends Person {
 
 	public void setAuditTails(List<AuditTrail> auditTails) {
 		this.auditTails = auditTails;
+	}
+
+	public Employee getEnteredByEmp() {
+		return enteredByEmp;
+	}
+
+	public void setEnteredByEmp(Employee enteredByEmp) {
+		this.enteredByEmp = enteredByEmp;
+	}
+
+	public DateTime getEnteredDateTime() {
+		return enteredDateTime;
+	}
+
+	public void setEnteredDateTime(DateTime enteredDateTime) {
+		this.enteredDateTime = enteredDateTime;
 	}
 
 	public Employee getReviewedByEmp() {

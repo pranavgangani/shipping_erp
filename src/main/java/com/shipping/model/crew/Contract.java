@@ -3,6 +3,7 @@ package com.shipping.model.crew;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.shipping.model.common.document.category.Document;
 import org.springframework.data.annotation.Id;
 
 import com.shipping.util.DateTime;
