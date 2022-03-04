@@ -3,16 +3,16 @@ package com.shipping.model.vessel;
 import java.util.List;
 
 public class VesselVacancyAttributes {
-    private List<Long> minRankList;
+    private List<Integer> minRankList;
     private List<Integer> minVesselTypeIdList;
     private List<Integer> minVesselSubTypeIdList;
     private int minGrossTonnage;
 
-    public List<Long> getMinRankList() {
+    public List<Integer> getMinRankList() {
         return minRankList;
     }
 
-    public void setMinRankList(List<Long> minRankList) {
+    public void setMinRankList(List<Integer> minRankList) {
         this.minRankList = minRankList;
     }
 

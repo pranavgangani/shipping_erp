@@ -15,7 +15,7 @@ import com.shipping.model.vessel.VesselSubType;
 
 public class Rank {
 	@Id
-	private long id;	
+	private int id;
 	private String name;
 	private RankCategory rankCategory;
 	private RankSubCategory rankSubCategory;
@@ -54,13 +54,12 @@ public class Rank {
 	public static final Rank ENGINE_FITTER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 21, "Engine Fitter");
 	
 	public static final Rank CHIEF_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 22, "Chief Cook");
-	public static final Rank SECOND_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 22, "Second Cook");
-	public static final Rank MESSMAN_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 22, "Messman");
-	public static final Rank TRAINEEE_MESSMAN = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 22, "Trainee Messman");
+	public static final Rank SECOND_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 23, "Second Cook");
+	public static final Rank MESSMAN_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 24, "Messman");
+	public static final Rank TRAINEEE_MESSMAN = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 25, "Trainee Messman");
 	
 	
-	public Rank(RankCategory rankCategory, RankSubCategory rankSubCategory, long id, String name) {
-		super();
+	public Rank(RankCategory rankCategory, RankSubCategory rankSubCategory, int id, String name) {
 		this.rankCategory = rankCategory;
 		this.rankSubCategory = rankSubCategory;
 		this.id = id;
@@ -68,25 +67,21 @@ public class Rank {
 	}
 
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-
 
 	public String getName() {
 		return name;
 	}
 
-
 	public RankCategory getRankCategory() {
 		return rankCategory;
 	}
 
-
 	public RankSubCategory getRankSubCategory() {
 		return rankSubCategory;
 	}
-
 
 	@Override
 	public int hashCode() {

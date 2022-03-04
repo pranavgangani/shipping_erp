@@ -8,8 +8,11 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface VesselVacancyRepository extends MongoRepository<VesselVacancy, Long> {
-    @Query("{'rankId': { $eq: ?0 }}")
+    @Query("{'vacancyAttributes.minRankList': { $eq: 1 }}")
 	public List<VesselVacancy> findVacanciesByRank(int rankId);
+
+    @Query("{'vacancyAttributes.minRankList': { $eq: 1 }}")
+    public List<VesselVacancy> findVacanciesByVesselSubType(int rankId);
 
     @Query("{'vesselId': { $eq: ?0 }}")
     public List<VesselVacancy> findVacanciesByVessel(int vesselId);
