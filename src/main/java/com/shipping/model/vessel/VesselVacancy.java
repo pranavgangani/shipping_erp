@@ -1,17 +1,26 @@
 package com.shipping.model.vessel;
 
+import com.shipping.common.Collection;
 import com.shipping.company.Employee;
-import com.shipping.model.crew.Rank;
 import com.shipping.util.DateTime;
+import org.bson.Document;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
+@org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL_VACANCY)
 public class VesselVacancy {
+	@Transient
+	public static final String SEQUENCE_NAME = Collection.VESSEL_VACANCY;
+
 	@Id
 	private long id;
-	private Rank rank;
+	private long vesselId;
+	private long rankId;
+	private long crewId;
 	private String remarks;
-	private DateTime startDate;
-	private DateTime endDate;
+	private DateTime crewEmbarkDate;
+	private DateTime vacancyStartDate;
+	private DateTime vacancyEndDate;
 	private Employee enteredBy;
 	private DateTime enteredDateTime;
 
@@ -23,12 +32,20 @@ public class VesselVacancy {
 		this.id = id;
 	}
 
-	public Rank getRank() {
-		return rank;
+	public long getVesselId() {
+		return vesselId;
 	}
 
-	public void setRank(Rank rank) {
-		this.rank = rank;
+	public void setVesselId(long vesselId) {
+		this.vesselId = vesselId;
+	}
+
+	public long getRankId() {
+		return rankId;
+	}
+
+	public void setRankId(long rankId) {
+		this.rankId = rankId;
 	}
 
 	public String getRemarks() {
@@ -39,20 +56,36 @@ public class VesselVacancy {
 		this.remarks = remarks;
 	}
 
-	public DateTime getStartDate() {
-		return startDate;
+	public long getCrewId() {
+		return crewId;
 	}
 
-	public void setStartDate(DateTime startDate) {
-		this.startDate = startDate;
+	public void setCrewId(long crewId) {
+		this.crewId = crewId;
 	}
 
-	public DateTime getEndDate() {
-		return endDate;
+	public DateTime getCrewEmbarkDate() {
+		return crewEmbarkDate;
 	}
 
-	public void setEndDate(DateTime endDate) {
-		this.endDate = endDate;
+	public void setCrewEmbarkDate(DateTime crewEmbarkDate) {
+		this.crewEmbarkDate = crewEmbarkDate;
+	}
+
+	public DateTime getVacancyStartDate() {
+		return vacancyStartDate;
+	}
+
+	public void setVacancyStartDate(DateTime vacancyStartDate) {
+		this.vacancyStartDate = vacancyStartDate;
+	}
+
+	public DateTime getVacancyEndDate() {
+		return vacancyEndDate;
+	}
+
+	public void setVacancyEndDate(DateTime vacancyEndDate) {
+		this.vacancyEndDate = vacancyEndDate;
 	}
 
 	public Employee getEnteredBy() {

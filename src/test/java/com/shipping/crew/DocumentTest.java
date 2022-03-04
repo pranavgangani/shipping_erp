@@ -1,4 +1,4 @@
-package com.shipping.crew.document;
+package com.shipping.crew;
 
 import com.shipping.common.Flag;
 import com.shipping.dao.common.FlagRepository;

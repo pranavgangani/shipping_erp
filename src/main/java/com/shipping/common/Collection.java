@@ -13,6 +13,7 @@ public class Collection {
 	public final static String VESSEL_OWNER = "VesselOwner";
 	public final static String VESSEL_PHOTO = "VesselPhoto";
 	public final static String VESSEL_OWNER_PHOTO = "VesselOwnerPhoto";
+	public final static String VESSEL_VACANCY = "VesselVacancy";
 	
 	//Common
 	public final static String FLAG = "Flag";
