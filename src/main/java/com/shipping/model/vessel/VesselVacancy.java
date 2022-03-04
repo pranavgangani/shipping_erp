@@ -7,6 +7,8 @@ import org.bson.Document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
+import java.util.List;
+
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL_VACANCY)
 public class VesselVacancy {
 	@Transient
@@ -15,14 +17,16 @@ public class VesselVacancy {
 	@Id
 	private long id;
 	private long vesselId;
-	private long rankId;
-	private long crewId;
+	private long filledByCrewId;
 	private String remarks;
 	private DateTime crewEmbarkDate;
 	private DateTime vacancyStartDate;
 	private DateTime vacancyEndDate;
 	private Employee enteredBy;
 	private DateTime enteredDateTime;
+
+	//Other Vacancy Conditions/Attributes
+	private List<VesselVacancyAttributes> vacancyAttributes;
 
 	public long getId() {
 		return id;
@@ -40,12 +44,12 @@ public class VesselVacancy {
 		this.vesselId = vesselId;
 	}
 
-	public long getRankId() {
-		return rankId;
+	public long getFilledByCrewId() {
+		return filledByCrewId;
 	}
 
-	public void setRankId(long rankId) {
-		this.rankId = rankId;
+	public void setFilledByCrewId(long filledByCrewId) {
+		this.filledByCrewId = filledByCrewId;
 	}
 
 	public String getRemarks() {
@@ -56,13 +60,7 @@ public class VesselVacancy {
 		this.remarks = remarks;
 	}
 
-	public long getCrewId() {
-		return crewId;
-	}
 
-	public void setCrewId(long crewId) {
-		this.crewId = crewId;
-	}
 
 	public DateTime getCrewEmbarkDate() {
 		return crewEmbarkDate;
@@ -102,5 +100,13 @@ public class VesselVacancy {
 
 	public void setEnteredDateTime(DateTime enteredDateTime) {
 		this.enteredDateTime = enteredDateTime;
+	}
+
+	public List<VesselVacancyAttributes> getVacancyAttributes() {
+		return vacancyAttributes;
+	}
+
+	public void setVacancyAttributes(List<VesselVacancyAttributes> vacancyAttributes) {
+		this.vacancyAttributes = vacancyAttributes;
 	}
 }

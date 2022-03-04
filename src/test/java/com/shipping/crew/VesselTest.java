@@ -85,59 +85,65 @@ class VesselTest {
 	@Test
 	void addVacancyToVessel(){
 
-		List<VesselVacancy> vacancies = new ArrayList<>();
-
 		//Find Vessel
 		Vessel vessel = vesselDao.findById(12l).get();
 
-		VesselVacancy vac1 = new VesselVacancy();
-		vac1.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
-		vac1.setVesselId(vessel.getId());
-		vac1.setRankId(Rank.CAPTAIN.getId());
+		VesselVacancy vacancy = new VesselVacancy();
+		vacancy.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
+		vacancy.setVesselId(vessel.getId());
 
-		VesselVacancy vac2 = new VesselVacancy();
-		vac2.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
-		vac2.setVesselId(vessel.getId());
-		vac2.setRankId(Rank.CHIEF_ENGINEER.getId());
+		//All Vacancies
+		List<VesselVacancyAttributes> vacancyAttributes = new ArrayList<>();
 
-		VesselVacancy vac3 = new VesselVacancy();
-		vac3.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
-		vac3.setVesselId(vessel.getId());
-		vac3.setRankId(Rank.CHIEF_OFFICER.getId());
+		//Vacancy#1
+		VesselVacancyAttributes vacancy1 = new VesselVacancyAttributes();
+		//Add Min Rank Attributes
+		vacancy1.setMinRankList(new ArrayList<>(Arrays.asList(Rank.CAPTAIN.getId())));
 
-		VesselVacancy vac4 = new VesselVacancy();
-		vac4.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
-		vac4.setVesselId(vessel.getId());
-		vac4.setRankId(Rank.CHIEF_COOK.getId());
+		//Add Min Vessel Type Attributes
+		vacancy1.setMinVesselSubTypeIdList(new ArrayList<>(Arrays.asList(
+				VesselSubType.LNG_TANKER.getId(),
+				VesselSubType.LPG_TANKER.getId(),
+				VesselSubType.FSO_TANKER.getId(),
+				VesselSubType.OIL_PROD_TANKER.getId()
+		)));
 
-		//vacancies.add(vac1);
-		//vacancies.add(vac2);
-		//vacancies.add(vac3);
-		vacancies.add(vac4);
+		//Min Gross Tonn
+		vacancy1.setMinGrossTonnage(1000);
 
-		//vesselVacancyDao.insert(vac1);
-		//vesselVacancyDao.insert(vac2);
-		//vesselVacancyDao.insert(vac3);
-		vesselVacancyDao.insert(vac4);
+		//Vacancy#2
+		VesselVacancyAttributes vacancy2 = new VesselVacancyAttributes();
+		//Add Min Rank Attributes
+		vacancy2.setMinRankList(new ArrayList<>(Arrays.asList(Rank.SECOND_OFFICER.getId())));
+
+		//Open for any Vessel Experience
+		//So no Vessel Sub Type added
+
+		//Min Gross Tonn
+		vacancy2.setMinGrossTonnage(7000);
+
+
+		//-->Add Vacancy Attributes
+		vacancyAttributes.add(vacancy1);
+		vacancyAttributes.add(vacancy2);
+
+		vacancy.setVacancyAttributes(vacancyAttributes);
+		vesselVacancyDao.insert(vacancy);
+
 		//mongoTemplate.getCollection(VESSEL_VACANCY).insertMany(vacancies);
 
-		//Add Vacancy
-		/*VesselVacancy vacancy = new VesselVacancy();
-		vacancy.setVesselId(vessel.getId());
-		vacancy.setRankId(Rank.BOSUN.getId());
-		vesselVacancyDao.save(vacancy);*/
 	}
 
 	@Test
 	void findVesselsWithVacancies(){
-		Query query = new Query();
+		/*Query query = new Query();
 		query.addCriteria(Criteria.where("name").regex("^A"));
-		List<User> users = mongoTemplate.find(query,User.class);
+		List<User> users = mongoTemplate.find(query,User.class);*/
 
 		List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRank((int)Rank.CHIEF_COOK.getId());
 		vacancies.forEach(v->{
 			Vessel vessel = vesselDao.findById(v.getVesselId()).get();
-			System.out.println(vessel.getVesselName() + " has " + Rank.createFromId((int) v.getRankId()).getName());
+			//System.out.println(vessel.getVesselName() + " has " + Rank.createFromId((int) v.getRankId()).getName());
 		});
 	}
 }
