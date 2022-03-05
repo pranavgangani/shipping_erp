@@ -342,8 +342,9 @@ class DocumentTest {
         int rankCatId = rank.getRankCategory().getId();
         int rankSubCatId = rank.getRankSubCategory().getId();
 
-        List<Document> list = documentDao.getPostJoiningDocs1(vesselTypeId,
-                vesselSubTypeId, rankCatId, rankSubCatId, rank.getId());
+        List<Document> list = new ArrayList<>();
+        list.addAll(documentDao.getPostJoiningDocs1(vesselTypeId,
+                vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));
 
         list.addAll(documentDao.getPostJoiningDocs2(vesselTypeId,
                 vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));
@@ -365,4 +366,5 @@ class DocumentTest {
             }
         });*/
     }
+
 }

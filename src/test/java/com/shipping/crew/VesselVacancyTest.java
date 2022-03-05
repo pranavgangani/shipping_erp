@@ -146,12 +146,27 @@ class VesselVacancyTest {
             employmentList.forEach(emp -> rankExp.add(emp.getLastRank().getId()));
             final List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);
             if(ListUtil.isNotEmpty(vacancies)) {
-                System.out.println("Got ["+vacancies.size()+"] for "+c.getName());
+                System.out.println("Got ["+vacancies.size()+"]  vacancies for "+c.getName() + " | CrewId:"+c.getId());
                 vacancies.forEach(v->{
-                    System.out.println(v);
+                    System.out.print("VacancyID::"+v.getId() + " for Post [");
+                    v.getVacancyAttributes().getMinRankList().forEach(r->{
+                        System.out.println(Rank.createFromId(r).getName());
+                    });
+                    System.out.print("]");
+                    System.out.println();
                 });
                 System.out.println("------------------------");
             }
         });
+    }
+
+
+    @Test
+    void assignCrewToVessel() {
+        Crew crew = crewDao.findById(26l).get();
+        VesselVacancy vacancy = vesselVacancyDao.findById(21l).get();
+        vacancy.setFilledByCrewId(crew.getId());
+        vesselVacancyDao.save(vacancy);
+
     }
 }
