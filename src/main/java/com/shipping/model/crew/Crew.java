@@ -34,6 +34,7 @@ public class Crew extends Person {
     private List<Travel> travelHistory;
 
     //Current
+    private List<Document> existingDocuments;
     private List<Document> preJoiningDocuments;
     private List<Document> postJoiningDocuments;
 
@@ -46,6 +47,15 @@ public class Crew extends Person {
     private String passportNum, visaNum;
     private DateTime dob;
 
+    private int statusId;
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
     // Requests
 	/*private List<CourseRequest> trainingRequests;
 	private List<TravelRequest> travelRequests;
@@ -284,6 +294,14 @@ public class Crew extends Person {
         this.reviewedDateTime = reviewedDateTime;
     }
 
+    public List<Document> getExistingDocuments() {
+        return existingDocuments;
+    }
+
+    public void setExistingDocuments(List<Document> existingDocuments) {
+        this.existingDocuments = existingDocuments;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -306,4 +324,28 @@ public class Crew extends Person {
         return true;
     }
 
+    public enum Status {
+        NEW_RECRUIT(1, "New Recruit"),
+        PENDING_DOCS(2, "Pending Docs"),
+        SIGN_ON_READY(3, "Sign-On Ready"),
+        SIGNED_ON(4, "Signed-On"),
+        SIGNED_OFF(5, "Signed-Off");
+
+
+        private int id;
+        private String desc;
+
+        Status(int id, String desc) {
+            this.id = id;
+            this.desc = desc;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+    }
 }

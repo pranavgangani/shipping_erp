@@ -1,43 +1,21 @@
 package com.shipping.crew;
 
-import com.jayway.jsonpath.Criteria;
 import com.shipping.common.Flag;
-import com.shipping.dao.common.CommonDocumentRepository;
+import com.shipping.dao.common.CrewDocumentRepository;
 import com.shipping.dao.common.FlagRepository;
-import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.vessel.VesselOwnerRepository;
 import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.dao.vessel.VesselVacancyRepository;
 import com.shipping.main.CrewManagementApplication;
-import com.shipping.model.common.document.Certificate;
-import com.shipping.model.common.document.ExperienceLetter;
-import com.shipping.model.common.document.Passport;
-import com.shipping.model.common.document.SalarySlip;
-import com.shipping.model.common.document.category.Document;
-import com.shipping.model.common.document.category.EducationDocument;
-import com.shipping.model.common.document.category.EmploymentDocument;
-import com.shipping.model.crew.Crew;
-import com.shipping.model.crew.Education;
-import com.shipping.model.crew.Employment;
-import com.shipping.model.crew.Rank;
 import com.shipping.model.vessel.*;
 import com.shipping.service.common.SequenceGeneratorService;
-import com.shipping.util.DateTime;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.shipping.common.Collection.VESSEL_VACANCY;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -51,7 +29,7 @@ class VesselTest {
     @Autowired
     private VesselOwnerRepository vesselOwnerDao;
     @Autowired
-    private CommonDocumentRepository documentDao;
+    private CrewDocumentRepository documentDao;
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
     @Autowired

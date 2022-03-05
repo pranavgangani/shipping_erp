@@ -33,7 +33,7 @@ public enum DocumentPool {
     SLIP(26, "Slip"),
     REPORT(27, "Report"),
     TAX_ID(28, "Tax ID"),
-    OTHER(28, "Other");
+    OTHER(0, "Other");
 
     private int id;
     private String name;

@@ -1,19 +1,17 @@
 package com.shipping.crew;
 
 import com.shipping.common.Flag;
-import com.shipping.dao.common.CommonDocumentRepository;
+import com.shipping.dao.common.CrewDocumentRepository;
 import com.shipping.dao.common.FlagRepository;
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.main.CrewManagementApplication;
 import com.shipping.model.common.document.*;
 import com.shipping.model.common.document.category.Document;
-import com.shipping.model.common.document.category.DocumentPool;
 import com.shipping.model.common.document.category.EducationDocument;
 import com.shipping.model.common.document.category.EmploymentDocument;
 import com.shipping.model.crew.*;
 import com.shipping.model.vessel.Vessel;
 import com.shipping.model.vessel.VesselSubType;
-import com.shipping.model.vessel.VesselType;
 import com.shipping.service.common.SequenceGeneratorService;
 import com.shipping.util.DateTime;
 import org.junit.jupiter.api.Test;
@@ -27,139 +25,162 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-		classes = CrewManagementApplication.class)
+        classes = CrewManagementApplication.class)
 @AutoConfigureMockMvc
 class CrewTest {
-	@Autowired
-	private CommonDocumentRepository documentDao;
-	@Autowired
-	private SequenceGeneratorService sequenceGenerator;
-	@Autowired
-	private FlagRepository flagDao;
-	@Autowired
-	private CrewRepository crewDao;
+    @Autowired
+    private CrewDocumentRepository documentDao;
+    @Autowired
+    private SequenceGeneratorService sequenceGenerator;
+    @Autowired
+    private FlagRepository flagDao;
+    @Autowired
+    private CrewRepository crewDao;
 
-	@Test
-	void addCrewDetails() {
-		LocalDate dob = LocalDate.of(1985,7,23);
+    @Test
+    void addCrewDetails() {
+        LocalDate dob = LocalDate.of(1985, 7, 23);
 
-		Flag flag = flagDao.getByCode("IN");
+        Flag flag = flagDao.getByCode("IN");
 
-		Crew crew = new Crew();
-		crew.setfName("Pranav");
-		crew.setmName("J");
-		crew.setlName("Gangani");
-		crew.setDob(new DateTime());
-		crew.setGender("male");
-		crew.setRank(Rank.JR_ENGINEER);
-		crew.setDistinguishMark("Some mark on head");
+        Crew crew = new Crew();
+        crew.setfName("Pranav");
+        crew.setmName("J");
+        crew.setlName("Gangani");
+        crew.setDob(new DateTime());
+        crew.setGender("male");
+        crew.setRank(Rank.JR_ENGINEER);
+        crew.setDistinguishMark("Some mark on head");
 
-		//Education
-		Education ssc = new Education();
-		ssc.setEducationName("S.S.C");
-		ssc.setInstituteName("Sharon School");
-		ssc.setInstituteAddress("Mulund, Mumbai");
-		ssc.setPercentage(50f);
-		ssc.setFlag(flag);
+        //Education
+        Education ssc = new Education();
+        ssc.setEducationName("S.S.C");
+        ssc.setInstituteName("Sharon School");
+        ssc.setInstituteAddress("Mulund, Mumbai");
+        ssc.setPercentage(50f);
+        ssc.setFlag(flag);
 
-		EducationDocument sscDoc = new Certificate();
-		//sscDoc.setFile();
-		ssc.setEducationDocuments(new ArrayList<>(Arrays.asList(sscDoc)));
+        EducationDocument sscDoc = new Certificate();
+        //sscDoc.setFile();
+        ssc.setEducationDocuments(new ArrayList<>(Arrays.asList(sscDoc)));
 
-		Education hsc = new Education();
-		hsc.setEducationName("H.S.C");
-		hsc.setInstituteName("Somaiya College");
-		hsc.setInstituteAddress("Vidyavihar, Mumbai");
-		hsc.setPercentage(90.99f);
-		hsc.setFlag(flag);
+        Education hsc = new Education();
+        hsc.setEducationName("H.S.C");
+        hsc.setInstituteName("Somaiya College");
+        hsc.setInstituteAddress("Vidyavihar, Mumbai");
+        hsc.setPercentage(90.99f);
+        hsc.setFlag(flag);
 
-		EducationDocument hscDoc = new Certificate();
-		//empDoc2.setFile();
-		hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
+        EducationDocument hscDoc = new Certificate();
+        //empDoc2.setFile();
+        hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
 
-		crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
+        crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
 
-		//Employment
-		Employment emp1 = new Employment();
-		emp1.setEmployerName("Merks");
-		emp1.setEmployerAddress("Mumbai");
-		Vessel v = new Vessel();
-		v.setGrossTonnage(7000);
-		emp1.setVessel(v);
-		emp1.setLastRank(Rank.JR_ENGINEER);
-		emp1.setVesselSubType(VesselSubType.LPG_TANKER);
-		//emp1.setStartDate(new DateTime());
-		//emp1.setEndDate(new DateTime());
-		emp1.setFlag(flag);
-		List<EmploymentDocument> emp1Docs = new ArrayList<>();
+        //Employment
+        Employment emp1 = new Employment();
+        emp1.setEmployerName("Merks");
+        emp1.setEmployerAddress("Mumbai");
+        Vessel v = new Vessel();
+        v.setGrossTonnage(7000);
+        emp1.setVessel(v);
+        emp1.setLastRank(Rank.JR_ENGINEER);
+        emp1.setVesselSubType(VesselSubType.LPG_TANKER);
+        //emp1.setStartDate(new DateTime());
+        //emp1.setEndDate(new DateTime());
+        emp1.setFlag(flag);
+        List<EmploymentDocument> emp1Docs = new ArrayList<>();
 
-		EmploymentDocument emp1Doc1 = new SalarySlip();
-		//empDoc2.setFile();
-		emp1Docs.add(emp1Doc1);
+        EmploymentDocument emp1Doc1 = new SalarySlip();
+        //empDoc2.setFile();
+        emp1Docs.add(emp1Doc1);
 
-		EmploymentDocument emp1Doc2 = new ExperienceLetter();
-		//empDoc2.setFile();
-		emp1Docs.add(emp1Doc2);
-		emp1.setEmploymentDocuments(emp1Docs);
+        EmploymentDocument emp1Doc2 = new ExperienceLetter();
+        //empDoc2.setFile();
+        emp1Docs.add(emp1Doc2);
+        emp1.setEmploymentDocuments(emp1Docs);
 
-		Employment emp2 = new Employment();
-		emp2.setEmployerName("MSC");
-		emp2.setEmployerAddress("Mumbai");
-		v = new Vessel();
-		v.setGrossTonnage(500);
-		emp1.setVessel(v);
-		emp2.setLastRank(Rank.JR_ENGINEER);
-		emp2.setVesselSubType(VesselSubType.LNG_TANKER);
-		//emp2.setStartDate(new DateTime());
-		//emp2.setEndDate(new DateTime());
+        Employment emp2 = new Employment();
+        emp2.setEmployerName("MSC");
+        emp2.setEmployerAddress("Mumbai");
+        v = new Vessel();
+        v.setGrossTonnage(500);
+        emp1.setVessel(v);
+        emp2.setLastRank(Rank.JR_ENGINEER);
+        emp2.setVesselSubType(VesselSubType.LNG_TANKER);
+        //emp2.setStartDate(new DateTime());
+        //emp2.setEndDate(new DateTime());
 
-		List<EmploymentDocument> emp2Docs = new ArrayList<>();
-		EmploymentDocument emp2Doc1 = new SalarySlip();
-		//empDoc2.setFile();
-		emp2Docs.add(emp2Doc1);
+        List<EmploymentDocument> emp2Docs = new ArrayList<>();
+        EmploymentDocument emp2Doc1 = new SalarySlip();
+        //empDoc2.setFile();
+        emp2Docs.add(emp2Doc1);
 
-		EmploymentDocument emp2Doc2 = new ExperienceLetter();
-		//empDoc2.setFile();
-		emp2Docs.add(emp2Doc2);
-		emp2.setEmploymentDocuments(emp2Docs);
-		emp2.setFlag(flag);
+        EmploymentDocument emp2Doc2 = new ExperienceLetter();
+        //empDoc2.setFile();
+        emp2Docs.add(emp2Doc2);
+        emp2.setEmploymentDocuments(emp2Docs);
+        emp2.setFlag(flag);
 
-		crew.setEmploymentHistory(new ArrayList<>(Arrays.asList(emp1, emp2)));
+        crew.setEmploymentHistory(new ArrayList<>(Arrays.asList(emp1, emp2)));
+        crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
+        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+        crewDao.insert(crew);
+    }
 
-		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
-		crewDao.insert(crew);
-	}
+    @Test
+    void uploadOtherDocs() {
 
-	@Test
-	void uploadOtherDocs() {
+        Crew crew = crewDao.findById(25l).get();
+        List<Document> preJoiningMandatoryDocs = documentDao.findAll();
+        crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
+        crewDao.save(crew);
+    }
 
-		Crew crew = crewDao.findById(25l).get();
-		List<Document> preJoiningMandatoryDocs = documentDao.findAll();
-		crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
-		crewDao.save(crew);
-	}
+    @Test
+    void updateCrewDetails() {
 
-	@Test
-	void updateCrewDetails() {
+        Crew crew = crewDao.findById(25l).get();
+        List<Education> eduList = crew.getEducationHistory();
+        List<Employment> empList = crew.getEmploymentHistory();
 
-		Crew crew = crewDao.findById(25l).get();
-		List<Education> eduList = crew.getEducationHistory();
-		List<Employment> empList = crew.getEmploymentHistory();
+        List<Document> existingDocs = crew.getExistingDocuments();
 
-		List<Document> preJoiningMandatoryDocs = documentDao.findAll();
-		preJoiningMandatoryDocs.forEach(doc->{
-			if(doc.isRequiredBeforeJoining()) {
-				if(doc.getClass().equals(Passport.class)) {
-					Passport passport = new Passport();
-					passport.setDocNumber("HND1234");
+        List<Document> preJoiningMandatoryDocs = documentDao.findAll();
+
+		AtomicInteger countExistingDocs = new AtomicInteger();
+        preJoiningMandatoryDocs.forEach(mandateDoc -> {
+            existingDocs.forEach(existingDoc -> {
+                if (mandateDoc.isRequiredBeforeJoining()) {
+                    if (mandateDoc.getDocumentCategory().equals(existingDoc.getDocumentCategory())) {
+                        if(mandateDoc.getClass().equals(existingDoc.getClass())) {
+                            if (mandateDoc.getClass().equals(Passport.class)) {
+								countExistingDocs.getAndIncrement();
+                            }
+							else if (mandateDoc.getClass().equals(Visa.class)) {
+								Visa visa = new Visa();
+								countExistingDocs.getAndIncrement();
+							}
+							else if (mandateDoc.getClass().equals(Visa.class)) {
+								Visa visa = new Visa();
+								countExistingDocs.getAndIncrement();
+							}
+                        }
+                    }
+
+                }
+				else if (mandateDoc.isRequiredAfterJoining()) {
+
 				}
-			}
-		});
-		crewDao.save(crew);
-	}
+            });
+
+        });
+        crewDao.save(crew);
+    }
 
 
 }

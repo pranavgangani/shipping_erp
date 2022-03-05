@@ -1,7 +1,7 @@
 package com.shipping.crew;
 
 import com.shipping.common.Flag;
-import com.shipping.dao.common.CommonDocumentRepository;
+import com.shipping.dao.common.CrewDocumentRepository;
 import com.shipping.dao.common.FlagRepository;
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.vessel.VesselOwnerRepository;
@@ -38,7 +38,7 @@ class VesselVacancyTest {
     @Autowired
     private VesselOwnerRepository vesselOwnerDao;
     @Autowired
-    private CommonDocumentRepository documentDao;
+    private CrewDocumentRepository documentDao;
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
@@ -99,7 +99,7 @@ class VesselVacancyTest {
         //Min Gross Tonn
         att.setMinGrossTonnage(1000);
         vacancy.setVacancyAttributes(att);
-
+        vacancy.setStatusId(VesselVacancy.Status.OPEN.getId());
         vesselVacancyDao.insert(vacancy);
 
         //mongoTemplate.getCollection(VESSEL_VACANCY).insertMany(vacancies);
@@ -166,7 +166,10 @@ class VesselVacancyTest {
         Crew crew = crewDao.findById(26l).get();
         VesselVacancy vacancy = vesselVacancyDao.findById(21l).get();
         vacancy.setFilledByCrewId(crew.getId());
+        vacancy.setStatusId(VesselVacancy.Status.PENDING_DOCS.getId());
         vesselVacancyDao.save(vacancy);
 
+        crew.setStatusId(Crew.Status.PENDING_DOCS.getId());
+        crewDao.save(crew);
     }
 }

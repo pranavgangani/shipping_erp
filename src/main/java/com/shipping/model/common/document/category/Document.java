@@ -18,7 +18,7 @@ public abstract class Document {
     public static final String SEQUENCE_NAME = Collection.CREW_DOCUMENT;
 
     @org.springframework.data.annotation.Id
-    protected long Id;
+    protected long id;
     protected String _type;
     protected DocumentCategory documentCategory;
     private Flag flag;
@@ -33,7 +33,7 @@ public abstract class Document {
     protected String docName, docDesc;
     private String docTitle;
     private String docNumber;
-    private String docType;
+    private long docTypeId;
     private String givenName;
     private String remarks;
     private DateTime dateOfIssue, dateOfExpiry;
@@ -52,11 +52,11 @@ public abstract class Document {
     private Binary file;
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        id = id;
     }
 
     public String get_type() {
@@ -115,12 +115,12 @@ public abstract class Document {
         this.docNumber = docNumber;
     }
 
-    public String getDocType() {
-        return docType;
+    public long getDocTypeId() {
+        return docTypeId;
     }
 
-    public void setDocType(String docType) {
-        this.docType = docType;
+    public void setDocTypeId(long docTypeId) {
+        this.docTypeId = docTypeId;
     }
 
     public String getGivenName() {
@@ -285,11 +285,11 @@ public abstract class Document {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Document document = (Document) o;
-        return Id == document.Id;
+        return id == document.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Id);
+        return Objects.hash(id);
     }
 }

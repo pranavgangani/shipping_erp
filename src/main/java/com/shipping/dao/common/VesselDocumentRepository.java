@@ -1,13 +1,12 @@
 package com.shipping.dao.common;
 
 import com.shipping.model.common.document.category.Document;
-import com.shipping.model.vessel.VesselVacancy;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-public interface CommonDocumentRepository extends MongoRepository<Document, Long> {
+public interface VesselDocumentRepository extends MongoRepository<Document, Long> {
    /* @Query("{'vacancyAttributes.minRankList': { $eq: 1 }}")
     public List<VesselVacancy> findVacanciesByRank(int rankId);
 

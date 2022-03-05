@@ -1,13 +1,17 @@
 package com.shipping.crew;
 
 import com.shipping.common.Flag;
+import com.shipping.dao.common.DocumentTypeRepository;
 import com.shipping.dao.common.FlagRepository;
 import com.shipping.main.CrewManagementApplication;
-import com.shipping.dao.common.CommonDocumentRepository;
+import com.shipping.dao.common.CrewDocumentRepository;
 import com.shipping.model.common.DurationType;
 import com.shipping.model.common.document.*;
 import com.shipping.model.common.document.category.Document;
 import com.shipping.model.common.document.category.DocumentCategory;
+import com.shipping.model.common.document.category.DocumentPool;
+import com.shipping.model.common.document.category.DocumentType;
+import com.shipping.model.common.document.types.CertificateType;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.crew.RankCategory;
 import com.shipping.model.vessel.VesselSubType;
@@ -30,7 +34,9 @@ import java.util.List;
 @AutoConfigureMockMvc
 class DocumentTest {
     @Autowired
-    private CommonDocumentRepository documentDao;
+    private CrewDocumentRepository documentDao;
+    @Autowired
+    private DocumentTypeRepository certificateTypeDao;
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
@@ -94,6 +100,7 @@ class DocumentTest {
     @Test
     void addBasicSTCWTrainingDocs() {
         Certificate trainingCert = new Certificate();
+        //trainingCert.setCertificateTypeId();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocType("STCW 2010 Basic Safety Training");
         trainingCert.setDocName("Elementary First Aid (EFA)");
@@ -367,4 +374,136 @@ class DocumentTest {
         });*/
     }
 
+
+    void addCertificateTypes() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Certificate of Endorsement (CoE)");
+        type.setDesc("Requirements for a Flag State Endorsement by the Palau International Ship Registry (PISR) in accordance with the provisions of the International Convention on Standards of Training, Certification and Watch-keeping for Seafarers, (STCW) 1978 as amended.");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Certificate of Competency (CoC)");
+        type.setDesc("Each candidate for an officer certificate who qualifies under the provisions of STCW and successfully completes the appropriate examination will be issued a Certificate of Competency. This certificate states that the officer has been found duly qualified in accordance with the provisions of STCW and in the format prescribed by STCW for those officers qualified to receive STCW certificates.");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Cerificate of Proficiency (COP)");
+        type.setDesc("This certificate states that the officer or the Rating has been found duly qualified in accordance with the provisions of STCW and in the format prescribed by STCW for those qualified to receive STCW certificates.");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Seafarer Identification Record Book (SIRB)");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("INDOS");
+        type.setDesc("INDoS (Indian National Database Of Seafarers) is a computerised national database of Indian seafarers for use by statutory authorities such as Flag State, Port State, Immigration & Employers etc., to prevent the fraudulent issue of certificates.");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.EDUCATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("SSC");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.EDUCATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("HSC");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.TAX_ID);
+        type.setName("Pan Card");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.NATIONAL_ID);
+        type.setName("Aadhar Card");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.MEDICAL);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Yellow Fever");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.VISA);
+        type.setName("US B1/B2");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.VISA);
+        type.setName("US C1/D");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.VISA);
+        type.setName("Australian MCV");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.LICENSE);
+        type.setName("Indian");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.LICENSE);
+        type.setName("Liberian");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.LICENSE);
+        type.setName("UK");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.LICENSE);
+        type.setName("Panama");
+        certificateTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.LICENSE);
+        type.setName("Liberian");
+        certificateTypeDao.insert(type);
+    }
 }
