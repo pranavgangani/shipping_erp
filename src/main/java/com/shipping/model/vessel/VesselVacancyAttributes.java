@@ -39,4 +39,14 @@ public class VesselVacancyAttributes {
     public void setMinGrossTonnage(int minGrossTonnage) {
         this.minGrossTonnage = minGrossTonnage;
     }
+
+    @Override
+    public String toString() {
+        return "VesselVacancyAttributes{" +
+                "minRankList=" + minRankList +
+                ", minVesselTypeIdList=" + minVesselTypeIdList +
+                ", minVesselSubTypeIdList=" + minVesselSubTypeIdList +
+                ", minGrossTonnage=" + minGrossTonnage +
+                '}';
+    }
 }

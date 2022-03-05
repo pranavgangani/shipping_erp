@@ -1,13 +1,10 @@
 package com.shipping.model.vessel;
 
 import com.shipping.common.Collection;
-import com.shipping.company.Employee;
+import com.shipping.model.company.Employee;
 import com.shipping.util.DateTime;
-import org.bson.Document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-
-import java.util.List;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL_VACANCY)
 public class VesselVacancy {
@@ -26,7 +23,7 @@ public class VesselVacancy {
 	private DateTime enteredDateTime;
 
 	//Other Vacancy Conditions/Attributes
-	private List<VesselVacancyAttributes> vacancyAttributes;
+	private VesselVacancyAttributes vacancyAttributes;
 
 	public long getId() {
 		return id;
@@ -102,11 +99,21 @@ public class VesselVacancy {
 		this.enteredDateTime = enteredDateTime;
 	}
 
-	public List<VesselVacancyAttributes> getVacancyAttributes() {
+	public VesselVacancyAttributes getVacancyAttributes() {
 		return vacancyAttributes;
 	}
 
-	public void setVacancyAttributes(List<VesselVacancyAttributes> vacancyAttributes) {
+	public void setVacancyAttributes(VesselVacancyAttributes vacancyAttributes) {
 		this.vacancyAttributes = vacancyAttributes;
+	}
+
+	@Override
+	public String toString() {
+		return "VesselVacancy{" +
+				"vesselId=" + vesselId +
+				", filledByCrewId=" + filledByCrewId +
+				", remarks='" + remarks + '\'' +
+				", vacancyAttributes=" + vacancyAttributes +
+				'}';
 	}
 }

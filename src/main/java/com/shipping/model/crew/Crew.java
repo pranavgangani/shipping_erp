@@ -11,308 +11,299 @@ import com.shipping.common.Collection;
 import com.shipping.common.Comment;
 import com.shipping.common.Flag;
 import com.shipping.common.Person;
-import com.shipping.company.Employee;
+import com.shipping.model.company.Employee;
 import com.shipping.util.DateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
 public class Crew extends Person {
-	@Transient
-	public static final String SEQUENCE_NAME = Collection.CREW;
-	
-	@Id
-	private long id;
-	private String passportNumber, visaNumber;
-	private String distinguishMark;
-	private Rank rank;
-	private Flag manningOffice;
-	private long photoId;
-	
-	// Past
-	private List<Employment> employmentHistory;
-	private List<Education> educationHistory;
-	private List<Medical> medicalHistory;
-	private List<Travel> travelHistory;
-	
-	//Current
-	private List<Document> preJoiningDocuments;
-	private List<Document> postJoiningDocuments;
-	
-	//Medical
-	private List<IllnessAndInjury> illnessInjury;
+    @Transient
+    public static final String SEQUENCE_NAME = Collection.CREW;
 
-	// KYC
-	private List<NextOfKin> nextOfKins;
-	private List<Bank> banks;
-	private String passportNum, visaNum;
-	private DateTime dob;
+    @Id
+    private long id;
+    private String passportNumber, visaNumber;
+    private String distinguishMark;
+    private Rank rank;
+    private Flag manningOffice;
+    private long photoId;
 
-	// Requests
+    // Past
+    private List<Employment> employmentHistory;
+    private List<Education> educationHistory;
+    private List<Medical> medicalHistory;
+    private List<Travel> travelHistory;
+
+    //Current
+    private List<Document> preJoiningDocuments;
+    private List<Document> postJoiningDocuments;
+
+    //Medical
+    private List<IllnessAndInjury> illnessInjury;
+
+    // KYC
+    private List<NextOfKin> nextOfKins;
+    private List<Bank> banks;
+    private String passportNum, visaNum;
+    private DateTime dob;
+
+    // Requests
 	/*private List<CourseRequest> trainingRequests;
 	private List<TravelRequest> travelRequests;
 	private List<MedicalRequest> medicalRequests;*/
-	
-	//Audit
-	private List<Comment> comments;
-	private List<AuditTrail> auditTails;
 
-	private Employee enteredByEmp;
-	private DateTime enteredDateTime;	
-	private Employee reviewedByEmp;
-	private DateTime reviewedDateTime;	
+    //Audit
+    private List<Comment> comments;
+    private List<AuditTrail> auditTails;
 
-	public long getId() {
-		return id;
-	}
+    private Employee enteredByEmp;
+    private DateTime enteredDateTime;
+    private Employee reviewedByEmp;
+    private DateTime reviewedDateTime;
 
-	public void setId(long l) {
-		this.id = l;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getfName() {
-		return fName;
-	}
+    public void setId(long l) {
+        this.id = l;
+    }
 
-	public void setfName(String fName) {
-		this.fName = fName;
-	}
+    public String getfName() {
+        return fName;
+    }
 
-	public String getlName() {
-		return lName;
-	}
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
 
-	public void setlName(String lName) {
-		this.lName = lName;
-	}
+    public String getlName() {
+        return lName;
+    }
 
-	public String getmName() {
-		return mName;
-	}
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
 
-	public void setmName(String mName) {
-		this.mName = mName;
-	}
+    public String getmName() {
+        return mName;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public Rank getRank() {
+        return rank;
+    }
 
+    public void setRank(Rank rank) {
+        this.rank = rank;
+    }
 
-	public Rank getRank() {
-		return rank;
-	}
+    public List<Employment> getEmploymentHistory() {
+        return employmentHistory;
+    }
 
-	public void setRank(Rank rank) {
-		this.rank = rank;
-	}
+    public void setEmploymentHistory(List<Employment> employmentHistory) {
+        this.employmentHistory = employmentHistory;
+    }
 
-	public List<Employment> getEmploymentHistory() {
-		return employmentHistory;
-	}
+    public List<Education> getEducationHistory() {
+        return educationHistory;
+    }
 
-	public void setEmploymentHistory(List<Employment> employmentHistory) {
-		this.employmentHistory = employmentHistory;
-	}
+    public void setEducationHistory(List<Education> educationHistory) {
+        this.educationHistory = educationHistory;
+    }
 
-	public List<Education> getEducationHistory() {
-		return educationHistory;
-	}
+    public String getPassportNumber() {
+        return passportNumber;
+    }
 
-	public void setEducationHistory(List<Education> educationHistory) {
-		this.educationHistory = educationHistory;
-	}
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
 
-	public String getPassportNumber() {
-		return passportNumber;
-	}
+    public String getVisaNumber() {
+        return visaNumber;
+    }
 
-	public void setPassportNumber(String passportNumber) {
-		this.passportNumber = passportNumber;
-	}
+    public void setVisaNumber(String visaNumber) {
+        this.visaNumber = visaNumber;
+    }
 
-	public String getVisaNumber() {
-		return visaNumber;
-	}
+    public String getDistinguishMark() {
+        return distinguishMark;
+    }
 
-	public void setVisaNumber(String visaNumber) {
-		this.visaNumber = visaNumber;
-	}
+    public void setDistinguishMark(String distinguishMark) {
+        this.distinguishMark = distinguishMark;
+    }
 
-	public String getDistinguishMark() {
-		return distinguishMark;
-	}
+    public Flag getManningOffice() {
+        return manningOffice;
+    }
 
-	public void setDistinguishMark(String distinguishMark) {
-		this.distinguishMark = distinguishMark;
-	}
+    public void setManningOffice(Flag manningOffice) {
+        this.manningOffice = manningOffice;
+    }
 
-	public Flag getManningOffice() {
-		return manningOffice;
-	}
+    public long getPhotoId() {
+        return photoId;
+    }
 
-	public void setManningOffice(Flag manningOffice) {
-		this.manningOffice = manningOffice;
-	}
+    public void setPhotoId(long photoId) {
+        this.photoId = photoId;
+    }
 
-	public long getPhotoId() {
-		return photoId;
-	}
+    public List<Medical> getMedicalHistory() {
+        return medicalHistory;
+    }
 
-	public void setPhotoId(long photoId) {
-		this.photoId = photoId;
-	}
+    public void setMedicalHistory(List<Medical> medicalHistory) {
+        this.medicalHistory = medicalHistory;
+    }
 
-	public List<Medical> getMedicalHistory() {
-		return medicalHistory;
-	}
+    public List<Travel> getTravelHistory() {
+        return travelHistory;
+    }
 
-	public void setMedicalHistory(List<Medical> medicalHistory) {
-		this.medicalHistory = medicalHistory;
-	}
+    public void setTravelHistory(List<Travel> travelHistory) {
+        this.travelHistory = travelHistory;
+    }
 
-	public List<Travel> getTravelHistory() {
-		return travelHistory;
-	}
+    public List<Document> getPreJoiningDocuments() {
+        return preJoiningDocuments;
+    }
 
-	public void setTravelHistory(List<Travel> travelHistory) {
-		this.travelHistory = travelHistory;
-	}
+    public void setPreJoiningDocuments(List<Document> preJoiningDocuments) {
+        this.preJoiningDocuments = preJoiningDocuments;
+    }
 
-	public List<Document> getPreJoiningDocuments() {
-		return preJoiningDocuments;
-	}
+    public List<Document> getPostJoiningDocuments() {
+        return postJoiningDocuments;
+    }
 
-	public void setPreJoiningDocuments(List<Document> preJoiningDocuments) {
-		this.preJoiningDocuments = preJoiningDocuments;
-	}
+    public void setPostJoiningDocuments(List<Document> postJoiningDocuments) {
+        this.postJoiningDocuments = postJoiningDocuments;
+    }
 
-	public List<Document> getPostJoiningDocuments() {
-		return postJoiningDocuments;
-	}
+    public List<IllnessAndInjury> getIllnessInjury() {
+        return illnessInjury;
+    }
 
-	public void setPostJoiningDocuments(List<Document> postJoiningDocuments) {
-		this.postJoiningDocuments = postJoiningDocuments;
-	}
+    public void setIllnessInjury(List<IllnessAndInjury> illnessInjury) {
+        this.illnessInjury = illnessInjury;
+    }
 
-	public List<IllnessAndInjury> getIllnessInjury() {
-		return illnessInjury;
-	}
+    public List<NextOfKin> getNextOfKins() {
+        return nextOfKins;
+    }
 
-	public void setIllnessInjury(List<IllnessAndInjury> illnessInjury) {
-		this.illnessInjury = illnessInjury;
-	}
+    public void setNextOfKins(List<NextOfKin> nextOfKins) {
+        this.nextOfKins = nextOfKins;
+    }
 
-	public List<NextOfKin> getNextOfKins() {
-		return nextOfKins;
-	}
+    public List<Bank> getBanks() {
+        return banks;
+    }
 
-	public void setNextOfKins(List<NextOfKin> nextOfKins) {
-		this.nextOfKins = nextOfKins;
-	}
+    public void setBanks(List<Bank> banks) {
+        this.banks = banks;
+    }
 
-	public List<Bank> getBanks() {
-		return banks;
-	}
+    public String getPassportNum() {
+        return passportNum;
+    }
 
-	public void setBanks(List<Bank> banks) {
-		this.banks = banks;
-	}
+    public void setPassportNum(String passportNum) {
+        this.passportNum = passportNum;
+    }
 
-	public String getPassportNum() {
-		return passportNum;
-	}
+    public String getVisaNum() {
+        return visaNum;
+    }
 
-	public void setPassportNum(String passportNum) {
-		this.passportNum = passportNum;
-	}
+    public void setVisaNum(String visaNum) {
+        this.visaNum = visaNum;
+    }
 
-	public String getVisaNum() {
-		return visaNum;
-	}
+    public DateTime getDob() {
+        return dob;
+    }
 
-	public void setVisaNum(String visaNum) {
-		this.visaNum = visaNum;
-	}
+    public void setDob(DateTime dob) {
+        this.dob = dob;
+    }
 
-	public DateTime getDob() {
-		return dob;
-	}
+    public List<Comment> getComments() {
+        return comments;
+    }
 
-	public void setDob(DateTime dob) {
-		this.dob = dob;
-	}
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
-	public List<Comment> getComments() {
-		return comments;
-	}
+    public List<AuditTrail> getAuditTails() {
+        return auditTails;
+    }
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
+    public void setAuditTails(List<AuditTrail> auditTails) {
+        this.auditTails = auditTails;
+    }
 
-	public List<AuditTrail> getAuditTails() {
-		return auditTails;
-	}
+    public Employee getEnteredByEmp() {
+        return enteredByEmp;
+    }
 
-	public void setAuditTails(List<AuditTrail> auditTails) {
-		this.auditTails = auditTails;
-	}
+    public void setEnteredByEmp(Employee enteredByEmp) {
+        this.enteredByEmp = enteredByEmp;
+    }
 
-	public Employee getEnteredByEmp() {
-		return enteredByEmp;
-	}
+    public DateTime getEnteredDateTime() {
+        return enteredDateTime;
+    }
 
-	public void setEnteredByEmp(Employee enteredByEmp) {
-		this.enteredByEmp = enteredByEmp;
-	}
+    public void setEnteredDateTime(DateTime enteredDateTime) {
+        this.enteredDateTime = enteredDateTime;
+    }
 
-	public DateTime getEnteredDateTime() {
-		return enteredDateTime;
-	}
+    public Employee getReviewedByEmp() {
+        return reviewedByEmp;
+    }
 
-	public void setEnteredDateTime(DateTime enteredDateTime) {
-		this.enteredDateTime = enteredDateTime;
-	}
+    public void setReviewedByEmp(Employee reviewedByEmp) {
+        this.reviewedByEmp = reviewedByEmp;
+    }
 
-	public Employee getReviewedByEmp() {
-		return reviewedByEmp;
-	}
+    public DateTime getReviewedDateTime() {
+        return reviewedDateTime;
+    }
 
-	public void setReviewedByEmp(Employee reviewedByEmp) {
-		this.reviewedByEmp = reviewedByEmp;
-	}
+    public void setReviewedDateTime(DateTime reviewedDateTime) {
+        this.reviewedDateTime = reviewedDateTime;
+    }
 
-	public DateTime getReviewedDateTime() {
-		return reviewedDateTime;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
 
-	public void setReviewedDateTime(DateTime reviewedDateTime) {
-		this.reviewedDateTime = reviewedDateTime;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Crew other = (Crew) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Crew other = (Crew) obj;
+        if (id != other.id)
+            return false;
+        return true;
+    }
 
 }

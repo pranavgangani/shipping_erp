@@ -1,4 +1,4 @@
-package com.shipping.company;
+package com.shipping.model.company;
 
 import com.shipping.util.DateTime;
 

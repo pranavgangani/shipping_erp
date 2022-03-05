@@ -10,6 +10,7 @@ import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 
 import java.util.List;
+import java.util.Objects;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW_DOCUMENT)
 public abstract class Document {
@@ -21,6 +22,11 @@ public abstract class Document {
     protected String _type;
     protected DocumentCategory documentCategory;
     private Flag flag;
+    protected List<Integer> forVesselTypes;
+    protected List<Integer> forVesselSubTypes;
+    protected List<Integer> forRankCategories;
+    protected List<Integer> forRankSubCategories;
+    protected List<Integer> forRanks;
     private boolean isMandatory, isRequiredBeforeJoining, isRequiredAfterJoining, isUploaded;
 
     //Doc details
@@ -177,8 +183,9 @@ public abstract class Document {
         return validity;
     }
 
-    public void setValidity(int validity) {
+    public void setValidity(int validity, DurationType durationType) {
         this.validity = validity;
+        this.durationType = durationType;
     }
 
     public DurationType getDurationType() {
@@ -227,5 +234,62 @@ public abstract class Document {
 
     public void setUploaded(boolean uploaded) {
         isUploaded = uploaded;
+    }
+
+    public List<Integer> getForVesselTypes() {
+        return forVesselTypes;
+    }
+
+    public void setForVesselTypes(List<Integer> forVesselTypes) {
+        this.forVesselTypes = forVesselTypes;
+    }
+
+    public List<Integer> getForVesselSubTypes() {
+        return forVesselSubTypes;
+    }
+
+    public void setForVesselSubTypes(List<Integer> forVesselSubTypes) {
+        this.forVesselSubTypes = forVesselSubTypes;
+    }
+
+    public List<Integer> getForRankCategories() {
+        return forRankCategories;
+    }
+
+    public void setForRankCategories(List<Integer> forRankCategories) {
+        this.forRankCategories = forRankCategories;
+    }
+
+    public List<Integer> getForRankSubCategories() {
+        return forRankSubCategories;
+    }
+
+    public void setForRankSubCategories(List<Integer> forRankSubCategories) {
+        this.forRankSubCategories = forRankSubCategories;
+    }
+
+    public List<Integer> getForRanks() {
+        return forRanks;
+    }
+
+    public void setForRanks(List<Integer> forRanks) {
+        this.forRanks = forRanks;
+    }
+
+    public void setValidity(int validity) {
+        this.validity = validity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Document document = (Document) o;
+        return Id == document.Id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Id);
     }
 }

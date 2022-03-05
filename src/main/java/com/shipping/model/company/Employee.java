@@ -1,4 +1,4 @@
-package com.shipping.company;
+package com.shipping.model.company;
 
 import java.util.List;
 
@@ -18,5 +18,7 @@ public class Employee extends Person {
 	private Office office;
 	private Designation designation;
 	private Department department;
-	private List<UserRole> userRoles; 
+	private List<UserRole> userRoles;
+
+
 }

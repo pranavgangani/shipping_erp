@@ -3,13 +3,17 @@ package com.shipping.crew;
 import com.shipping.common.Flag;
 import com.shipping.dao.common.CommonDocumentRepository;
 import com.shipping.dao.common.FlagRepository;
+import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.vessel.VesselOwnerRepository;
 import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.dao.vessel.VesselVacancyRepository;
 import com.shipping.main.CrewManagementApplication;
+import com.shipping.model.crew.Crew;
+import com.shipping.model.crew.Employment;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.vessel.*;
 import com.shipping.service.common.SequenceGeneratorService;
+import com.shipping.util.ListUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,8 @@ class VesselVacancyTest {
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
     private FlagRepository flagDao;
+    @Autowired
+    private CrewRepository crewDao;
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -76,41 +82,24 @@ class VesselVacancyTest {
         vacancy.setVesselId(vessel.getId());
 
         //All Vacancies
-        List<VesselVacancyAttributes> vacancyAttributes = new ArrayList<>();
 
         //Vacancy#1
-        VesselVacancyAttributes vacancy1 = new VesselVacancyAttributes();
+        VesselVacancyAttributes att = new VesselVacancyAttributes();
         //Add Min Rank Attributes
-        vacancy1.setMinRankList(new ArrayList<>(Arrays.asList(Rank.CAPTAIN.getId())));
+        att.setMinRankList(new ArrayList<>(Arrays.asList(Rank.JR_ENGINEER.getId())));
 
         //Add Min Vessel Type Attributes
-        vacancy1.setMinVesselSubTypeIdList(new ArrayList<>(Arrays.asList(
+        /*att.setMinVesselSubTypeIdList(new ArrayList<>(Arrays.asList(
                 VesselSubType.LNG_TANKER.getId(),
                 VesselSubType.LPG_TANKER.getId(),
                 VesselSubType.FSO_TANKER.getId(),
                 VesselSubType.OIL_PROD_TANKER.getId()
-        )));
+        )));*/
 
         //Min Gross Tonn
-        vacancy1.setMinGrossTonnage(1000);
+        att.setMinGrossTonnage(1000);
+        vacancy.setVacancyAttributes(att);
 
-        //Vacancy#2
-        VesselVacancyAttributes vacancy2 = new VesselVacancyAttributes();
-        //Add Min Rank Attributes
-        vacancy2.setMinRankList(new ArrayList<>(Arrays.asList(Rank.SECOND_OFFICER.getId())));
-
-        //Open for any Vessel Experience
-        //So no Vessel Sub Type added
-
-        //Min Gross Tonn
-        vacancy2.setMinGrossTonnage(7000);
-
-
-        //-->Add Vacancy Attributes
-        vacancyAttributes.add(vacancy1);
-        vacancyAttributes.add(vacancy2);
-
-        vacancy.setVacancyAttributes(vacancyAttributes);
         vesselVacancyDao.insert(vacancy);
 
         //mongoTemplate.getCollection(VESSEL_VACANCY).insertMany(vacancies);
@@ -126,26 +115,43 @@ class VesselVacancyTest {
         List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRank((int) Rank.CHIEF_OFFICER.getId());
         vacancies.forEach(v -> {
             Vessel vessel = vesselDao.findById(v.getVesselId()).get();
-            List<VesselVacancyAttributes> attributes = v.getVacancyAttributes();
-            attributes.forEach(att -> {
-                System.out.print("[" + vessel.getVesselName() + "] has VACANCY -> ");
-                System.out.print(" Min Gross Tonnage [" + att.getMinGrossTonnage() + "] | ");
-                System.out.print(" Min Ranks required [");
-                att.getMinRankList().forEach(rankId -> {
-                    System.out.print(Rank.createFromId(rankId).getName() + ", ");
-                });
-                System.out.print("] | ");
-                System.out.print(" Min Vessel Experince in [");
-                if (att.getMinVesselSubTypeIdList() != null && !att.getMinVesselSubTypeIdList().isEmpty()) {
-                    att.getMinVesselSubTypeIdList().forEach(vesselSubTypeId -> {
-                        System.out.print(VesselSubType.createFromId(vesselSubTypeId).getDesc() + ", ");
-                    });
-                }else {
-                    System.out.print("Any Vessel");
-                }
-                System.out.print(" ]");
-                System.out.println();
+            VesselVacancyAttributes att = v.getVacancyAttributes();
+            System.out.print("[" + vessel.getVesselName() + "] has VACANCY -> ");
+            System.out.print(" Min Gross Tonnage [" + att.getMinGrossTonnage() + "] | ");
+            System.out.print(" Min Ranks required [");
+            att.getMinRankList().forEach(rankId -> {
+                System.out.print(Rank.createFromId(rankId).getName() + ", ");
             });
+            System.out.print("] | ");
+            System.out.print(" Min Vessel Experince in [");
+            if (att.getMinVesselSubTypeIdList() != null && !att.getMinVesselSubTypeIdList().isEmpty()) {
+                att.getMinVesselSubTypeIdList().forEach(vesselSubTypeId -> {
+                    System.out.print(VesselSubType.createFromId(vesselSubTypeId).getDesc() + ", ");
+                });
+            } else {
+                System.out.print("Any Vessel");
+            }
+            System.out.print(" ]");
+            System.out.println();
+
+        });
+    }
+
+    @Test
+    void findMatchingVacanciesToCrew() {
+        final List<Crew> crews = crewDao.findAll();
+        crews.forEach(c->{
+            List<Employment> employmentList = c.getEmploymentHistory();
+            final List<Integer> rankExp = new ArrayList<>();
+            employmentList.forEach(emp -> rankExp.add(emp.getLastRank().getId()));
+            final List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);
+            if(ListUtil.isNotEmpty(vacancies)) {
+                System.out.println("Got ["+vacancies.size()+"] for "+c.getName());
+                vacancies.forEach(v->{
+                    System.out.println(v);
+                });
+                System.out.println("------------------------");
+            }
         });
     }
 }

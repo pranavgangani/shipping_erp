@@ -1,4 +1,4 @@
-package com.shipping.company;
+package com.shipping.model.company;
 
 public enum Designation {
 	CEO,

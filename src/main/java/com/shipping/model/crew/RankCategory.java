@@ -16,7 +16,7 @@ import com.shipping.model.vessel.VesselType;
 public class RankCategory {
 	@Transient
 	public static final String SEQUENCE_NAME = "RankCategory";
-	
+	public static final RankCategory ALL = new RankCategory(0, "All");
 	public static final RankCategory DECK_DEPARTMENT = new RankCategory(1, "Deck Department");
 	public static final RankCategory ENGINE_DEPARTMENT = new RankCategory(2, "Engine Department");
 	public static final RankCategory GALLEY_DEPARTMENT = new RankCategory(3, "Galley Department");
@@ -75,7 +75,7 @@ public class RankCategory {
 	}
 	
 	public static List<RankCategory> getList(){
-		return new ArrayList<>(Arrays.asList(DECK_DEPARTMENT, ENGINE_DEPARTMENT, GALLEY_DEPARTMENT));
+		return new ArrayList<>(Arrays.asList(ALL, DECK_DEPARTMENT, ENGINE_DEPARTMENT, GALLEY_DEPARTMENT));
 	}
 	
 	public static RankCategory createFromId(int typeId) {

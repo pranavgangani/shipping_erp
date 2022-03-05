@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.annotation.Id;
 
 public class VesselSubType {
+	public static final VesselSubType ALL = new VesselSubType(VesselType.ALL, 0, "All");
 	public static final VesselSubType BULK_CARRIER = new VesselSubType(VesselType.CARGO, 1, "Bulk Carrier");
 	public static final VesselSubType GENERAL_CARGO = new VesselSubType(VesselType.CARGO, 2, "General Cargo");
 	public static final VesselSubType CONTAINER_SHIP = new VesselSubType(VesselType.CARGO, 3, "Container Ship");
@@ -75,7 +76,7 @@ public class VesselSubType {
 	}	
 
 	public static List<VesselSubType> getList(){
-		return new ArrayList<>(Arrays.asList(BULK_CARRIER, GENERAL_CARGO, CONTAINER_SHIP, REEFER, RORO, VEHICLE_CARRIER, CEMENT_CARRIER, WOODCHIPS_CARRIER, 
+		return new ArrayList<>(Arrays.asList(ALL, BULK_CARRIER, GENERAL_CARGO, CONTAINER_SHIP, REEFER, RORO, VEHICLE_CARRIER, CEMENT_CARRIER, WOODCHIPS_CARRIER,
 				UREA_CARRIER, AGGREGATE_CARRIER, LIMESTONE_CARGO, LANDING_CRAFT, LIVESTOCK_CARRIER, HEAVY_LOAD_CARRIER,
 				CRUDE_OIL_TANKER,OIL_PROD_TANKER,CHEMICAL_TANKER,LNG_TANKER,LPG_TANKER, ASPHALT_TANKER,BUNKER_TANKER, FSO_TANKER, OTHER_TANKER, 
 				CRUISE_SHIP, CARGO_SHIP, RORO_SHIP, PASSENGER_SHIP, FISHING, YACHT, SAR, CRAFT, OTHER_AUX, OTHER_UNKOWN));

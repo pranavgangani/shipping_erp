@@ -3,6 +3,7 @@ package com.shipping.model.crew;
 import com.shipping.common.Flag;
 import com.shipping.model.common.document.category.EmploymentDocument;
 import com.shipping.model.vessel.Vessel;
+import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselType;
 import com.shipping.util.DateTime;
 import org.springframework.data.annotation.Id;
@@ -16,7 +17,7 @@ public class Employment {
     private String jobDescription;
     private Rank lastRank;
     private Vessel vessel;
-    private VesselType vesselType;
+    private VesselSubType vesselSubType;
     private DateTime startDate, endDate;
     private List<EmploymentDocument> employmentDocuments;
     private Flag flag;
@@ -69,14 +70,6 @@ public class Employment {
         this.vessel = vessel;
     }
 
-    public VesselType getVesselType() {
-        return vesselType;
-    }
-
-    public void setVesselType(VesselType vesselType) {
-        this.vesselType = vesselType;
-    }
-
     public DateTime getStartDate() {
         return startDate;
     }
@@ -99,6 +92,14 @@ public class Employment {
 
     public void setEmploymentDocuments(List<EmploymentDocument> employmentDocuments) {
         this.employmentDocuments = employmentDocuments;
+    }
+
+    public VesselSubType getVesselSubType() {
+        return vesselSubType;
+    }
+
+    public void setVesselSubType(VesselSubType vesselSubType) {
+        this.vesselSubType = vesselSubType;
     }
 
     public Flag getFlag() {

@@ -11,6 +11,12 @@ public interface VesselVacancyRepository extends MongoRepository<VesselVacancy, 
     @Query("{'vacancyAttributes.minRankList': { $eq: 1 }}")
 	public List<VesselVacancy> findVacanciesByRank(int rankId);
 
+    @Query("{'vacancyAttributes.minRankList': { $in: [?0] }}")
+    public List<VesselVacancy> findVacanciesByRanks(List<Integer> rankIds);
+
+    @Query("{$and :[{'vacancyAttributes.minRankList': { $in: [?0]}},{'vacancyAttributes.minGrossTonnage': {$gt>?1}}] }")
+    public List<VesselVacancy> findVacanciesByAllAttr(List<Integer> rankIds);
+
     @Query("{'vacancyAttributes.minRankList': { $eq: 1 }}")
     public List<VesselVacancy> findVacanciesByVesselSubType(int rankId);
 

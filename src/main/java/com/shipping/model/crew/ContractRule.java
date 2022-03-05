@@ -2,7 +2,7 @@ package com.shipping.model.crew;
 
 import org.springframework.data.annotation.Id;
 
-import com.shipping.company.Employee;
+import com.shipping.model.company.Employee;
 import com.shipping.util.DateTime;
 
 public class ContractRule {

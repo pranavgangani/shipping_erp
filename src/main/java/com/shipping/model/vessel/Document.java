@@ -1,6 +1,6 @@
 package com.shipping.model.vessel;
 
-import com.shipping.company.Employee;
+import com.shipping.model.company.Employee;
 import com.shipping.util.DateTime;
 
 public class Document {

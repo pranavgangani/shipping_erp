@@ -1,17 +1,17 @@
-package com.shipping.company.service;
+package com.shipping.service.company;
 
 import java.util.List;
 
+import com.shipping.model.company.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.shipping.company.Employee;
-import com.shipping.dao.company.EmployeeDao;
+import com.shipping.dao.company.EmployeeRepository;
 
 @Service("employeeService")
 public class EmployeeService {
 	@Autowired
-    EmployeeDao employeeDao;
+	EmployeeRepository employeeRepository;
 	
 	
 	void addEmployee(Employee emp) {

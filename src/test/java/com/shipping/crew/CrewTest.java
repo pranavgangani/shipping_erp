@@ -11,6 +11,8 @@ import com.shipping.model.common.document.category.DocumentPool;
 import com.shipping.model.common.document.category.EducationDocument;
 import com.shipping.model.common.document.category.EmploymentDocument;
 import com.shipping.model.crew.*;
+import com.shipping.model.vessel.Vessel;
+import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselType;
 import com.shipping.service.common.SequenceGeneratorService;
 import com.shipping.util.DateTime;
@@ -48,11 +50,11 @@ class CrewTest {
 
 		Crew crew = new Crew();
 		crew.setfName("Pranav");
-		crew.setlName("Gangani");
 		crew.setmName("J");
+		crew.setlName("Gangani");
 		crew.setDob(new DateTime());
 		crew.setGender("male");
-		crew.setRank(Rank.CHIEF_ENGINEER);
+		crew.setRank(Rank.JR_ENGINEER);
 		crew.setDistinguishMark("Some mark on head");
 
 		//Education
@@ -82,12 +84,15 @@ class CrewTest {
 
 		//Employment
 		Employment emp1 = new Employment();
-		emp1.setEmployerName("MSC");
+		emp1.setEmployerName("Merks");
 		emp1.setEmployerAddress("Mumbai");
-		emp1.setLastRank(Rank.CHIEF_ENGINEER);
-		emp1.setVesselType(VesselType.CARGO);
-		emp1.setStartDate(new DateTime());
-		emp1.setEndDate(new DateTime());
+		Vessel v = new Vessel();
+		v.setGrossTonnage(7000);
+		emp1.setVessel(v);
+		emp1.setLastRank(Rank.JR_ENGINEER);
+		emp1.setVesselSubType(VesselSubType.LPG_TANKER);
+		//emp1.setStartDate(new DateTime());
+		//emp1.setEndDate(new DateTime());
 		emp1.setFlag(flag);
 		List<EmploymentDocument> emp1Docs = new ArrayList<>();
 
@@ -103,10 +108,13 @@ class CrewTest {
 		Employment emp2 = new Employment();
 		emp2.setEmployerName("MSC");
 		emp2.setEmployerAddress("Mumbai");
-		emp2.setLastRank(Rank.CHIEF_ENGINEER);
-		emp2.setVesselType(VesselType.CARGO);
-		emp2.setStartDate(new DateTime());
-		emp2.setEndDate(new DateTime());
+		v = new Vessel();
+		v.setGrossTonnage(500);
+		emp1.setVessel(v);
+		emp2.setLastRank(Rank.JR_ENGINEER);
+		emp2.setVesselSubType(VesselSubType.LNG_TANKER);
+		//emp2.setStartDate(new DateTime());
+		//emp2.setEndDate(new DateTime());
 
 		List<EmploymentDocument> emp2Docs = new ArrayList<>();
 		EmploymentDocument emp2Doc1 = new SalarySlip();

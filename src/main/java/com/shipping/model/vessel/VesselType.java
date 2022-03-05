@@ -8,10 +8,11 @@ import java.util.stream.Collectors;
 import org.springframework.data.annotation.Id;
 
 public class VesselType {
+	public final static VesselType ALL = new VesselType(0, "All");
 	public final static VesselType CARGO = new VesselType(1, "Cargo");
 	public final static VesselType TANKER = new VesselType(2, "Tanker");
 	public final static VesselType PASSENGER = new VesselType(3, "Passenger/Cruise");
-	public final static VesselType OTHER = new VesselType(0, "Other");
+	public final static VesselType OTHER = new VesselType(4, "Other");
 	
 	@Id
 	private int id;
