@@ -43,8 +43,9 @@ class DocumentTest {
 
     @Test
     void addHazardousTrainingDoc() {
-        Certificate trainingCert = new Certificate();
+        MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Hazardous Material Handling");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.TANKER.getId())));
@@ -63,8 +64,9 @@ class DocumentTest {
 
     @Test
     void addCaptainSpecificDoc() {
-        Certificate trainingCert = new Certificate();
+        MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Some Captain Training Course");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
@@ -81,8 +83,9 @@ class DocumentTest {
 
     @Test
     void addFireTrainingDoc() {
-        Certificate trainingCert = new Certificate();
+        MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Fire Handling Training");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
@@ -98,10 +101,9 @@ class DocumentTest {
 
     @Test
     void addBasicSTCWTrainingDocs() {
-        Certificate trainingCert = new Certificate();
-        //trainingCert.setCertificateTypeId();
+        MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-        //trainingCert.setDocTypeId("STCW 2010 Basic Safety Training");
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Elementary First Aid (EFA)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
@@ -114,9 +116,9 @@ class DocumentTest {
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
 
-        trainingCert = new Certificate();
+        trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-       // trainingCert.setDocType("STCW 2010 Basic Safety Training");
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Fire Prevention and Fire Fighting (FPFF)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
@@ -129,9 +131,9 @@ class DocumentTest {
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
 
-        trainingCert = new Certificate();
+        trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-        //trainingCert.setDocType("STCW 2010 Basic Safety Training");
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Personal Survival Techniques (PST)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
@@ -144,9 +146,9 @@ class DocumentTest {
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
 
-        trainingCert = new Certificate();
+        trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-        //trainingCert.setDocType("STCW 2010 Basic Safety Training");
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Personal Safety and Social Responsibility (PSSR)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
@@ -159,9 +161,9 @@ class DocumentTest {
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
 
-        trainingCert = new Certificate();
+        trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-        //trainingCert.setDocType("STCW 2010 Basic Safety Training");
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Proficiency in Security Awareness (PSA)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
         trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
@@ -183,6 +185,7 @@ class DocumentTest {
         Document passport = new Passport();
         passport.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         passport.setDocumentCategory(DocumentCategory.TRAVEL);
+        passport.setDocTypeId(docTypeDao.findByName("Indian Passport").getId());
         passport.setFlag(flag);
         passport.setRequiredBeforeJoining(true);
         passport.setRequiredAfterJoining(true);
@@ -190,8 +193,8 @@ class DocumentTest {
 
         Document aadharCard = new NationalID();
         aadharCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-        aadharCard.setDocumentCategory(DocumentCategory.INFORMATION);
-        aadharCard.setDocName("Aadhar Card");
+        aadharCard.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        aadharCard.setDocTypeId(docTypeDao.findByName("Aadhar Card").getId());
         aadharCard.setFlag(flag);
         aadharCard.setRequiredBeforeJoining(true);
         documentDao.insert(aadharCard);
@@ -199,15 +202,16 @@ class DocumentTest {
         Document panCard = new TaxID();
         panCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         panCard.setDocumentCategory(DocumentCategory.FINANCIAL);
-        panCard.setDocName("PAN Card");
+        panCard.setDocTypeId(docTypeDao.findByName("Pan Card").getId());
         panCard.setFlag(flag);
         panCard.setRequiredBeforeJoining(true);
         documentDao.insert(panCard);
 
         Document cdc = new NationalID();
         cdc.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-        cdc.setDocumentCategory(DocumentCategory.INFORMATION);
-        cdc.setDocName("Continuous Discharge Certificate");
+        cdc.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        cdc.setDocTypeId(docTypeDao.findByName("Indian CDC").getId());
+        cdc.setDocName("Indian Continuous Discharge Certificate");
         cdc.setFlag(flag);
         cdc.setValidity(10, DurationType.YEARS);
         cdc.setRequiredBeforeJoining(true);
@@ -216,8 +220,9 @@ class DocumentTest {
 
         Document indos = new NationalID();
         indos.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
-        indos.setDocumentCategory(DocumentCategory.EMPLOYMENT);
-        indos.setDocName("INDOS");
+        indos.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        indos.setDocTypeId(docTypeDao.findByName("INDOS").getId());
+        indos.setDocName("Indian INDOS");
         indos.setFlag(flag);
         indos.setRequiredBeforeJoining(true);
         indos.setRequiredAfterJoining(true);
@@ -226,17 +231,17 @@ class DocumentTest {
         Document yellowFeverCert = new Certificate();
         yellowFeverCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         yellowFeverCert.setDocumentCategory(DocumentCategory.MEDICAL);
+        yellowFeverCert.setDocTypeId(docTypeDao.findByName("Yellow Fever").getId());
         yellowFeverCert.setDocName("Yellow Fever");
         yellowFeverCert.setFlag(flag);
         yellowFeverCert.setRequiredBeforeJoining(true);
         yellowFeverCert.setRequiredAfterJoining(true);
         documentDao.insert(yellowFeverCert);
 
-        Document drugAlcoholCert = new Certificate();
+      /*  Document drugAlcoholCert = new Certificate();
         drugAlcoholCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         drugAlcoholCert.setDocumentCategory(DocumentCategory.MEDICAL);
         drugAlcoholCert.setDocName("Drug & Alcohol Certificate");
-        //drugAlcoholCert.setFlag(flag);
         drugAlcoholCert.setRequiredAfterJoining(true);
         documentDao.insert(drugAlcoholCert);
 
@@ -267,7 +272,7 @@ class DocumentTest {
         form3A.setDocumentCategory(DocumentCategory.EMPLOYMENT);
         form3A.setDocName("FORM 3A");
         form3A.setFlag(flag);
-        documentDao.insert(form3A);
+        documentDao.insert(form3A);*/
 
         List<Document> list = documentDao.findAll();
         list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName() + " - " + doc.getClass().getName()));
@@ -371,6 +376,16 @@ class DocumentTest {
                 System.out.println(passport.getGivenName());
             }
         });*/
+    }
+
+    @Test
+    void addIndianPassport() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.PASSPORT);
+        type.setName("Indian Passport");
+        docTypeDao.insert(type);
     }
 
 
@@ -505,5 +520,28 @@ class DocumentTest {
         type.setDocumentPool(DocumentPool.LICENSE);
         type.setName("Liberian");
         docTypeDao.insert(type);
+    }
+
+    @Test
+    void addSTCW() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("STCW 2010 Basic Safety Training");
+        type.setDesc("International Convention on Standards of Training, Certification and Watchkeeping for Seafarers (STCW), 1978 sets minimum qualification standards for masters, officers and watch personnel on seagoing merchant ships and large yachts.");
+        docTypeDao.insert(type);
+
+    }
+    @Test
+    void addIndianCDC() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Indian CDC");
+        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");
+        docTypeDao.insert(type);
+
     }
 }

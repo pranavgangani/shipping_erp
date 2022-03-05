@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.repository.Query;
 
 
 public interface DocumentTypeRepository extends MongoRepository<DocumentType, Long> {
-    @Query("{ 'fName' : { $regex: ?0 } }")
-    public Crew findByName(String firstName);
+    @Query("{ 'name' : { $regex: ?0 } }")
+    public DocumentType findByName(String name);
 }

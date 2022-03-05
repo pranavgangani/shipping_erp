@@ -56,7 +56,7 @@ public abstract class Document {
     }
 
     public void setId(long id) {
-        id = id;
+        this.id = id;
     }
 
     public String get_type() {
