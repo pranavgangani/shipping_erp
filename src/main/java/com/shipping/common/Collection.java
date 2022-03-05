@@ -24,15 +24,12 @@ public class Collection {
 	public final static String CREW_DOCUMENT_TAG = "CrewDocumentTag";
 	//public final static String CERTIFICATION = "Certification";
 	public final static String DOC_SUB_CAT = "CrewDocumentSubCategory";
-
-	//Certificate Types
 	public final static String DOCUMENT_TYPE = "DocumentType";
 
 	//Audit 
 	public final static String AUDIT_TRAIL = "AuditTrail";
 	public final static String COMMENT = "Comment";
-	
-	
+
 	//Company
 	public final static String EMPLOYEE = "Employee";
 	

@@ -374,9 +374,10 @@ class DocumentTest {
     }
 
 
+    @Test
     void addCertificateTypes() {
         DocumentType type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("Certificate of Endorsement (CoE)");
@@ -384,7 +385,7 @@ class DocumentTest {
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("Certificate of Competency (CoC)");
@@ -392,7 +393,7 @@ class DocumentTest {
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("Cerificate of Proficiency (COP)");
@@ -400,14 +401,14 @@ class DocumentTest {
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("Seafarer Identification Record Book (SIRB)");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("INDOS");
@@ -415,91 +416,91 @@ class DocumentTest {
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.EDUCATION);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("SSC");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.EDUCATION);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("HSC");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         type.setDocumentPool(DocumentPool.TAX_ID);
         type.setName("Pan Card");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         type.setDocumentPool(DocumentPool.NATIONAL_ID);
         type.setName("Aadhar Card");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.MEDICAL);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("Yellow Fever");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.VISA);
         type.setName("US B1/B2");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.VISA);
         type.setName("US C1/D");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.VISA);
         type.setName("Australian MCV");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
         type.setName("Indian");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
         type.setName("Liberian");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
         type.setName("UK");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
         type.setName("Panama");
         docTypeDao.insert(type);
 
         type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
         type.setName("Liberian");
