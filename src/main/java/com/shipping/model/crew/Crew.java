@@ -26,6 +26,7 @@ public class Crew extends Person {
     private Rank rank;
     private Flag manningOffice;
     private long photoId;
+    private Flag citizenFlag;
 
     // Past
     private List<Employment> employmentHistory;
@@ -300,6 +301,14 @@ public class Crew extends Person {
 
     public void setExistingDocuments(List<Document> existingDocuments) {
         this.existingDocuments = existingDocuments;
+    }
+
+    public Flag getCitizenFlag() {
+        return citizenFlag;
+    }
+
+    public void setCitizenFlag(Flag citizenFlag) {
+        this.citizenFlag = citizenFlag;
     }
 
     @Override

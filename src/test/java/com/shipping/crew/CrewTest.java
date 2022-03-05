@@ -2,11 +2,13 @@ package com.shipping.crew;
 
 import com.shipping.common.Flag;
 import com.shipping.dao.common.CrewDocumentRepository;
+import com.shipping.dao.common.DocumentTypeRepository;
 import com.shipping.dao.common.FlagRepository;
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.main.CrewManagementApplication;
 import com.shipping.model.common.document.*;
 import com.shipping.model.common.document.category.Document;
+import com.shipping.model.common.document.category.DocumentType;
 import com.shipping.model.common.document.category.EducationDocument;
 import com.shipping.model.common.document.category.EmploymentDocument;
 import com.shipping.model.crew.*;
@@ -34,6 +36,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 class CrewTest {
     @Autowired
     private CrewDocumentRepository documentDao;
+    @Autowired
+    private DocumentTypeRepository docTypeDao;
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
@@ -134,7 +138,6 @@ class CrewTest {
 
     @Test
     void uploadOtherDocs() {
-
         Crew crew = crewDao.findById(25l).get();
         List<Document> preJoiningMandatoryDocs = documentDao.findAll();
         crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
@@ -143,43 +146,46 @@ class CrewTest {
 
     @Test
     void updateCrewDetails() {
+        Crew crew = crewDao.findById(26l).get();
+        Flag flag = crew.getCitizenFlag();
 
-        Crew crew = crewDao.findById(25l).get();
         List<Education> eduList = crew.getEducationHistory();
         List<Employment> empList = crew.getEmploymentHistory();
 
         List<Document> existingDocs = crew.getExistingDocuments();
+        System.out.println(existingDocs != null ? existingDocs.size() : 0);
+        List<Document> preJoiningMandatoryDocs = documentDao.getPostJoinMandatoryByFlag(flag.getId());
+        System.out.println(preJoiningMandatoryDocs != null ? preJoiningMandatoryDocs.size() : 0);
 
-        List<Document> preJoiningMandatoryDocs = documentDao.findAll();
-
-		AtomicInteger countExistingDocs = new AtomicInteger();
-        preJoiningMandatoryDocs.forEach(mandateDoc -> {
-            existingDocs.forEach(existingDoc -> {
+        if (existingDocs == null) {
+            AtomicInteger countExistingDocs = new AtomicInteger();
+            preJoiningMandatoryDocs.forEach(mandateDoc -> {
                 if (mandateDoc.isRequiredBeforeJoining()) {
-                    if (mandateDoc.getDocumentCategory().equals(existingDoc.getDocumentCategory())) {
-                        if(mandateDoc.getClass().equals(existingDoc.getClass())) {
-                            if (mandateDoc.getClass().equals(Passport.class)) {
-								countExistingDocs.getAndIncrement();
-                            }
-							else if (mandateDoc.getClass().equals(Visa.class)) {
-								Visa visa = new Visa();
-								countExistingDocs.getAndIncrement();
-							}
-							else if (mandateDoc.getClass().equals(Visa.class)) {
-								Visa visa = new Visa();
-								countExistingDocs.getAndIncrement();
-							}
+                    if (docTypeDao.findByName("Indian Passport").getId() == mandateDoc.getDocTypeId()) {
+                        Passport pp = (Passport) mandateDoc;
+                        pp.setDocNumber("KJHDKSHJD");
+                        pp.setDocName("Rohan's Indian Passport");
+                        pp.setGivenName("Tiwari Rohan Pradeep");
+                        pp.setUploaded(true);
+                        countExistingDocs.getAndIncrement();
+                    } else if (mandateDoc.getClass().equals(NationalID.class)) {
+                        if (docTypeDao.findByName("Pan Card").getId() == mandateDoc.getDocTypeId()) {
+                            TaxID panCard = (TaxID) mandateDoc;
+                            panCard.setDocNumber("ANHG2131");
+                            panCard.setDocName("Rohan Pan Card");
+                            panCard.setGivenName("Rohan P Tiwari");
+                            panCard.setUploaded(true);
+                            countExistingDocs.getAndIncrement();
                         }
+
                     }
 
                 }
-				else if (mandateDoc.isRequiredAfterJoining()) {
-
-				}
             });
+            crew.setExistingDocuments(preJoiningMandatoryDocs);
+            crewDao.save(crew);
+        }
 
-        });
-        crewDao.save(crew);
     }
 
 

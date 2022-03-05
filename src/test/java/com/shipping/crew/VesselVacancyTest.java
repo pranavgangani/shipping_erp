@@ -38,8 +38,6 @@ class VesselVacancyTest {
     @Autowired
     private VesselOwnerRepository vesselOwnerDao;
     @Autowired
-    private CrewDocumentRepository documentDao;
-    @Autowired
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
     private FlagRepository flagDao;
@@ -172,4 +170,6 @@ class VesselVacancyTest {
         crew.setStatusId(Crew.Status.PENDING_DOCS.getId());
         crewDao.save(crew);
     }
+
+
 }

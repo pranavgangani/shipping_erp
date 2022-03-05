@@ -1,6 +1,7 @@
 package com.shipping.dao.common;
 
 import com.shipping.model.common.document.category.Document;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -135,5 +136,8 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
     public List<Document> getPostJoiningDocsForAllVesselTypeAndSpecificRank(int rankId);
 
     @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }, {'forRankSubCategories': { $eq: ?0 }}")
-    public List<Document> getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(int rankSubCatId);
+    public List<Document> getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(int flagId);
+
+    @Query("{$and :[{'isRequiredAfterJoining': { $eq: true }},{'flag.id': { $eq: ?0 }}] }")
+    public List<Document> getPostJoinMandatoryByFlag(ObjectId flagId);
 }

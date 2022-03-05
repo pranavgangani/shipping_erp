@@ -352,68 +352,6 @@ class DocumentTest {
 
 
     @Test
-    void getPostJoiningDocs() {
-        List<Document> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllRankCat();
-        list.addAll(documentDao.getPostJoiningDocsForAllVesselTypeAndSpecificRank(Rank.CAPTAIN.getId()));
-
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
-                + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
-
-
-        //Document persistedInsurance = (documentDao.findById(insurance.getId()).isPresent())?documentDao.findById(insurance.getId()).get():null;
-        //Assert.assertNotNull(persistedInsurance);
-    }
-
-    @Test
-    void getDocsByRating() {
-        List<Document> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(RankSubCategory.RATING.getId());
-
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
-                + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
-
-
-        //Document persistedInsurance = (documentDao.findById(insurance.getId()).isPresent())?documentDao.findById(insurance.getId()).get():null;
-        //Assert.assertNotNull(persistedInsurance);
-    }
-
-
-    @Test
-    void getAllDocsWhenCrewJoiningAVessel() {
-        //Vessel
-        int vesselTypeId = VesselType.TANKER.getId();
-        int vesselSubTypeId = VesselSubType.LNG_TANKER.getId();
-
-        //Rank Details
-        Rank rank = Rank.CAPTAIN;
-        int rankCatId = rank.getRankCategory().getId();
-        int rankSubCatId = rank.getRankSubCategory().getId();
-
-        List<Document> list = new ArrayList<>();
-        list.addAll(documentDao.getPostJoiningDocs1(vesselTypeId,
-                vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));
-
-        list.addAll(documentDao.getPostJoiningDocs2(vesselTypeId,
-                vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));
-
-        list.addAll(documentDao.getPostJoiningDocs3(vesselTypeId,
-                vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));
-
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
-                + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
-
-        /*list.forEach(o -> {
-            System.out.println(o.getClass().getName());
-            if (o.getClass().equals(Insurance.class)) {
-                Insurance insurance = (Insurance) o;
-                System.out.println(insurance.getInsuranceCompanyName());
-            } else if (o.getClass().equals(Passport.class)) {
-                Passport passport = (Passport) o;
-                System.out.println(passport.getGivenName());
-            }
-        });*/
-    }
-
-    @Test
     void addIndianPassport() {
         DocumentType type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
