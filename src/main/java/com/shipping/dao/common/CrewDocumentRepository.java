@@ -37,6 +37,12 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
             "            {'forRankCategories': { $eq: ?2 }}, \n" +
             "            {'forRankSubCategories': { $eq: ?3 }}, \n" +
             "            {'forRanks': { $eq: 0 }}]},\n" +
+            "        {$and:[\n" +
+            "            {'forVesselTypes': { $eq: 0 }}, \n" +
+            "            {'forVesselSubTypes': { $eq: 0 }}, \n" +
+            "            {'forRankCategories': { $eq: 0 }}, \n" +
+            "            {'forRankSubCategories': { $eq: ?3 }}, \n" +
+            "            {'forRanks': { $eq: ?4 }}]},\n" +
             "\t\t{$and:[\n" +
             "            {'forVesselTypes': { $eq: 0 }}, \n" +
             "            {'forVesselSubTypes': { $eq: 0 }}, \n" +
@@ -67,6 +73,12 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
             "            {'forRankCategories': { $eq: ?2 }}, \n" +
             "            {'forRankSubCategories': { $eq: ?3 }}, \n" +
             "            {'forRanks': { $eq: 0 }}]},\n" +
+            "        {$and:[\n" +
+            "            {'forVesselTypes': { $eq: ?0 }}, \n" +
+            "            {'forVesselSubTypes': { $eq: 0 }}, \n" +
+            "            {'forRankCategories': { $eq: 0 }}, \n" +
+            "            {'forRankSubCategories': { $eq: ?3 }}, \n" +
+            "            {'forRanks': { $eq: ?4 }}]},\n" +
             "\t\t{$and:[\n" +
             "            {'forVesselTypes': { $eq: ?0 }}, \n" +
             "            {'forVesselSubTypes': { $eq: 0 }}, \n" +
@@ -97,6 +109,12 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
             "            {'forRankCategories': { $eq: ?2 }}, \n" +
             "            {'forRankSubCategories': { $eq: ?3 }}, \n" +
             "            {'forRanks': { $eq: 0 }}]},\n" +
+            "        {$and:[\n" +
+            "            {'forVesselTypes': { $eq: ?0 }}, \n" +
+            "            {'forVesselSubTypes': { $eq: ?0 }}, \n" +
+            "            {'forRankCategories': { $eq: 0 }}, \n" +
+            "            {'forRankSubCategories': { $eq: ?3 }}, \n" +
+            "            {'forRanks': { $eq: ?4 }}]},\n" +
             "\t\t{$and:[\n" +
             "            {'forVesselTypes': { $eq: ?0 }}, \n" +
             "            {'forVesselSubTypes': { $eq: ?1 }}, \n" +
@@ -110,12 +128,12 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
     @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }")
     public List<Document> getPostJoiningDocsForAllVesselTypeAndAllRankCat();
 
-    @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: ?0 }}] }, {'forRankSubCategories': { $eq: 0 }}, {'forRanks': { $eq: 0 }}")
+    @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: ?0 }}] }, {'forRankSubCategories': { $eq: 0 }}")
     public List<Document> getPostJoiningDocsForAllVesselTypeAndAllSpecificDept(int rankCatId);
 
     @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }, {'forRankSubCategories': { $eq: 0 }}, {'forRanks': { $eq: ?0 }}")
     public List<Document> getPostJoiningDocsForAllVesselTypeAndSpecificRank(int rankId);
 
-    @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }, {'forRankSubCategories': { $eq: 0 }}, {'forRanks': { $eq: ?0 }}")
-    public List<Document> getPostJoiningDocsForAllVesselTypeAndSpecificDepartment(int rankId);
+    @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }, {'forRankSubCategories': { $eq: ?0 }}")
+    public List<Document> getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(int rankSubCatId);
 }

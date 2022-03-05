@@ -13,6 +13,7 @@ import com.shipping.model.common.document.category.DocumentPool;
 import com.shipping.model.common.document.category.DocumentType;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.crew.RankCategory;
+import com.shipping.model.crew.RankSubCategory;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselType;
 import com.shipping.service.common.SequenceGeneratorService;
@@ -40,6 +41,27 @@ class DocumentTest {
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
     private FlagRepository flagDao;
+
+    @Test
+    void addSTCWDocsFromAnnex() {
+        MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
+        trainingCert.setDocName("Ratings Forming Part of a Navigational Watch");
+        trainingCert.setRegulation("Regulation II/4");
+        trainingCert.setSectionTable("Section A-II/4, Table A-11/4");
+        trainingCert.setTrainingHours(40);
+        trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
+        trainingCert.setForVesselTypes(new ArrayList<>(Arrays.asList(VesselType.ALL.getId())));
+        trainingCert.setForVesselSubTypes(new ArrayList<>(Arrays.asList(VesselSubType.ALL.getId())));
+        trainingCert.setForRankCategories(new ArrayList<>(Arrays.asList(RankCategory.ALL.getId())));
+        trainingCert.setForRankSubCategories(new ArrayList<>(Arrays.asList(RankSubCategory.RATING.getId())));
+        trainingCert.setForRanks(Rank.getIdsBySubCategory(RankSubCategory.RATING));
+        trainingCert.setMandatory(true);
+        trainingCert.setRequiredBeforeJoining(true);//Mandatory only if joining this Type of Vessle
+        trainingCert.setValidity(5, DurationType.YEARS);
+        documentDao.insert(trainingCert);
+    }
 
     @Test
     void addHazardousTrainingDoc() {
@@ -341,6 +363,19 @@ class DocumentTest {
         //Document persistedInsurance = (documentDao.findById(insurance.getId()).isPresent())?documentDao.findById(insurance.getId()).get():null;
         //Assert.assertNotNull(persistedInsurance);
     }
+
+    @Test
+    void getDocsByRating() {
+        List<Document> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(RankSubCategory.RATING.getId());
+
+        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
+                + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
+
+
+        //Document persistedInsurance = (documentDao.findById(insurance.getId()).isPresent())?documentDao.findById(insurance.getId()).get():null;
+        //Assert.assertNotNull(persistedInsurance);
+    }
+
 
     @Test
     void getAllDocsWhenCrewJoiningAVessel() {

@@ -154,6 +154,24 @@ public class Rank {
 		}
 		return rankMap;
 	}
-	
+
+	public static List<Rank> getBySubCategory(RankSubCategory rankSubCategory) {
+		List<Rank> list = new ArrayList<>();
+		getList().forEach(r->{
+			if(r.getRankSubCategory().equals(rankSubCategory)) {
+				list.add(r);
+			}
+		});
+		return list;
+	}
+	public static List<Integer> getIdsBySubCategory(RankSubCategory rankSubCategory) {
+		List<Integer> list = new ArrayList<>();
+		getList().forEach(r->{
+			if(r.getRankSubCategory().equals(rankSubCategory)) {
+				list.add(r.getId());
+			}
+		});
+		return list;
+	}
 	
 }
