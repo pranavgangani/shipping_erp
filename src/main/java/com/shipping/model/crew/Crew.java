@@ -28,6 +28,8 @@ public class Crew extends Person {
     private long photoId;
     private Flag citizenFlag;
 
+    private String permAddress, tempAddress;
+
     // Past
     private List<Employment> employmentHistory;
     private List<Education> educationHistory;
@@ -309,6 +311,22 @@ public class Crew extends Person {
 
     public void setCitizenFlag(Flag citizenFlag) {
         this.citizenFlag = citizenFlag;
+    }
+
+    public String getPermAddress() {
+        return permAddress;
+    }
+
+    public void setPermAddress(String permAddress) {
+        this.permAddress = permAddress;
+    }
+
+    public String getTempAddress() {
+        return tempAddress;
+    }
+
+    public void setTempAddress(String tempAddress) {
+        this.tempAddress = tempAddress;
     }
 
     @Override
