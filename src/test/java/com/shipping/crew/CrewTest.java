@@ -6,6 +6,7 @@ import com.shipping.dao.common.DocumentTypeRepository;
 import com.shipping.dao.common.FlagRepository;
 import com.shipping.dao.crew.CrewContractRepository;
 import com.shipping.dao.crew.CrewRepository;
+import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.dao.vessel.VesselVacancyRepository;
 import com.shipping.main.CrewManagementApplication;
 import com.shipping.model.common.document.*;
@@ -17,6 +18,7 @@ import com.shipping.model.crew.CrewContract;
 import com.shipping.model.vessel.Vessel;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselVacancy;
+import com.shipping.service.common.ContractDocumentGenerator;
 import com.shipping.service.common.SequenceGeneratorService;
 import com.shipping.util.DateTime;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.shipping.crew.WordIntegrationTest.wordDocument;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -51,6 +55,8 @@ class CrewTest {
     private VesselVacancyRepository vesselVacancyDao;
     @Autowired
     private CrewContractRepository crewContractDao;
+    @Autowired
+    private VesselRepository vesselDao;
 
     @Test
     void addCrewDetails() {
@@ -203,6 +209,10 @@ class CrewTest {
         //Get Vessel details on which the crew has been assigned
         VesselVacancy vacancy = vesselVacancyDao.findVacancyByCrewId(crew.getId());
 
+        //Get Vessel details
+        Vessel vessel = vesselDao.findById(vacancy.getVesselId()).get();
+
+
         CrewContract contract = new CrewContract();
         contract.setRankId(Rank.CAPTAIN.getId());
         contract.setCrewId(crew.getId());
@@ -213,7 +223,7 @@ class CrewTest {
         contract.setStatusId(CrewContract.Status.GENERATED.getId());
 
         //Add Contract
-        crewContractDao.insert(contract);
+        //crewContractDao.insert(contract);
 
         //Generate Files
         //1-> Contract Doc (From CrewContract)
@@ -222,6 +232,12 @@ class CrewTest {
         //4-> Against use of Objectionable Declaration (From CrewContract)
         //5-> Sign-on Declaration (From CrewContract)
 
+        ContractDocumentGenerator wordDocument = new ContractDocumentGenerator();
+        try {
+            wordDocument.generate(crew, vessel, contract);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
