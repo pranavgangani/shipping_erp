@@ -26,6 +26,9 @@ public class Collection {
 	public final static String DOC_SUB_CAT = "CrewDocumentSubCategory";
 	public final static String DOCUMENT_TYPE = "DocumentType";
 
+	//Contract
+	public final static String CREW_CONTRACT = "CrewContract";
+
 	//Audit 
 	public final static String AUDIT_TRAIL = "AuditTrail";
 	public final static String COMMENT = "Comment";

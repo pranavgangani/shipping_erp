@@ -4,16 +4,19 @@ import com.shipping.common.Flag;
 import com.shipping.dao.common.CrewDocumentRepository;
 import com.shipping.dao.common.DocumentTypeRepository;
 import com.shipping.dao.common.FlagRepository;
+import com.shipping.dao.crew.CrewContractRepository;
 import com.shipping.dao.crew.CrewRepository;
+import com.shipping.dao.vessel.VesselVacancyRepository;
 import com.shipping.main.CrewManagementApplication;
 import com.shipping.model.common.document.*;
 import com.shipping.model.common.document.category.Document;
-import com.shipping.model.common.document.category.DocumentType;
 import com.shipping.model.common.document.category.EducationDocument;
 import com.shipping.model.common.document.category.EmploymentDocument;
 import com.shipping.model.crew.*;
+import com.shipping.model.crew.CrewContract;
 import com.shipping.model.vessel.Vessel;
 import com.shipping.model.vessel.VesselSubType;
+import com.shipping.model.vessel.VesselVacancy;
 import com.shipping.service.common.SequenceGeneratorService;
 import com.shipping.util.DateTime;
 import org.junit.jupiter.api.Test;
@@ -44,6 +47,10 @@ class CrewTest {
     private FlagRepository flagDao;
     @Autowired
     private CrewRepository crewDao;
+    @Autowired
+    private VesselVacancyRepository vesselVacancyDao;
+    @Autowired
+    private CrewContractRepository crewContractDao;
 
     @Test
     void addCrewDetails() {
@@ -185,6 +192,37 @@ class CrewTest {
             crew.setExistingDocuments(preJoiningMandatoryDocs);
             crewDao.save(crew);
         }
+
+    }
+
+    @Test
+    void generateContract() {
+        //Get Crew Details
+        Crew crew = crewDao.findById(26l).get();
+
+        //Get Vessel details on which the crew has been assigned
+        VesselVacancy vacancy = vesselVacancyDao.findVacancyByCrewId(crew.getId());
+
+        CrewContract contract = new CrewContract();
+        contract.setRankId(Rank.CAPTAIN.getId());
+        contract.setCrewId(crew.getId());
+        contract.setVesselId(vacancy.getVesselId());
+        contract.setPlaceOfContract("Mumbai");
+        contract.setPlaceOfContractFlag(crew.getCitizenFlag());
+        contract.setWageCurrency(15000);
+        contract.setStatusId(CrewContract.Status.GENERATED.getId());
+
+        //Add Contract
+        crewContractDao.insert(contract);
+
+        //Generate Files
+        //1-> Contract Doc (From CrewContract)
+        //2-> Next of Kin Declaration (From NoK details)
+        //3-> Alcohol & Drugs Declaration (From CrewContract)
+        //4-> Against use of Objectionable Declaration (From CrewContract)
+        //5-> Sign-on Declaration (From CrewContract)
+
+
 
     }
 

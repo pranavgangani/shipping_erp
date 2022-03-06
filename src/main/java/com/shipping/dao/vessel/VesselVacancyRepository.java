@@ -29,4 +29,7 @@ public interface VesselVacancyRepository extends MongoRepository<VesselVacancy, 
     @Query("{'crewId': { $eq: null }}")
     public List<VesselVacancy> findUnfilledVacancies();
 
+    @Query("{'filledByCrewId': { $eq: ?0 }}")
+    public VesselVacancy findVacancyByCrewId(long crewId);
+
 }

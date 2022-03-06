@@ -1,6 +1,5 @@
 package com.shipping.model.common.document;
 
-import com.shipping.model.common.document.category.Document;
 import com.shipping.model.common.document.category.EmploymentDocument;
 import com.shipping.model.crew.ContractRule;
 
