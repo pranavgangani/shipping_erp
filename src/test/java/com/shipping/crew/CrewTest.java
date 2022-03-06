@@ -31,6 +31,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -150,8 +151,51 @@ class CrewTest {
     }
 
     @Test
+    void updateNextOfKinDetails() {
+        Crew crew = crewDao.findById(26l).get();
+        NextOfKin nok1 = new NextOfKin();
+        nok1.setNomineeName("Vrushali Rohan Tiwari");
+        nok1.setDateOfBirth("12-Mar-1983");
+        nok1.setRelationType(NextOfKin.RelationType.WIFE.getRelationTypeName());
+        nok1.setAddress("Same as above");
+        nok1.setGender("female");
+        nok1.setPerOfAmount(60);
+
+        NextOfKin nok2 = new NextOfKin();
+        nok2.setNomineeName("Kanchan Pradeep Tiwari");
+        nok2.setDateOfBirth("12-Apr-1964");
+        nok2.setRelationType(NextOfKin.RelationType.MOTHER.getRelationTypeName());
+        nok2.setAddress("Same as above");
+        nok2.setGender("female");
+        nok2.setPerOfAmount(40);
+
+        //Below 18
+        NextOfKin nok3 = new NextOfKin();
+        nok3.setNomineeName("Tanishqa Tiwari");
+        nok3.setDateOfBirth("21-Oct-2012");
+        nok3.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
+        nok3.setAddress("Same as above");
+        nok3.setGender("female");
+
+        NextOfKin nok4 = new NextOfKin();
+        nok4.setNomineeName("Shamika Tiwari");
+        nok4.setDateOfBirth("16-Jun-2015");
+        nok4.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
+        nok4.setAddress("Same as above");
+        nok4.setGender("female");
+
+        List<NextOfKin> nextOfKins = new LinkedList<>();
+        nextOfKins.add(nok1);
+        nextOfKins.add(nok2);
+        nextOfKins.add(nok3);
+        nextOfKins.add(nok4);
+        crew.setNextOfKins(nextOfKins);
+        crewDao.save(crew);
+    }
+
+    @Test
     void uploadOtherDocs() {
-        Crew crew = crewDao.findById(25l).get();
+        Crew crew = crewDao.findById(26l).get();
         List<Document> preJoiningMandatoryDocs = documentDao.findAll();
         crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
         crewDao.save(crew);
@@ -225,13 +269,7 @@ class CrewTest {
         //Add Contract
         //crewContractDao.insert(contract);
 
-        //Generate Files
-        //1-> Contract Doc (From CrewContract)
-        //2-> Next of Kin Declaration (From NoK details)
-        //3-> Alcohol & Drugs Declaration (From CrewContract)
-        //4-> Against use of Objectionable Declaration (From CrewContract)
-        //5-> Sign-on Declaration (From CrewContract)
-
+        //Generate Contract Docs
         ContractDocumentGenerator wordDocument = new ContractDocumentGenerator(crew, vessel, contract);
         try {
             wordDocument.generate();

@@ -160,7 +160,8 @@ public class CrewContract {
     public enum Status {
         GENERATED(1, "Generated"),
         STARTED(2, "Started"),
-        ENDED(3, "Ended");
+        ENDED(3, "Ended"),
+        CANCELLED(4, "Generated");
 
         private int id;
         private String desc;

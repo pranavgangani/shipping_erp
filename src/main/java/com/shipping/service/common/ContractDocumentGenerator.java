@@ -5,7 +5,9 @@ import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewContract;
+import com.shipping.model.crew.NextOfKin;
 import com.shipping.model.vessel.Vessel;
+import com.shipping.util.ListUtil;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
@@ -14,6 +16,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.swing.plaf.ListUI;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,6 +24,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,12 +51,12 @@ public class ContractDocumentGenerator {
 
     public void generate() throws Exception {
         generateContrat();
-        generateCheckList();
+        generateCheckList();//Can capture from <CrewDocuments>
         generateSeafarerBriefing();
         generateDocsHandedOver();
         generateAlcoholDrugsDeclaration();
         generateDeclarationAgainstUseOfObjectionableMaterials();
-        generateNextKinDeclaration();
+        generateNextKinDeclaration(); //Can capture values from <NextOfKin>
         generateSignOnDeclaration();
         generateSignOnHealthDeclaration();
         generateSignOnPerformanceGoals();
@@ -286,6 +290,9 @@ public class ContractDocumentGenerator {
     }
 
     private void generateNextKinDeclaration() {
+
+        List<NextOfKin> noks = crew.getNextOfKins();
+
         XWPFDocument document = new XWPFDocument();
         try (FileOutputStream out = new FileOutputStream("7_Next_Kin_Declaration.docx")) {
             // Creating Table
@@ -294,15 +301,26 @@ public class ContractDocumentGenerator {
             // Columns
             row.getCell(0).setText("Sl. No.");
             row.addNewTableCell().setText("Name");
-            row.addNewTableCell().setText("Email");
-            row = tab.createRow(); // Second Row
-            row.getCell(0).setText("1.");
-            row.getCell(1).setText("Irfan");
-            row.getCell(2).setText("irfan@gmail.com");
-            row = tab.createRow(); // Third Row
-            row.getCell(0).setText("2.");
-            row.getCell(1).setText("Mohan");
-            row.getCell(2).setText("mohan@gmail.com");
+            row.addNewTableCell().setText("DOB");
+            row.addNewTableCell().setText("Gender");
+            row.addNewTableCell().setText("Relation");
+            row.addNewTableCell().setText("Address");
+            row.addNewTableCell().setText("% Of Amount");
+
+            if(ListUtil.isNotEmpty(noks)) {
+                int i = 1;
+                for (NextOfKin nok : noks) {
+                    row = tab.createRow(); // New Row
+                    row.getCell(0).setText(i+".");
+                    row.getCell(1).setText(nok.getNomineeName());
+                    row.getCell(2).setText(nok.getDateOfBirth());
+                    row.getCell(3).setText(nok.getGender());
+                    row.getCell(4).setText(nok.getRelationType());
+                    row.getCell(5).setText(nok.getAddress());
+                    row.getCell(6).setText(String.valueOf(nok.getPerOfAmount()));
+                }
+            }
+
             document.write(out);
         } catch (Exception e) {
             e.printStackTrace();
