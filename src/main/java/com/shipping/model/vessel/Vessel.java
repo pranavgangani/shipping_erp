@@ -37,6 +37,7 @@ public class Vessel {
 	private DateTime enteredDateTime;
 	private String enteredByEmpId;
 	private List<VesselVacancy> vacancies;
+	private List<VesselManager> vesselManagers;
 	
 	
 	public long getId() {
@@ -169,7 +170,15 @@ public class Vessel {
 	public void setVesselOwner(VesselOwner vesselOwner) {
 		this.vesselOwner = vesselOwner;
 	}
-	
+
+	public List<VesselManager> getVesselManagers() {
+		return vesselManagers;
+	}
+
+	public void setVesselManagers(List<VesselManager> vesselManagers) {
+		this.vesselManagers = vesselManagers;
+	}
+
 	public DateTime getEnteredDateTime() {
 		return enteredDateTime;
 	}
@@ -182,6 +191,7 @@ public class Vessel {
 	public void setEnteredByEmpId(String enteredByEmpId) {
 		this.enteredByEmpId = enteredByEmpId;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

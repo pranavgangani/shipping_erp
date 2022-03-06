@@ -1,7 +1,6 @@
 package com.shipping.dao.crew;
 
-import com.shipping.model.crew.Crew;
-import com.shipping.model.crew.CrewContract;
+import com.shipping.model.crew.contract.CrewContract;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

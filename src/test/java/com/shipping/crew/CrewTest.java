@@ -14,13 +14,12 @@ import com.shipping.model.common.document.category.Document;
 import com.shipping.model.common.document.category.EducationDocument;
 import com.shipping.model.common.document.category.EmploymentDocument;
 import com.shipping.model.crew.*;
-import com.shipping.model.crew.CrewContract;
+import com.shipping.model.crew.contract.*;
 import com.shipping.model.vessel.Vessel;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselVacancy;
 import com.shipping.service.common.ContractDocumentGenerator;
 import com.shipping.service.common.SequenceGeneratorService;
-import com.shipping.util.DateTime;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -30,13 +29,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.shipping.crew.WordIntegrationTest.wordDocument;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -91,9 +89,18 @@ class CrewTest {
 
         List<Crew> crews = crewDao.findByDOB(LocalDate.of(1985, 7, 22));
         Assert.assertNotNull(crews);
-        crews.forEach(c->{
+        crews.forEach(c -> {
             System.out.println(c.getName());
         });
+
+    }
+
+    @Test
+    void updateDOB() {
+        Crew crew = crewDao.findById(26l).get();
+        LocalDate dob = LocalDate.of(1985, 11, 20);
+        crew.setDob(dob);
+        crewDao.save(crew);
 
     }
 
@@ -309,6 +316,7 @@ class CrewTest {
 
 
         CrewContract contract = new CrewContract();
+        contract.setId(sequenceGenerator.generateSequence(CrewContract.SEQUENCE_NAME));
         contract.setRankId(Rank.CAPTAIN.getId());
         contract.setCrewId(crew.getId());
         contract.setVesselId(vacancy.getVesselId());
@@ -318,7 +326,7 @@ class CrewTest {
         contract.setStatusId(CrewContract.Status.GENERATED.getId());
 
         //Add Contract
-        //crewContractDao.insert(contract);
+        crewContractDao.insert(contract);
 
         //Generate Contract Docs
         ContractDocumentGenerator wordDocument = new ContractDocumentGenerator(crew, vessel, contract);
@@ -331,5 +339,25 @@ class CrewTest {
 
     }
 
+    @Test
+    void addTravelAndAccomodation() {
+        CrewContract contract = crewContractDao.findById(1l).get();
+        Flight flight = new Flight();
+        flight.setFlightName("Air India");
+        flight.setFlightNumber("12434");
+        flight.setTravelModeId(Travel.TravelMode.FLIGHT.getId());
+        flight.setStartDateTime(LocalDateTime.of(2022, 3, 23, 22, 20, 2));
+        flight.setEndDateTime(LocalDateTime.of(2022, 3, 23, 0, 20, 2));
+
+        Hotel hotel = new Hotel();
+        hotel.setAccomodationName("Oberoi");
+        hotel.setStartDateTime(LocalDateTime.of(2022, 3, 24, 02, 30, 2));
+        hotel.setEndDateTime(LocalDateTime.of(2022, 3, 24, 04, 30, 2));
+        flight.setTravelModeId(Accomodation.AccomodationType.HOTEL.getId());
+        contract.setTravelAndAccomodations(new LinkedList<>(Arrays.asList(flight, hotel)));
+
+        crewContractDao.save(contract);
+
+    }
 
 }

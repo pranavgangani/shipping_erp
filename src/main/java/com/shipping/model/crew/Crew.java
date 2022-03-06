@@ -35,7 +35,7 @@ public class Crew extends Person {
     private List<Employment> employmentHistory;
     private List<Education> educationHistory;
     private List<Medical> medicalHistory;
-    private List<Travel> travelHistory;
+    private List<TravelAudit> travelHistory;
 
     //Current
     private List<Document> existingDocuments;
@@ -177,12 +177,12 @@ public class Crew extends Person {
         this.medicalHistory = medicalHistory;
     }
 
-    public List<Travel> getTravelHistory() {
+    public List<TravelAudit> getTravelHistory() {
         return travelHistory;
     }
 
-    public void setTravelHistory(List<Travel> travelHistory) {
-        this.travelHistory = travelHistory;
+    public void setTravelHistory(List<TravelAudit> travelAuditHistory) {
+        this.travelHistory = travelAuditHistory;
     }
 
     public List<Document> getPreJoiningDocuments() {

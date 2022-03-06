@@ -28,6 +28,7 @@ public class Collection {
 
 	//Contract
 	public final static String CREW_CONTRACT = "CrewContract";
+	public final static String TRAVEL_AND_ACCOMODATION = "TravelAndAccomodation";
 
 	//Audit 
 	public final static String AUDIT_TRAIL = "AuditTrail";

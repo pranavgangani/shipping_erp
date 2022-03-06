@@ -1,4 +1,4 @@
-package com.shipping.model.crew;
+package com.shipping.model.crew.contract;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.Objects;
 import com.shipping.common.Collection;
 import com.shipping.common.Flag;
 import com.shipping.model.common.document.category.Document;
+import com.shipping.model.crew.ContractRule;
 import org.springframework.data.annotation.Id;
 
 import com.shipping.util.DateTime;
@@ -33,7 +34,9 @@ public class CrewContract {
 	private BigDecimal monthlyWage;
 	private double wageCurrency;
     private int statusId;
-	
+
+    private List<TravelAndAccomodation> travelAndAccomodations;
+
 	//Audit
 	private DateTime generatedDateTime;
 
@@ -155,6 +158,14 @@ public class CrewContract {
 
     public void setRankId(int rankId) {
         this.rankId = rankId;
+    }
+
+    public List<TravelAndAccomodation> getTravelAndAccomodations() {
+        return travelAndAccomodations;
+    }
+
+    public void setTravelAndAccomodations(List<TravelAndAccomodation> travelAndAccomodations) {
+        this.travelAndAccomodations = travelAndAccomodations;
     }
 
     public enum Status {

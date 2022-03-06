@@ -4,29 +4,15 @@ import com.shipping.dao.crew.CrewContractRepository;
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.model.crew.Crew;
-import com.shipping.model.crew.CrewContract;
+import com.shipping.model.crew.contract.CrewContract;
 import com.shipping.model.crew.NextOfKin;
 import com.shipping.model.vessel.Vessel;
 import com.shipping.util.ListUtil;
-import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHMerge;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVMerge;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STMerge;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.swing.plaf.ListUI;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ContractDocumentGenerator {
     @Autowired
