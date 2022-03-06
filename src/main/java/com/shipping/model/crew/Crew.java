@@ -1,5 +1,6 @@
 package com.shipping.model.crew;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.shipping.model.common.document.category.Document;
@@ -47,8 +48,7 @@ public class Crew extends Person {
     // KYC
     private List<NextOfKin> nextOfKins;
     private List<Bank> banks;
-    private String passportNum, visaNum;
-    private DateTime dob;
+    private LocalDate dob;
 
     private int statusId;
 
@@ -225,27 +225,11 @@ public class Crew extends Person {
         this.banks = banks;
     }
 
-    public String getPassportNum() {
-        return passportNum;
-    }
-
-    public void setPassportNum(String passportNum) {
-        this.passportNum = passportNum;
-    }
-
-    public String getVisaNum() {
-        return visaNum;
-    }
-
-    public void setVisaNum(String visaNum) {
-        this.visaNum = visaNum;
-    }
-
-    public DateTime getDob() {
+   public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(DateTime dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

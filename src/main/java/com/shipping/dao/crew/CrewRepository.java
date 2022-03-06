@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.shipping.model.crew.Crew;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CrewRepository extends MongoRepository<Crew, Long> {
@@ -14,5 +15,8 @@ public interface CrewRepository extends MongoRepository<Crew, Long> {
 
     @Query("{ 'lName' : { $regex: ?0 } }")
 	public List<Crew> findByLastName(String lastName);
+
+    @Query("{ 'dob' : { $gt: ?0 } }")
+    public List<Crew> findByDOB(LocalDate date);
 
 }

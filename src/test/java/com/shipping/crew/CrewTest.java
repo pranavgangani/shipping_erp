@@ -21,6 +21,7 @@ import com.shipping.model.vessel.VesselVacancy;
 import com.shipping.service.common.ContractDocumentGenerator;
 import com.shipping.service.common.SequenceGeneratorService;
 import com.shipping.util.DateTime;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +70,38 @@ class CrewTest {
         crew.setfName("Pranav");
         crew.setmName("J");
         crew.setlName("Gangani");
-        crew.setDob(new DateTime());
+        crew.setDob(dob);
         crew.setGender("male");
         crew.setRank(Rank.JR_ENGINEER);
         crew.setDistinguishMark("Some mark on head");
+        crew.setCitizenFlag(flag);
+        crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
+        crew.setEmailId("pranavgangani@gmail.com");
+        crew.setPassportNumber("SLJALJLJ");
+
+        crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
+        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+        crewDao.insert(crew);
+    }
+
+    @Test
+    void getCrewDOB() {
+        Crew crew = crewDao.findById(29l).get();
+        System.out.println(crew.getDob().toString());
+
+        List<Crew> crews = crewDao.findByDOB(LocalDate.of(1985, 7, 22));
+        Assert.assertNotNull(crews);
+        crews.forEach(c->{
+            System.out.println(c.getName());
+        });
+
+    }
+
+    @Test
+    void updateEducationDetails() {
+        Crew crew = crewDao.findById(29l).get();
+        Flag flag = crew.getCitizenFlag();
+
 
         //Education
         Education ssc = new Education();
@@ -98,6 +127,13 @@ class CrewTest {
         hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
 
         crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
+        crewDao.save(crew);
+    }
+
+    @Test
+    void updateEmploymentDetails() {
+        Crew crew = crewDao.findById(26l).get();
+        Flag flag = crew.getCitizenFlag();
 
         //Employment
         Employment emp1 = new Employment();
@@ -143,11 +179,9 @@ class CrewTest {
         emp2Docs.add(emp2Doc2);
         emp2.setEmploymentDocuments(emp2Docs);
         emp2.setFlag(flag);
-
         crew.setEmploymentHistory(new ArrayList<>(Arrays.asList(emp1, emp2)));
-        crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
-        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
-        crewDao.insert(crew);
+
+        crewDao.save(crew);
     }
 
     @Test
@@ -198,6 +232,23 @@ class CrewTest {
         Crew crew = crewDao.findById(26l).get();
         List<Document> preJoiningMandatoryDocs = documentDao.findAll();
         crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
+        crewDao.save(crew);
+    }
+
+
+    @Test
+    void uploadBankDetails() {
+        Crew crew = crewDao.findById(29l).get();
+
+        Bank bank = new Bank();
+        bank.setBankName("HDFC Bank");
+        bank.setPrimary(true);
+        bank.setAccountNumber("10001");
+        bank.setMicrCode("3434");
+        bank.setSwiftCode("SWI2323");
+        bank.setFlag(flagDao.getByCode("IN"));
+
+        crew.setBanks(new ArrayList<>(Arrays.asList(bank)));
         crewDao.save(crew);
     }
 
