@@ -232,9 +232,9 @@ class CrewTest {
         //4-> Against use of Objectionable Declaration (From CrewContract)
         //5-> Sign-on Declaration (From CrewContract)
 
-        ContractDocumentGenerator wordDocument = new ContractDocumentGenerator();
+        ContractDocumentGenerator wordDocument = new ContractDocumentGenerator(crew, vessel, contract);
         try {
-            wordDocument.generate(crew, vessel, contract);
+            wordDocument.generate();
         } catch (Exception e) {
             e.printStackTrace();
         }
