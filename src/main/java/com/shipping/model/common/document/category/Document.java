@@ -37,6 +37,7 @@ public abstract class Document {
     private String givenName;
     private String remarks;
     private DateTime dateOfIssue, dateOfExpiry;
+    private int versionId;
 
     private int validity;
     private DurationType durationType;
@@ -278,6 +279,14 @@ public abstract class Document {
 
     public void setValidity(int validity) {
         this.validity = validity;
+    }
+
+    public int getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(int versionId) {
+        this.versionId = versionId;
     }
 
     @Override

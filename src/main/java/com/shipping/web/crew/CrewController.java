@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.shipping.dao.crew.CrewRepository;
@@ -72,6 +73,12 @@ public class CrewController {
 	public ModelAndView addCrew(Model model) {
 		ModelAndView mv = new ModelAndView("crew/add_crew");
 		mv.addObject("rankMap", Rank.getByGroup());
+		return mv;
+	}
+
+	@GetMapping(value = "/addDoc")
+	public ModelAndView addDoc(Model model) {
+		ModelAndView mv = new ModelAndView("crew/add_document");
 		return mv;
 	}
 	
@@ -208,6 +215,16 @@ public class CrewController {
 	public String uploadPhoto(Model model) {
 		model.addAttribute("message", "hello");
 		return "uploadPhoto";
+	}
+
+
+	@PostMapping(value = "/addDoc", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+
+		redirectAttributes.addFlashAttribute("message",
+				"You successfully uploaded " + file.getOriginalFilename() + "!");
+
+		return "redirect:/";
 	}
 
 	/*
