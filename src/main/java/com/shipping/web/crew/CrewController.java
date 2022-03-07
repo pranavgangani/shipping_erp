@@ -16,10 +16,7 @@
 package com.shipping.web.crew;
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -238,8 +235,24 @@ public class CrewController {
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
 		System.out.println("docId = "+docId);
-		//setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
 
+		List<Document> documents = crew.getExistingDocuments();
+		if(documents == null) {
+			documents = new LinkedList<>();
+		}
+		Document docToUpload = documentDao.findById(docId).get();
+		docToUpload.setFileTitle(file.getOriginalFilename());
+		try {
+			docToUpload.setFile(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		documents.add(docToUpload);
+
+		crew.setExistingDocuments(documents);
+
+		crewDao.save(crew);
 		return "redirect:/";
 	}
 

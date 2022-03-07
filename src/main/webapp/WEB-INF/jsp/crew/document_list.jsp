@@ -83,7 +83,7 @@
                 		                                            <tr>
                 		                                                <td><label class="small mb-3">${doc.docName}</label></td>
                 		                                                <td>
-                			                                                <button class="btn btn-primary" type="button" data-bs-toggle="modal" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docTypeId}');">Browse</button>
+                			                                                <button class="btn btn-primary" type="button" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docTypeId}');">Upload</button>
 
                 		                                                </td>
                 		                                                <td><label class="small mb-3" for="fName">IND3289</label></td>
@@ -216,9 +216,9 @@
             <h1>Upload any File</h1>
             <SECTION>
              <DIV id="dropzone">
-               <FORM class="dropzone" class="dropzone" id="my-great-dropzone" action="/crew/addDoc">
-               <input type="hidden" id="crewId" name="crewId" value="29">
-               <input type="hidden" id="docId" name="docId" value="">
+               <FORM class="dropzone" class="dropzone" id="my-great-dropzone"action="/crew/addDoc">
+               <input type="hidden" name="crewId" value="29">
+               <input type="hidden" id="docId" name="docId">
             	 <DIV class="dz-message">
             	   Drop files here or click to upload.
             	 </DIV>

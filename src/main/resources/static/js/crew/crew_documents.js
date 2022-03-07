@@ -5,9 +5,8 @@ $(document).ready(function() {
 });
 
 CrewDocument.openFileUploadModal = function(docId, docName, docTypeId) {
-   /* $("#docId").val(this.docId);
-    console.log("docId = "+$("#docId").val());*/
-    $("#fileUploaderModalTitle").text(docName);
     var modal = "#fileUploaderModal";
+    $("#docId").val(docId);
     $(modal).modal('show');
+    $("#fileUploaderModalTitle").text(docName);
 }
