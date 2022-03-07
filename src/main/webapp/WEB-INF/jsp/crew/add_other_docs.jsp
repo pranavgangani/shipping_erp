@@ -37,7 +37,7 @@
                             <a class="nav-link" href="/crew/add_passport_visa">Passport/Visa</a>
                             <a class="nav-link" href="/crew/add_medical">Medical</a>
                             <a class="nav-link" href="/crew/add_bank_account">Bank Account</a>
-                            <a class="nav-link" href="/crew/add_nominee">Nominee</a>
+                            <a class="nav-link" href="/crew/add_nominee">Next of Kin</a>
                             <a class="nav-link">Other Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />

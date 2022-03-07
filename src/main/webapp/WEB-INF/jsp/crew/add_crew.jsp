@@ -38,7 +38,7 @@
                             <a class="nav-link" href="/crew/add_medical">Medical</a>
                             <a class="nav-link" href="/crew/add_bank_account">Bank Account</a>
                             <a class="nav-link" href="/crew/add_nominee">Nominee</a>
-                            <a class="nav-link" href="/crew/add_other_docs">Other Documents</a>
+                            <a class="nav-link" href="/crew/document_list">Other Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">

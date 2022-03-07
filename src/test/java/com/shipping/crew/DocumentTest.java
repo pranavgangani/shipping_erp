@@ -207,7 +207,9 @@ class DocumentTest {
         Document passport = new Passport();
         passport.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         passport.setDocumentCategory(DocumentCategory.TRAVEL);
-        passport.setDocTypeId(docTypeDao.findByName("Indian Passport").getId());
+        DocumentType dt = docTypeDao.findByName("Indian Passport");
+        passport.setDocTypeId(dt.getId());
+        passport.setDocName(dt.getName());
         passport.setFlag(flag);
         passport.setRequiredBeforeJoining(true);
         passport.setRequiredAfterJoining(true);
@@ -216,7 +218,9 @@ class DocumentTest {
         Document aadharCard = new NationalID();
         aadharCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         aadharCard.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        aadharCard.setDocTypeId(docTypeDao.findByName("Aadhar Card").getId());
+        dt = docTypeDao.findByName("Aadhar Card");
+        aadharCard.setDocTypeId(dt.getId());
+        aadharCard.setDocName(dt.getName());
         aadharCard.setFlag(flag);
         aadharCard.setRequiredBeforeJoining(true);
         documentDao.insert(aadharCard);
@@ -224,7 +228,9 @@ class DocumentTest {
         Document panCard = new TaxID();
         panCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         panCard.setDocumentCategory(DocumentCategory.FINANCIAL);
-        panCard.setDocTypeId(docTypeDao.findByName("Pan Card").getId());
+        dt = docTypeDao.findByName("Pan Card");
+        panCard.setDocTypeId(dt.getId());
+        panCard.setDocName(dt.getName());
         panCard.setFlag(flag);
         panCard.setRequiredBeforeJoining(true);
         documentDao.insert(panCard);
@@ -232,8 +238,9 @@ class DocumentTest {
         Document cdc = new NationalID();
         cdc.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         cdc.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        cdc.setDocTypeId(docTypeDao.findByName("Indian CDC").getId());
-        cdc.setDocName("Indian Continuous Discharge Certificate");
+        dt = docTypeDao.findByName("Indian CDC");
+        cdc.setDocTypeId(dt.getId());
+        cdc.setDocName(dt.getName());
         cdc.setFlag(flag);
         cdc.setValidity(10, DurationType.YEARS);
         cdc.setRequiredBeforeJoining(true);
@@ -243,7 +250,9 @@ class DocumentTest {
         Document indos = new NationalID();
         indos.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         indos.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        indos.setDocTypeId(docTypeDao.findByName("INDOS").getId());
+        dt = docTypeDao.findByName("INDOS");
+        indos.setDocTypeId(dt.getId());
+        indos.setDocName(dt.getName());
         indos.setDocName("Indian INDOS");
         indos.setFlag(flag);
         indos.setRequiredBeforeJoining(true);
@@ -253,8 +262,9 @@ class DocumentTest {
         Document yellowFeverCert = new Certificate();
         yellowFeverCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         yellowFeverCert.setDocumentCategory(DocumentCategory.MEDICAL);
-        yellowFeverCert.setDocTypeId(docTypeDao.findByName("Yellow Fever").getId());
-        yellowFeverCert.setDocName("Yellow Fever");
+        dt = docTypeDao.findByName("Yellow Fever");
+        yellowFeverCert.setDocTypeId(dt.getId());
+        yellowFeverCert.setDocName(dt.getName());
         yellowFeverCert.setFlag(flag);
         yellowFeverCert.setRequiredBeforeJoining(true);
         yellowFeverCert.setRequiredAfterJoining(true);

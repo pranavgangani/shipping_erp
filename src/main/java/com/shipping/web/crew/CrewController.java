@@ -23,6 +23,9 @@ import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.shipping.dao.common.CrewDocumentRepository;
+import com.shipping.dao.common.DocumentTypeRepository;
+import com.shipping.model.common.document.category.Document;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +63,10 @@ public class CrewController {
 	private PhotoRepository photoDao;
 	@Autowired
 	private SequenceGeneratorService sequenceGenerator;
+	@Autowired
+	private CrewDocumentRepository documentDao;
+	@Autowired
+	private DocumentTypeRepository docTypeDao;
 
 	@GetMapping(value = "/list")
 	public ModelAndView crewList(Model model) {
@@ -76,9 +83,11 @@ public class CrewController {
 		return mv;
 	}
 
-	@GetMapping(value = "/addDoc")
-	public ModelAndView addDoc(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_document");
+	@GetMapping(value = "/document_list")
+	public ModelAndView documentList(Model model) {
+		ModelAndView mv = new ModelAndView("crew/document_list");
+		List<Document> documents = documentDao.findAll();
+		mv.addObject("list", documents);
 		return mv;
 	}
 	
