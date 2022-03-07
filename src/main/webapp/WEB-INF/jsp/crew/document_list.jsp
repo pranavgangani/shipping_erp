@@ -10,7 +10,7 @@
         <title>Document List</title>
     
         <%@ include file="../includes/header_includes.jsp" %>
-        <script src="../js/crew/crew_details.js"></script>
+        <script src="../js/crew/crew_documents.js"></script>
         <%@ include file="file_upload_header.jsp" %>
 
     </head>
@@ -25,7 +25,7 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                                <form method="POST" enctype="multipart/form-data" action="/crew/add">
+                                <form method="POST" enctype="multipart/form-data" action="">
 
                                 <%@ include file="add_crew_header.jsp" %>
 
@@ -44,7 +44,26 @@
                                         </nav>
                                         <hr class="mt-0 mb-4" />
                                         <div class="row">
-                                            <div class="col-lg-12">
+                                        <div class="col-lg-2">
+                                            <!-- Two factor authentication card-->
+                                            <div class="card mb-4">
+                                                <div class="card-header">Profile Picture</div>
+                                                <div class="card-body">
+                                                    <!-- Profile picture help block-->
+                                                    <c:choose>
+                                                        <c:when test="${crew.photoId>0}">
+                                                            <img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}" alt="" id='preview' />
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <img class="img-account-profile rounded-circle mb-2"
+                                                                src="../assets/img/illustrations/profiles/profile-1.png"
+                                                                alt="" id='preview' />
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                                    </div>
+                                            </div>
+                                            <div class="col-lg-10">
                                                 <!-- Change password card-->
                                                 <div class="card mb-4">
                                                     <div class="card-body">
@@ -52,8 +71,8 @@
                 		                                    <table class="table mb-0">
                 		                                        <thead>
                 		                                            <tr>
-                		                                                <th class="border-gray-200" scope="col">Datapoint</th>
-                		                                                <th class="border-gray-200" scope="col">Value</th>
+                		                                                <th class="border-gray-200" scope="col">Mandatory Docs</th>
+                		                                                <th class="border-gray-200" scope="col">Upload</th>
                 		                                                <th class="border-gray-200" scope="col">Maker</th>
                 		                                                <th class="border-gray-200" scope="col">Reviewer</th>
                 		                                                <th class="border-gray-200" scope="col">Audit</th>
@@ -64,7 +83,7 @@
                 		                                            <tr>
                 		                                                <td><label class="small mb-3">${doc.docName}</label></td>
                 		                                                <td>
-                			                                                <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Browse</button>
+                			                                                <button class="btn btn-primary" type="button" data-bs-toggle="modal" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docTypeId}');">Browse</button>
 
                 		                                                </td>
                 		                                                <td><label class="small mb-3" for="fName">IND3289</label></td>
@@ -186,19 +205,21 @@
         <%@ include file="../includes/bottom_includes.jsp" %>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="fileUploaderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Vertically Centered Modal</h5>
+                <h5 class="modal-title" id="fileUploaderModalTitle">Vertically Centered Modal</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <h1>Upload any File</h1>
             <SECTION>
              <DIV id="dropzone">
-               <FORM class="dropzone needsclick" id="demo-upload" action="/crew/addDoc">
-            	 <DIV class="dz-message needsclick">
+               <FORM class="dropzone" class="dropzone" id="my-great-dropzone" action="/crew/addDoc">
+               <input type="hidden" id="crewId" name="crewId" value="29">
+               <input type="hidden" id="docId" name="docId" value="">
+            	 <DIV class="dz-message">
             	   Drop files here or click to upload.
             	 </DIV>
                </FORM>
@@ -224,8 +245,10 @@
             	</div>
             </div>
             </div>
-            <div class="modal-footer"><button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button">Save changes</button></div>
-        </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" type="button">Save changes</button></div>
+            </div>
     </div>
 </div>
     </body>

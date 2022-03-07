@@ -228,10 +228,17 @@ public class CrewController {
 
 
 	@PostMapping(value = "/addDoc", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+	public String handleFileUpload(@RequestParam("crewId") long crewId,
+								   @RequestParam("docId") long docId,
+								   @RequestParam("file") MultipartFile file,
+								   RedirectAttributes redirectAttributes) {
+		Crew crew = crewDao.findById(crewId).get();
+
 
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
+		System.out.println("docId = "+docId);
+		//setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
 
 		return "redirect:/";
 	}

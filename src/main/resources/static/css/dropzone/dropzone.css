@@ -1,4 +1,4 @@
-body {
+/*body {
     background: rgb(243, 244, 245);
     height: 100%;
     color: rgb(100, 108, 127);
@@ -7,9 +7,8 @@ body {
     font-size: 20px;
     font-weight: 300;
     text-rendering: optimizeLegibility;
-}
+}*/
 
-h1 { text-align: center; }
 
 .dropzone {
     background: white;
