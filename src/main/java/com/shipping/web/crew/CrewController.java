@@ -96,10 +96,25 @@ public class CrewController {
 	}
 
 	@GetMapping(value = "/document_list")
-	public ModelAndView documentList(Model model) {
+	public ModelAndView documentList(HttpServletRequest req, Model model) {
 		ModelAndView mv = new ModelAndView("crew/document_list");
 		List<Document> documents = documentDao.findAll();
+		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+		if (crewId > 0) {
+			Crew crew = crewDao.findById(crewId).get();
+			List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crew.getId());
+			if(ListUtil.isNotEmpty(auditTrails)) {
+				System.out.println("auditTrails = "+auditTrails.size());
+				mv.addObject("auditTrails", auditTrails);
+			}else{
+				System.out.println("No auditTrails");
+			}
+
+		}
+		mv.addObject("action", "Edit");
 		mv.addObject("list", documents);
+
+
 		return mv;
 	}
 	
@@ -227,7 +242,8 @@ public class CrewController {
 			audit.setActionDateTime(LocalDateTime.now());
 			audit.setCollection(Collection.CREW);
 			audit.setActionBy("Pranav");
-			audit.setText("New Crew - "+(crew.getName())+ " recruited!");
+			audit.setUniqueId(crewId);
+			audit.setText("New Crew - <b>"+(crew.getName())+ "</b> recruited!");
 			audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
 			auditTrailDao.insert(audit);
 		} catch (IOException e) {
@@ -304,12 +320,12 @@ public class CrewController {
 
 
 	@PostMapping(value = "/addDoc", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public String handleFileUpload(@RequestParam("crewId") long crewId,
+	public String addDoc(@RequestParam("crewId") long crewId,
 								   @RequestParam("docId") long docId,
 								   @RequestParam("file") MultipartFile file,
 								   RedirectAttributes redirectAttributes) {
 		Crew crew = crewDao.findById(crewId).get();
-
+		Employee emp = employeeDao.findById(1l).get();
 
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + file.getOriginalFilename() + "!");
@@ -330,8 +346,18 @@ public class CrewController {
 		documents.add(docToUpload);
 
 		crew.setExistingDocuments(documents);
-
 		crewDao.save(crew);
+
+		AuditTrail audit = new AuditTrail();
+		audit.setAction("add");
+		audit.setActionBy(emp.getEmpId());
+		audit.setActionDateTime(LocalDateTime.now());
+		audit.setCollection(Collection.CREW);
+		audit.setText("New Document - <b>"+(docToUpload.getDocName())+ "</b> added!");
+		audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+		audit.setUniqueId(crew.getId());
+		auditTrailDao.insert(audit);
+
 		return "redirect:/";
 	}
 

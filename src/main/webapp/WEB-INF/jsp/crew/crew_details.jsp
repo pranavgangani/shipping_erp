@@ -311,7 +311,6 @@
                                     </div>
                                 </div>
                                 <c:if test="${action == 'Edit'}">
-                                    <!-- Security preferences card-->
                                     <div class="card mb-4">
                                         <div class="card-header">Audit Trail</div>
                                         <div class="card-body">

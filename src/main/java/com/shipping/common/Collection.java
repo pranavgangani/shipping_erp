@@ -18,7 +18,8 @@ public class Collection {
 	//Common
 	public final static String FLAG = "Flag";
 
-	//Document 
+	//Document
+	//public final static String MANDATORY_CREW_DOCUMENT = "MandatoryCrewDocument";
 	public final static String CREW_DOCUMENT = "CrewDocument";
 	public final static String CREW_CERTIFICATION = "CrewCertification";
 	public final static String CREW_DOCUMENT_TAG = "CrewDocumentTag";

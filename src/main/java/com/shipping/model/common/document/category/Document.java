@@ -12,10 +12,10 @@ import org.springframework.data.annotation.Transient;
 import java.util.List;
 import java.util.Objects;
 
-@org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW_DOCUMENT)
+@org.springframework.data.mongodb.core.mapping.Document(collection = Collection.MANDATORY_CREW_DOCUMENT)
 public abstract class Document {
     @Transient
-    public static final String SEQUENCE_NAME = Collection.CREW_DOCUMENT;
+    public static final String SEQUENCE_NAME = Collection.MANDATORY_CREW_DOCUMENT;
 
     @org.springframework.data.annotation.Id
     protected long id;
