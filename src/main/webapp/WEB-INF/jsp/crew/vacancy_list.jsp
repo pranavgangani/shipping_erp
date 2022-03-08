@@ -8,7 +8,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Crew List</title>
+<title>Vacancy List</title>
 
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%@ include file="../includes/header_includes.jsp"%>
@@ -115,49 +115,42 @@
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
 					<div class="card mb-4">
-						<div class="card-header">Crew List</div>
+						<div class="card-header">Vacancy List</div>
 						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
 									<tr>
-										<th>Name</th>
-                                        <th>Position</th>
-                                        <th>Department</th>
-                                        <th>Manning Office</th>
-                                        <th>Age</th>
-                                        <th>Start date</th>
-                                        <th>Wage</th>
+										<th>Vessel Name</th>
+                                        <th>Vessel Type</th>
+                                        <th>Min. Gross Tonnage</th>
+                                        <th>Min Ranks</th>
+                                        <th>Crew on-board</th>
                                         <th>Status</th>
                                         <th>Actions</th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th>Name</th>
-										<th>Position</th>
-										<th>Department</th>
-										<th>Manning Office</th>
-										<th>Age</th>
-										<th>Start date</th>
-										<th>Wage</th>
-										<th>Status</th>
-										<th>Actions</th>
+										<th>Vessel Name</th>
+                                        <th>Vessel Type</th>
+                                        <th>Min. Gross Tonnage</th>
+                                        <th>Min Ranks</th>
+                                        <th>Crew on-board</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
 									</tr>
 								</tfoot>
 								<tbody>
 								
-								<c:forEach items="${list}" var="crew">
+								<c:forEach items="${vacancies}" var="vacancy">
 								    <tr>
-										<td>${crew.fName} ${crew.mName} ${crew.lName}</td>
-										<td>${crew.rank.name}</td>
-										<td>${crew.rank.rankCategory.name}</td>										
-										<td>${crew.rank.rankCategory.name}</td>
-										<td>${crew.age}</td>
-										<td>2011/04/25</td>
-										<td>$320,800</td>
+										<td>${vacancy.vessel.vesselName}</td>
+										<td>${vacancy.vessel.vesselSubType.vesselType.desc} - ${vacancy.vessel.vesselSubType.desc}</td>
+										<td>${vacancy.vacancyAttributes.minGrossTonnage}</td>
+										<td>${vacancy.vacancyAttributes.minRankList}</td>
+										<td>${vacancy.filledByCrew.name}</td>
 										<td>
-
-										<div class="badge bg-primary text-white rounded-pill">Full-time</div></td>
+										    <div class="badge bg-primary text-white rounded-pill">${vacancy.status.desc}</div></td>
 										<td>
 										    <button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
@@ -167,37 +160,16 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="/crew/add_certifications?crewId=${crew.id}">
+													<a class="dropdown-item" href="/crew/assign_vacancy?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Add Certifications
+														</div> Assign this Crew
 													</a>
-													<a class="dropdown-item" href="/crew/add_medicals?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Add Medical Tests
-													</a>													
-													<a class="dropdown-item" href="/crew/add_licenses?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Add Licenses
-													</a>
-													<a class="dropdown-item" href="/crew/document_list?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Add Documents
-													</a>													
 													<div class="dropdown-divider"></div>
 													<a class="dropdown-item" href="/crew/edit?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
-													</a>
-													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/crew/vacancy_list?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="log-out"></i>
-														</div> Sign-On/Sign-Off
 													</a>
 												</div>
 												<button

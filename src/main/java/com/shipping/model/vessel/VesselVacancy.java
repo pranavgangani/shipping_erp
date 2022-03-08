@@ -2,6 +2,8 @@ package com.shipping.model.vessel;
 
 import com.shipping.common.Collection;
 import com.shipping.model.company.Employee;
+import com.shipping.model.crew.Crew;
+import com.shipping.model.crew.contract.Travel;
 import com.shipping.util.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -17,11 +19,16 @@ public class VesselVacancy {
     private long filledByCrewId;
     private String remarks;
     private int statusId;
+    private Status status;
     private DateTime crewEmbarkDate;
     private DateTime vacancyStartDate;
     private DateTime vacancyEndDate;
     private Employee enteredBy;
     private DateTime enteredDateTime;
+
+
+    private Vessel vessel;
+    private Crew filledByCrew;
 
     //Other Vacancy Conditions/Attributes
     private VesselVacancyAttributes vacancyAttributes;
@@ -115,7 +122,31 @@ public class VesselVacancy {
 		this.statusId = statusId;
 	}
 
-	@Override
+    public Vessel getVessel() {
+        return vessel;
+    }
+
+    public void setVessel(Vessel vessel) {
+        this.vessel = vessel;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Crew getFilledByCrew() {
+        return filledByCrew;
+    }
+
+    public void setFilledByCrew(Crew filledByCrew) {
+        this.filledByCrew = filledByCrew;
+    }
+
+    @Override
     public String toString() {
         return "VesselVacancy{" +
                 "vesselId=" + vesselId +
@@ -145,5 +176,14 @@ public class VesselVacancy {
 		public String getDesc() {
 			return desc;
 		}
+
+        public static VesselVacancy.Status createFromId(int typeId) {
+            for (int i = 0; i < values().length; i++) {
+                if (values()[i].getId() == typeId) {
+                    return values()[i];
+                }
+            }
+            return null;
+        }
 	}
 }

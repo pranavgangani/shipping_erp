@@ -26,9 +26,14 @@ import com.shipping.common.AuditTrail;
 import com.shipping.common.Collection;
 import com.shipping.dao.common.*;
 import com.shipping.dao.company.EmployeeRepository;
+import com.shipping.dao.vessel.VesselRepository;
+import com.shipping.dao.vessel.VesselVacancyRepository;
 import com.shipping.model.common.document.category.Document;
 import com.shipping.model.company.Employee;
 import com.shipping.model.crew.CrewFieldStatus;
+import com.shipping.model.vessel.Vessel;
+import com.shipping.model.vessel.VesselVacancy;
+import com.shipping.model.vessel.VesselVacancyAttributes;
 import com.shipping.util.ListUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -62,333 +67,385 @@ import com.shipping.util.ParamUtil;
 @RestController
 @RequestMapping(value = "/crew")
 public class CrewController {
+    @Autowired
+    private CrewRepository crewDao;
+    @Autowired
+    private PhotoRepository photoDao;
+    @Autowired
+    private SequenceGeneratorService sequenceGenerator;
+    @Autowired
+    private CrewDocumentRepository documentDao;
+    @Autowired
+    private DocumentTypeRepository docTypeDao;
+    @Autowired
+    private AuditTrailRepository auditTrailDao;
+    @Autowired
+    private EmployeeRepository employeeDao;
+    @Autowired
+    private FlagRepository flagDao;
+    @Autowired
+    private VesselVacancyRepository vesselVacancyDao;
 	@Autowired
-	private CrewRepository crewDao;
-	@Autowired
-	private PhotoRepository photoDao;
-	@Autowired
-	private SequenceGeneratorService sequenceGenerator;
-	@Autowired
-	private CrewDocumentRepository documentDao;
-	@Autowired
-	private DocumentTypeRepository docTypeDao;
-	@Autowired
-	private AuditTrailRepository auditTrailDao;
-	@Autowired
-	private EmployeeRepository employeeDao;
-	@Autowired
-	private FlagRepository flagDao;
+	private VesselRepository vesselDao;
 
-	@GetMapping(value = "/list")
-	public ModelAndView crewList(Model model) {
-		ModelAndView mv = new ModelAndView("crew/crew_list");
-		List<Crew> list = crewDao.findAll();
-		mv.addObject("list", list);
-		return mv;
-	}
+    @GetMapping(value = "/list")
+    public ModelAndView crewList(Model model) {
+        ModelAndView mv = new ModelAndView("crew/crew_list");
+        List<Crew> list = crewDao.findAll();
+        mv.addObject("list", list);
+        return mv;
+    }
 
-	@GetMapping(value = "/add")
-	public ModelAndView addCrew(Model model) {
-		ModelAndView mv = new ModelAndView("crew/crew_details");
-		mv.addObject("rankMap", Rank.getByGroup());
-		mv.addObject("flags", flagDao.findAll());
-		return mv;
-	}
+    @GetMapping(value = "/add")
+    public ModelAndView addCrew(Model model) {
+        ModelAndView mv = new ModelAndView("crew/crew_details");
+        mv.addObject("rankMap", Rank.getByGroup());
+        mv.addObject("flags", flagDao.findAll());
+        return mv;
+    }
 
-	@GetMapping(value = "/document_list")
-	public ModelAndView documentList(HttpServletRequest req, Model model) {
-		ModelAndView mv = new ModelAndView("crew/document_list");
-		List<Document> documents = documentDao.findAll();
+    @GetMapping(value = "/document_list")
+    public ModelAndView documentList(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/document_list");
+        List<Document> documents = documentDao.findAll();
 
-		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-		if (crewId > 0) {
-			Crew crew = crewDao.findById(crewId).get();
-			mv.addObject("crew", crew);
-			List<Document> existingDocuments = crew.getExistingDocuments();
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            Crew crew = crewDao.findById(crewId).get();
+            mv.addObject("crew", crew);
+            List<Document> existingDocuments = crew.getExistingDocuments();
 
-			if(ListUtil.isNotEmpty(existingDocuments)) {
-				existingDocuments.forEach(doc -> {
-					doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
-					System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
-				});
-				mv.addObject("existingDocuments", existingDocuments);
-			}
-			CrewPhoto photo = null;
+            if (ListUtil.isNotEmpty(existingDocuments)) {
+                existingDocuments.forEach(doc -> {
+                    doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
+                    System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
+                });
+                mv.addObject("existingDocuments", existingDocuments);
+            }
+            CrewPhoto photo = null;
 
-			try {
-				photo = photoDao.findById(crew.getPhotoId()).get();
-				//mv.addObject("title", photo.getTitle());
-				mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-			} catch (NoSuchElementException e) {
+            try {
+                photo = photoDao.findById(crew.getPhotoId()).get();
+                //mv.addObject("title", photo.getTitle());
+                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+            } catch (NoSuchElementException e) {
 
-			}
+            }
 
 
-			List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crew.getId());
-			if(ListUtil.isNotEmpty(auditTrails)) {
-				System.out.println("auditTrails = "+auditTrails.size());
-				mv.addObject("auditTrails", auditTrails);
-			}else{
-				System.out.println("No auditTrails");
-			}
+            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crew.getId());
+            if (ListUtil.isNotEmpty(auditTrails)) {
+                System.out.println("auditTrails = " + auditTrails.size());
+                mv.addObject("auditTrails", auditTrails);
+            } else {
+                System.out.println("No auditTrails");
+            }
 
-		}
+        }
 
-		mv.addObject("action", "Edit");
-		mv.addObject("list", documents);
+        mv.addObject("action", "Edit");
+        mv.addObject("list", documents);
 
 
-		return mv;
-	}
-	
-	@GetMapping(value = "/edit")
-	public ModelAndView editCrew(HttpServletRequest req) {
-		ModelAndView mv = new ModelAndView("/crew/crew_details");
+        return mv;
+    }
 
-		Employee emp = employeeDao.findById(1l).get();
-		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-		if (crewId > 0) {
-			Crew crew = crewDao.findById(crewId).get();
+    @GetMapping(value = "/edit")
+    public ModelAndView editCrew(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/crew/crew_details");
 
-			CrewFieldStatus fs = crew.getFieldStatus();
+        Employee emp = employeeDao.findById(1l).get();
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            Crew crew = crewDao.findById(crewId).get();
 
-			mv.addObject("crew", crew);
-			List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
-			if(ListUtil.isNotEmpty(auditTrails)) {
-				System.out.println("auditTrails = "+auditTrails.size());
-				mv.addObject("auditTrails", auditTrails);
-			}else{
-				System.out.println("No auditTrails");
-			}
-			CrewPhoto photo = null;
+            CrewFieldStatus fs = crew.getFieldStatus();
 
-			try {
-				photo = photoDao.findById(crew.getPhotoId()).get();
-				//mv.addObject("title", photo.getTitle());
-				mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-			} catch (NoSuchElementException e) {
-				
-			}
+            mv.addObject("crew", crew);
+            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
+            if (ListUtil.isNotEmpty(auditTrails)) {
+                System.out.println("auditTrails = " + auditTrails.size());
+                mv.addObject("auditTrails", auditTrails);
+            } else {
+                System.out.println("No auditTrails");
+            }
+            CrewPhoto photo = null;
 
-		}
-		mv.addObject("action", "Edit");
-		mv.addObject("rankMap", Rank.getByGroup());
-		return mv;
-	}
+            try {
+                photo = photoDao.findById(crew.getPhotoId()).get();
+                //mv.addObject("title", photo.getTitle());
+                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+            } catch (NoSuchElementException e) {
 
-	@PostMapping(value = "/add", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ModelAndView addCrew(@RequestParam("fName") String fName, @RequestParam("mName") String mName,
-			@RequestParam("lName") String lName, @RequestParam("rankId") int rankId,
-			@RequestParam("gender") String gender, @RequestParam("distinguishingMark") String distinguishMark,
-								@RequestParam("maritalStatus") String maritalStatus,
-								@RequestParam("homeAddress") String homeAddress,
-								@RequestParam("nearestAirport") String nearestAirport,
-								@RequestParam("emailId") String emailId,
-								@RequestParam("nationality") String nationality,
-								@RequestParam("nationalityFlagCode") String nationalityFlagCode,
-								@RequestParam("contact_1") String contact1,
-								@RequestParam("contact_2") String contact2,
-								@RequestParam("birthDate") String dob,
-								@RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
-			Model model) {
-		Employee emp = employeeDao.findById(1l).get();
-		String maker = emp.getEmpId();
-		ModelAndView mv = new ModelAndView("/crew/add_employment");
-		System.out.println("add_crew: " + fName);
-		System.out.println("image: " + image);
+            }
 
-		//Add New Crew 
-		Crew crew = new Crew();
-		crew.setfName(fName);
-		crew.setlName(lName);
-		crew.setmName(mName);
-		crew.setEmailId(emailId);
-		crew.setContact1(contact1);
-		crew.setContact2(contact2);
-		crew.setNearestAirport(nearestAirport);
-		crew.setMaritalStatus(maritalStatus);
-		crew.setPermAddress(homeAddress);
-		crew.setNationality(nationality);
-		crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
-		String[] dobStr = dob.split("/");
-		int month = ParamUtil.parseInt(dobStr[0], -1);
-		int day = ParamUtil.parseInt(dobStr[1], -1);
-		int year = ParamUtil.parseInt(dobStr[2], -1);
-		crew.setDob(LocalDate.of(year, month, day));
-		crew.setRank(Rank.createFromId(rankId));
-		crew.setGender(gender);
-		crew.setDistinguishMark(distinguishMark);
-		crew.setManningOffice(manningOffice);
-		crew.setEnteredDateTime(LocalDateTime.now());
-		crew.setEnteredBy(emp.getId());
+        }
+        mv.addObject("action", "Edit");
+        mv.addObject("rankMap", Rank.getByGroup());
+        return mv;
+    }
 
-		CrewFieldStatus fs = crew.getFieldStatus();
-		fs.setName(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setGender(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setMaritalStatus(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setHomeAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setNearestAirport(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setNationality(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setNationalityCode(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setContact1(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
-		crew.setFieldStatus(fs);
+    @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView addCrew(@RequestParam("fName") String fName, @RequestParam("mName") String mName,
+                                @RequestParam("lName") String lName, @RequestParam("rankId") int rankId,
+                                @RequestParam("gender") String gender, @RequestParam("distinguishingMark") String distinguishMark,
+                                @RequestParam("maritalStatus") String maritalStatus,
+                                @RequestParam("homeAddress") String homeAddress,
+                                @RequestParam("nearestAirport") String nearestAirport,
+                                @RequestParam("emailId") String emailId,
+                                @RequestParam("nationality") String nationality,
+                                @RequestParam("nationalityFlagCode") String nationalityFlagCode,
+                                @RequestParam("contact_1") String contact1,
+                                @RequestParam("contact_2") String contact2,
+                                @RequestParam("birthDate") String dob,
+                                @RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
+                                Model model) {
+        Employee emp = employeeDao.findById(1l).get();
+        String maker = emp.getEmpId();
+        ModelAndView mv = new ModelAndView("/crew/add_employment");
+        System.out.println("add_crew: " + fName);
+        System.out.println("image: " + image);
 
-		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
-		crewDao.insert(crew);
-		long crewId = crew.getId();
-		System.out.println("New crewId ---> " + crewId);
-		mv.addObject("crewId", crewId);
+        //Add New Crew
+        Crew crew = new Crew();
+        crew.setfName(fName);
+        crew.setlName(lName);
+        crew.setmName(mName);
+        crew.setEmailId(emailId);
+        crew.setContact1(contact1);
+        crew.setContact2(contact2);
+        crew.setNearestAirport(nearestAirport);
+        crew.setMaritalStatus(maritalStatus);
+        crew.setPermAddress(homeAddress);
+        crew.setNationality(nationality);
+        crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
+        String[] dobStr = dob.split("/");
+        int month = ParamUtil.parseInt(dobStr[0], -1);
+        int day = ParamUtil.parseInt(dobStr[1], -1);
+        int year = ParamUtil.parseInt(dobStr[2], -1);
+        crew.setDob(LocalDate.of(year, month, day));
+        crew.setRank(Rank.createFromId(rankId));
+        crew.setGender(gender);
+        crew.setDistinguishMark(distinguishMark);
+        crew.setManningOffice(manningOffice);
+        crew.setEnteredDateTime(LocalDateTime.now());
+        crew.setEnteredBy(emp.getId());
 
-		try {
-			//Add Crew Photo
-			CrewPhoto photo = new CrewPhoto(crewId, fName + " " + mName + " " + lName);
-			photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
-			photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-			photo = photoDao.insert(photo);
-			long photoId = photo.getId();
-			System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
-			photo = photoDao.findById(photoId).get();
-			
-			//Save PhotoId to Crew
-			crew.setPhotoId(photoId);
-			crewDao.save(crew);			
-			mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+        CrewFieldStatus fs = crew.getFieldStatus();
+        fs.setName(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setGender(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setMaritalStatus(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setHomeAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setNearestAirport(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setNationality(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setNationalityCode(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setContact1(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        crew.setFieldStatus(fs);
 
-			AuditTrail audit = new AuditTrail();
-			audit.setAction("add");
-			audit.setActionDateTime(LocalDateTime.now());
-			audit.setCollection(Collection.CREW);
-			audit.setActionBy("Pranav");
-			audit.setUniqueId(crewId);
-			audit.setText("New Crew - <b>"+(crew.getName())+ "</b> recruited!");
-			audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
-			auditTrailDao.insert(audit);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
+        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+        crewDao.insert(crew);
+        long crewId = crew.getId();
+        System.out.println("New crewId ---> " + crewId);
+        mv.addObject("crewId", crewId);
+
+        try {
+            //Add Crew Photo
+            CrewPhoto photo = new CrewPhoto(crewId, fName + " " + mName + " " + lName);
+            photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
+            photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+            photo = photoDao.insert(photo);
+            long photoId = photo.getId();
+            System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
+            photo = photoDao.findById(photoId).get();
+
+            //Save PhotoId to Crew
+            crew.setPhotoId(photoId);
+            crewDao.save(crew);
+            mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+
+            AuditTrail audit = new AuditTrail();
+            audit.setAction("add");
+            audit.setActionDateTime(LocalDateTime.now());
+            audit.setCollection(Collection.CREW);
+            audit.setActionBy("Pranav");
+            audit.setUniqueId(crewId);
+            audit.setText("New Crew - <b>" + (crew.getName()) + "</b> recruited!");
+            audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+            auditTrailDao.insert(audit);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 //		return "redirect:/photos/" + id;
 
-		return mv;
-	}
-
-	@GetMapping(value = "/add_employment")
-	public ModelAndView addEmployment(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_employment");
-		return mv;
-	}
-
-	@PostMapping(value = "/add_employment")
-	public ModelAndView addEmployment(HttpServletRequest req) {
-		ModelAndView mv = new ModelAndView("crew/add_employment");
-		int crewId = Integer.parseInt(req.getParameter("crewId"));
-		return mv;
-	}
-
-	@GetMapping(value = "/add_education")
-	public ModelAndView addEducation(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_education");
-		return mv;
-	}
-
-	@GetMapping(value = "/add_passport_visa")
-	public ModelAndView addPassportVisa(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_passport_visa");
-		return mv;
-	}
-
-	@GetMapping(value = "/add_medical")
-	public ModelAndView addMedical(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_medical");
-		return mv;
-	}
-
-	@GetMapping(value = "/add_bank_account")
-	public ModelAndView addBankAccount(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_bank_account");
-		return mv;
-	}
-
-	@GetMapping(value = "/add_nominee")
-	public ModelAndView addNominee(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_nominee");
-		return mv;
-	}
-
-	@GetMapping(value = "/add_other_docs")
-	public ModelAndView addOtherDocs(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_other_docs");
-		return mv;
-	}
-
-	@GetMapping("/photos/{id}")
-	public String getPhoto(@PathVariable long id, Model model) {
-		CrewPhoto photo = photoDao.findById(id).get();
-		model.addAttribute("title", photo.getTitle());
-		model.addAttribute("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-		return "photos";
-	}
-
-	@GetMapping("/photos/upload")
-	public String uploadPhoto(Model model) {
-		model.addAttribute("message", "hello");
-		return "uploadPhoto";
-	}
+        return mv;
+    }
 
 
-	@PostMapping(value = "/addDoc", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public String addDoc(@RequestParam("crewId") long crewId,
-								   @RequestParam("docId") long docId,
-								   @RequestParam("file") MultipartFile file,
-								   RedirectAttributes redirectAttributes) {
-		Crew crew = crewDao.findById(crewId).get();
-		Employee emp = employeeDao.findById(1l).get();
+    @GetMapping(value = "/add_employment")
+    public ModelAndView addEmployment(Model model) {
+        ModelAndView mv = new ModelAndView("crew/add_employment");
+        return mv;
+    }
 
-		redirectAttributes.addFlashAttribute("message",
-				"You successfully uploaded " + file.getOriginalFilename() + "!");
-		System.out.println("docId = "+docId);
+    @PostMapping(value = "/add_employment")
+    public ModelAndView addEmployment(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("crew/add_employment");
+        int crewId = Integer.parseInt(req.getParameter("crewId"));
+        return mv;
+    }
 
-		List<Document> documents = crew.getExistingDocuments();
-		if(documents == null) {
-			documents = new LinkedList<>();
+    @GetMapping(value = "/add_education")
+    public ModelAndView addEducation(Model model) {
+        ModelAndView mv = new ModelAndView("crew/add_education");
+        return mv;
+    }
+
+    @GetMapping(value = "/add_passport_visa")
+    public ModelAndView addPassportVisa(Model model) {
+        ModelAndView mv = new ModelAndView("crew/add_passport_visa");
+        return mv;
+    }
+
+    @GetMapping(value = "/add_medical")
+    public ModelAndView addMedical(Model model) {
+        ModelAndView mv = new ModelAndView("crew/add_medical");
+        return mv;
+    }
+
+    @GetMapping(value = "/add_bank_account")
+    public ModelAndView addBankAccount(Model model) {
+        ModelAndView mv = new ModelAndView("crew/add_bank_account");
+        return mv;
+    }
+
+    @GetMapping(value = "/add_nominee")
+    public ModelAndView addNominee(Model model) {
+        ModelAndView mv = new ModelAndView("crew/add_nominee");
+        return mv;
+    }
+
+    @GetMapping(value = "/add_other_docs")
+    public ModelAndView addOtherDocs(Model model) {
+        ModelAndView mv = new ModelAndView("crew/add_other_docs");
+        return mv;
+    }
+
+    @GetMapping("/photos/{id}")
+    public String getPhoto(@PathVariable long id, Model model) {
+        CrewPhoto photo = photoDao.findById(id).get();
+        model.addAttribute("title", photo.getTitle());
+        model.addAttribute("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+        return "photos";
+    }
+
+    @GetMapping("/photos/upload")
+    public String uploadPhoto(Model model) {
+        model.addAttribute("message", "hello");
+        return "uploadPhoto";
+    }
+
+
+    @PostMapping(value = "/addDoc", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public String addDoc(@RequestParam("crewId") long crewId,
+                         @RequestParam("docId") long docId,
+                         @RequestParam("file") MultipartFile file,
+                         RedirectAttributes redirectAttributes) {
+        Crew crew = crewDao.findById(crewId).get();
+        Employee emp = employeeDao.findById(1l).get();
+
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+        System.out.println("docId = " + docId);
+
+        List<Document> documents = crew.getExistingDocuments();
+        if (documents == null) {
+            documents = new LinkedList<>();
+        }
+        Document docToUpload = documentDao.findById(docId).get();
+        docToUpload.setFileTitle(file.getOriginalFilename());
+        try {
+            docToUpload.setFile(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+            docToUpload.setFieldStatus(new FieldStatus(emp.getEmpId(), LocalDateTime.now(), null, null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        documents.add(docToUpload);
+
+        crew.setExistingDocuments(documents);
+        crewDao.save(crew);
+
+        AuditTrail audit = new AuditTrail();
+        audit.setAction("add");
+        audit.setActionBy(emp.getEmpId());
+        audit.setActionDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.CREW);
+        audit.setText("New Document - <b>" + (docToUpload.getDocName()) + "</b> added!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(crew.getId());
+        auditTrailDao.insert(audit);
+
+        return "redirect:/";
+    }
+
+    /*
+     * @PostMapping("/photos/add") public String addPhoto(@RequestParam("title")
+     * String title, @RequestParam("image") MultipartFile image, Model model) throws
+     * IOException { String id = photoService.addPhoto(title, image); return
+     * "redirect:/photos/" + id; }
+     */
+
+    @GetMapping(value = "/vacancy_list")
+    public ModelAndView assignVessel(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/vacancy_list");
+
+		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+		List<VesselVacancy> vacancies = new ArrayList<>();
+		if(crewId>0) {
+			Crew crew = crewDao.findById(crewId).get();
+            mv.addObject("crew", crew);
+            //vacancies = vesselVacancyDao.findVacanciesByRank(crew.getRank().getId());
+            vacancies = vesselVacancyDao.findAll();
 		}
-		Document docToUpload = documentDao.findById(docId).get();
-		docToUpload.setFileTitle(file.getOriginalFilename());
-		try {
-			docToUpload.setFile(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-			docToUpload.setFieldStatus(new FieldStatus(emp.getEmpId(), LocalDateTime.now(), null,null));
-		} catch (IOException e) {
-			e.printStackTrace();
+		else{
+			vacancies = vesselVacancyDao.findAll();
 		}
 
-		documents.add(docToUpload);
-
-		crew.setExistingDocuments(documents);
-		crewDao.save(crew);
-
-		AuditTrail audit = new AuditTrail();
-		audit.setAction("add");
-		audit.setActionBy(emp.getEmpId());
-		audit.setActionDateTime(LocalDateTime.now());
-		audit.setCollection(Collection.CREW);
-		audit.setText("New Document - <b>"+(docToUpload.getDocName())+ "</b> added!");
-		audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
-		audit.setUniqueId(crew.getId());
-		auditTrailDao.insert(audit);
-
-		return "redirect:/";
-	}
-
-	/*
-	 * @PostMapping("/photos/add") public String addPhoto(@RequestParam("title")
-	 * String title, @RequestParam("image") MultipartFile image, Model model) throws
-	 * IOException { String id = photoService.addPhoto(title, image); return
-	 * "redirect:/photos/" + id; }
-	 */
+        vacancies.forEach(v -> {
+            Vessel vessel = vesselDao.findById(v.getVesselId()).get();
+            VesselVacancyAttributes att = v.getVacancyAttributes();
+            System.out.print("[" + vessel.getVesselName() + "] has VACANCY -> ");
+            System.out.print(" Min Gross Tonnage [" + att.getMinGrossTonnage() + "] | ");
+            System.out.print(" Min Ranks required [");
+            att.getMinRankList().forEach(rankId -> {
+                System.out.print(Rank.createFromId(rankId).getName() + ", ");
+            });
+            System.out.print("] | ");
+            System.out.print(" Min Vessel Experince in [");
+            if (att.getMinVesselSubTypeIdList() != null && !att.getMinVesselSubTypeIdList().isEmpty()) {
+                att.getMinVesselSubTypeIdList().forEach(vesselSubTypeId -> {
+                    System.out.print(VesselSubType.createFromId(vesselSubTypeId).getDesc() + ", ");
+                });
+            } else {
+                System.out.print("Any Vessel");
+            }
+			v.setVessel(vessel);
+            if(v.getFilledByCrewId() > 0) {
+                v.setFilledByCrew(crewDao.findById(v.getFilledByCrewId()).get());
+            }
+			v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
+            System.out.print(" ]");
+            System.out.println();
+        });
+		mv.addObject("vacancies", vacancies);
+		return mv;
+    }
 }
