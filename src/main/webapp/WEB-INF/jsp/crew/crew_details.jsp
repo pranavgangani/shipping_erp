@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Add Crew</title>
+        <title>${action} Crew</title>
     
         <%@ include file="../includes/header_includes.jsp" %>
         <script src="../js/crew/crew_details.js"></script>
@@ -113,8 +113,8 @@
 		                                                <td><div class="col-md-8 mb-3">
 			                                                <select class="form-select" name="maritalStatus" aria-label="Default select example">
 																<option selected disabled>Marital Status:</option>
-																<option value="unmarried">Unmarried</option>
-																<option value="married">Married</option>
+																<option <c:if test="${crew.maritalStatus=='unmarried'}">selected</c:if> value="unmarried">Unmarried</option>
+																<option <c:if test="${crew.maritalStatus=='married'}">selected</c:if> value="married">Married</option>
 															</select>
 															</div>
 		                                                </td>
@@ -157,7 +157,7 @@
 																<c:forEach var="optionGroup" items="${rankMap}">
 															       <optgroup label="${optionGroup.key}">
 															       <c:forEach var="option" items="${optionGroup.value}">
-															          <option value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>                             
+															          <option <c:if test="${crew.rank.id==option.id}">selected</c:if> value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>
 															       </c:forEach>                                                          
 															       </optgroup>
 															    </c:forEach>
@@ -179,8 +179,8 @@
 		                                                <td><div class="col-md-8 mb-3">
 			                                                <select class="form-select" name="gender" aria-label="Default select example">
 																<option selected disabled>Gender:</option>
-																<option value="male">Male</option>
-																<option value="female">Female</option>
+																<option <c:if test="${crew.gender=='male'}">selected</c:if> value="male">Male</option>
+																<option <c:if test="${crew.gender=='female'}">selected</c:if> value="female">Female</option>
 															</select>
 															</div>
 		                                                </td>
@@ -213,7 +213,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="distinguishingMark">Distinguishing Mark</label></td>
 		                                                <td>
-															<textarea name="distinguishingMark" class="lh-base form-control" placeholder="" rows="3" cols="3"></textarea>
+															<textarea name="distinguishingMark" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.distinguishMark}</textarea>
 		                                                </td>
 		                                                <td>Maker By</td>	
 		                                                <td>
@@ -228,7 +228,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="homeAddress">Home Address</label></td>
 		                                                <td>
-															<textarea name="homeAddress" class="lh-base form-control" placeholder="" rows="3" cols="3"></textarea>
+															<textarea name="homeAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.permAddress}</textarea>
 		                                                </td>
 		                                                <td>Maker By</td>	
 		                                                <td>
@@ -242,7 +242,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="nearestAirport">Nearest Airport</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="nearestAirport" type="text" placeholder="Enter Nearest Airport" value="${crew.lName}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="nearestAirport" type="text" placeholder="Enter Nearest Airport" value="${crew.nearestAirport}" /></div></td>
 		                                                <td>Maker By</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -255,7 +255,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="emailId">EmailID</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="emailId" type="text" placeholder="Enter Email ID" value="${crew.lName}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="emailId" type="text" placeholder="Enter Email ID" value="${crew.emailId}" /></div></td>
 		                                                <td>Maker By</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -268,7 +268,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="contact_1">Contact#1</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="contact_1" type="text" placeholder="Enter Contact Number#1" value="${crew.lName}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="contact_1" type="text" placeholder="Enter Contact Number#1" value="${crew.contact1}" /></div></td>
 		                                                <td>Maker By</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -281,7 +281,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="contact_2">Contact#2</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="contact_2" type="text" placeholder="Enter Contact Number#2" value="${crew.lName}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="contact_2" type="text" placeholder="Enter Contact Number#2" value="${crew.contact2}" /></div></td>
 		                                                <td>Maker By</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -310,88 +310,26 @@
 		                                </div>
                                     </div>
                                 </div>
-                                <!-- Security preferences card-->
-                                <div class="card mb-4">
-                                    <div class="card-header">Audit Trail</div>
-                                    <div class="card-body">
-                                        <div class="timeline timeline-xs">
-										<!-- Timeline Item 1-->
-										<div class="timeline-item">
-											<div class="timeline-item-marker">
-												<div class="timeline-item-marker-text">27 min</div>
-												<div class="timeline-item-marker-indicator bg-green"></div>
-											</div>
-											<div class="timeline-item-content">
-												New order placed! <a class="fw-bold text-dark" href="#!">Order
-													#2912</a> has been successfully placed.
-											</div>
-										</div>
-										<!-- Timeline Item 2-->
-										<div class="timeline-item">
-											<div class="timeline-item-marker">
-												<div class="timeline-item-marker-text">58 min</div>
-												<div class="timeline-item-marker-indicator bg-blue"></div>
-											</div>
-											<div class="timeline-item-content">
-												Your <a class="fw-bold text-dark" href="#!">weekly
-													report</a> has been generated and is ready to view.
-											</div>
-										</div>
-										<!-- Timeline Item 3-->
-										<div class="timeline-item">
-											<div class="timeline-item-marker">
-												<div class="timeline-item-marker-text">2 hrs</div>
-												<div class="timeline-item-marker-indicator bg-purple"></div>
-											</div>
-											<div class="timeline-item-content">
-												New user <a class="fw-bold text-dark" href="#!">Valerie
-													Luna</a> has registered
-											</div>
-										</div>
-										<!-- Timeline Item 4-->
-										<div class="timeline-item">
-											<div class="timeline-item-marker">
-												<div class="timeline-item-marker-text">1 day</div>
-												<div class="timeline-item-marker-indicator bg-yellow"></div>
-											</div>
-											<div class="timeline-item-content">Server activity
-												monitor alert</div>
-										</div>
-										<!-- Timeline Item 5-->
-										<div class="timeline-item">
-											<div class="timeline-item-marker">
-												<div class="timeline-item-marker-text">1 day</div>
-												<div class="timeline-item-marker-indicator bg-green"></div>
-											</div>
-											<div class="timeline-item-content">
-												New order placed! <a class="fw-bold text-dark" href="#!">Order
-													#2911</a> has been successfully placed.
-											</div>
-										</div>
-										<!-- Timeline Item 6-->
-										<div class="timeline-item">
-											<div class="timeline-item-marker">
-												<div class="timeline-item-marker-text">1 day</div>
-												<div class="timeline-item-marker-indicator bg-purple"></div>
-											</div>
-											<div class="timeline-item-content">
-												Details for <a class="fw-bold text-dark" href="#!">Marketing
-													and Planning Meeting</a> have been updated.
-											</div>
-										</div>
-										<!-- Timeline Item 7-->
-										<div class="timeline-item">
-											<div class="timeline-item-marker">
-												<div class="timeline-item-marker-text">2 days</div>
-												<div class="timeline-item-marker-indicator bg-green"></div>
-											</div>
-											<div class="timeline-item-content">
-												New order placed! <a class="fw-bold text-dark" href="#!">Order
-													#2910</a> has been successfully placed.
-											</div>
-										</div>
-									</div>
-                                        
+                                <c:if test="${action == 'Edit'}">
+                                    <!-- Security preferences card-->
+                                    <div class="card mb-4">
+                                        <div class="card-header">Audit Trail</div>
+                                        <div class="card-body">
+                                            <div class="timeline timeline-xs">
+                                                <c:forEach items="${auditTrails}" var="audit">
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-item-marker">
+                                                            <div class="timeline-item-marker-text">${audit.ago}</div>
+                                                            <div class="timeline-item-marker-indicator bg-${audit.colour}"></div>
+                                                        </div>
+                                                        <div class="timeline-item-content">
+                                                            ${audit.text} <a class="fw-bold text-dark" href="#!">Crew
+                                                                #2912</a> has been successfully placed.
+                                                        </div>
+                                                     </div>
+                                               </c:forEach>
+                                        </div>
+                                        </c:if>
                                     </div>
                                 </div> 
                             </div>

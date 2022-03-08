@@ -31,6 +31,7 @@ import com.shipping.dao.common.FlagRepository;
 import com.shipping.dao.company.EmployeeRepository;
 import com.shipping.model.common.document.category.Document;
 import com.shipping.model.company.Employee;
+import com.shipping.util.ListUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
@@ -111,7 +112,13 @@ public class CrewController {
 		if (crewId > 0) {
 			Crew crew = crewDao.findById(crewId).get();
 			mv.addObject("crew", crew);
-			
+			List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
+			if(ListUtil.isNotEmpty(auditTrails)) {
+				System.out.println("auditTrails = "+auditTrails.size());
+				mv.addObject("auditTrails", auditTrails);
+			}else{
+				System.out.println("No auditTrails");
+			}
 			CrewPhoto photo = null;
 
 			try {
@@ -123,6 +130,7 @@ public class CrewController {
 			}
 
 		}
+		mv.addObject("action", "Edit");
 		mv.addObject("rankMap", Rank.getByGroup());
 		return mv;
 	}

@@ -123,7 +123,7 @@
 										<th>Name</th>
                                         <th>Position</th>
                                         <th>Department</th>
-                                        <th>Mannign Office</th>
+                                        <th>Manning Office</th>
                                         <th>Age</th>
                                         <th>Start date</th>
                                         <th>Wage</th>
@@ -136,7 +136,7 @@
 										<th>Name</th>
 										<th>Position</th>
 										<th>Department</th>
-										<th>Mannign Office</th>
+										<th>Manning Office</th>
 										<th>Age</th>
 										<th>Start date</th>
 										<th>Wage</th>
