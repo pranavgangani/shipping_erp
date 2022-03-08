@@ -322,8 +322,7 @@
                                                             <div class="timeline-item-marker-indicator bg-${audit.colour}"></div>
                                                         </div>
                                                         <div class="timeline-item-content">
-                                                            ${audit.text} <a class="fw-bold text-dark" href="#!">Crew
-                                                                #{crew.id}</a> has been created.
+                                                            ${audit.text}
                                                         </div>
                                                      </div>
                                                </c:forEach>

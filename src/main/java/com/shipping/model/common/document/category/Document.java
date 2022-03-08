@@ -3,6 +3,7 @@ package com.shipping.model.common.document.category;
 import com.shipping.common.Collection;
 import com.shipping.common.Comment;
 import com.shipping.common.Flag;
+import com.shipping.dao.common.FieldStatus;
 import com.shipping.model.common.DurationType;
 import com.shipping.model.crew.DocumentMatrix;
 import com.shipping.util.DateTime;
@@ -12,10 +13,10 @@ import org.springframework.data.annotation.Transient;
 import java.util.List;
 import java.util.Objects;
 
-@org.springframework.data.mongodb.core.mapping.Document(collection = Collection.MANDATORY_CREW_DOCUMENT)
+@org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW_DOCUMENT)
 public abstract class Document {
     @Transient
-    public static final String SEQUENCE_NAME = Collection.MANDATORY_CREW_DOCUMENT;
+    public static final String SEQUENCE_NAME = Collection.CREW_DOCUMENT;
 
     @org.springframework.data.annotation.Id
     protected long id;
@@ -38,6 +39,7 @@ public abstract class Document {
     private String remarks;
     private DateTime dateOfIssue, dateOfExpiry;
     private int versionId;
+    private FieldStatus fieldStatus;
 
     private int validity;
     private DurationType durationType;
@@ -283,6 +285,14 @@ public abstract class Document {
 
     public int getVersionId() {
         return versionId;
+    }
+
+    public FieldStatus getFieldStatus() {
+        return fieldStatus;
+    }
+
+    public void setFieldStatus(FieldStatus fieldStatus) {
+        this.fieldStatus = fieldStatus;
     }
 
     public void setVersionId(int versionId) {

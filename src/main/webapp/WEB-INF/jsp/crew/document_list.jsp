@@ -25,7 +25,7 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                                <form method="POST" enctype="multipart/form-data" action="">
+
 
                                 <%@ include file="add_crew_header.jsp" %>
 
@@ -33,7 +33,7 @@
                                     <div class="container-fluid px-4">
                                         <!-- Account page navigation-->
                                         <nav class="nav nav-borders">
-                                            <a class="nav-link">Profile</a>
+                                            <a class="nav-link" href="/crew/edit?crewId=${crew.id}">Profile</a>
                                             <a class="nav-link" href="/crew/add_employment">Employment</a>
                                             <a class="nav-link" href="/crew/add_education">Education</a>
                                             <a class="nav-link" href="/crew/add_passport_visa">Passport/Visa</a>
@@ -81,15 +81,56 @@
                 		                                        <tbody>
                 		                                            <c:forEach items="${list}" var="doc">
                 		                                            <tr>
-                		                                                <td><label class="small mb-3">${doc.docName}</label></td>
+                		                                                <td><label class="small mb-3">${doc.docName}</label>
+                		                                                </td>
                 		                                                <td>
+
+                		                                                <c:forEach items="${existingDocuments}" var="exDoc">
+                		                                                        <c:if test="${doc.id == exDoc.id}">
+
+                		                                                        <c:if test="${exDoc.fileTitle!=null}">
+
+                                                                                <a href="#" id="pop">
+                                                                                    <img style="width:0px; height:0px;" id="imageresource" src="data:image/jpeg;base64,${exDoc.fileTitle}">
+                                                                                   <i data-feather="eye"></i>
+                                                                                </a>
+
+                                                                                    <!-- Creates the bootstrap modal where the image will appear -->
+                                                                                    <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                                      <div class="modal-dialog">
+                                                                                        <div class="modal-content">
+                                                                                          <div class="modal-header">
+                                                                                          <h5 class="modal-title" id="fileUploaderModalTitle">${exDoc.docName}</h5>
+                                                                                          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                      </div>
+                                                                                      <div class="modal-body">
+                                                                                          </div>
+                                                                                          <div class="modal-body">
+                                                                                           <img src="" id="imagepreview" style="width: 100%;" >
+                                                                                          </div>
+                                                                                          <div class="modal-footer">
+                                                                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                          </div>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                    </div>
+
+                                                                                     </c:if>
+                		                                                         </c:if>
+
+
+
+                		                                                </c:forEach>
+
+
+
                 			                                                <button class="btn btn-primary" type="button" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docTypeId}');">Upload</button>
 
                 		                                                </td>
-                		                                                <td><label class="small mb-3" for="fName">IND3289</label></td>
+                		                                                <td><label class="small mb-3" for="makerBy">${doc.fieldStatus.makerBy}</label></td>
                 		                                                <td>
                 			                                                <div class="form-check mb-3">
-                	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+                	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" />
                 	                                                		</div>
                                                                 		</td>
                 		                                                <td>
@@ -116,8 +157,7 @@
                                                                            <div class="timeline-item-marker-indicator bg-${audit.colour}"></div>
                                                                        </div>
                                                                        <div class="timeline-item-content">
-                                                                           ${audit.text} <a class="fw-bold text-dark" href="#!">Crew
-                                                                               ${doc.id}</a> has been created.
+                                                                           ${audit.text}
                                                                        </div>
                                                                     </div>
                                                               </c:forEach>
@@ -132,7 +172,7 @@
 
                                         </div>
 
-                                    </form>
+
                                 </main>
                 
                 <%@ include file="../includes/copyright.jsp" %>
@@ -155,7 +195,7 @@
             <SECTION>
              <DIV id="dropzone">
                <FORM class="dropzone" class="dropzone" id="my-great-dropzone"action="/crew/addDoc">
-               <input type="hidden" name="crewId" value="29">
+               <input type="hidden" name="crewId" value="${crew.id}">
                <input type="hidden" id="docId" name="docId">
             	 <DIV class="dz-message">
             	   Drop files here or click to upload.
@@ -187,8 +227,9 @@
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
                 <button class="btn btn-primary" type="button">Save changes</button></div>
             </div>
+        </div>
     </div>
-</div>
-    </body>
+
+</body>
 
 </html>

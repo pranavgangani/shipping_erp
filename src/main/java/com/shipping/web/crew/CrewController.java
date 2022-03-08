@@ -99,9 +99,31 @@ public class CrewController {
 	public ModelAndView documentList(HttpServletRequest req, Model model) {
 		ModelAndView mv = new ModelAndView("crew/document_list");
 		List<Document> documents = documentDao.findAll();
+
 		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
 		if (crewId > 0) {
 			Crew crew = crewDao.findById(crewId).get();
+			mv.addObject("crew", crew);
+			List<Document> existingDocuments = crew.getExistingDocuments();
+
+			if(ListUtil.isNotEmpty(existingDocuments)) {
+				existingDocuments.forEach(doc -> {
+					doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
+					System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
+				});
+				mv.addObject("existingDocuments", existingDocuments);
+			}
+			CrewPhoto photo = null;
+
+			try {
+				photo = photoDao.findById(crew.getPhotoId()).get();
+				//mv.addObject("title", photo.getTitle());
+				mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+			} catch (NoSuchElementException e) {
+
+			}
+
+
 			List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crew.getId());
 			if(ListUtil.isNotEmpty(auditTrails)) {
 				System.out.println("auditTrails = "+auditTrails.size());
@@ -111,6 +133,7 @@ public class CrewController {
 			}
 
 		}
+
 		mv.addObject("action", "Edit");
 		mv.addObject("list", documents);
 
@@ -339,6 +362,7 @@ public class CrewController {
 		docToUpload.setFileTitle(file.getOriginalFilename());
 		try {
 			docToUpload.setFile(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
+			docToUpload.setFieldStatus(new FieldStatus(emp.getEmpId(), LocalDateTime.now(), null,null));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
