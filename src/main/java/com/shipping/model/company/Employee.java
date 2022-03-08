@@ -19,6 +19,7 @@ public class Employee extends Person {
 	private Designation designation;
 	private Department department;
 	private List<UserRole> userRoles;
+	private String empId;
 
 	public long getId() {
 		return id;
@@ -58,5 +59,13 @@ public class Employee extends Person {
 
 	public void setUserRoles(List<UserRole> userRoles) {
 		this.userRoles = userRoles;
+	}
+
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
 	}
 }

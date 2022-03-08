@@ -32,6 +32,7 @@ public class Collection {
 
 	//Audit 
 	public final static String AUDIT_TRAIL = "AuditTrail";
+	public final static String FS_AUDIT_TRAIL = "FieldStatusAuditTrail";
 	public final static String COMMENT = "Comment";
 
 	//Company

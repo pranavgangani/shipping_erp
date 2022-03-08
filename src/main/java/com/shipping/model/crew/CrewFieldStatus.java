@@ -6,21 +6,21 @@ public class CrewFieldStatus {
     private FieldStatus name, maritalStatus, gender, nationalityCode, nationality, rank, manningOffice, nearestAirport,
             distinguishingMark, homeAddress, emailId, contact1, contact2, dob;
 
-    private CrewFieldStatus() {
-        name = new FieldStatus();
-        maritalStatus = new FieldStatus();
-        gender = new FieldStatus();
-        nationalityCode = new FieldStatus();
-        nationality = new FieldStatus();
-        rank = new FieldStatus();
-        manningOffice = new FieldStatus();
-        nearestAirport = new FieldStatus();
-        distinguishingMark = new FieldStatus();
-        homeAddress = new FieldStatus();
-        emailId = new FieldStatus();
-        contact1 = new FieldStatus();
-        contact2 = new FieldStatus();
-        dob = new FieldStatus();
+    public CrewFieldStatus() {
+        name = new FieldStatus(null,null,null,null);
+        maritalStatus = new FieldStatus(null,null,null,null);
+        gender = new FieldStatus(null,null,null,null);
+        nationalityCode = new FieldStatus(null,null,null,null);
+        nationality = new FieldStatus(null,null,null,null);
+        rank = new FieldStatus(null,null,null,null);
+        manningOffice = new FieldStatus(null,null,null,null);
+        nearestAirport = new FieldStatus(null,null,null,null);
+        distinguishingMark = new FieldStatus(null,null,null,null);
+        homeAddress = new FieldStatus(null,null,null,null);
+        emailId = new FieldStatus(null,null,null,null);
+        contact1 = new FieldStatus(null,null,null,null);
+        contact2 = new FieldStatus(null,null,null,null);
+        dob = new FieldStatus(null,null,null,null);
     }
 
     public FieldStatus getName() {

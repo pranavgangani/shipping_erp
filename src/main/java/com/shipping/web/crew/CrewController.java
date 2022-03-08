@@ -24,13 +24,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.shipping.common.AuditTrail;
 import com.shipping.common.Collection;
-import com.shipping.dao.common.AuditTrailRepository;
-import com.shipping.dao.common.CrewDocumentRepository;
-import com.shipping.dao.common.DocumentTypeRepository;
-import com.shipping.dao.common.FlagRepository;
+import com.shipping.dao.common.*;
 import com.shipping.dao.company.EmployeeRepository;
 import com.shipping.model.common.document.category.Document;
 import com.shipping.model.company.Employee;
+import com.shipping.model.crew.CrewFieldStatus;
 import com.shipping.util.ListUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -108,9 +106,14 @@ public class CrewController {
 	@GetMapping(value = "/edit")
 	public ModelAndView editCrew(HttpServletRequest req) {
 		ModelAndView mv = new ModelAndView("/crew/crew_details");
+
+		Employee emp = employeeDao.findById(1l).get();
 		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
 		if (crewId > 0) {
 			Crew crew = crewDao.findById(crewId).get();
+
+			CrewFieldStatus fs = crew.getFieldStatus();
+
 			mv.addObject("crew", crew);
 			List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
 			if(ListUtil.isNotEmpty(auditTrails)) {
@@ -151,6 +154,7 @@ public class CrewController {
 								@RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
 			Model model) {
 		Employee emp = employeeDao.findById(1l).get();
+		String maker = emp.getEmpId();
 		ModelAndView mv = new ModelAndView("/crew/add_employment");
 		System.out.println("add_crew: " + fName);
 		System.out.println("image: " + image);
@@ -177,11 +181,28 @@ public class CrewController {
 		crew.setGender(gender);
 		crew.setDistinguishMark(distinguishMark);
 		crew.setManningOffice(manningOffice);
-		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
 		crew.setEnteredDateTime(LocalDateTime.now());
 		crew.setEnteredBy(emp.getId());
-		crewDao.insert(crew);
 
+		CrewFieldStatus fs = crew.getFieldStatus();
+		fs.setName(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setGender(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setMaritalStatus(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setHomeAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setNearestAirport(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setNationality(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setNationalityCode(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setContact1(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
+		crew.setFieldStatus(fs);
+
+		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+		crewDao.insert(crew);
 		long crewId = crew.getId();
 		System.out.println("New crewId ---> " + crewId);
 		mv.addObject("crewId", crewId);
@@ -206,7 +227,7 @@ public class CrewController {
 			audit.setActionDateTime(LocalDateTime.now());
 			audit.setCollection(Collection.CREW);
 			audit.setActionBy("Pranav");
-			audit.setText("New Crew "+(crew.getName())+ " Added!");
+			audit.setText("New Crew - "+(crew.getName())+ " recruited!");
 			audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
 			auditTrailDao.insert(audit);
 		} catch (IOException e) {

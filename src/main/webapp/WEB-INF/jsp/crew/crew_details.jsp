@@ -23,7 +23,7 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                <form method="POST" enctype="multipart/form-data" action="/crew/add"> 
+                <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/add">
                 
                 <%@ include file="add_crew_header.jsp" %>
                     
@@ -32,13 +32,13 @@
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
                             <a class="nav-link active ms-0">Profile</a>
-                            <a class="nav-link" href="/crew/add_employment">Employment</a>
-                            <a class="nav-link" href="/crew/add_education">Education</a>
-                            <a class="nav-link" href="/crew/add_passport_visa">Passport/Visa</a>
-                            <a class="nav-link" href="/crew/add_medical">Medical</a>
-                            <a class="nav-link" href="/crew/add_bank_account">Bank Account</a>
-                            <a class="nav-link" href="/crew/add_nominee">Nominee</a>
-                            <a class="nav-link" href="/crew/document_list">Other Documents</a>
+                            <a class="nav-link" href="/crew/add_employment?crewId=${crew.id}">Employment</a>
+                            <a class="nav-link" href="/crew/add_education?crewId=${crew.id}">Education</a>
+                            <a class="nav-link" href="/crew/add_passport_visa?crewId=${crew.id}">Passport/Visa</a>
+                            <a class="nav-link" href="/crew/add_medical?crewId=${crew.id}">Medical</a>
+                            <a class="nav-link" href="/crew/add_bank_account?crewId=${crew.id}">Bank Account</a>
+                            <a class="nav-link" href="/crew/add_nominee?crewId=${crew.id}">Nominee</a>
+                            <a class="nav-link" href="/crew/document_list?crewId=${crew.id}">Other Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
@@ -91,15 +91,15 @@
 		                                        <tbody>
 		                                            <tr>
 		                                                <td><label class="small mb-3">Name</label></td>
-		                                                <td>		                                                
-			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="fName" type="text" placeholder="Enter first name" value="${crew.fName}" /></div>
-			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="mName" type="text" placeholder="Enter middle name" value="${crew.mName}" /></div>
-		                                                	<div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="lName" type="text" placeholder="Enter last name" value="${crew.lName}" /></div>
+		                                                <td>
+			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="fName" id="fName" type="text" placeholder="Enter first name" value="${crew.fName}" /></div>
+			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="mName" id="mName" type="text" placeholder="Enter middle name" value="${crew.mName}" /></div>
+		                                                	<div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="lName" id="lName" type="text" placeholder="Enter last name" value="${crew.lName}" /></div>
 		                                                </td>
-		                                                <td><label class="small mb-3" for="fName">IND3289</label></td>
+		                                                <td><label class="small mb-3" for="fName">${crew.fieldStatus.name.makerBy}</label></td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>
 		                                                <td>
@@ -111,17 +111,17 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="maritalStatus">Marital Status</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-			                                                <select class="form-select" name="maritalStatus" aria-label="Default select example">
+			                                                <select class="form-select" id="maritalStatus" name="maritalStatus" aria-label="Default select example">
 																<option selected disabled>Marital Status:</option>
 																<option <c:if test="${crew.maritalStatus=='unmarried'}">selected</c:if> value="unmarried">Unmarried</option>
 																<option <c:if test="${crew.maritalStatus=='married'}">selected</c:if> value="married">Married</option>
 															</select>
 															</div>
 		                                                </td>
-		                                                <td>Maker By</td>	
+		                                                <td>${crew.fieldStatus.maritalStatus.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>	                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -131,7 +131,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="nationality">Nationality</label></td>
 		                                                <td>
-                                                            <select class="form-select" aria-label="Default select example" name="nationalityFlagCode">
+                                                            <select class="form-select" aria-label="Default select example" id="nationalityFlagCode" name="nationalityFlagCode">
                                                                 <option selected disabled>Select Nationality Flag:</option>
                                                                 <c:forEach items="${flags}" var="flag">
                                                                         <option value="${flag.code}">${flag.name}</option>
@@ -139,10 +139,10 @@
                                                             </select>
 		                                                <input class="form-control" name="nationality" type="text" placeholder="Enter Nationality" value="${crew.nationality}" />
 		                                                </td>
-		                                                <td>Maker By</td>
+		                                                <td>${crew.fieldStatus.nationality.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>		                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -152,7 +152,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="rankId">Rank</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-			                                                <select class="form-select" name="rankId" aria-label="Default select example">
+			                                                <select class="form-select" id="rankId" name="rankId" aria-label="Default select example">
 																<option selected disabled>Select a Rank:</option>
 																<c:forEach var="optionGroup" items="${rankMap}">
 															       <optgroup label="${optionGroup.key}">
@@ -164,10 +164,10 @@
 															</select>
 															</div>
 		                                                </td>
-		                                                <td>Maker By</td>	
+		                                                <td>${crew.fieldStatus.rank.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>	                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -177,17 +177,17 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="gender">Gender</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-			                                                <select class="form-select" name="gender" aria-label="Default select example">
+			                                                <select class="form-select" id="gender" name="gender" aria-label="Default select example">
 																<option selected disabled>Gender:</option>
 																<option <c:if test="${crew.gender=='male'}">selected</c:if> value="male">Male</option>
 																<option <c:if test="${crew.gender=='female'}">selected</c:if> value="female">Female</option>
 															</select>
 															</div>
 		                                                </td>
-		                                                <td>Maker By</td>	
+		                                                <td>${crew.fieldStatus.gender.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>	                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -197,13 +197,13 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="manningOffice">Manning Office</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-		                                                    <input class="form-control" name="manningOffice" type="text" placeholder="Enter Nearest Airport" value="${crew.manningOffice}" />
+		                                                    <input class="form-control" id="manningOffice" name="manningOffice" type="text" placeholder="Enter Nearest Airport" value="${crew.manningOffice}" />
 															</div>
 		                                                </td>
-		                                                <td>Maker By</td>	
+		                                                <td>${crew.fieldStatus.manningOffice.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>	                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -213,12 +213,12 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="distinguishingMark">Distinguishing Mark</label></td>
 		                                                <td>
-															<textarea name="distinguishingMark" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.distinguishMark}</textarea>
+															<textarea name="distinguishingMark" id="distinguishingMark" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.distinguishMark}</textarea>
 		                                                </td>
-		                                                <td>Maker By</td>	
+		                                                <td>${crew.fieldStatus.distinguishingMark.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>	                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -228,12 +228,12 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="homeAddress">Home Address</label></td>
 		                                                <td>
-															<textarea name="homeAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.permAddress}</textarea>
+															<textarea name="homeAddress" id="homeAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.permAddress}</textarea>
 		                                                </td>
-		                                                <td>Maker By</td>	
+		                                                <td>${crew.fieldStatus.homeAddress.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>	                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -242,11 +242,11 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="nearestAirport">Nearest Airport</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="nearestAirport" type="text" placeholder="Enter Nearest Airport" value="${crew.nearestAirport}" /></div></td>
-		                                                <td>Maker By</td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="nearestAirport" name="nearestAirport" type="text" placeholder="Enter Nearest Airport" value="${crew.nearestAirport}" /></div></td>
+		                                                <td>${crew.fieldStatus.nearestAirport.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>		                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -255,11 +255,11 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="emailId">EmailID</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="emailId" type="text" placeholder="Enter Email ID" value="${crew.emailId}" /></div></td>
-		                                                <td>Maker By</td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="emailId" name="emailId" type="text" placeholder="Enter Email ID" value="${crew.emailId}" /></div></td>
+		                                                <td>${crew.fieldStatus.emailId.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="emailId" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="emailId" type="checkbox"  />
 	                                                		</div>
                                                 		</td>		                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -268,11 +268,11 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="contact_1">Contact#1</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="contact_1" type="text" placeholder="Enter Contact Number#1" value="${crew.contact1}" /></div></td>
-		                                                <td>Maker By</td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="contact_1" name="contact_1" type="text" placeholder="Enter Contact Number#1" value="${crew.contact1}" /></div></td>
+		                                                <td>${crew.fieldStatus.contact1.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>		                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -281,11 +281,11 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="contact_2">Contact#2</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="contact_2" type="text" placeholder="Enter Contact Number#2" value="${crew.contact2}" /></div></td>
-		                                                <td>Maker By</td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="contact_2" name="contact_2" type="text" placeholder="Enter Contact Number#2" value="${crew.contact2}" /></div></td>
+		                                                <td>${crew.fieldStatus.contact2.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>		                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -295,10 +295,10 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="dob">Date of Birth</label></td>
 		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="birthDate" name="birthDate" type="text" placeholder="Enter DOB" value="${crew.dob}" /></div></td>
-		                                                <td>Maker By</td>
+		                                                <td>${crew.fieldStatus.dob.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" checked />
+	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
                                                 		</td>		                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
@@ -324,7 +324,7 @@
                                                         </div>
                                                         <div class="timeline-item-content">
                                                             ${audit.text} <a class="fw-bold text-dark" href="#!">Crew
-                                                                #2912</a> has been successfully placed.
+                                                                #{crew.id}</a> has been created.
                                                         </div>
                                                      </div>
                                                </c:forEach>

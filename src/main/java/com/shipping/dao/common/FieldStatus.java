@@ -1,10 +1,18 @@
 package com.shipping.dao.common;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class FieldStatus {
     private String makerBy, checkerBy;
-    private LocalDate makerDateTime, checkerDateTime;
+    private LocalDateTime makerDateTime, checkerDateTime;
+
+    public FieldStatus(String makerBy, LocalDateTime makerDateTime, String checkerBy, LocalDateTime checkerDateTime) {
+        this.makerBy = makerBy;
+        this.checkerBy = checkerBy;
+        this.makerDateTime = makerDateTime;
+        this.checkerDateTime = checkerDateTime;
+    }
 
     public String getMakerBy() {
         return makerBy;
@@ -22,19 +30,19 @@ public class FieldStatus {
         this.checkerBy = checkerBy;
     }
 
-    public LocalDate getMakerDateTime() {
+    public LocalDateTime getMakerDateTime() {
         return makerDateTime;
     }
 
-    public void setMakerDateTime(LocalDate makerDateTime) {
+    public void setMakerDateTime(LocalDateTime makerDateTime) {
         this.makerDateTime = makerDateTime;
     }
 
-    public LocalDate getCheckerDateTime() {
+    public LocalDateTime getCheckerDateTime() {
         return checkerDateTime;
     }
 
-    public void setCheckerDateTime(LocalDate checkerDateTime) {
+    public void setCheckerDateTime(LocalDateTime checkerDateTime) {
         this.checkerDateTime = checkerDateTime;
     }
 }

@@ -182,7 +182,7 @@
 															<i data-feather="settings"></i>
 														</div> Add Licenses
 													</a>
-													<a class="dropdown-item" href="/crew/add_documents?crewId=${crew.id}">
+													<a class="dropdown-item" href="/crew/document_list?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
 														</div> Add Documents

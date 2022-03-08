@@ -72,6 +72,10 @@ public class Crew extends Person {
 	private List<TravelRequest> travelRequests;
 	private List<MedicalRequest> medicalRequests;*/
 
+    public Crew() {
+        if(this.getFieldStatus() == null) this.setFieldStatus(new CrewFieldStatus());
+    }
+
     //Audit
     private List<Comment> comments;
     private List<AuditTrail> auditTails;
