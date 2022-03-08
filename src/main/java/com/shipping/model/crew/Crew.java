@@ -1,19 +1,21 @@
 package com.shipping.model.crew;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 import com.shipping.model.common.document.category.Document;
+import com.shipping.model.company.Employee;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
 import com.shipping.common.AuditTrail;
 import com.shipping.common.Collection;
 import com.shipping.common.Comment;
-import com.shipping.common.Flag;
 import com.shipping.common.Person;
-import com.shipping.model.company.Employee;
-import com.shipping.util.DateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
 public class Crew extends Person {
@@ -25,11 +27,16 @@ public class Crew extends Person {
     private String passportNumber, visaNumber;
     private String distinguishMark;
     private Rank rank;
-    private Flag manningOffice;
+    private String manningOffice;
     private long photoId;
-    private Flag citizenFlag;
+    private ObjectId nationalityFlagId;
+    private String nationality;
+    private int age;
 
+    //Personal
     private String permAddress, tempAddress;
+    private String contact1, contact2;
+    private String nearestAirport, maritalStatus;
 
     // Past
     private List<Employment> employmentHistory;
@@ -50,6 +57,9 @@ public class Crew extends Person {
     private List<Bank> banks;
     private LocalDate dob;
 
+    private long enteredBy;
+    private LocalDateTime enteredDateTime;
+
     private int statusId;
 
     public int getStatusId() {
@@ -68,10 +78,7 @@ public class Crew extends Person {
     private List<Comment> comments;
     private List<AuditTrail> auditTails;
 
-    private Employee enteredByEmp;
-    private DateTime enteredDateTime;
-    private Employee reviewedByEmp;
-    private DateTime reviewedDateTime;
+    private CrewFieldStatus fieldStatus;
 
     public long getId() {
         return id;
@@ -153,12 +160,28 @@ public class Crew extends Person {
         this.distinguishMark = distinguishMark;
     }
 
-    public Flag getManningOffice() {
+    public String getManningOffice() {
         return manningOffice;
     }
 
-    public void setManningOffice(Flag manningOffice) {
+    public void setManningOffice(String manningOffice) {
         this.manningOffice = manningOffice;
+    }
+
+    public ObjectId getNationalityFlagId() {
+        return nationalityFlagId;
+    }
+
+    public void setNationalityFlagId(ObjectId nationalityFlagId) {
+        this.nationalityFlagId = nationalityFlagId;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public long getPhotoId() {
@@ -225,7 +248,7 @@ public class Crew extends Person {
         this.banks = banks;
     }
 
-   public LocalDate getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
@@ -249,37 +272,6 @@ public class Crew extends Person {
         this.auditTails = auditTails;
     }
 
-    public Employee getEnteredByEmp() {
-        return enteredByEmp;
-    }
-
-    public void setEnteredByEmp(Employee enteredByEmp) {
-        this.enteredByEmp = enteredByEmp;
-    }
-
-    public DateTime getEnteredDateTime() {
-        return enteredDateTime;
-    }
-
-    public void setEnteredDateTime(DateTime enteredDateTime) {
-        this.enteredDateTime = enteredDateTime;
-    }
-
-    public Employee getReviewedByEmp() {
-        return reviewedByEmp;
-    }
-
-    public void setReviewedByEmp(Employee reviewedByEmp) {
-        this.reviewedByEmp = reviewedByEmp;
-    }
-
-    public DateTime getReviewedDateTime() {
-        return reviewedDateTime;
-    }
-
-    public void setReviewedDateTime(DateTime reviewedDateTime) {
-        this.reviewedDateTime = reviewedDateTime;
-    }
 
     public List<Document> getExistingDocuments() {
         return existingDocuments;
@@ -289,13 +281,6 @@ public class Crew extends Person {
         this.existingDocuments = existingDocuments;
     }
 
-    public Flag getCitizenFlag() {
-        return citizenFlag;
-    }
-
-    public void setCitizenFlag(Flag citizenFlag) {
-        this.citizenFlag = citizenFlag;
-    }
 
     public String getPermAddress() {
         return permAddress;
@@ -311,6 +296,46 @@ public class Crew extends Person {
 
     public void setTempAddress(String tempAddress) {
         this.tempAddress = tempAddress;
+    }
+
+    public String getContact1() {
+        return contact1;
+    }
+
+    public void setContact1(String contact1) {
+        this.contact1 = contact1;
+    }
+
+    public String getContact2() {
+        return contact2;
+    }
+
+    public void setContact2(String contact2) {
+        this.contact2 = contact2;
+    }
+
+    public String getNearestAirport() {
+        return nearestAirport;
+    }
+
+    public void setNearestAirport(String nearestAirport) {
+        this.nearestAirport = nearestAirport;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public int getAge() {
+        if (getDob() != null) {
+            return (int) ChronoUnit.YEARS.between(getDob(), LocalDate.now());
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -333,6 +358,30 @@ public class Crew extends Person {
         if (id != other.id)
             return false;
         return true;
+    }
+
+    public CrewFieldStatus getFieldStatus() {
+        return fieldStatus;
+    }
+
+    public void setFieldStatus(CrewFieldStatus fieldStatus) {
+        this.fieldStatus = fieldStatus;
+    }
+
+    public long getEnteredBy() {
+        return enteredBy;
+    }
+
+    public void setEnteredBy(long enteredBy) {
+        this.enteredBy = enteredBy;
+    }
+
+    public LocalDateTime getEnteredDateTime() {
+        return enteredDateTime;
+    }
+
+    public void setEnteredDateTime(LocalDateTime enteredDateTime) {
+        this.enteredDateTime = enteredDateTime;
     }
 
     public enum Status {
@@ -358,5 +407,7 @@ public class Crew extends Person {
         public String getDesc() {
             return desc;
         }
+
+
     }
 }

@@ -13,6 +13,18 @@ public class ParamUtil {
         return result;
 
     }
+    public static int parseInt(String str, int defaultVal) {
+        int result = defaultVal;
+        try {
+            if (str != null) {
+                result = Integer.parseInt(str.trim());
+            }
+        } catch (NumberFormatException e) {
+
+        }
+        return result;
+
+    }
 
     public static boolean parseBoolean(String str, boolean defaultVal) {
         boolean result = false;

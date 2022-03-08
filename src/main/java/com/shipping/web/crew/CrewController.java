@@ -16,15 +16,24 @@
 package com.shipping.web.crew;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.shipping.common.AuditTrail;
+import com.shipping.common.Collection;
+import com.shipping.dao.common.AuditTrailRepository;
 import com.shipping.dao.common.CrewDocumentRepository;
 import com.shipping.dao.common.DocumentTypeRepository;
+import com.shipping.dao.common.FlagRepository;
+import com.shipping.dao.company.EmployeeRepository;
 import com.shipping.model.common.document.category.Document;
+import com.shipping.model.company.Employee;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -64,6 +73,12 @@ public class CrewController {
 	private CrewDocumentRepository documentDao;
 	@Autowired
 	private DocumentTypeRepository docTypeDao;
+	@Autowired
+	private AuditTrailRepository auditTrailDao;
+	@Autowired
+	private EmployeeRepository employeeDao;
+	@Autowired
+	private FlagRepository flagDao;
 
 	@GetMapping(value = "/list")
 	public ModelAndView crewList(Model model) {
@@ -75,8 +90,9 @@ public class CrewController {
 
 	@GetMapping(value = "/add")
 	public ModelAndView addCrew(Model model) {
-		ModelAndView mv = new ModelAndView("crew/add_crew");
+		ModelAndView mv = new ModelAndView("crew/crew_details");
 		mv.addObject("rankMap", Rank.getByGroup());
+		mv.addObject("flags", flagDao.findAll());
 		return mv;
 	}
 
@@ -90,7 +106,7 @@ public class CrewController {
 	
 	@GetMapping(value = "/edit")
 	public ModelAndView editCrew(HttpServletRequest req) {
-		ModelAndView mv = new ModelAndView("/crew/add_crew");
+		ModelAndView mv = new ModelAndView("/crew/crew_details");
 		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
 		if (crewId > 0) {
 			Crew crew = crewDao.findById(crewId).get();
@@ -114,9 +130,19 @@ public class CrewController {
 	@PostMapping(value = "/add", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ModelAndView addCrew(@RequestParam("fName") String fName, @RequestParam("mName") String mName,
 			@RequestParam("lName") String lName, @RequestParam("rankId") int rankId,
-			@RequestParam("gender") String gender, @RequestParam("distinguishMark") String distinguishMark,
-			@RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
+			@RequestParam("gender") String gender, @RequestParam("distinguishingMark") String distinguishMark,
+								@RequestParam("maritalStatus") String maritalStatus,
+								@RequestParam("homeAddress") String homeAddress,
+								@RequestParam("nearestAirport") String nearestAirport,
+								@RequestParam("emailId") String emailId,
+								@RequestParam("nationality") String nationality,
+								@RequestParam("nationalityFlagCode") String nationalityFlagCode,
+								@RequestParam("contact_1") String contact1,
+								@RequestParam("contact_2") String contact2,
+								@RequestParam("birthDate") String dob,
+								@RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
 			Model model) {
+		Employee emp = employeeDao.findById(1l).get();
 		ModelAndView mv = new ModelAndView("/crew/add_employment");
 		System.out.println("add_crew: " + fName);
 		System.out.println("image: " + image);
@@ -126,10 +152,26 @@ public class CrewController {
 		crew.setfName(fName);
 		crew.setlName(lName);
 		crew.setmName(mName);
+		crew.setEmailId(emailId);
+		crew.setContact1(contact1);
+		crew.setContact2(contact2);
+		crew.setNearestAirport(nearestAirport);
+		crew.setMaritalStatus(maritalStatus);
+		crew.setPermAddress(homeAddress);
+		crew.setNationality(nationality);
+		crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
+		String[] dobStr = dob.split("/");
+		int month = ParamUtil.parseInt(dobStr[0], -1);
+		int day = ParamUtil.parseInt(dobStr[1], -1);
+		int year = ParamUtil.parseInt(dobStr[2], -1);
+		crew.setDob(LocalDate.of(year, month, day));
 		crew.setRank(Rank.createFromId(rankId));
 		crew.setGender(gender);
 		crew.setDistinguishMark(distinguishMark);
+		crew.setManningOffice(manningOffice);
 		crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+		crew.setEnteredDateTime(LocalDateTime.now());
+		crew.setEnteredBy(emp.getId());
 		crewDao.insert(crew);
 
 		long crewId = crew.getId();
@@ -151,6 +193,14 @@ public class CrewController {
 			crewDao.save(crew);			
 			mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
+			AuditTrail audit = new AuditTrail();
+			audit.setAction("add");
+			audit.setActionDateTime(LocalDateTime.now());
+			audit.setCollection(Collection.CREW);
+			audit.setActionBy("Pranav");
+			audit.setText("New Crew "+(crew.getName())+ " Added!");
+			audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+			auditTrailDao.insert(audit);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

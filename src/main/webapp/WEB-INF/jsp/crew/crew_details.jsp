@@ -53,6 +53,7 @@
 												<img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}" alt="" id='preview' />													
 											</c:when>
 											<c:otherwise>
+											    <input type='file' id='file-input' hidden name="image">
 												<img class="img-account-profile rounded-circle mb-2"
 													src="../assets/img/illustrations/profiles/profile-1.png"
 													alt="" id='preview' />
@@ -129,7 +130,15 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="nationality">Nationality</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="nationality" type="text" placeholder="Enter Nationality" value="${crew.lName}" /></div></td>
+		                                                <td>
+                                                            <select class="form-select" aria-label="Default select example" name="nationalityFlagCode">
+                                                                <option selected disabled>Select Nationality Flag:</option>
+                                                                <c:forEach items="${flags}" var="flag">
+                                                                        <option value="${flag.code}">${flag.name}</option>
+                                                                </c:forEach>
+                                                            </select>
+		                                                <input class="form-control" name="nationality" type="text" placeholder="Enter Nationality" value="${crew.nationality}" />
+		                                                </td>
 		                                                <td>Maker By</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -188,12 +197,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="manningOffice">Manning Office</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-			                                                <select class="form-select" name="manningOffice" aria-label="Default select example">
-																<option selected disabled>Select Office:</option>
-																<c:forEach var="manningOffice" items="${manningOffices}">
-															          <option value="${manningOffice.id}">${manningOffice.name} (${manningOffice.name})</option>                             
-															    </c:forEach>
-															</select>
+		                                                    <input class="form-control" name="manningOffice" type="text" placeholder="Enter Nearest Airport" value="${crew.manningOffice}" />
 															</div>
 		                                                </td>
 		                                                <td>Maker By</td>	
@@ -250,7 +254,7 @@
 														</td>
 		                                            </tr>
 		                                            <tr>
-		                                                <td><label class="small mb-3" for="emailId">Email Address</label></td>
+		                                                <td><label class="small mb-3" for="emailId">EmailID</label></td>
 		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="emailId" type="text" placeholder="Enter Email ID" value="${crew.lName}" /></div></td>
 		                                                <td>Maker By</td>
 		                                                <td>
@@ -290,7 +294,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="dob">Date of Birth</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" name="dob" type="text" placeholder="Enter DOB" value="${crew.lName}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="birthDate" name="birthDate" type="text" placeholder="Enter DOB" value="${crew.dob}" /></div></td>
 		                                                <td>Maker By</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">

@@ -26,7 +26,7 @@
                     <div class="container-fluid px-4">
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
-                            <a class="nav-link" href="/crew/add_crew">Profile</a>
+                            <a class="nav-link" href="/crew/add">Profile</a>
                             <a class="nav-link" href="/crew/add_employment">Employment</a>
                             <a class="nav-link" href="/crew/add_education">Education</a>
                             <a class="nav-link" href="/crew/add_passport_visa">Passport/Visa</a>

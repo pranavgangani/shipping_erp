@@ -72,7 +72,7 @@ class CrewTest {
         crew.setGender("male");
         crew.setRank(Rank.JR_ENGINEER);
         crew.setDistinguishMark("Some mark on head");
-        crew.setCitizenFlag(flag);
+        crew.setNationalityFlagId(flag.getId());
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setEmailId("pranavgangani@gmail.com");
         crew.setPassportNumber("SLJALJLJ");
@@ -107,7 +107,7 @@ class CrewTest {
     @Test
     void updateEducationDetails() {
         Crew crew = crewDao.findById(29l).get();
-        Flag flag = crew.getCitizenFlag();
+        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
 
 
         //Education
@@ -140,7 +140,7 @@ class CrewTest {
     @Test
     void updateEmploymentDetails() {
         Crew crew = crewDao.findById(26l).get();
-        Flag flag = crew.getCitizenFlag();
+        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
 
         //Employment
         Employment emp1 = new Employment();
@@ -262,7 +262,7 @@ class CrewTest {
     @Test
     void updateCrewDetails() {
         Crew crew = crewDao.findById(26l).get();
-        Flag flag = crew.getCitizenFlag();
+        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
 
         List<Education> eduList = crew.getEducationHistory();
         List<Employment> empList = crew.getEmploymentHistory();
@@ -321,7 +321,8 @@ class CrewTest {
         contract.setCrewId(crew.getId());
         contract.setVesselId(vacancy.getVesselId());
         contract.setPlaceOfContract("Mumbai");
-        contract.setPlaceOfContractFlag(crew.getCitizenFlag());
+        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
+        contract.setPlaceOfContractFlag(flag);
         contract.setWageCurrency(15000);
         contract.setStatusId(CrewContract.Status.GENERATED.getId());
 

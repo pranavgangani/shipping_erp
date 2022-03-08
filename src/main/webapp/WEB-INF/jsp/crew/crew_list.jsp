@@ -121,14 +121,14 @@
 								<thead>
 									<tr>
 										<th>Name</th>
-										<th>Position</th>
-										<th>Department</th>
-										<th>Office</th>
-										<th>Age</th>
-										<th>Start date</th>
-										<th>Salary</th>
-										<th>Status</th>
-										<th>Actions</th>
+                                        <th>Position</th>
+                                        <th>Department</th>
+                                        <th>Mannign Office</th>
+                                        <th>Age</th>
+                                        <th>Start date</th>
+                                        <th>Wage</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
 									</tr>
 								</thead>
 								<tfoot>
@@ -136,10 +136,10 @@
 										<th>Name</th>
 										<th>Position</th>
 										<th>Department</th>
-										<th>Office</th>
+										<th>Mannign Office</th>
 										<th>Age</th>
 										<th>Start date</th>
-										<th>Salary</th>
+										<th>Wage</th>
 										<th>Status</th>
 										<th>Actions</th>
 									</tr>
@@ -151,13 +151,15 @@
 										<td>${crew.fName} ${crew.mName} ${crew.lName}</td>
 										<td>${crew.rank.name}</td>
 										<td>${crew.rank.rankCategory.name}</td>										
-										<td>Edinburgh</td>
-										<td>61</td>
+										<td>${crew.rank.rankCategory.name}</td>
+										<td>${crew.age}</td>
 										<td>2011/04/25</td>
 										<td>$320,800</td>
-										<td><div class="badge bg-primary text-white rounded-pill">Full-time</div></td>
 										<td>
-										<button
+
+										<div class="badge bg-primary text-white rounded-pill">Full-time</div></td>
+										<td>
+										    <button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
 													id="dropdownMenuButton" type="button"
 													data-bs-toggle="dropdown" aria-haspopup="true"

@@ -36,6 +36,7 @@ public class Collection {
 
 	//Company
 	public final static String EMPLOYEE = "Employee";
+	public final static String USER_ROLE = "UserRole";
 	
 	private String name;
 	
