@@ -51,7 +51,7 @@ public enum DocumentPool {
         return name;
     }
 
-    public List<DocumentPool> getList(){
+    public static List<DocumentPool> getList(){
         return new ArrayList<>(Arrays.asList(values()));
     }
 

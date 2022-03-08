@@ -36,19 +36,17 @@
                             </a>
                             <div class="collapse" id="collapsePages" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPagesMenu">
-                                	<a class="nav-link" href="/crew/list">Crew List</a>                                    
+                                	<a class="nav-link" href="/crew/list">Crew List</a>
                                 
                                     <!-- Nested Sidenav Accordion (Pages -> Account)-->
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAccount" aria-expanded="false" aria-controls="pagesCollapseAccount">
-                                        Account
+                                        Add New
                                         <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a> 
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavPagesMenu">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/crew/add">Add New Crew</a>
-                                            <a class="nav-link" href="account-billing.html">Documents List</a>
-                                            <!-- <a class="nav-link" href="account-security.html">Medicals</a>
-                                            <a class="nav-link" href="account-notifications.html">Notifications</a> -->
+                                            /*<a class="nav-link" href="/crew/document_list">Documents List</a>*/
                                         </nav>
                                     </div>                                    
                                 </nav>
@@ -64,7 +62,7 @@
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavAppsMenu">
                                 	<a class="nav-link" href="/vessel/vessel_list">Vessel List</a>
                                 	<a class="nav-link" href="/vessel/vessel_owner_list">Vessel Owner List</a>
-                                <a class="nav-link" href="/vessel/vessel_manager_list">Vessel Vacancy List</a>
+                                <a class="nav-link" href="/crew/vacancy_list">Vessel Vacancy List</a>
                                 
                                     <!-- Nested Sidenav Accordion (Apps -> Knowledge Base)-->
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#appsCollapseKnowledgeBase" aria-expanded="false" aria-controls="appsCollapseKnowledgeBase">
@@ -116,8 +114,8 @@
                             </a>
                             <div class="collapse" id="collapseFlows" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/vessel/doc_list">Vessel Document List</a>
-                                    <a class="nav-link" href="/crew/doc_list">Crew Document List</a>
+                                    <a class="nav-link" href="/vessel/mandatory_document_list">Vessel Document List</a>
+                                    <a class="nav-link" href="/crew/mandatory_document_list">Crew Document List</a>
                                 </nav>
                             </div>
                             <!-- Sidenav Heading (UI Toolkit)-->
@@ -138,54 +136,8 @@
                                     <div class="collapse" id="collapseLayoutSidenavVariations" data-bs-parent="#accordionSidenavLayout">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/settings/ranks">Rank</a>
-                                            <a class="nav-link" href="/settings/certifications">Certifications</a>
-                                            <a class="nav-link" href="/settings/medicals">Medicals</a>
-                                            <a class="nav-link" href="/settings/licenses">Licenses</a>
-                                            <a class="nav-link" href="/settings/surveys">Surveys</a>
-                                            <a class="nav-link" href="/settings/documents">Documents</a>
-                                            <a class="nav-link" href="/settings/add_doc_certification">Add Certifications</a>
-                                            <a class="nav-link" href="/settings/add_doc_medicals">Add Medicals</a>
-                                            <a class="nav-link" href="/settings/add_doc_passport">Add Passport</a>
-                                            <a class="nav-link" href="/settings/add_doc_visa">Add Visa</a>
-                                            <a class="nav-link" href="/settings/add_doc_declarations"></a>
-                                            <a class="nav-link" href="/settings/crew_doc_sub_category_list">Crew Document Sub-Categories</a>
-                                            <a class="nav-link" href="/settings/add_crew_doc_sub_category">Add Crew Document Sub-Category</a>
-                                        </nav>
-                                    </div>
-                                    <!-- Nested Sidenav Accordion (Layout -> Container Options)-->
-                                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseLayoutContainers" aria-expanded="false" aria-controls="collapseLayoutContainers">
-                                        Container Options
-                                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="collapseLayoutContainers" data-bs-parent="#accordionSidenavLayout">
-                                        <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="layout-boxed.html">Boxed Layout</a>
-                                            <a class="nav-link" href="layout-fluid.html">Fluid Layout</a>
-                                        </nav>
-                                    </div>
-                                    <!-- Nested Sidenav Accordion (Layout -> Page Headers)-->
-                                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsPageHeaders" aria-expanded="false" aria-controls="collapseLayoutsPageHeaders">
-                                        Page Headers
-                                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="collapseLayoutsPageHeaders" data-bs-parent="#accordionSidenavLayout">
-                                        <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="header-simplified.html">Simplified</a>
-                                            <a class="nav-link" href="header-compact.html">Compact</a>
-                                            <a class="nav-link" href="header-overlap.html">Content Overlap</a>
-                                            <a class="nav-link" href="header-breadcrumbs.html">Breadcrumbs</a>
-                                            <a class="nav-link" href="header-light.html">Light</a>
-                                        </nav>
-                                    </div>
-                                    <!-- Nested Sidenav Accordion (Layout -> Starter Layouts)-->
-                                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsStarterTemplates" aria-expanded="false" aria-controls="collapseLayoutsStarterTemplates">
-                                        Starter Layouts
-                                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="collapseLayoutsStarterTemplates" data-bs-parent="#accordionSidenavLayout">
-                                        <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="starter-default.html">Default</a>
-                                            <a class="nav-link" href="starter-minimal.html">Minimal</a>
+                                            <a class="nav-link" href="/settings/document_list">Crew Document List</a>
+
                                         </nav>
                                     </div>
                                 </nav>

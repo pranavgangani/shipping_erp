@@ -29,8 +29,11 @@ import com.shipping.dao.company.EmployeeRepository;
 import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.dao.vessel.VesselVacancyRepository;
 import com.shipping.model.common.document.category.Document;
+import com.shipping.model.common.document.category.DocumentCategory;
+import com.shipping.model.common.document.category.DocumentPool;
+import com.shipping.model.common.document.category.DocumentType;
 import com.shipping.model.company.Employee;
-import com.shipping.model.crew.CrewFieldStatus;
+import com.shipping.model.crew.*;
 import com.shipping.model.vessel.Vessel;
 import com.shipping.model.vessel.VesselVacancy;
 import com.shipping.model.vessel.VesselVacancyAttributes;
@@ -57,9 +60,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.crew.PhotoRepository;
-import com.shipping.model.crew.Crew;
-import com.shipping.model.crew.CrewPhoto;
-import com.shipping.model.crew.Rank;
 import com.shipping.model.vessel.VesselSubType;
 import com.shipping.service.common.SequenceGeneratorService;
 import com.shipping.util.ParamUtil;
@@ -76,8 +76,6 @@ public class CrewController {
     @Autowired
     private CrewDocumentRepository documentDao;
     @Autowired
-    private DocumentTypeRepository docTypeDao;
-    @Autowired
     private AuditTrailRepository auditTrailDao;
     @Autowired
     private EmployeeRepository employeeDao;
@@ -85,8 +83,8 @@ public class CrewController {
     private FlagRepository flagDao;
     @Autowired
     private VesselVacancyRepository vesselVacancyDao;
-	@Autowired
-	private VesselRepository vesselDao;
+    @Autowired
+    private VesselRepository vesselDao;
 
     @GetMapping(value = "/list")
     public ModelAndView crewList(Model model) {
@@ -407,17 +405,16 @@ public class CrewController {
     public ModelAndView assignVessel(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/vacancy_list");
 
-		long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-		List<VesselVacancy> vacancies = new ArrayList<>();
-		if(crewId>0) {
-			Crew crew = crewDao.findById(crewId).get();
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        List<VesselVacancy> vacancies = new ArrayList<>();
+        if (crewId > 0) {
+            Crew crew = crewDao.findById(crewId).get();
             mv.addObject("crew", crew);
             //vacancies = vesselVacancyDao.findVacanciesByRank(crew.getRank().getId());
             vacancies = vesselVacancyDao.findAll();
-		}
-		else{
-			vacancies = vesselVacancyDao.findAll();
-		}
+        } else {
+            vacancies = vesselVacancyDao.findAll();
+        }
 
         vacancies.forEach(v -> {
             Vessel vessel = vesselDao.findById(v.getVesselId()).get();
@@ -437,15 +434,16 @@ public class CrewController {
             } else {
                 System.out.print("Any Vessel");
             }
-			v.setVessel(vessel);
-            if(v.getFilledByCrewId() > 0) {
+            v.setVessel(vessel);
+            if (v.getFilledByCrewId() > 0) {
                 v.setFilledByCrew(crewDao.findById(v.getFilledByCrewId()).get());
             }
-			v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
+            v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
             System.out.print(" ]");
             System.out.println();
         });
-		mv.addObject("vacancies", vacancies);
-		return mv;
+        mv.addObject("vacancies", vacancies);
+        return mv;
     }
+
 }

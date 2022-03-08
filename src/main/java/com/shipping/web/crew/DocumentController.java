@@ -1,6 +1,10 @@
 package com.shipping.web.crew;
 
+import com.shipping.dao.common.CrewDocumentRepository;
+import com.shipping.dao.common.DocumentTypeRepository;
 import com.shipping.model.common.document.category.Document;
+import com.shipping.model.common.document.category.DocumentPool;
+import com.shipping.model.common.document.category.DocumentType;
 import com.shipping.util.ParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +28,9 @@ import com.shipping.model.crew.DocumentMatrix;
 import com.shipping.model.crew.DocumentSubCategory;
 import com.shipping.service.common.SequenceGeneratorService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/settings")
 public class DocumentController {
@@ -33,6 +40,10 @@ public class DocumentController {
 	private DocumentRepository docRepository;
 	@Autowired
 	private CrewSubDocumentCategoryRepository subDocumentCategoryDao;
+	@Autowired
+	private CrewDocumentRepository documentDao;
+	@Autowired
+	private DocumentTypeRepository docTypeDao;
 
 	@GetMapping(value = "/crew_doc_category_list")
 	public ModelAndView crewDocCategoryList(Model model) {
@@ -212,4 +223,27 @@ public class DocumentController {
 		return mv;
 	}*/
 
+	@GetMapping(value = "/document_list")
+	public ModelAndView mandatoryDocList(HttpServletRequest req, Model model) {
+		ModelAndView mv = new ModelAndView("settings/document_list");
+		List<Document> list = documentDao.findAll();
+
+		//mv.addObject("action", "Edit");
+		mv.addObject("list", list);
+
+
+		return mv;
+	}
+
+	@GetMapping(value = "/add_new_doc")
+	public ModelAndView addNewMandatoryDoc(Model model) {
+		ModelAndView mv = new ModelAndView("settings/add_new_doc");
+		List<DocumentCategory> docCategoryList = DocumentCategory.getList();
+		List<DocumentPool> docPoolList = DocumentPool.getList();
+		List<DocumentType> documentTypeList = docTypeDao.findAll();
+		mv.addObject("docCategoryList", docCategoryList);
+		mv.addObject("docPoolList", docPoolList);
+		mv.addObject("documentTypeList", documentTypeList);
+		return mv;
+	}
 }
