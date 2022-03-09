@@ -391,8 +391,8 @@ public class Crew extends Person {
         PENDING_DOCS(2, "Pending Docs"),
         SIGN_ON_READY(3, "Sign-On Ready"),
         SIGNED_ON(4, "Signed-On"),
-        SIGNED_OFF(5, "Signed-Off");
-
+        SIGNED_OFF(5, "Signed-Off"),
+        INJURED(10, "Injured");
 
         private int id;
         private String desc;
@@ -410,6 +410,11 @@ public class Crew extends Person {
             return desc;
         }
 
-
+        public static Status createFromId(int typeId) {
+            return ((Status)(getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
+        }
+        public static List<DurationType> getList() {
+            return new ArrayList<>(Arrays.asList(values()));
+        }
     }
 }
