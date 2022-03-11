@@ -13,6 +13,7 @@ public class DocumentType {
     @Id
     private long id;
     private String name, desc;
+
     private DocumentCategory documentCategory;
     private DocumentPool documentPool;
 

@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -50,14 +49,21 @@
 
 					<!-- Main page content-->
                     <div class="container-fluid px-4">
+                        <!-- Account page navigation-->
+                        <nav class="nav nav-borders">
+                            <a class="nav-link" href="/settings/rank_category">Document Category</a>
+                            <a class="nav-link" href="/settings/rank_sub_category">Document Pool</a>
+                            <a class="nav-link active ms-0">Document</a>
+                        </nav>
+                        <hr class="mt-0 mb-4" />
                         <div class="row">                            
                             <div class="col-xl-12">
                                 <!-- Account details card-->
                                 <div class="card mb-6">
                                     <div class="card-header">Add Doc</div>
                                     <div class="card-body">
-                                        <form action="/settings/add_new_doc" method="POST">
-                                           
+                                        <form action="/settings/add_rank" method="POST">
+
 										<div class="row gx-3 mb-3">
 											<div class="col-md-4">
 												<label class="small mb-1" for="docCategoryId">Doc Category</label>
@@ -73,7 +79,7 @@
                                                     <select class="form-select" aria-label="Default select example" id="docCategoryId" name="docCategoryId">
                                                         <option selected disabled>Select Pool:</option>
                                                         <c:forEach items="${docPoolList}" var="docPool">
-                                                                <option value="${docPool.name}">${docPool.name}</option>
+                                                                <option value="${docPool.id}">${docPool.name}</option>
                                                         </c:forEach>
                                                     </select>
 											</div>

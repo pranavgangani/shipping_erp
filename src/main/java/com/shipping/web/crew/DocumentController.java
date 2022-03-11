@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shipping.dao.crew.DocumentRepository;
-import com.shipping.dao.crew.CrewSubDocumentCategoryRepository;
 import com.shipping.model.crew.Rank;
 import com.shipping.model.crew.RankCategory;
 import com.shipping.model.crew.RankSubCategory;
@@ -24,8 +23,6 @@ import com.shipping.model.vessel.VesselSubType;
 import com.shipping.model.vessel.VesselType;
 import com.shipping.model.common.DurationType;
 import com.shipping.model.common.document.category.DocumentCategory;
-import com.shipping.model.crew.DocumentMatrix;
-import com.shipping.model.crew.DocumentSubCategory;
 import com.shipping.service.common.SequenceGeneratorService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,152 +31,123 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/settings")
 public class DocumentController {
-	@Autowired
-	private SequenceGeneratorService sequenceGenerator;
-	@Autowired
-	private DocumentRepository docRepository;
-	@Autowired
-	private CrewSubDocumentCategoryRepository subDocumentCategoryDao;
-	@Autowired
-	private CrewDocumentRepository documentDao;
-	@Autowired
-	private DocumentTypeRepository docTypeDao;
+    @Autowired
+    private SequenceGeneratorService sequenceGenerator;
+    @Autowired
+    private DocumentRepository docRepository;
+    @Autowired
+    private CrewDocumentRepository documentDao;
+    @Autowired
+    private DocumentTypeRepository docTypeDao;
 
-	@GetMapping(value = "/crew_doc_category_list")
-	public ModelAndView crewDocCategoryList(Model model) {
-		ModelAndView mv = new ModelAndView("settings/crew_doc_category_list");
-		mv.addObject("docCategoryList", DocumentCategory.getList());
-		return mv;
-	}
-	@GetMapping(value = "/add_crew_doc_sub_category")
-	public ModelAndView addDocSubCategory(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_crew_doc_sub_category");
-		mv.addObject("docCategoryList", DocumentCategory.getList());
-		return mv;
-	}
-	@GetMapping(value = "/crew_doc_sub_category_list")
-	public ModelAndView crewDocSubCategoryList(Model model) {
-		ModelAndView mv = new ModelAndView("settings/crew_doc_sub_category_list");
-		mv.addObject("docCategoryList", DocumentCategory.getList());
-		mv.addObject("subDocumentCategoryList", subDocumentCategoryDao.findAll());
-		return mv;
-	}
-	@PostMapping(value = "/add_crew_doc_sub_category")
-	public ModelAndView addCrewDocSubCategory(
-			@RequestParam("subCatName") String subCatName,
-			@RequestParam("categoryId") int categoryId) {
-		ModelAndView mv = new ModelAndView("redirect:/settings/crew_doc_sub_category_list");
+    @GetMapping(value = "/crew_doc_category_list")
+    public ModelAndView crewDocCategoryList(Model model) {
+        ModelAndView mv = new ModelAndView("settings/crew_doc_category_list");
+        mv.addObject("docCategoryList", DocumentCategory.getList());
+        return mv;
+    }
 
-		DocumentSubCategory subCat = new DocumentSubCategory();
-		subCat.setId(sequenceGenerator.generateSequence(DocumentSubCategory.SEQUENCE_NAME));
-		subCat.setName(subCatName);
-		subCat.setDocumentCategory(DocumentCategory.createFromId(categoryId));
-		subCat.setValid(true);
-			
-		subDocumentCategoryDao.insert(subCat);
-		long subCatId = subCat.getId();
-		System.out.println("New subCatId ---> " + subCatId);
-		mv.addObject("subCatId", subCatId);
-		return mv;
-	}
-	
-	@GetMapping(value = "/add_doc_certification")
-	public ModelAndView addDocTraining(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_doc_certification");
-		mv.addObject("vesselTypeList", VesselType.getList());
-		mv.addObject("vesselSubTypeList", VesselSubType.getList());
-		mv.addObject("rankCategoryList", RankCategory.getList());
-		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
-		mv.addObject("rankList", Rank.getList());
-		mv.addObject("durationTypes", DurationType.getList());
-		return mv;
-	} 
-	
-	@GetMapping(value = "/add_doc_license")
-	public ModelAndView addDocLicense(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_doc_license");
-		mv.addObject("vesselTypeList", VesselType.getList());
-		mv.addObject("vesselSubTypeList", VesselSubType.getList());
-		mv.addObject("rankCategoryList", RankCategory.getList());
-		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
-		mv.addObject("rankList", Rank.getList());
-		return mv;
-	}
-	
-	@GetMapping(value = "/add_doc_declaration")
-	public ModelAndView addDocDeclaration(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_doc_declaration");
-		mv.addObject("vesselTypeList", VesselType.getList());
-		mv.addObject("vesselSubTypeList", VesselSubType.getList());
-		mv.addObject("rankCategoryList", RankCategory.getList());
-		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
-		mv.addObject("rankList", Rank.getList());
-		return mv;
-	}
-	@GetMapping(value = "/add_doc_passport")
-	public ModelAndView addDocPassport(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_doc_passport");
-		mv.addObject("vesselTypeList", VesselType.getList());
-		mv.addObject("vesselSubTypeList", VesselSubType.getList());
-		mv.addObject("rankCategoryList", RankCategory.getList());
-		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
-		mv.addObject("rankList", Rank.getList());
-		return mv;
-	}
-	@GetMapping(value = "/add_doc_visa")
-	public ModelAndView addDocVisa(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_doc_visa");
-		mv.addObject("vesselTypeList", VesselType.getList());
-		mv.addObject("vesselSubTypeList", VesselSubType.getList());
-		mv.addObject("rankCategoryList", RankCategory.getList());
-		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
-		mv.addObject("rankList", Rank.getList());
-		return mv;
-	}
-	@GetMapping(value = "/add_doc_medical")
-	public ModelAndView addDocMedical(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_doc_medical");
-		mv.addObject("vesselTypeList", VesselType.getList());
-		mv.addObject("vesselSubTypeList", VesselSubType.getList());
-		mv.addObject("rankCategoryList", RankCategory.getList());
-		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
-		mv.addObject("rankList", Rank.getList());
-		return mv;
-	}
-	@GetMapping(value = "/add_doc_other")
-	public ModelAndView addDocO(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_doc_other");
-		mv.addObject("vesselTypeList", VesselType.getList());
-		mv.addObject("vesselSubTypeList", VesselSubType.getList());
-		mv.addObject("rankCategoryList", RankCategory.getList());
-		mv.addObject("rankSubCategoryList", RankSubCategory.getList());
-		mv.addObject("rankList", Rank.getList());
-		return mv;
-	}
+    @GetMapping(value = "/add_doc_certification")
+    public ModelAndView addDocTraining(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_doc_certification");
+        mv.addObject("vesselTypeList", VesselType.getList());
+        mv.addObject("vesselSubTypeList", VesselSubType.getList());
+        mv.addObject("rankCategoryList", RankCategory.getList());
+        mv.addObject("rankSubCategoryList", RankSubCategory.getList());
+        mv.addObject("rankList", Rank.getList());
+        mv.addObject("durationTypes", DurationType.getList());
+        return mv;
+    }
 
-	@PostMapping(value = "/add_doc_certification")
-	public ModelAndView addCertification(
-			@RequestParam("certDuration") int certDuration,
-			@RequestParam("durationTypeId") int durationTypeId,
-			@RequestParam("certName") String certName,
-			@RequestParam("certType") String certType,
-			@RequestParam("regulationDetails") String regulationDetails,
-			@RequestParam("chapterDetails") String chapterDetails,
-			@RequestParam("sectionDetails") String sectionDetails,
-			@RequestParam("isMandatory") String isMandatory,
-			@RequestParam("isPaid") String isPaid,
-			@RequestParam("isPhysical") String isPhysical,
-			@RequestParam("isRecertRequired") String isRecertRequired,
-			@RequestParam("certDesc") String certDesc,
+    @GetMapping(value = "/add_doc_license")
+    public ModelAndView addDocLicense(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_doc_license");
+        mv.addObject("vesselTypeList", VesselType.getList());
+        mv.addObject("vesselSubTypeList", VesselSubType.getList());
+        mv.addObject("rankCategoryList", RankCategory.getList());
+        mv.addObject("rankSubCategoryList", RankSubCategory.getList());
+        mv.addObject("rankList", Rank.getList());
+        return mv;
+    }
 
-			@RequestParam("chk_vesselTypeId") String[] vesselTypes,
-			@RequestParam("chk_vesselSubTypeId") String[] vesselSubTypes,
-			@RequestParam("chk_rankCategoryId") String[] rankCategories,
-			@RequestParam("chk_rankSubCategoryId") String[] rankSubCategories,
-			@RequestParam("chk_rankId") String[] ranks,
-			@RequestParam("papPoints")int pap) {
-		ModelAndView mv = new ModelAndView("redirect:/settings/certifications");
-		System.out.println("certName: " + certName);
+    @GetMapping(value = "/add_doc_declaration")
+    public ModelAndView addDocDeclaration(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_doc_declaration");
+        mv.addObject("vesselTypeList", VesselType.getList());
+        mv.addObject("vesselSubTypeList", VesselSubType.getList());
+        mv.addObject("rankCategoryList", RankCategory.getList());
+        mv.addObject("rankSubCategoryList", RankSubCategory.getList());
+        mv.addObject("rankList", Rank.getList());
+        return mv;
+    }
+
+    @GetMapping(value = "/add_doc_passport")
+    public ModelAndView addDocPassport(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_doc_passport");
+        mv.addObject("vesselTypeList", VesselType.getList());
+        mv.addObject("vesselSubTypeList", VesselSubType.getList());
+        mv.addObject("rankCategoryList", RankCategory.getList());
+        mv.addObject("rankSubCategoryList", RankSubCategory.getList());
+        mv.addObject("rankList", Rank.getList());
+        return mv;
+    }
+
+    @GetMapping(value = "/add_doc_visa")
+    public ModelAndView addDocVisa(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_doc_visa");
+        mv.addObject("vesselTypeList", VesselType.getList());
+        mv.addObject("vesselSubTypeList", VesselSubType.getList());
+        mv.addObject("rankCategoryList", RankCategory.getList());
+        mv.addObject("rankSubCategoryList", RankSubCategory.getList());
+        mv.addObject("rankList", Rank.getList());
+        return mv;
+    }
+
+    @GetMapping(value = "/add_doc_medical")
+    public ModelAndView addDocMedical(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_doc_medical");
+        mv.addObject("vesselTypeList", VesselType.getList());
+        mv.addObject("vesselSubTypeList", VesselSubType.getList());
+        mv.addObject("rankCategoryList", RankCategory.getList());
+        mv.addObject("rankSubCategoryList", RankSubCategory.getList());
+        mv.addObject("rankList", Rank.getList());
+        return mv;
+    }
+
+    @GetMapping(value = "/add_doc_other")
+    public ModelAndView addDocO(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_doc_other");
+        mv.addObject("vesselTypeList", VesselType.getList());
+        mv.addObject("vesselSubTypeList", VesselSubType.getList());
+        mv.addObject("rankCategoryList", RankCategory.getList());
+        mv.addObject("rankSubCategoryList", RankSubCategory.getList());
+        mv.addObject("rankList", Rank.getList());
+        return mv;
+    }
+
+    @PostMapping(value = "/add_doc_certification")
+    public ModelAndView addCertification(
+            @RequestParam("certDuration") int certDuration,
+            @RequestParam("durationTypeId") int durationTypeId,
+            @RequestParam("certName") String certName,
+            @RequestParam("certType") String certType,
+            @RequestParam("regulationDetails") String regulationDetails,
+            @RequestParam("chapterDetails") String chapterDetails,
+            @RequestParam("sectionDetails") String sectionDetails,
+            @RequestParam("isMandatory") String isMandatory,
+            @RequestParam("isPaid") String isPaid,
+            @RequestParam("isPhysical") String isPhysical,
+            @RequestParam("isRecertRequired") String isRecertRequired,
+            @RequestParam("certDesc") String certDesc,
+
+            @RequestParam("chk_vesselTypeId") String[] vesselTypes,
+            @RequestParam("chk_vesselSubTypeId") String[] vesselSubTypes,
+            @RequestParam("chk_rankCategoryId") String[] rankCategories,
+            @RequestParam("chk_rankSubCategoryId") String[] rankSubCategories,
+            @RequestParam("chk_rankId") String[] ranks,
+            @RequestParam("papPoints") int pap) {
+        ModelAndView mv = new ModelAndView("redirect:/settings/certifications");
+        System.out.println("certName: " + certName);
 
 		/*Document cert = new Document();
 		cert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
@@ -206,8 +174,8 @@ public class DocumentController {
 		docRepository.insert(cert);
 		long docId = cert.getId();
 		mv.addObject("docId", docId);*/
-		return mv;
-	}
+        return mv;
+    }
 	
 	/*@GetMapping(value = "/certifications")
 	public ModelAndView certList(Model model) {
@@ -223,27 +191,60 @@ public class DocumentController {
 		return mv;
 	}*/
 
-	@GetMapping(value = "/document_list")
-	public ModelAndView mandatoryDocList(HttpServletRequest req, Model model) {
-		ModelAndView mv = new ModelAndView("settings/document_list");
-		List<Document> list = documentDao.findAll();
+    @GetMapping(value = "/document_list")
+    public ModelAndView mandatoryDocList(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("settings/document_list");
+        List<Document> list = documentDao.findAll();
 
-		//mv.addObject("action", "Edit");
-		mv.addObject("list", list);
+        //mv.addObject("action", "Edit");
+        mv.addObject("list", list);
 
 
-		return mv;
-	}
+        return mv;
+    }
 
-	@GetMapping(value = "/add_new_doc")
-	public ModelAndView addNewMandatoryDoc(Model model) {
-		ModelAndView mv = new ModelAndView("settings/add_new_doc");
-		List<DocumentCategory> docCategoryList = DocumentCategory.getList();
-		List<DocumentPool> docPoolList = DocumentPool.getList();
-		List<DocumentType> documentTypeList = docTypeDao.findAll();
-		mv.addObject("docCategoryList", docCategoryList);
-		mv.addObject("docPoolList", docPoolList);
-		mv.addObject("documentTypeList", documentTypeList);
-		return mv;
-	}
+    @GetMapping(value = "/add_new_doc_type")
+    public ModelAndView addNewDocTypeForm(Model model) {
+        ModelAndView mv = new ModelAndView("settings/add_new_doc_type");
+        List<DocumentCategory> docCategoryList = DocumentCategory.getList();
+        List<DocumentPool> docPoolList = DocumentPool.getList();
+        mv.addObject("docCategoryList", docCategoryList);
+        mv.addObject("docPoolList", docPoolList);
+        return mv;
+    }
+
+    @PostMapping(value = "/add_new_doc_type")
+    public ModelAndView addNewDocType(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("settings/document_list");
+        List<DocumentCategory> docCategoryList = DocumentCategory.getList();
+        List<DocumentPool> docPoolList = DocumentPool.getList();
+        List<DocumentType> documentTypeList = docTypeDao.findAll();
+        String action = req.getParameter("action");
+        if (action.equalsIgnoreCase("add")) {
+            int docCategoryId = ParamUtil.parseInt(req.getParameter("docCategoryId"), -1);
+            long docPoolId = ParamUtil.parseLong(req.getParameter("docPoolId"), -1);
+            String docTypeName = req.getParameter("docTypeName");
+            String docTypeDesc = req.getParameter("docTypeDesc");
+
+            DocumentType docType = new DocumentType();
+            docType.setDocumentPool(DocumentPool.createFromId(docPoolId));
+            docType.setDocumentCategory(DocumentCategory.createFromId(docCategoryId));
+            docType.setDesc(docTypeDesc);
+            docType.setName(docTypeName);
+            docTypeDao.insert(docType);
+
+        }
+
+        return mv;
+    }
+
+
+    @GetMapping(value = "/document_type_list")
+    public ModelAndView docPoolList(Model model) {
+        ModelAndView mv = new ModelAndView("settings/document_type_list");
+        List<DocumentType> documentTypeList = docTypeDao.findAll();
+        mv.addObject("documentTypeList", documentTypeList);
+        return mv;
+    }
+
 }

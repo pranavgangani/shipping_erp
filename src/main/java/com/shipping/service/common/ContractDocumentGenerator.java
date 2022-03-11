@@ -3,65 +3,78 @@ package com.shipping.service.common;
 import com.shipping.dao.crew.CrewContractRepository;
 import com.shipping.dao.crew.CrewRepository;
 import com.shipping.dao.vessel.VesselRepository;
+import com.shipping.model.common.document.CheckList;
+import com.shipping.model.common.document.Contract;
+import com.shipping.model.common.document.Declaration;
+import com.shipping.model.common.document.category.Document;
+import com.shipping.model.common.document.category.DocumentCategory;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.contract.CrewContract;
 import com.shipping.model.crew.NextOfKin;
 import com.shipping.model.vessel.Vessel;
 import com.shipping.util.ListUtil;
 import org.apache.poi.xwpf.usermodel.*;
+import org.bson.BsonBinarySubType;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ContractDocumentGenerator {
-    @Autowired
-    private CrewRepository crewDao;
-    @Autowired
-    private VesselRepository vesselDao;
-    @Autowired
-    private CrewContractRepository crewContractDao;
-
     public static String logo = "logo-leaf.png";
     public static String output = "contract.docx";
 
     private Crew crew;
     private Vessel vessel;
     private CrewContract contract;
+    private List<Document> contractDocuments;
 
     public ContractDocumentGenerator(Crew crew, Vessel vessel, CrewContract contract) {
         this.crew = crew;
         this.vessel = vessel;
         this.contract = contract;
+        contractDocuments = contract.getDocuments();
+        if (contractDocuments == null) {
+            contractDocuments = new LinkedList<>();
+        }
     }
 
     public void generate() throws Exception {
         generateContrat();
-        generateCheckList();//Can capture from <CrewDocuments>
+        generateCheckList();// Can capture from <CrewDocuments>
         generateSeafarerBriefing();
         generateDocsHandedOver();
         generateAlcoholDrugsDeclaration();
         generateDeclarationAgainstUseOfObjectionableMaterials();
-        generateNextKinDeclaration(); //Can capture values from <NextOfKin>
+        generateNextKinDeclaration(); // Can capture values from <NextOfKin>
         generateSignOnDeclaration();
         generateSignOnHealthDeclaration();
         generateSignOnPerformanceGoals();
         generateTravelHistorySelfDeclaration();
-
+        contract.setDocuments(contractDocuments);
     }
 
-    private static void setRun(XWPFRun run, String fontFamily, int fontSize, String colorRGB, String text, boolean bold, boolean addBreak) {
+    private static void setRun(XWPFRun run, String fontFamily, int fontSize, String colorRGB, String text, boolean bold,
+                               boolean addBreak) {
         run.setFontFamily(fontFamily);
         run.setFontSize(fontSize);
         run.setColor(colorRGB);
         run.setText(text);
         run.setBold(bold);
-        if (addBreak) run.addBreak();
+        if (addBreak)
+            run.addBreak();
     }
 
     private void generateContrat() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("1_Contract.docx")) {
+        final String fileName = "1_Contract.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
 
             XWPFParagraph title = document.createParagraph();
             title.setAlignment(ParagraphAlignment.CENTER);
@@ -74,12 +87,14 @@ public class ContractDocumentGenerator {
 //--------------------------------
             row = tab.createRow(); // 2nd Row
             XWPFParagraph paragraph = row.getCell(0).addParagraph();
-            setRun(paragraph.createRun(), "Calibre LIght", 10, "2b5079", "(Name & registered address of the employer)", true, false);
+            setRun(paragraph.createRun(), "Calibre LIght", 10, "2b5079", "(Name & registered address of the employer)",
+                    true, false);
             row.getCell(1).setText("SAAR, Maritime Corporation, Regd. Address: Kerala, INDIA.");
 
             row = tab.createRow(); // 3rd Row
             paragraph = row.getCell(0).addParagraph();
-            setRun(paragraph.createRun(), "Calibre LIght", 10, "2b5079", "(Full name & address of Seafarer)", true, false);
+            setRun(paragraph.createRun(), "Calibre LIght", 10, "2b5079", "(Full name & address of Seafarer)", true,
+                    false);
             row.getCell(1).setText("Rohan P Tiwari\n\n211 Renuka Soc.,Rd.22, Kisan Nagar, Wagle Estate, Thane, INDIA");
 //--------------------------------
             row = tab.createRow(); // 4rd Row
@@ -150,14 +165,23 @@ public class ContractDocumentGenerator {
             setRun(paragraph.createRun(), "Calibre LIght", 10, "2b5079", "(Signature of Ship Owner)", true, false);
 
             document.write(out);
+
+            // Save file to contract documents
+            Contract contract = new Contract();
+            contract.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            contract.setFileTitle(fileName);
+            contract.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(contract);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateCheckList() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("2_Checklist.docx")) {
+        final String fileName = "2_Checklist.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -174,14 +198,23 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            CheckList checkList = new CheckList();
+            checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            checkList.setFileTitle(fileName);
+            checkList.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(checkList);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateSeafarerBriefing() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("3_Seafarer_Briefing.docx")) {
+        final String fileName = "3_Seafarer_Briefing.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -198,14 +231,23 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            CheckList checkList = new CheckList();
+            checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            checkList.setFileTitle(fileName);
+            checkList.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(checkList);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateDocsHandedOver() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("4_Docs_Handed_Over.docx")) {
+        final String fileName = "4_Docs_Handed_Over.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -222,14 +264,23 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            CheckList checkList = new CheckList();
+            checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            checkList.setFileTitle(fileName);
+            checkList.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(checkList);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateAlcoholDrugsDeclaration() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("5_Alcohol_Drugs_Declaration.docx")) {
+        final String fileName = "5_Alcohol_Drugs_Declaration.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -246,14 +297,24 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            Declaration declaration = new Declaration();
+            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            declaration.setFileTitle(fileName);
+            declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(declaration);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateDeclarationAgainstUseOfObjectionableMaterials() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("6_Declaration_Against_Use_of_Objectionable_Materials.docx")) {
+        final String fileName = "6_Declaration_Against_Use_of_Objectionable_Materials.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -270,6 +331,13 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            Declaration declaration = new Declaration();
+            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            declaration.setFileTitle(fileName);
+            declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(declaration);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -279,8 +347,10 @@ public class ContractDocumentGenerator {
 
         List<NextOfKin> noks = crew.getNextOfKins();
 
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("7_Next_Kin_Declaration.docx")) {
+        final String fileName = "7_Next_Kin_Declaration.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -293,11 +363,11 @@ public class ContractDocumentGenerator {
             row.addNewTableCell().setText("Address");
             row.addNewTableCell().setText("% Of Amount");
 
-            if(ListUtil.isNotEmpty(noks)) {
+            if (ListUtil.isNotEmpty(noks)) {
                 int i = 1;
                 for (NextOfKin nok : noks) {
                     row = tab.createRow(); // New Row
-                    row.getCell(0).setText(i+".");
+                    row.getCell(0).setText(i + ".");
                     row.getCell(1).setText(nok.getNomineeName());
                     row.getCell(2).setText(nok.getDateOfBirth());
                     row.getCell(3).setText(nok.getGender());
@@ -308,14 +378,23 @@ public class ContractDocumentGenerator {
             }
 
             document.write(out);
+
+            // Save file to contract documents
+            Declaration declaration = new Declaration();
+            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            declaration.setFileTitle(fileName);
+            declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(declaration);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateSignOnDeclaration() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("8_Sign_On_Declaration.docx")) {
+        final String fileName = "8_Sign_On_Declaration.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -332,14 +411,23 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            Declaration declaration = new Declaration();
+            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            declaration.setFileTitle(fileName);
+            declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(declaration);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateSignOnHealthDeclaration() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("9_Sign_On_Health_Declaration.docx")) {
+        final String fileName = "9_Sign_On_Health_Declaration.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -356,14 +444,23 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            Declaration declaration = new Declaration();
+            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            declaration.setFileTitle(fileName);
+            declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(declaration);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateSignOnPerformanceGoals() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("10_Sign_On_Performance_Goals.docx")) {
+        final String fileName = "10_Sign_On_Performance_Goals.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
+
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -380,14 +477,22 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            Declaration declaration = new Declaration();
+            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            declaration.setFileTitle(fileName);
+            declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(declaration);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void generateTravelHistorySelfDeclaration() {
-        XWPFDocument document = new XWPFDocument();
-        try (FileOutputStream out = new FileOutputStream("11_Travel_History_Self_Declaration.docx")) {
+        final String fileName = "11_Travel_History_Self_Declaration.docx";
+        try (FileOutputStream out = new FileOutputStream(fileName)) {
+            XWPFDocument document = new XWPFDocument();
             // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
@@ -404,6 +509,13 @@ public class ContractDocumentGenerator {
             row.getCell(1).setText("Mohan");
             row.getCell(2).setText("mohan@gmail.com");
             document.write(out);
+
+            // Save file to contract documents
+            Declaration declaration = new Declaration();
+            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            declaration.setFileTitle(fileName);
+            declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
+            contractDocuments.add(declaration);
         } catch (Exception e) {
             e.printStackTrace();
         }

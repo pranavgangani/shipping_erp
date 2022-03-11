@@ -105,6 +105,14 @@ class CrewTest {
     }
 
     @Test
+    void updateFlag() {
+        Crew crew = crewDao.findById(26l).get();
+        Flag flag = flagDao.getByCode("IN");
+        crew.setNationalityFlagId(flag.getId());
+        crewDao.save(crew);
+    }
+
+    @Test
     void updateEducationDetails() {
         Crew crew = crewDao.findById(29l).get();
         Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
@@ -242,7 +250,6 @@ class CrewTest {
         crewDao.save(crew);
     }
 
-
     @Test
     void uploadBankDetails() {
         Crew crew = crewDao.findById(29l).get();
@@ -326,9 +333,6 @@ class CrewTest {
         contract.setWageCurrency(15000);
         contract.setStatusId(CrewContract.Status.GENERATED.getId());
 
-        //Add Contract
-        crewContractDao.insert(contract);
-
         //Generate Contract Docs
         ContractDocumentGenerator wordDocument = new ContractDocumentGenerator(crew, vessel, contract);
         try {
@@ -336,6 +340,9 @@ class CrewTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //Add Contract
+        crewContractDao.insert(contract);
 
 
     }

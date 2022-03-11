@@ -8,18 +8,18 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Add Doc</title>
-    
+
         <%@ include file="../includes/header_includes.jsp" %>
     </head>
 
     <body class="nav-fixed">
     <%@ include file="../includes/top_nav_bar.jsp" %>
-       
-       
+
+
         <div id="layoutSidenav">
-        
+
         <%@ include file="../includes/sidebar.jsp" %>
-            
+
             <div id="layoutSidenav_content">
                 <main>
 
@@ -50,14 +50,14 @@
 
 					<!-- Main page content-->
                     <div class="container-fluid px-4">
-                        <div class="row">                            
+                        <div class="row">
                             <div class="col-xl-12">
                                 <!-- Account details card-->
                                 <div class="card mb-6">
                                     <div class="card-header">Add Doc</div>
                                     <div class="card-body">
                                         <form action="/settings/add_new_doc" method="POST">
-                                           
+
 										<div class="row gx-3 mb-3">
 											<div class="col-md-4">
 												<label class="small mb-1" for="docCategoryId">Doc Category</label>
@@ -81,7 +81,7 @@
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="docTypeName">Document Type</label>
                                                     <input class="form-control" name="docTypeName" type="text" placeholder="Enter Doc Type Name" value="" />
-                                                </div>                                                
+                                                </div>
                                             </div>
                                             <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
@@ -89,7 +89,7 @@
                                                     <input class="form-control" name="docTypeDesc" type="text" placeholder="Enter Doc Type Description" value="" />
                                                 </div>
                                             </div>
-										</div>										
+										</div>
 										<!-- Save changes button-->
                                             <button class="btn btn-primary" type="submit">Add</button>
                                         </form>
@@ -98,18 +98,18 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </main>
-                
+
                 <%@ include file="../includes/copyright.jsp" %>
-                
+
             </div>
         </div>
-        
+
         <%@ include file="../includes/bottom_includes.jsp" %>
-        
+
     </body>
-    
+
 <script>
 
 var input = document.querySelector("#file-input");
@@ -130,5 +130,5 @@ function preview() {
   };
 }
 
-</script>    
+</script>
 </html>

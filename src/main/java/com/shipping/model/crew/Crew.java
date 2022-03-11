@@ -3,7 +3,10 @@ package com.shipping.model.crew;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.shipping.model.common.document.category.Document;
 import org.bson.types.ObjectId;
@@ -14,6 +17,7 @@ import com.shipping.common.AuditTrail;
 import com.shipping.common.Collection;
 import com.shipping.common.Comment;
 import com.shipping.common.Person;
+import com.shipping.model.common.DurationType;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
 public class Crew extends Person {
@@ -73,7 +77,7 @@ public class Crew extends Person {
 	private List<MedicalRequest> medicalRequests;*/
 
     public Crew() {
-        if(this.getFieldStatus() == null) this.setFieldStatus(new CrewFieldStatus());
+        if (this.getFieldStatus() == null) this.setFieldStatus(new CrewFieldStatus());
     }
 
     //Audit
@@ -411,9 +415,10 @@ public class Crew extends Person {
         }
 
         public static Status createFromId(int typeId) {
-            return ((Status)(getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
+            return ((Status) (getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
         }
-        public static List<DurationType> getList() {
+
+        public static List<Status> getList() {
             return new ArrayList<>(Arrays.asList(values()));
         }
     }

@@ -1,4 +1,6 @@
-package com.shipping.model.crew;
+package com.shipping.model.crew.expense;
+
+import com.shipping.model.crew.PaymentMethod;
 
 public class Expense {
 	private int expenseId;

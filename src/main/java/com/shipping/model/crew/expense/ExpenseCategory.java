@@ -1,4 +1,4 @@
-package com.shipping.model.crew;
+package com.shipping.model.crew.expense;
 
 public enum ExpenseCategory {
 	TRAVEl,

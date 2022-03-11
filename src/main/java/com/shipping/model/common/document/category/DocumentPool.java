@@ -3,6 +3,7 @@ package com.shipping.model.common.document.category;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum DocumentPool {
     PASSPORT(1, "Passport"),
@@ -43,7 +44,7 @@ public enum DocumentPool {
         this.name = name;
     }
 
-    public int geId() {
+    public int getId() {
         return id;
     }
 
@@ -55,5 +56,8 @@ public enum DocumentPool {
         return new ArrayList<>(Arrays.asList(values()));
     }
 
+    public static DocumentPool createFromId(long typeId) {
+        return (new ArrayList<>(Arrays.asList(values())).stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0);
+    }
 }
 
