@@ -17,13 +17,20 @@ package com.shipping.web.vessel;
 
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.shipping.common.AuditTrail;
+import com.shipping.common.Collection;
+import com.shipping.dao.common.AuditTrailRepository;
+import com.shipping.dao.company.EmployeeRepository;
+import com.shipping.model.company.Employee;
+import com.shipping.model.crew.CrewFieldStatus;
+import com.shipping.model.crew.Rank;
+import com.shipping.model.vessel.*;
+import com.shipping.util.ListUtil;
+import com.shipping.util.ParamUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +54,6 @@ import com.shipping.dao.vessel.VesselPhotoRepository;
 import com.shipping.dao.vessel.VesselRepository;
 import com.shipping.model.crew.Crew;
 import com.shipping.model.crew.CrewPhoto;
-import com.shipping.model.vessel.Vessel;
-import com.shipping.model.vessel.VesselOwner;
-import com.shipping.model.vessel.VesselOwnerPhoto;
-import com.shipping.model.vessel.VesselPhoto;
-import com.shipping.model.vessel.VesselSubType;
-import com.shipping.model.vessel.VesselType;
 import com.shipping.service.common.SequenceGeneratorService;
 
 @Controller
@@ -70,6 +71,10 @@ public class VesselController {
 	private VesselPhotoRepository vesselPhotoDao;
 	@Autowired
 	private FlagRepository flagDao;
+	@Autowired
+	private EmployeeRepository employeeDao;
+	@Autowired
+	private AuditTrailRepository auditTrailDao;
 	
     @GetMapping(value = "/vessel_list")
     public ModelAndView vesselList(Model model) {
@@ -212,5 +217,38 @@ public class VesselController {
 		}
 		return mv;
 	}
+	/*@GetMapping(value = "/edit")
+	public ModelAndView editVessel(HttpServletRequest req) {
+		ModelAndView mv = new ModelAndView("/vessel/vessel_details");
 
+		Employee emp = employeeDao.findById(1l).get();
+		long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+		if (vesselId > 0) {
+			Vessel vessel = vesselDao.findById(vesselId).get();
+
+			VesselFieldStatus fs = vessel.getFieldStatus();
+
+			mv.addObject("crew", crew);
+			List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
+			if (ListUtil.isNotEmpty(auditTrails)) {
+				System.out.println("auditTrails = " + auditTrails.size());
+				mv.addObject("auditTrails", auditTrails);
+			} else {
+				System.out.println("No auditTrails");
+			}
+			CrewPhoto photo = null;
+
+			try {
+				photo = photoDao.findById(crew.getPhotoId()).get();
+				//mv.addObject("title", photo.getTitle());
+				mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+			} catch (NoSuchElementException e) {
+
+			}
+
+		}
+		mv.addObject("action", "Edit");
+		mv.addObject("rankMap", Rank.getByGroup());
+		return mv;
+	}*/
 }

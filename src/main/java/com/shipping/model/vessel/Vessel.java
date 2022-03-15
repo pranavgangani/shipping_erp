@@ -38,7 +38,7 @@ public class Vessel {
 	private String enteredByEmpId;
 	private List<VesselVacancy> vacancies;
 	private List<VesselManager> vesselManagers;
-	
+	private VesselFieldStatus fieldStatus;
 	
 	public long getId() {
 		return id;
@@ -190,6 +190,14 @@ public class Vessel {
 	}
 	public void setEnteredByEmpId(String enteredByEmpId) {
 		this.enteredByEmpId = enteredByEmpId;
+	}
+
+	public VesselFieldStatus getFieldStatus() {
+		return fieldStatus;
+	}
+
+	public void setFieldStatus(VesselFieldStatus fieldStatus) {
+		this.fieldStatus = fieldStatus;
 	}
 
 	@Override

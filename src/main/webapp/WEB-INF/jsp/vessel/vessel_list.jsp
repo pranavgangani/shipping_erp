@@ -81,21 +81,17 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/vessel/add_vessel_doc">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Profile
-													</a><a class="dropdown-item" href="#!">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Settings
+														</div> Add Documents
 													</a>
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="#!">
-														<div class="dropdown-item-icon">
-															<i data-feather="log-out"></i>
-														</div> Logout
-													</a>
+													<a class="dropdown-item" href="/vessel/edit?vesselId=${vessel.id}">
+                                                        <div class="dropdown-item-icon">
+                                                            <i data-feather="settings"></i>
+                                                        </div> Edit
+                                                    </a>
 												</div>
 												<button
 												class="btn btn-datatable btn-icon btn-transparent-dark">

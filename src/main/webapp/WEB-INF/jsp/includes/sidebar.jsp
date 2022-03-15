@@ -46,7 +46,6 @@
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavPagesMenu">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/crew/add">Add New Crew</a>
-                                            /*<a class="nav-link" href="/crew/document_list">Documents List</a>*/
                                         </nav>
                                     </div>                                    
                                 </nav>
