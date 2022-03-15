@@ -17,7 +17,6 @@ public class PageConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/home").setViewName("login");
         registry.addViewController("/").setViewName("login");
         registry.addViewController("/dashboard").setViewName("dashboard");
         registry.addViewController("/login").setViewName("login");

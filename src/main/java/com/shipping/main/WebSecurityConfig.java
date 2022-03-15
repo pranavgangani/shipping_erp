@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/dashboard/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
-                .loginPage("/login").defaultSuccessUrl("/dashboard", true).failureUrl("/login?error=true")
+                .loginPage("/login").defaultSuccessUrl("/dashboard", false).failureUrl("/login?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
