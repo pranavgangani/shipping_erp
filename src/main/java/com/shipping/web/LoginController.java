@@ -17,26 +17,31 @@ package com.shipping.web;
 
 import com.shipping.dao.company.EmployeeRepository;
 import com.shipping.model.company.Employee;
+import com.shipping.model.crew.Crew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+import java.util.List;
+
+@RestController
 public class LoginController {
     @Autowired
     private EmployeeRepository employeeDao;
 
-    @GetMapping(value = "/login")
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        return modelAndView;
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("message", "hello");
+        return "login";
     }
 
-    @GetMapping(value = "/dashboard")
+    @GetMapping(value = "dashboard")
     public ModelAndView dashboard() {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -48,10 +53,9 @@ public class LoginController {
         return modelAndView;
     }
 
-    @GetMapping(value = {"/", "/home", "/index"})
+    @GetMapping(value = {"/home", "/index"})
     public ModelAndView home() {
-        ModelAndView modelAndView = new ModelAndView("login");
-        return modelAndView;
+        return new ModelAndView("index");
     }
 
 

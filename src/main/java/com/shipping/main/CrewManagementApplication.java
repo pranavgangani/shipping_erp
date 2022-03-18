@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ import com.shipping.dao.crew.CrewRepository;
 @ComponentScan(basePackages =
         "com.shipping.web.*,"
                 + "com.shipping.service.*")
+
 public class CrewManagementApplication extends AbstractMongoClientConfiguration implements ServletContextListener {
     private MongoClient mongoClient;
 
