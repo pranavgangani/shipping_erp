@@ -2,16 +2,22 @@ package com.shipping.crew;
 
 import com.shipping.dao.company.EmployeeRepository;
 import com.shipping.dao.company.RoleRepository;
+import com.shipping.dao.company.UserRepository;
 import com.shipping.main.CrewManagementApplication;
 import com.shipping.model.company.Employee;
 import com.shipping.model.company.Role;
+import com.shipping.model.company.User;
 import com.shipping.service.common.SequenceGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -23,8 +29,9 @@ class EmployeeTest {
     @Autowired
     private RoleRepository roleDao;
     @Autowired
+    private UserRepository userDao;
+    @Autowired
     private SequenceGeneratorService sequenceGenerator;
-
 
     @Test
     void addUserRole() {
@@ -64,6 +71,19 @@ class EmployeeTest {
             roleDao.save(newUserRole);
         }
       */
+    }
+
+    @Test
+    void addUser() {
+        User user = new User();
+        user.setEmail("pranavgangani@gmail.com");
+        user.setPassword("pranav");
+        user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
+        user.setEnabled(true);
+        Set set = new HashSet();
+        set.add(roleDao.findByRole("ADMIN"));
+        user.setRoles(set);
+        userDao.insert(user);
     }
 
     @Test
