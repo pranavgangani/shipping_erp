@@ -21,6 +21,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.shipping.dao.crew.CrewRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 @Configuration
@@ -31,7 +32,7 @@ import com.shipping.dao.crew.CrewRepository;
 //@ImportResource("classpath:spring.xml")
 @ComponentScan(basePackages =
         "com.shipping.web.*,"
-                + "com.shipping.service.*")
+                + "com.shipping.service.*, com.shipping.main.*")
 
 public class CrewManagementApplication extends AbstractMongoClientConfiguration implements ServletContextListener {
     private MongoClient mongoClient;
@@ -72,4 +73,10 @@ public class CrewManagementApplication extends AbstractMongoClientConfiguration 
         // Triggers when context initializes
     }
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        System.out.println("Creating passwordEncoder bean");
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
+        return bCryptPasswordEncoder;
+    }
 }
