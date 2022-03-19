@@ -24,6 +24,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class AuthController {
     @Autowired
@@ -31,12 +34,13 @@ public class AuthController {
 
 
     @GetMapping(value = "/dashboard")
-    public ModelAndView dashboard() {
+    public ModelAndView dashboard(HttpServletRequest request) {
+        HttpSession session = request.getSession();
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("currentUser", user);
-        modelAndView.addObject("fullName", user.getFullname());
+        session.setAttribute("currentUser", user);
+        session.setAttribute("fullName", user.getFullname());
         //modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
         modelAndView.setViewName("dashboard");
         return modelAndView;
