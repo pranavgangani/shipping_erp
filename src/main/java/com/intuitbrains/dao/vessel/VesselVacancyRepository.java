@@ -20,7 +20,7 @@ public interface VesselVacancyRepository extends MongoRepository<VesselVacancy, 
     public List<VesselVacancy> findVacanciesByVesselSubType(int rankId);
 
     @Query("{'vesselId': { $eq: ?0 }}")
-    public List<VesselVacancy> findVacanciesByVessel(int vesselId);
+    public List<VesselVacancy> findVacanciesByVessel(long vesselId);
 
     @Query("{'crewId': { $gt: 0 }}")
     public List<VesselVacancy> findFilledVacancies();

@@ -394,7 +394,7 @@ public class CrewController {
      */
 
     @GetMapping(value = "/vacancy_list")
-    public ModelAndView assignVessel(HttpServletRequest req, Model model) {
+    public ModelAndView vacancyListForACrew(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/vacancy_list");
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);

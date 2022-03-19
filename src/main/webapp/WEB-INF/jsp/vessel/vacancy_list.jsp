@@ -8,66 +8,61 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Vessel Owner List</title>
+<title>Vacancy List</title>
 
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 <%@ include file="../includes/header_includes.jsp"%>
-       
+
 </head>
 <body class="nav-fixed">
 	<%@ include file="../includes/top_nav_bar.jsp"%>
 	<div id="layoutSidenav">
 		<%@ include file="../includes/sidebar.jsp"%>
 		<div id="layoutSidenav_content">
-			<main>			
+
+			<main>
 
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
 					<div class="card mb-4">
-						<div class="card-header">Vessel Owner List</div>
+						<div class="card-header">Vacancy List</div>
 						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
 									<tr>
-										<th>Name</th>
-										<th>Website</th>
-										<th>Email ID</th>
-										<th>Primary Contact</th>
-										<th>Secondary Contact</th>
-										<th>Primary Address</th>
-										<th>Registered Address</th>
-										<th>Year of Start</th>
-										<th>Actions</th>
+										<th>Vessel Name</th>
+                                        <th>Vessel Type</th>
+                                        <th>Min. Gross Tonnage</th>
+                                        <th>Min Ranks</th>
+                                        <th>Crew on-board</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
 									</tr>
 								</thead>
 								<tfoot>
 									<tr>
-										<th>Name</th>
-										<th>Website</th>
-										<th>Email ID</th>
-										<th>Primary Contact</th>
-										<th>Secondary Contact</th>
-										<th>Primary Address</th>
-										<th>Registered Address</th>
-										<th>Year of Start</th>
-										<th>Actions</th>
+										<th>Vessel Name</th>
+                                        <th>Vessel Type</th>
+                                        <th>Min. Gross Tonnage</th>
+                                        <th>Min Ranks</th>
+                                        <th>Crew on-board</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
 									</tr>
 								</tfoot>
 								<tbody>
 								
-								<c:forEach items="${list}" var="owner">
+								<c:forEach items="${vacancies}" var="vacancy">
 								    <tr>
-										<td>${owner.ownerName}</td>
-										<td>${owner.website}</td>
-										<td>${owner.emailId}</td>
-										<td>${owner.primaryContact}</td>
-										<td>${owner.secondaryContact}</td>
-										<td>${owner.primaryAddress}</td>
-										<td>${owner.registerdAddress}</td>
-										<td>${owner.yearOfStart}</td>
-										<!-- <td><div class="badge bg-primary text-white rounded-pill">Full-time</div></td> -->
+										<td>${vacancy.vessel.vesselName}</td>
+										<td>${vacancy.vessel.vesselSubType.vesselType.desc} - ${vacancy.vessel.vesselSubType.desc}</td>
+										<td>${vacancy.vacancyAttributes.minGrossTonnage}</td>
+										<td>${vacancy.vacancyAttributes.minRankList}</td>
+										<td>${vacancy.filledByCrew.name}</td>
 										<td>
-										<button
+										    <div class="badge bg-primary text-white rounded-pill">${vacancy.status.desc}</div></td>
+										<td>
+										    <button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
 													id="dropdownMenuButton" type="button"
 													data-bs-toggle="dropdown" aria-haspopup="true"
@@ -75,17 +70,13 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="#!">
+													<a class="dropdown-item" href="/crew/assign_vacancy?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Profile
-													</a><a class="dropdown-item" href="#!">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Add Vessel
+														</div> Assign this Crew
 													</a>
-													 <div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="#!">
+													<div class="dropdown-divider"></div>
+													<a class="dropdown-item" href="/crew/edit?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
@@ -115,7 +106,5 @@
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="../js/datatables/datatables-simple-demo.js"></script>
-	
-        
 </body>
 </html>

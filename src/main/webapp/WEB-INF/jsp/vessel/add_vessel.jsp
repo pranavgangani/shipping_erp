@@ -40,7 +40,7 @@
                                     <div class="card-body text-center">
 										<!-- Profile picture image-->
 										 <img class="img-account-profile rounded-circle mb-2"
-											src="../assets/img/illustrations/profiles/profile-1.png"
+											src="../assets/img/illustrations/profiles/ship-1.png"
 											alt="" id='preview'/> 
 											
 											<input type='file' id='file-input' hidden name="image">																						

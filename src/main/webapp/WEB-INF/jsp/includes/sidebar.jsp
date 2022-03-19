@@ -51,14 +51,14 @@
                                 </nav>
                             </div>
                             <!-- Sidenav Accordion (Pages)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseVacancies" aria-expanded="false" aria-controls="collapseVacancies">
                                 <div class="nav-link-icon"><i data-feather="grid"></i></div>
                                 Vacancy Management
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseVacancies" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavVacancies">
-                                    <a class="nav-link" href="/crew/vacancy_list">Vacancies</a>
+                                    <a class="nav-link" href="/vessel/vacancy_list">Vacancies</a>
 
                                     <!-- Nested Sidenav Accordion (Pages -> Account)-->
                                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAccount" aria-expanded="false" aria-controls="pagesCollapseAccount">
@@ -67,19 +67,19 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavVacancies">
                                         <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="/crew/add">Add New Crew</a>
+                                            <a class="nav-link" href="/crew/add">Add New Vacancy</a>
                                         </nav>
                                     </div>
                                 </nav>
                             </div>
                             <!-- Sidenav Accordion (Applications)-->
                             <div class="sidenav-menu-heading">Vessel</div>
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseApps" aria-expanded="false" aria-controls="collapseApps">
+                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseVessel" aria-expanded="false" aria-controls="collapseVessel">
                                 <div class="nav-link-icon"><i data-feather="globe"></i></div>
                                 Vessel Management
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseApps" data-bs-parent="#accordionSidenav">
+                            <div class="collapse" id="collapseVessel" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavVesselMenu">
                                 	<a class="nav-link" href="/vessel/vessel_list">Vessel List</a>
                                 	<a class="nav-link" href="/vessel/vessel_owner_list">Vessel Owner List</a>
@@ -127,16 +127,29 @@
                                 </nav>
                             </div>
                             <!-- Sidenav Accordion (Flows)-->
-                            <div class="sidenav-menu-heading">Document Management</div>
+                            <div class="sidenav-menu-heading">Document</div>
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
                                 <div class="nav-link-icon"><i data-feather="repeat"></i></div>
-                                Document
+                                Document Management
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseFlows" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav">
                                     <a class="nav-link" href="/vessel/mandatory_document_list">Vessel Document List</a>
                                     <a class="nav-link" href="/crew/mandatory_document_list">Crew Document List</a>
+                                </nav>
+                            </div>
+                            <!-- Sidenav Accordion (Flows)-->
+                            <div class="sidenav-menu-heading">Reports</div>
+                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
+                                <div class="nav-link-icon"><i data-feather="repeat"></i></div>
+                                Crew Reports
+                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseFlows" data-bs-parent="#accordionSidenav">
+                                <nav class="sidenav-menu-nested nav">
+                                    <a class="nav-link" href="/crew/active_crew">Active Crews</a>
+                                    <a class="nav-link" href="/crew/ready_crew">Ready for Sign-off Crews</a>
                                 </nav>
                             </div>
                             <!-- Sidenav Heading (UI Toolkit)-->
