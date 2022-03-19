@@ -22,7 +22,7 @@
                             <!-- Sidenav Menu Heading (Core)-->
                             <div class="sidenav-menu-heading">Core</div>
                             <!-- Sidenav Accordion (Dashboard)-->
-                            <a class="nav-link collapsed" href="/"  aria-expanded="false">
+                            <a class="nav-link collapsed" href="/dashboard"  aria-expanded="false">
                                 <div class="nav-link-icon"><i data-feather="activity"></i></div>
                                 Dashboard                                
                             </a>
@@ -46,7 +46,6 @@
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavPagesMenu">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/crew/add">Add New Crew</a>
-                                            /*<a class="nav-link" href="/crew/document_list">Documents List</a>*/
                                         </nav>
                                     </div>                                    
                                 </nav>
@@ -149,7 +148,7 @@
                     <div class="sidenav-footer">
                         <div class="sidenav-footer-content">
                             <div class="sidenav-footer-subtitle">Logged in as:</div>
-                            <div class="sidenav-footer-title">Pranav Gangani</div>
+                            <div class="sidenav-footer-title">${fullName}</div>
                         </div>
                     </div>
                 </nav>
