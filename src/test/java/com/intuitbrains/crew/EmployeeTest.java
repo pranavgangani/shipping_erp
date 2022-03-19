@@ -80,10 +80,45 @@ class EmployeeTest {
         user.setPassword("pranav");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
         user.setEnabled(true);
+        user.setFullname("Pranav J Gangani");
         Set set = new HashSet();
+        //set.add(roleDao.findByRole("USER"));
         set.add(roleDao.findByRole("ADMIN"));
         user.setRoles(set);
         userDao.insert(user);
+
+        user = new User();
+        user.setEmail("rohantiwari@gmail.com");
+        user.setPassword("rohan");
+        user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
+        user.setFullname("Rohan P Tiwari");
+        user.setEnabled(true);
+        set = new HashSet();
+        set.add(roleDao.findByRole("USER"));
+        user.setRoles(set);
+        userDao.insert(user);
+
+        user = new User();
+        user.setEmail("vmore@gmail.com");
+        user.setPassword("vmore");
+        user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
+        user.setFullname("Vinayak More");
+        user.setEnabled(true);
+        set = new HashSet();
+        //set.add(roleDao.findByRole("USER"));
+        set.add(roleDao.findByRole("ADMIN"));
+        user.setRoles(set);
+        userDao.insert(user);
+    }
+
+    @Test
+    void addUser2() {
+
+    }
+
+    @Test
+    void addUser3() {
+
     }
 
     @Test

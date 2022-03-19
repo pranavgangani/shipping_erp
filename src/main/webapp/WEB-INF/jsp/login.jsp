@@ -1,33 +1,76 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Login</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Login - Shipmon</title>
+        <link href="css/styles.css" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
     </head>
-    <body class="text-center">
-        <div layout:fragment="content">
-            <form class="form-signin" action="/login" method="post">
-                <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72" />
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <c:if test="${param.error}">
-                    <div>
-                        Invalid email and password.
+    <body class="bg-primary">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container-xl px-4">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <!-- Basic login form-->
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header justify-content-center"><h3 class="fw-light my-4">Login</h3></div>
+                                    <div class="card-body">
+                                        <!-- Login form-->
+                                        <form action="/login" method="post">
+                                            <!-- Form Group (email address)-->
+                                            <div class="mb-3">
+                                                <label class="small mb-1" for="inputEmailAddress">Email</label>
+                                                <input class="form-control" id="inputEmailAddress" type="email" name="email" placeholder="Enter email address" />
+                                            </div>
+                                            <!-- Form Group (password)-->
+                                            <div class="mb-3">
+                                                <label class="small mb-1" for="inputPassword">Password</label>
+                                                <input class="form-control" id="inputPassword" type="password" name="password" placeholder="Enter password" />
+                                            </div>
+                                            <!-- Form Group (remember password checkbox)-->
+                                            <div class="mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="rememberPasswordCheck" type="checkbox" value="" />
+                                                    <label class="form-check-label" for="rememberPasswordCheck">Remember password</label>
+                                                </div>
+                                            </div>
+                                            <!-- Form Group (login box)-->
+                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <a class="small" href="auth-password-basic.html">Forgot Password?</a>
+                                                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </c:if>
-                <c:if test="${param.logout}">
-                    <div>
-                        You have been logged out.
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="footer-admin mt-auto footer-dark">
+                    <div class="container-xl px-4">
+                        <div class="row">
+                            <div class="col-md-6 small">Copyright &copy; SAAR 2022</div>
+                            <div class="col-md-6 text-md-end small">
+                                <a href="#!">Privacy Policy</a>
+                                &middot;
+                                <a href="#!">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
                     </div>
-                </c:if>
-                <label for="inputEmail" class="sr-only">Email address</label>
-                <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email" required="" />
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" />
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            </form>
-            <form class="form-signin" action="/signup" method="get">
-                <button class="btn btn-md btn-success btn-block" type="Submit">Signup Here</button>
-            </form>
+                </footer>
+            </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
     </body>
 </html>

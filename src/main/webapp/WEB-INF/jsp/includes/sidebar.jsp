@@ -148,7 +148,7 @@
                     <div class="sidenav-footer">
                         <div class="sidenav-footer-content">
                             <div class="sidenav-footer-subtitle">Logged in as:</div>
-                            <div class="sidenav-footer-title">Pranav Gangani</div>
+                            <div class="sidenav-footer-title">${fullName}</div>
                         </div>
                     </div>
                 </nav>

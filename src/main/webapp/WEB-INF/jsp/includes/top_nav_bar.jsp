@@ -156,8 +156,8 @@
                         <h6 class="dropdown-header d-flex align-items-center">
                             <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-1.png" />
                             <div class="dropdown-user-details">
-                                <div class="dropdown-user-details-name">Pranav Gangani</div>
-                                <div class="dropdown-user-details-email">pranav.gangani@gmail.com</div>
+                                <div class="dropdown-user-details-name">${fullName}</div>
+                                <div class="dropdown-user-details-email">${currentUser.email}</div>
                             </div>
                         </h6>
                         <div class="dropdown-divider"></div>
@@ -165,11 +165,11 @@
                             <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
                             Account
                         </a>
-                        <a class="dropdown-item" href="#!">
-                            <div class="dropdown-item-icon" href="/logout"><i data-feather="log-out"></i></div>
+                        <a class="dropdown-item" href="/logout">
+                            <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
                             Logout
                         </a>
-                    </div>F
+                    </div>
                 </li>
             </ul>
         </nav>
