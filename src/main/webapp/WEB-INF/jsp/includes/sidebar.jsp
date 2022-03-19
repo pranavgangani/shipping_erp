@@ -22,7 +22,7 @@
                             <!-- Sidenav Menu Heading (Core)-->
                             <div class="sidenav-menu-heading">Core</div>
                             <!-- Sidenav Accordion (Dashboard)-->
-                            <a class="nav-link collapsed" href="/"  aria-expanded="false">
+                            <a class="nav-link collapsed" href="/dashboard"  aria-expanded="false">
                                 <div class="nav-link-icon"><i data-feather="activity"></i></div>
                                 Dashboard                                
                             </a>

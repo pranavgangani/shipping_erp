@@ -25,9 +25,6 @@
                 <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" />
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>
-            <form class="form-signin" action="/signup" method="get">
-                <button class="btn btn-md btn-success btn-block" type="Submit">Signup Here</button>
-            </form>
         </div>
     </body>
 </html>
