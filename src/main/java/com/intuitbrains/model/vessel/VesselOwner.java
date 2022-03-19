@@ -2,6 +2,7 @@ package com.intuitbrains.model.vessel;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -18,17 +19,15 @@ public class VesselOwner {
 	private long id;
 	private String ownerName;
 	private int yearOfStart;
-	private int flagId;
-	private Flag flag;
-	
+
 	private String primaryContact;
 	private String secondaryContact;
 	
 	private String primaryAddress;
 	private String registerdAddress;
 	
-	private Country primaryCountry;
-	private Country registerdCountry;
+	private ObjectId primaryFlag;
+	private ObjectId registerdFlag;
 	
 	private String website;
 	private String emailId;
@@ -60,20 +59,20 @@ public class VesselOwner {
 		this.yearOfStart = yearOfStart;
 	}
 
-	public int getFlagId() {
-		return flagId;
+	public ObjectId getPrimaryFlag() {
+		return primaryFlag;
 	}
 
-	public void setFlagId(int flagId) {
-		this.flagId = flagId;
+	public void setPrimaryFlag(ObjectId primaryFlag) {
+		this.primaryFlag = primaryFlag;
 	}
 
-	public Flag getFlag() {
-		return flag;
+	public ObjectId getRegisterdFlag() {
+		return registerdFlag;
 	}
 
-	public void setFlag(Flag flag) {
-		this.flag = flag;
+	public void setRegisterdFlag(ObjectId registerdFlag) {
+		this.registerdFlag = registerdFlag;
 	}
 
 	public String getPrimaryContact() {
@@ -108,21 +107,6 @@ public class VesselOwner {
 		this.registerdAddress = registerdAddress;
 	}
 
-	public Country getPrimaryCountry() {
-		return primaryCountry;
-	}
-
-	public void setPrimaryCountry(Country primaryCountry) {
-		this.primaryCountry = primaryCountry;
-	}
-
-	public Country getRegisterdCountry() {
-		return registerdCountry;
-	}
-
-	public void setRegisterdCountry(Country registerdCountry) {
-		this.registerdCountry = registerdCountry;
-	}
 
 	public List<Vessel> getManagedVessels() {
 		return managedVessels;

@@ -58,7 +58,7 @@ public class Crew extends Person {
     private List<Bank> banks;
     private LocalDate dob;
 
-    private long enteredBy;
+    private String enteredBy;
     private LocalDateTime enteredDateTime;
 
     private int statusId;
@@ -373,11 +373,11 @@ public class Crew extends Person {
         this.fieldStatus = fieldStatus;
     }
 
-    public long getEnteredBy() {
+    public String getEnteredBy() {
         return enteredBy;
     }
 
-    public void setEnteredBy(long enteredBy) {
+    public void setEnteredBy(String enteredBy) {
         this.enteredBy = enteredBy;
     }
 

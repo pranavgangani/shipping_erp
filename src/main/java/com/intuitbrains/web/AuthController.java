@@ -15,7 +15,7 @@
  */
 package com.intuitbrains.web;
 
-import com.intuitbrains.model.company.User;
+import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.service.company.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,9 +38,9 @@ public class AuthController {
         HttpSession session = request.getSession();
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
+        Employee user = userService.findUserByEmailId(auth.getName());
         session.setAttribute("currentUser", user);
-        session.setAttribute("fullName", user.getFullname());
+        session.setAttribute("fullName", user.getName());
         //modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
         modelAndView.setViewName("dashboard");
         return modelAndView;

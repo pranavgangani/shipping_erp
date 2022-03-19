@@ -39,7 +39,7 @@ public class Collection {
 	//Company
 	public final static String EMPLOYEE = "Employee";
 	public final static String ROLE = "Role";
-	public final static String USER = "User";
+	//public final static String USER = "User";
 	
 	private String name;
 	

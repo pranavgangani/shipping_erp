@@ -2,11 +2,9 @@ package com.intuitbrains.crew;
 
 import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.company.RoleRepository;
-import com.intuitbrains.dao.company.UserRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.company.Role;
-import com.intuitbrains.model.company.User;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -28,8 +26,6 @@ class EmployeeTest {
     private EmployeeRepository employeeDao;
     @Autowired
     private RoleRepository roleDao;
-    @Autowired
-    private UserRepository userDao;
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
 
@@ -74,41 +70,52 @@ class EmployeeTest {
     }
 
     @Test
-    void addUser() {
-        User user = new User();
-        user.setEmail("pranavgangani@gmail.com");
+    void addEmployee() {
+        Employee user = new Employee();
+        user.setEmailId("pgangani@saar.com");
         user.setPassword("pranav");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
-        user.setEnabled(true);
-        user.setFullname("Pranav J Gangani");
+        user.setfName("Pranav");
+        user.setmName("Jayanti");
+        user.setlName("Gangani");
+        user.setGender("male");
+        user.setEmpId(generateEmployeeId());
         Set set = new HashSet();
         //set.add(roleDao.findByRole("USER"));
         set.add(roleDao.findByRole("ADMIN"));
         user.setRoles(set);
-        userDao.insert(user);
+        employeeDao.insert(user);
 
-        user = new User();
-        user.setEmail("rohantiwari@gmail.com");
-        user.setPassword("rohan");
+        user = new Employee();
+        user.setEmailId("rtiwari@saar.com");
+        user.setPassword("rtiwari");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
-        user.setFullname("Rohan P Tiwari");
-        user.setEnabled(true);
+        user.setfName("Rohan");
+        user.setmName("Pradeep");
+        user.setlName("Tiwari");
+        user.setGender("male");
+        user.setEmpId(generateEmployeeId());
         set = new HashSet();
+        //set.add(roleDao.findByRole("USER"));
         set.add(roleDao.findByRole("USER"));
         user.setRoles(set);
-        userDao.insert(user);
+        employeeDao.insert(user);
 
-        user = new User();
-        user.setEmail("vmore@gmail.com");
+        user = new Employee();
+        user.setEmailId("vmore@saar.com");
         user.setPassword("vmore");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
-        user.setFullname("Vinayak More");
-        user.setEnabled(true);
+        user.setfName("Vinayak");
+        user.setmName("B");
+        user.setlName("More");
+        user.setGender("male");
+        user.setEmpId(generateEmployeeId());
         set = new HashSet();
         //set.add(roleDao.findByRole("USER"));
         set.add(roleDao.findByRole("ADMIN"));
         user.setRoles(set);
-        userDao.insert(user);
+        employeeDao.insert(user);
+
     }
 
     @Test
@@ -121,27 +128,30 @@ class EmployeeTest {
 
     }
 
-    @Test
-    void addEmployee() {
-        Employee employee = new Employee();
-        employee.setId(sequenceGenerator.generateSequence(Employee.SEQUENCE_NAME));
-        employee.setfName("Pranav");
-        employee.setlName("Gangani");
-        employee.setEmailId("pgangani@gmail.com");
-        employee.setGender("male");
-        employee.setUserName("pgangani");
-        employee.setPassword("pgangani");
-        employeeDao.insert(employee);
 
-        employee = new Employee();
-        employee.setId(sequenceGenerator.generateSequence(Employee.SEQUENCE_NAME));
-        employee.setfName("Vinayak");
-        employee.setlName("More");
-        employee.setEmailId("vmore@gmail.com");
-        employee.setGender("male");
-        employee.setUserName("vmore");
-        employee.setPassword("vmore");
-        employeeDao.insert(employee);
+/*    public String generateUsername(String firstName, String middleName, String lastName) {
+        double cnt = employeeDao.count();
+        String count = String.valueOf(cnt + 1);
+        String res1 = firstName.substring(0, 3);
+       // String res2 = middleName.isEmpty() ? "0" : middleName.substring(0, 1);
+        String res3 = lastName.substring(0, 3);
+        String res4 = res1 + res3;
+        String res5 = count.toString().length() == 1 ? ("00" + count)
+                : count.toString().length() == 2 ? ("0" + count) : count.toString();
+        String finalResult = res4 + res5;
+        return finalResult;
+
+    }*/
+
+    public String generateEmployeeId() {
+        String count = String.valueOf(employeeDao.count() + 1);
+        String res4 = "IND";
+        String res5 = count.toString().length() == 1 ? ("00" + count)
+                : count.toString().length() == 2 ? ("0" + count) : count.toString();
+        count = count + 1;
+        String finalResult = res4 + res5;
+        return finalResult;
+
     }
 
 }

@@ -23,10 +23,13 @@ import com.intuitbrains.dao.common.AuditTrailRepository;
 import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.vessel.*;
+import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.Rank;
 import com.intuitbrains.model.vessel.*;
 import com.intuitbrains.util.ParamUtil;
+import com.intuitbrains.util.StandardWebParameter;
+import com.intuitbrains.util.StringUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,13 +86,27 @@ public class VesselController {
         return mv;
     }
 
-    @GetMapping(value = "/add_vessel")
-    public ModelAndView addVessel(Model model) {
-        ModelAndView mv = new ModelAndView("vessel/add_vessel");
+    @GetMapping(value = "/vessel_details")
+    public ModelAndView addVessel(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("vessel/vessel_details");
+
+        String action = StringUtil.trim(req.getParameter("action"));
+        long crewManagerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
+
         mv.addObject("flags", flagDao.findAll());
         mv.addObject("vesselTypes", VesselType.getList());
         mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
         mv.addObject("vesselOwners", vesselOwnerDao.findAll());
+
+        mv.addObject("action", action);
+        mv.addObject("crewManagerId", crewManagerId);
+
+        if(StandardWebParameter.ADD.equalsIgnoreCase(action)) {
+
+        }
+        else if(StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
+
+        }
         return mv;
     }
 
@@ -160,12 +177,12 @@ public class VesselController {
         return mv;
     }
 
-    @PostMapping(value = "/add_vessel_owner", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView addVesselOwner(@RequestParam("ownerName") String ownerName,
+    @PostMapping(value = "/vessel_owner_details", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView addVesselOwner(HttpServletRequest req, @RequestParam("ownerName") String ownerName,
                                        @RequestParam("website") String website,
                                        @RequestParam("emailId") String emailId,
-                                       //@RequestParam("primaryFlag") String primaryFlag,
-                                       //@RequestParam("regFlag") String regFlag,
+                                       @RequestParam("primaryFlag") String primaryFlag,
+                                       @RequestParam("regFlag") String regFlag,
                                        @RequestParam("primaryContact") String primaryContact,
                                        @RequestParam("regContact") String regContact,
                                        @RequestParam("primaryAddr") String primaryAddr,
@@ -173,6 +190,7 @@ public class VesselController {
                                        @RequestParam("yearOfStart") int yearOfStart,
                                        @RequestParam("image") MultipartFile image,
                                        Model model) {
+        Employee user = (Employee)req.getSession().getAttribute("currentUser");
         ModelAndView mv = new ModelAndView("/vessel/vessel_owner_list");
         System.out.println("ownerName: " + ownerName);
         System.out.println("image: " + image);
@@ -181,8 +199,8 @@ public class VesselController {
         owner.setOwnerName(ownerName);
         owner.setWebsite(website);
         owner.setEmailId(emailId);
-        //owner.setPrimaryCountry(primaryCountry);
-        //owner.setFlag(primaryFlag);
+        owner.setPrimaryFlag(flagDao.getByCode(primaryFlag).getId());
+        owner.setRegisterdFlag(flagDao.getByCode(regFlag).getId());
         owner.setYearOfStart(yearOfStart);
         owner.setPrimaryAddress(primaryAddr);
         owner.setRegisterdAddress(regAddr);

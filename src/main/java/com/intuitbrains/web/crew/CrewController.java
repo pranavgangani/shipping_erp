@@ -144,7 +144,7 @@ public class CrewController {
     public ModelAndView editCrew(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("/crew/crew_details");
 
-        Employee emp = employeeDao.findById(1l).get();
+        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewDao.findById(crewId).get();
@@ -176,7 +176,7 @@ public class CrewController {
     }
 
     @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView addCrew(@RequestParam("fName") String fName, @RequestParam("mName") String mName,
+    public ModelAndView addCrew(HttpServletRequest req, @RequestParam("fName") String fName, @RequestParam("mName") String mName,
                                 @RequestParam("lName") String lName, @RequestParam("rankId") int rankId,
                                 @RequestParam("gender") String gender, @RequestParam("distinguishingMark") String distinguishMark,
                                 @RequestParam("maritalStatus") String maritalStatus,
@@ -190,7 +190,7 @@ public class CrewController {
                                 @RequestParam("birthDate") String dob,
                                 @RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
                                 Model model) {
-        Employee emp = employeeDao.findById(1l).get();
+        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
         String maker = emp.getEmpId();
         ModelAndView mv = new ModelAndView("/crew/add_employment");
         System.out.println("add_crew: " + fName);
@@ -219,7 +219,7 @@ public class CrewController {
         crew.setDistinguishMark(distinguishMark);
         crew.setManningOffice(manningOffice);
         crew.setEnteredDateTime(LocalDateTime.now());
-        crew.setEnteredBy(emp.getId());
+        crew.setEnteredBy(emp.getEmpId());
 
         CrewFieldStatus fs = crew.getFieldStatus();
         fs.setName(new FieldStatus(maker, LocalDateTime.now(), null, null));
@@ -344,12 +344,12 @@ public class CrewController {
 
 
     @PostMapping(value = "/addDoc", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String addDoc(@RequestParam("crewId") long crewId,
+    public String addDoc(HttpServletRequest req, @RequestParam("crewId") long crewId,
                          @RequestParam("docId") long docId,
                          @RequestParam("file") MultipartFile file,
                          RedirectAttributes redirectAttributes) {
         Crew crew = crewDao.findById(crewId).get();
-        Employee emp = employeeDao.findById(1l).get();
+        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");

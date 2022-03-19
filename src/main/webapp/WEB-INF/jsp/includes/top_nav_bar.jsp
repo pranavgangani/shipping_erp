@@ -157,7 +157,7 @@
                             <img class="dropdown-user-img" src="${pageContext.request.contextPath}/assets/img/illustrations/profiles/profile-2.png" />
                             <div class="dropdown-user-details">
                                 <div class="dropdown-user-details-name">${fullName}</div>
-                                <div class="dropdown-user-details-email">${currentUser.email}</div>
+                                <div class="dropdown-user-details-email">${currentUser.emailId}</div>
                             </div>
                         </h6>
                         <div class="dropdown-divider"></div>

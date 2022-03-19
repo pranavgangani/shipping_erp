@@ -1,9 +1,9 @@
 package com.intuitbrains.service.company;
 
 import com.intuitbrains.dao.company.RoleRepository;
-import com.intuitbrains.dao.company.UserRepository;
+import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.model.company.Role;
-import com.intuitbrains.model.company.User;
+import com.intuitbrains.model.company.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,28 +18,27 @@ import java.util.*;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
-    private UserRepository userRepository;
+    private EmployeeRepository employeeRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Employee findUserByEmailId(String emailId) {
+        return employeeRepository.findByEmailId(emailId);
     }
 
-    public void saveUser(User user) {
+    public void saveUser(Employee user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
         Role userRole = roleRepository.findByRole("ADMIN");
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
-        userRepository.save(user);
+        employeeRepository.save(user);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email);
+        Employee user = employeeRepository.findByEmailId(emailId);
         if (user != null) {
             List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
             return buildUserForAuthentication(user, authorities);
@@ -58,7 +57,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return grantedAuthorities;
     }
 
-    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    private UserDetails buildUserForAuthentication(Employee user, List<GrantedAuthority> authorities) {
+        return new org.springframework.security.core.userdetails.User(user.getEmailId(), user.getPassword(), authorities);
     }
 }

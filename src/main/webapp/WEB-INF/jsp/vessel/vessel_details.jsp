@@ -10,6 +10,7 @@
         <title>Add Vessel</title>
     
         <%@ include file="../includes/header_includes.jsp" %>
+        <script src="../js/vessel/vessel_details.js"></script>
     </head>
     <body class="nav-fixed">
     <%@ include file="../includes/top_nav_bar.jsp" %>
