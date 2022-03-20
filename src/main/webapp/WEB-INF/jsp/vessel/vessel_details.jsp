@@ -21,8 +21,16 @@
         <%@ include file="../includes/sidebar.jsp" %>
             
             <div id="layoutSidenav_content">
-                <main>                
-                <form method="POST" enctype="multipart/form-data" action="/vessel/vessel_details?action=add">
+                <main>
+                <c:choose>
+                    <c:when test="${vessel!=null && vessel.id > 0}">
+                        <form method="POST" enctype="multipart/form-data" action="/vessel/vessel_details?${vessel.id}">
+                    </c:when>
+                    <c:otherwise>
+                        <form method="POST" enctype="multipart/form-data" action="/vessel/add_vessel">
+                    </c:otherwise>
+                </c:choose>">
+
                 <%@ include file="add_vessel_header.jsp" %>
                     
                     <!-- Main page content-->

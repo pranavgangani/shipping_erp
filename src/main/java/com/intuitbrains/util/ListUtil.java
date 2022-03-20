@@ -11,4 +11,12 @@ public class ListUtil {
             return false;
         }
     }
+
+    public static boolean isEmpty(List list) {
+        if (list != null && !list.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

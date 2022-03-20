@@ -160,25 +160,7 @@
        
 </body>
 
-<script>
-
-var input = document.querySelector("#file-input");
-
-document.getElementById("myBtn").addEventListener("click", function () {
-  input.click();
-});
-
-input.addEventListener("change", preview);
-function preview() {
-  var fileObject = this.files[0];
-  var fileReader = new FileReader();
-  fileReader.readAsDataURL(fileObject);
-  fileReader.onload = function () {
-    var result = fileReader.result;
-    var img = document.querySelector("#preview");
-    img.setAttribute("src", result);
-  };
-}
-
-</script>  
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+		crossorigin="anonymous"></script>
+<script src="../js/datatables/datatables-simple-demo.js"></script>
 </html>
