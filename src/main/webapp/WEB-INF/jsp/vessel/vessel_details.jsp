@@ -29,7 +29,7 @@
                     <c:otherwise>
                         <form method="POST" enctype="multipart/form-data" action="/vessel/add_vessel">
                     </c:otherwise>
-                </c:choose>">
+                </c:choose>
 
                 <%@ include file="add_vessel_header.jsp" %>
                     

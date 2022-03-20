@@ -373,6 +373,7 @@ public class CrewController {
         crew.setExistingDocuments(documents);
         crewDao.save(crew);
 
+        //Audit
         AuditTrail audit = new AuditTrail();
         audit.setAction("add");
         audit.setActionBy(emp.getEmpId());

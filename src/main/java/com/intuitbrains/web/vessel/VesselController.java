@@ -97,6 +97,8 @@ public class VesselController {
         long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
         long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
         Vessel vessel = new Vessel();
+        Employee user = (Employee) req.getSession().getAttribute("currentUser");
+        String empId = user.getEmpId();
 
         String vesselName = req.getParameter("vesselName");
         String imo = req.getParameter("imo");
@@ -114,7 +116,6 @@ public class VesselController {
 
         MultipartFile image = req.getFile("image");
         System.out.println("vesselName: " + vesselName);
-        Employee user = (Employee) req.getSession().getAttribute("currentUser");
 
         vessel.setVesselName(vesselName);
         vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
@@ -130,7 +131,7 @@ public class VesselController {
         vessel.setGrossTonnage(grossTon);
         vessel.setYearOfBuilt(yearOfBuilt);
         vessel.setVesselDesc(vesselDesc);
-        vessel.setEnteredBy(user.getEmpId());
+        vessel.setEnteredBy(empId);
         vessel.setEnteredDateTime(LocalDateTime.now());
         vessel.setId(sequenceGenerator.generateSequence(Vessel.SEQUENCE_NAME));
         vesselDao.insert(vessel);
@@ -153,6 +154,17 @@ public class VesselController {
             vessel.setPhotoId(photoId);
             vesselDao.save(vessel);
 
+
+            //Audit
+            AuditTrail audit = new AuditTrail();
+            audit.setAction("add");
+            audit.setActionBy(empId);
+            audit.setActionDateTime(LocalDateTime.now());
+            audit.setCollection(Collection.VESSEL);
+            audit.setText("New Vessel Owner - <b>" + (vessel.getVesselName()) + "</b> added!");
+            audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+            audit.setUniqueId(vesselId);
+            auditTrailDao.insert(audit);
 
         } catch (IOException e) {
             // TODO Auto-generated catch block

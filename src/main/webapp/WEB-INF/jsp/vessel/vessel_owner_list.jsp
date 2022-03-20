@@ -75,7 +75,7 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="/vessel/vessel_owner_details?action=view&vesselOwnerId=${owner.id}">
+													<a class="dropdown-item" href="/vessel/vessel_owner_details?vesselOwnerId=${owner.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
 														</div> Profile
@@ -98,8 +98,6 @@
 										</td>
 									</tr>
 								</c:forEach>
-									
-									
 								</tbody>
 							</table>
 						</div>

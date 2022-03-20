@@ -31,6 +31,9 @@ public class VesselOwner {
 	
 	private ObjectId primaryFlag;
 	private ObjectId registerdFlag;
+
+	private Flag primaryFlagObj;
+	private Flag registerdFlagObj;
 	
 	private String website;
 	private String emailId;
@@ -178,5 +181,21 @@ public class VesselOwner {
 
 	public void setReviewedDateTime(LocalDateTime reviewedDateTime) {
 		this.reviewedDateTime = reviewedDateTime;
+	}
+
+	public Flag getPrimaryFlagObj() {
+		return primaryFlagObj;
+	}
+
+	public void setPrimaryFlagObj(Flag primaryFlagObj) {
+		this.primaryFlagObj = primaryFlagObj;
+	}
+
+	public Flag getRegisterdFlagObj() {
+		return registerdFlagObj;
+	}
+
+	public void setRegisterdFlagObj(Flag registerdFlagObj) {
+		this.registerdFlagObj = registerdFlagObj;
 	}
 }
