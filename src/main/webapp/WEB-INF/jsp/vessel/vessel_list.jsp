@@ -81,7 +81,7 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="/vessel/add_vessel_doc">
+													<a class="dropdown-item" href="/vessel/document_list?action=add">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
 														</div> Add Documents

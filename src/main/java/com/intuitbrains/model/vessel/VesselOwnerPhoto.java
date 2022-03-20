@@ -16,7 +16,6 @@ public class VesselOwnerPhoto {
     private long id;
     
     private long vesselOwnerId;
-    
     private String title;
          
     private Binary image;

@@ -7,10 +7,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Document List</title>
+        <title>Vessel Document List</title>
     
         <%@ include file="../includes/header_includes.jsp" %>
-        <script src="../js/crew/crew_documents.js"></script>
+        <script src="../js/vessel/vessel_documents.js"></script>
         <%@ include file="file_upload_header.jsp" %>
 
     </head>
@@ -27,20 +27,14 @@
                 <main>
 
 
-                                <%@ include file="add_crew_header.jsp" %>
+                                <%@ include file="add_vessel_header.jsp" %>
 
                                     <!-- Main page content-->
                                     <div class="container-fluid px-4">
                                         <!-- Account page navigation-->
                                         <nav class="nav nav-borders">
-                                            <a class="nav-link" href="/crew/edit?crewId=${crew.id}">Profile</a>
-                                            <a class="nav-link" href="/crew/add_employment">Employment</a>
-                                            <a class="nav-link" href="/crew/add_education">Education</a>
-                                            <a class="nav-link" href="/crew/add_passport_visa">Passport/Visa</a>
-                                            <a class="nav-link" href="/crew/add_medical">Medical</a>
-                                            <a class="nav-link" href="/crew/add_bank_account">Bank Account</a>
-                                            <a class="nav-link" href="/crew/add_nominee">Next of Kin</a>
-                                            <a class="nav-link active ms-0">Other Documents</a>
+                                            <a class="nav-link" href="/vessel/vessel_details?action=modify&vesselId=${vessel.id}">Profile</a>
+                                            <a class="nav-link active ms-0">Documents</a>
                                         </nav>
                                         <hr class="mt-0 mb-4" />
                                         <div class="row">
@@ -51,7 +45,7 @@
                                                 <div class="card-body">
                                                     <!-- Profile picture help block-->
                                                     <c:choose>
-                                                        <c:when test="${crew.photoId>0}">
+                                                        <c:when test="${vessel.photoId>0}">
                                                             <img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}" alt="" id='preview' />
                                                         </c:when>
                                                         <c:otherwise>
@@ -148,7 +142,7 @@
                 		                                                </td>
                 		                                                <td>
 
-                			                                              <button class="btn btn-primary" type="button" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docTypeId}');">Upload</button>
+                			                                              <button class="btn btn-primary" type="button" onclick="VesselDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docTypeId}');">Upload</button>
 
                 		                                                </td>
                 		                                            </tr>
@@ -207,8 +201,8 @@
             <h1>Upload any File</h1>
             <SECTION>
              <DIV id="dropzone">
-               <FORM class="dropzone" class="dropzone" id="my-great-dropzone"action="/crew/addDoc">
-               <input type="hidden" name="crewId" value="${crew.id}">
+               <FORM class="dropzone" class="dropzone" id="my-great-dropzone"action="/vessel/document_details">
+               <input type="hidden" name="vesselId" value="${vessel.id}">
                <input type="hidden" id="docId" name="docId">
             	 <DIV class="dz-message">
             	   Drop files here or click to upload.

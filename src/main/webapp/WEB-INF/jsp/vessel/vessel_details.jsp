@@ -22,7 +22,7 @@
             
             <div id="layoutSidenav_content">
                 <main>                
-                <form method="POST" enctype="multipart/form-data" action="/vessel/add_vessel">
+                <form method="POST" enctype="multipart/form-data" action="/vessel/vessel_details?action=add">
                 <%@ include file="add_vessel_header.jsp" %>
                     
                     <!-- Main page content-->
@@ -30,7 +30,7 @@
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
                             <a class="nav-link active ms-0">Profile</a>
-                            <a class="nav-link" href="/vessel/add_other_docs">Documents</a>
+                            <a class="nav-link" href="/vessel/document_list">Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
@@ -60,7 +60,7 @@
                             <div class="col-xl-10">
                                 <!-- Account details card-->
                                 <div class="card mb-6">
-                                    <div class="card-header">Add Profile</div>
+                                    <div class="card-header">Add Vessel Profile</div>
                                     <div class="card-body">
                                         <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
@@ -68,7 +68,7 @@
                                                     <input class="form-control" name="vesselName" type="text" placeholder="Enter vessel name" value="" />
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="small mb-1" for="imo">IMO</label>
+                                                    <label class="small mb-1" for="imo">Vessel Owner</label>
                                                     <select class="form-select" aria-label="Default select example" name="vesselOwnerId">
 														<option selected disabled>Select Owner of this Vessel:</option>
 														<c:forEach items="${vesselOwners}" var="owner">

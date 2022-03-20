@@ -1,7 +1,9 @@
 package com.intuitbrains.model.vessel;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.intuitbrains.util.DateTime;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -19,6 +21,7 @@ public class VesselOwner {
 	private long id;
 	private String ownerName;
 	private int yearOfStart;
+	private long photoId;
 
 	private String primaryContact;
 	private String secondaryContact;
@@ -31,8 +34,13 @@ public class VesselOwner {
 	
 	private String website;
 	private String emailId;
-	
-	
+
+	private String enteredBy;
+	private LocalDateTime enteredDateTime;
+
+	private String reviewedBy;
+	private LocalDateTime reviewedDateTime;
+
 	private List<Vessel> managedVessels;
 
 	public long getId() {
@@ -131,8 +139,44 @@ public class VesselOwner {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	
-	
-	
-	
+
+	public long getPhotoId() {
+		return photoId;
+	}
+
+	public void setPhotoId(long photoId) {
+		this.photoId = photoId;
+	}
+
+	public String getEnteredBy() {
+		return enteredBy;
+	}
+
+	public void setEnteredBy(String enteredBy) {
+		this.enteredBy = enteredBy;
+	}
+
+	public LocalDateTime getEnteredDateTime() {
+		return enteredDateTime;
+	}
+
+	public void setEnteredDateTime(LocalDateTime enteredDateTime) {
+		this.enteredDateTime = enteredDateTime;
+	}
+
+	public String getReviewedBy() {
+		return reviewedBy;
+	}
+
+	public void setReviewedBy(String reviewedBy) {
+		this.reviewedBy = reviewedBy;
+	}
+
+	public LocalDateTime getReviewedDateTime() {
+		return reviewedDateTime;
+	}
+
+	public void setReviewedDateTime(LocalDateTime reviewedDateTime) {
+		this.reviewedDateTime = reviewedDateTime;
+	}
 }

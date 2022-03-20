@@ -17,6 +17,7 @@ package com.intuitbrains.web.vessel;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import com.intuitbrains.dao.common.AuditTrailRepository;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.intuitbrains.dao.common.FlagRepository;
@@ -72,13 +74,143 @@ public class VesselController {
     @Autowired
     private CrewRepository crewDao;
 
+    /*********************************************** Vessel Start ***********************************/
     @GetMapping(value = "/vessel_list")
-    public ModelAndView vesselList(Model model) {
+    public ModelAndView vesselList(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("vessel/vessel_list");
-        mv.addObject("list", vesselDao.findAll());
+        String action = StringUtil.trim(req.getParameter("action"));
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
+
+        List<Vessel> list = null;
+        if (vesselOwnerId > 0) {
+            list = vesselDao.findByVesselOwner(vesselOwnerId);
+        } else {
+            list = vesselDao.findAll();
+        }
+        mv.addObject("list", list);
         return mv;
     }
 
+    @PostMapping(value = "/vessel_details", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView vesselDetails(MultipartHttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("redirect:/vessel/vessel_list");
+        String action = StringUtil.trim(req.getParameter("action"));
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
+        long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+        Vessel vessel = new Vessel();
+
+        if (StandardWebParameter.ADD.equalsIgnoreCase(action) || StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
+            String vesselName = req.getParameter("vesselName");
+            String imo = req.getParameter("imo");
+            String mmsi = req.getParameter("mmsi");
+            String flag = req.getParameter("flag");
+            String callSign = req.getParameter("callSign");
+            int vesselSubTypeId = ParamUtil.parseInt(req.getParameter("vesselSubTypeId"), -1);
+            int length = ParamUtil.parseInt(req.getParameter("length"), -1);
+            int beam = ParamUtil.parseInt(req.getParameter("beam"), -1);
+            int draught = ParamUtil.parseInt(req.getParameter("draught"), -1);
+
+            int grossTon = ParamUtil.parseInt(req.getParameter("grossTon"), -1);
+            int yearOfBuilt = ParamUtil.parseInt(req.getParameter("yearOfBuilt"), -1);
+            String vesselDesc = req.getParameter("vesselDesc");
+
+            MultipartFile image = req.getFile("image");
+            System.out.println("vesselName: " + vesselName);
+            Employee user = (Employee) req.getSession().getAttribute("currentUser");
+
+            vessel.setVesselName(vesselName);
+            vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
+            vessel.setImo(imo);
+            vessel.setMmsi(mmsi);
+            vessel.setFlagCode(flag);
+            //vessel.setVesselType(VesselType.createFromId(vesselTypeId));
+            vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
+            vessel.setLength(length);
+            vessel.setBeam(beam);
+            vessel.setDraught(draught);
+            vessel.setCallSign(callSign);
+            vessel.setGrossTonnage(grossTon);
+            vessel.setYearOfBuilt(yearOfBuilt);
+            vessel.setVesselDesc(vesselDesc);
+            vessel.setEnteredBy(user.getEmpId());
+            vessel.setEnteredDateTime(LocalDateTime.now());
+            vessel.setId(sequenceGenerator.generateSequence(Vessel.SEQUENCE_NAME));
+            vesselDao.insert(vessel);
+
+            vesselId = vessel.getId();
+            System.out.println("New vesselId ---> " + vesselId);
+
+            try {
+                VesselPhoto photo = new VesselPhoto(vesselId, String.valueOf(vesselId));
+                photo.setId(sequenceGenerator.generateSequence(VesselPhoto.SEQUENCE_NAME));
+                photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+                photo = vesselPhotoDao.insert(photo);
+                long photoId = photo.getId();
+                System.out.println("VesselId ---> " + vesselId + " Photo ID: " + photoId);
+
+                photo = vesselPhotoDao.findById(photoId).get();
+                //model.addAttribute("title", photo.getTitle());
+                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+
+                vessel.setPhotoId(photoId);
+                vesselDao.save(vessel);
+
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            mv.addObject("vessel", vessel);
+        } else if (StandardWebParameter.VIEW.equalsIgnoreCase(action)) {
+            if (vesselId > 0) {
+                vessel = vesselDao.findById(vesselId).get();
+                mv.addObject("vessel", vessel);
+            }
+        } else if (StandardWebParameter.LIST.equalsIgnoreCase(action)) {
+            if (vesselOwnerId > 0) {
+                List<Vessel> list = vesselDao.findByVesselOwner(vesselOwnerId);
+                mv.addObject("list", list);
+            }
+        }
+        mv.addObject("vesselId", vesselId);
+
+        return mv;
+    }
+
+
+    @GetMapping(value = "/vessel_details")
+    public ModelAndView vesselDetails(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView();
+        String action = StringUtil.trim(req.getParameter("action"));
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
+
+        mv.addObject("vesselOwnerId", vesselOwnerId);
+
+        if (StandardWebParameter.ADD.equalsIgnoreCase(action) || StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
+            mv.addObject("flags", flagDao.findAll());
+            mv.addObject("vesselTypes", VesselType.getList());
+            mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
+            mv.addObject("vesselOwners", vesselOwnerDao.findAll());
+
+            mv.setViewName("vessel/vessel_details");
+        } else if (StandardWebParameter.LIST.equalsIgnoreCase(action)) {
+            List<Vessel> list = null;
+            if (vesselOwnerId > 0) {
+                list = vesselDao.findByVesselOwner(vesselOwnerId);
+            } else {
+                list = vesselDao.findAll();
+            }
+            mv.addObject("list", list);
+            mv.setViewName("vessel/vessel_details_list");
+        }
+
+        mv.addObject("action", action);
+        return mv;
+    }
+
+    /*********************************************** Vessel End ***********************************/
+
+    /*********************************************** Vessel Owner Start ***********************************/
     @GetMapping(value = "/vessel_owner_list")
     public ModelAndView vesselOwnerList(Model model) {
         ModelAndView mv = new ModelAndView("vessel/vessel_owner_list");
@@ -86,94 +218,22 @@ public class VesselController {
         return mv;
     }
 
-    @GetMapping(value = "/vessel_details")
-    public ModelAndView addVessel(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("vessel/vessel_details");
-
+    @GetMapping(value = "/vessel_owner_details")
+    public ModelAndView vesselOwnerDetails(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("vessel/vessel_owner_details");
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
         String action = StringUtil.trim(req.getParameter("action"));
-        long crewManagerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
 
+        VesselOwner owner = vesselOwnerDao.findById(vesselOwnerId).get();
+
+        if (StandardWebParameter.ADD.equalsIgnoreCase(action) || StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
+
+        } else if (StandardWebParameter.VIEW.equalsIgnoreCase(action)) {
+
+        }
+
+        mv.addObject("vesselOwner", owner);
         mv.addObject("flags", flagDao.findAll());
-        mv.addObject("vesselTypes", VesselType.getList());
-        mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
-        mv.addObject("vesselOwners", vesselOwnerDao.findAll());
-
-        mv.addObject("action", action);
-        mv.addObject("crewManagerId", crewManagerId);
-
-        if(StandardWebParameter.ADD.equalsIgnoreCase(action)) {
-
-        }
-        else if(StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
-
-        }
-        return mv;
-    }
-
-    @GetMapping(value = "/add_vessel_owner")
-    public ModelAndView addVesselManager(Model model) {
-        ModelAndView mv = new ModelAndView("vessel/add_vessel_owner");
-        return mv;
-    }
-
-    @PostMapping(value = "/add_vessel", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView addVessel(@RequestParam("vesselName") String vesselName,
-                                  @RequestParam("imo") String imo,
-                                  @RequestParam("vesselOwnerId") long vesselOwnerId,
-                                  @RequestParam("mmsi") String mmsi,
-                                  @RequestParam("flag") String flag,
-                                  @RequestParam("callSign") String callSign,
-                                  //@RequestParam("homePort") int homeportId,
-                                  //@RequestParam("vesselTypeId") int vesselTypeId,
-                                  @RequestParam("vesselSubTypeId") int vesselSubTypeId,
-                                  @RequestParam("length") int length,
-                                  @RequestParam("beam") int beam,
-                                  @RequestParam("draught") int draught,
-                                  @RequestParam("grossTon") int grossTon,
-                                  @RequestParam("yearOfBuilt") int yearOfBuilt,
-                                  @RequestParam("vesselDesc") String vesselDesc,
-                                  @RequestParam("image") MultipartFile image,
-                                  Model model) {
-        ModelAndView mv = new ModelAndView("redirect:/vessel/vessel_list");
-        System.out.println("vesselName: " + vesselName);
-
-        Vessel vessel = new Vessel();
-        vessel.setVesselName(vesselName);
-        vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
-        vessel.setImo(imo);
-        vessel.setMmsi(mmsi);
-        //vessel.setFlag(flag);
-        //vessel.setVesselType(VesselType.createFromId(vesselTypeId));
-        vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
-        vessel.setLength(length);
-        vessel.setBeam(beam);
-        vessel.setDraught(draught);
-        vessel.setCallSign(callSign);
-        vessel.setGrossTonnage(grossTon);
-        vessel.setYearOfBuilt(yearOfBuilt);
-        vessel.setId(sequenceGenerator.generateSequence(Vessel.SEQUENCE_NAME));
-        vesselDao.insert(vessel);
-
-        long vesselId = vessel.getId();
-        System.out.println("New vesselId ---> " + vesselId);
-        mv.addObject("vesselId", vesselId);
-
-        try {
-            VesselPhoto photo = new VesselPhoto(vesselId, String.valueOf(vesselId));
-            photo.setId(sequenceGenerator.generateSequence(VesselPhoto.SEQUENCE_NAME));
-            photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-            photo = vesselPhotoDao.insert(photo);
-            long photoId = photo.getId();
-            System.out.println("VesselId ---> " + vesselId + " Photo ID: " + photoId);
-
-            photo = vesselPhotoDao.findById(photoId).get();
-            //model.addAttribute("title", photo.getTitle());
-            //mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
         return mv;
     }
 
@@ -184,13 +244,13 @@ public class VesselController {
                                        @RequestParam("primaryFlag") String primaryFlag,
                                        @RequestParam("regFlag") String regFlag,
                                        @RequestParam("primaryContact") String primaryContact,
-                                       @RequestParam("regContact") String regContact,
+                                       @RequestParam("secondaryContact") String secondaryContact,
                                        @RequestParam("primaryAddr") String primaryAddr,
                                        @RequestParam("regAddr") String regAddr,
                                        @RequestParam("yearOfStart") int yearOfStart,
                                        @RequestParam("image") MultipartFile image,
                                        Model model) {
-        Employee user = (Employee)req.getSession().getAttribute("currentUser");
+        Employee user = (Employee) req.getSession().getAttribute("currentUser");
         ModelAndView mv = new ModelAndView("/vessel/vessel_owner_list");
         System.out.println("ownerName: " + ownerName);
         System.out.println("image: " + image);
@@ -202,8 +262,11 @@ public class VesselController {
         owner.setPrimaryFlag(flagDao.getByCode(primaryFlag).getId());
         owner.setRegisterdFlag(flagDao.getByCode(regFlag).getId());
         owner.setYearOfStart(yearOfStart);
+        owner.setPrimaryContact(primaryContact);
+        owner.setSecondaryContact(secondaryContact);
         owner.setPrimaryAddress(primaryAddr);
         owner.setRegisterdAddress(regAddr);
+        owner.setEnteredBy(user.getEmpId());
         owner.setId(sequenceGenerator.generateSequence(VesselOwner.SEQUENCE_NAME));
         vesselOwnerDao.insert(owner);
 
@@ -221,6 +284,9 @@ public class VesselController {
 
             photo = vesselOwnerPhotoDao.findById(photoId).get();
             //model.addAttribute("title", photo.getTitle());
+
+            owner.setPhotoId(photoId);
+            vesselOwnerDao.save(owner);
             mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
         } catch (IOException e) {
@@ -229,6 +295,24 @@ public class VesselController {
         }
         return mv;
     }
+    /*********************************************** Vessel Owner End ***********************************/
+
+
+    /*********************************************** Vessel Vacancy Start ***********************************/
+    @GetMapping(value = "/vessel_vacancy_details")
+    public ModelAndView addVesselVacancy(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("vessel/vessel_vacancy_details");
+        String action = StringUtil.trim(req.getParameter("action"));
+        if (StandardWebParameter.ADD.equalsIgnoreCase(action)) {
+
+        } else if (StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
+
+        }
+        return mv;
+    }
+
+
+
 	/*@GetMapping(value = "/edit")
 	public ModelAndView editVessel(HttpServletRequest req) {
 		ModelAndView mv = new ModelAndView("/vessel/vessel_details");
@@ -307,21 +391,21 @@ public class VesselController {
         return mv;
     }
 
-	@GetMapping(value = "/vacancy_list")
-	public ModelAndView getVacancyList(@RequestParam("vesselId") long vesselId, Model model) {
-		ModelAndView mv = new ModelAndView("vessel/vacancy_list");
-		List<VesselVacancy> list = null;
-		if (vesselId > 0) {
-			list = vesselVacancyDao.findVacanciesByVessel(vesselId);
-		} else {
-			list = vesselVacancyDao.findAll();
-		}
-		mv.addObject("list", list);
-		return mv;
-	}
+    @GetMapping(value = "/vacancy_list")
+    public ModelAndView getVacancyList(@RequestParam("vesselId") long vesselId, Model model) {
+        ModelAndView mv = new ModelAndView("vessel/vacancy_list");
+        List<VesselVacancy> list = null;
+        if (vesselId > 0) {
+            list = vesselVacancyDao.findVacanciesByVessel(vesselId);
+        } else {
+            list = vesselVacancyDao.findAll();
+        }
+        mv.addObject("list", list);
+        return mv;
+    }
 
 
-	@GetMapping(value = "/vacancy_list_for_crew")
+    @GetMapping(value = "/vacancy_list_for_crew")
     public ModelAndView assignVessel(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("vessel/vacancy_list");
 
@@ -365,4 +449,16 @@ public class VesselController {
         mv.addObject("vacancies", vacancies);
         return mv;
     }
+
+    /*********************************************** Vessel Vacancy End ***********************************/
+
+    /*********************************************** Vessel Documents Start ***********************************/
+    @GetMapping(value = "/document_list")
+    public ModelAndView vesselDocList(Model model) {
+        ModelAndView mv = new ModelAndView("vessel/document_list");
+        //mv.addObject("list", vesselDao.findAll());
+        return mv;
+    }
+
+    /*********************************************** Vessel Documents End ***********************************/
 }

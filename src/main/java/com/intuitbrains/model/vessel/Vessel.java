@@ -1,5 +1,6 @@
 package com.intuitbrains.model.vessel;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -7,6 +8,7 @@ import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
 import com.intuitbrains.util.DateTime;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL)
@@ -20,10 +22,10 @@ public class Vessel {
 	//private VesselType vesselType;
 	private VesselSubType vesselSubType;
 	private VesselOwner vesselOwner;
-	
-	private String vesselName;
+	private long photoId;
+
+	private String vesselName, vesselDesc;
 	private int capacity;
-	private int flagId;
 	private int yearOfBuilt;
 		
 	private double grossTonnage;
@@ -31,11 +33,16 @@ public class Vessel {
 	private String imo, mmsi, callSign;
 	private int homePortId;
 	private Port homePort;
+	private String flagCode;
 	private Flag flag;
 	private VesselStatus vesselStatus;
 	private boolean isActive;
-	private DateTime enteredDateTime;
-	private String enteredByEmpId;
+
+	private String enteredBy;
+	private LocalDateTime enteredDateTime;
+	private String reviewedBy;
+	private LocalDateTime reviewedDateTime;
+
 	private List<VesselVacancy> vacancies;
 	private List<VesselManager> vesselManagers;
 	private VesselFieldStatus fieldStatus;
@@ -72,12 +79,15 @@ public class Vessel {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	public int getFlagId() {
-		return flagId;
+
+	public String getFlagCode() {
+		return flagCode;
 	}
-	public void setFlagId(int flagId) {
-		this.flagId = flagId;
+
+	public void setFlagCode(String flagCode) {
+		this.flagCode = flagCode;
 	}
+
 	public int getYearOfBuilt() {
 		return yearOfBuilt;
 	}
@@ -179,17 +189,51 @@ public class Vessel {
 		this.vesselManagers = vesselManagers;
 	}
 
-	public DateTime getEnteredDateTime() {
+	public LocalDateTime getEnteredDateTime() {
 		return enteredDateTime;
 	}
-	public void setEnteredDateTime(DateTime enteredDateTime) {
+	public void setEnteredDateTime(LocalDateTime enteredDateTime) {
 		this.enteredDateTime = enteredDateTime;
 	}
-	public String getEnteredByEmpId() {
-		return enteredByEmpId;
+
+	public String getEnteredBy() {
+		return enteredBy;
 	}
-	public void setEnteredByEmpId(String enteredByEmpId) {
-		this.enteredByEmpId = enteredByEmpId;
+
+	public void setEnteredBy(String enteredBy) {
+		this.enteredBy = enteredBy;
+	}
+
+	public long getPhotoId() {
+		return photoId;
+	}
+
+	public String getVesselDesc() {
+		return vesselDesc;
+	}
+
+	public void setVesselDesc(String vesselDesc) {
+		this.vesselDesc = vesselDesc;
+	}
+
+	public void setPhotoId(long photoId) {
+		this.photoId = photoId;
+	}
+
+	public String getReviewedBy() {
+		return reviewedBy;
+	}
+
+	public void setReviewedBy(String reviewedBy) {
+		this.reviewedBy = reviewedBy;
+	}
+
+	public LocalDateTime getReviewedDateTime() {
+		return reviewedDateTime;
+	}
+
+	public void setReviewedDateTime(LocalDateTime reviewedDateTime) {
+		this.reviewedDateTime = reviewedDateTime;
 	}
 
 	public VesselFieldStatus getFieldStatus() {

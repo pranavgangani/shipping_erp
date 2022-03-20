@@ -93,8 +93,8 @@
                                     <div class="collapse" id="appsCollapseKnowledgeBase" data-bs-parent="#accordionSidenavVesselMenu">
                                         <nav class="sidenav-menu-nested nav">
                                         	<a class="nav-link" href="/vessel/vessel_details?action=add">Vessel</a>
-                                            <a class="nav-link" href="/vessel/add_vessel_owner">Vessel Owner</a>                                            
-                                            <a class="nav-link" href="/vessel/add_vessel_vacancy">Vessel Vacancy</a>
+                                            <a class="nav-link" href="/vessel/vessel_owner_details?action=add">Vessel Owner</a>
+                                            <a class="nav-link" href="/vessel/vessel_vacancy_details?action=add">Vessel Vacancy</a>
                                         </nav>
                                     </div>
                                     <!-- Nested Sidenav Accordion (Apps -> User Management)-->
@@ -141,12 +141,12 @@
                             </div>
                             <!-- Sidenav Accordion (Flows)-->
                             <div class="sidenav-menu-heading">Reports</div>
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseFlows" aria-expanded="false" aria-controls="collapseFlows">
+                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
                                 <div class="nav-link-icon"><i data-feather="repeat"></i></div>
                                 Crew Reports
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseFlows" data-bs-parent="#accordionSidenav">
+                            <div class="collapse" id="collapseReports" data-bs-parent="#accordionSidenav">
                                 <nav class="sidenav-menu-nested nav">
                                     <a class="nav-link" href="/crew/active_crew">Active Crews</a>
                                     <a class="nav-link" href="/crew/ready_crew">Ready for Sign-off Crews</a>

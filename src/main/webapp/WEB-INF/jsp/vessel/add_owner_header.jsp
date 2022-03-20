@@ -8,7 +8,7 @@
 						<div class="page-header-icon">
 							<i data-feather="user-plus"></i>
 						</div>
-						Add New Vessel Owner 
+						Vessel Owner
 					</h1>
 				</div>
 				<div class="col-12 col-xl-auto mb-3">

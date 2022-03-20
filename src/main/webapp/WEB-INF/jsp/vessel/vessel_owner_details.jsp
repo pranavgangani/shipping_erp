@@ -10,6 +10,7 @@
         <title>Add Vessel Owner</title>
     
         <%@ include file="../includes/header_includes.jsp" %>
+        <script src="../js/vessel/vessel_details.js"></script>
     </head>
     <body class="nav-fixed">
     <%@ include file="../includes/top_nav_bar.jsp" %>
@@ -21,7 +22,7 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                <form method="POST" enctype="multipart/form-data" action="/vessel/add_vessel_owner">
+                <form method="POST" enctype="multipart/form-data" action="/vessel/vessel_vacancy_details">
                 <%@ include file="add_owner_header.jsp" %>
                      
                     <!-- Main page content-->
@@ -29,7 +30,8 @@
                         <!-- Account page navigation--> 
                         <nav class="nav nav-borders">
                             <a class="nav-link active ms-0">Profile</a>
-                            <a class="nav-link" href="/vessel/add_other_docs">Documents</a>
+                            <a class="nav-link" href="/vessel/vessel_details?action=list&vesselOwnerId=${vesselOwner.id}">Vessels</a>
+                            <a class="nav-link" href="/vessel/document_list?action=view&vesselOwnerId=${vesselOwner.id}">Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
@@ -40,7 +42,7 @@
                                     <div class="card-body text-center">
 										<!-- Profile picture image-->
 										 <img class="img-account-profile rounded-circle mb-2"
-											src="../assets/img/illustrations/profiles/profile-1.png"
+											src="../assets/img/illustrations/profiles/logo-1.png"
 											alt="" id='preview'/> 
 											
 											<input type='file' id='file-input' hidden name="image">																						
@@ -65,21 +67,21 @@
                                             <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="ownerName">Vessel Owner Name</label>
-                                                    <input class="form-control" id="ownerName" type="text" placeholder="Enter vessel owner name" value="" name="ownerName" />
+                                                    <input class="form-control" id="ownerName" type="text" placeholder="Enter vessel owner name" value="${owner.ownerName}" name="ownerName" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="website">WebSite</label>
-                                                    <input class="form-control" id="website" type="text" placeholder="Enter company website address" value="" name="website"/>
+                                                    <input class="form-control" id="website" type="text" placeholder="Enter company website address" value="${owner.website}" name="website"/>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="emailId">EmailID</label>
-                                                    <input class="form-control" id="emailId" type="text" placeholder="Enter company email ID" value="" name="emailId"/>
+                                                    <input class="form-control" id="emailId" type="text" placeholder="Enter company email ID" value="${owner.emailId}" name="emailId"/>
                                                 </div>
                                             </div>
 										<div class="row gx-3 mb-3">
 											<div class="col-md-4">
-												<label class="small mb-1" for="primaryFlag" name="primaryFlag">Primary Flag</label>
-												<select class="form-select" aria-label="Default select example">
+												<label class="small mb-1" for="primaryFlag">Primary Flag</label>
+												<select class="form-select" aria-label="Default select example" name="primaryFlag">
 													<option selected disabled>Select a Primary Flag:</option>
 													<c:forEach items="${flags}" var="flag">
                                                         <option value="${flag.code}">${flag.name}</option>
@@ -98,27 +100,27 @@
 										<div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="length">Primary Contact</label>
-                                                    <input class="form-control" id="length" type="text" placeholder="Enter Primary Contact" value="" name="primaryContact"/>
+                                                    <input class="form-control" id="length" type="text" placeholder="Enter Primary Contact" value="${owner.primaryContact}" name="primaryContact"/>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label class="small mb-1" for="beam">Registered Contact</label>
-                                                    <input class="form-control" id="beam" type="text" placeholder="Enter Registered Contact" value="" name="regContact"/>
+                                                    <label class="small mb-1" for="beam">Secondary Contact</label>
+                                                    <input class="form-control" id="beam" type="text" placeholder="Enter Secondary Contact" value="${owner.secondaryContact}" name="secondaryContact"/>
                                                 </div>                                              
                                             </div>
                                             <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="draught">Primary Address</label>
-                                                    <textarea class="lh-base form-control" type="text" name="primaryAddr" placeholder="" rows="4"></textarea>
+                                                    <textarea class="lh-base form-control" type="text" name="primaryAddr" placeholder="${owner.primaryAddress}" rows="4"></textarea>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="draught">Registered Address</label>
-                                                    <textarea class="lh-base form-control" type="text" name="regAddr" placeholder="" rows="4"></textarea>
+                                                    <textarea class="lh-base form-control" type="text" name="regAddr" placeholder="${owner.registerdAddress}" rows="4"></textarea>
                                                 </div>                                                
                                             </div>
                                             <div class="row gx-3 mb-3">
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="yearOfStart">Year of Start</label>
-                                                    <input class="form-control" id="yearOfStart" type="text" placeholder="Enter Operations Start Year" value="" name="yearOfStart"/>
+                                                    <input class="form-control" id="yearOfStart" type="text" placeholder="Enter Operations Start Year" value="${owner.yearOfStart}" name="yearOfStart"/>
                                                 </div>                                                
                                                 
                                             </div>										
