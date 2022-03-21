@@ -11,8 +11,8 @@ public class DocumentType {
 
     @Id
     private long id;
-    private String name, desc;
-
+    private String shortName, name, desc;
+    private String flagCode;
     private DocumentCategory documentCategory;
     private DocumentPool documentPool;
 
@@ -30,6 +30,14 @@ public class DocumentType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getDesc() {
@@ -54,5 +62,13 @@ public class DocumentType {
 
     public void setDocumentPool(DocumentPool documentPool) {
         this.documentPool = documentPool;
+    }
+
+    public String getFlagCode() {
+        return flagCode;
+    }
+
+    public void setFlagCode(String flagCode) {
+        this.flagCode = flagCode;
     }
 }

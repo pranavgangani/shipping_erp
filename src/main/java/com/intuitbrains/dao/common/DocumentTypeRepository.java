@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 
 public interface DocumentTypeRepository extends MongoRepository<DocumentType, Long> {
-    @Query("{ 'name' : { $regex: ?0 } }")
+    @Query("{ $or: [ { shortName : { $regex: ?0 } }, { name : { $regex: ?0 } } ]}")
     public DocumentType findByName(String name);
+
 }

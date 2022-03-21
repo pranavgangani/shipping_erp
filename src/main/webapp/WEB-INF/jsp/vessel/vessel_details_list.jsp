@@ -30,35 +30,35 @@
                     <div class="container-fluid px-4">
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
-                            <a class="nav-link"  href="/vessel/vessel_owner_details?action=view&vesselOwnerId=${vesselOwner.id}">Profile</a>
+                            <a class="nav-link"  href="/vessel/vessel_owner_details?vesselOwnerId=${vesselOwner.id}">Profile</a>
                             <a class="nav-link active ms-0">Vessels</a>
                             <a class="nav-link" href="/vessel/document_list?action=view&vesselOwnerId=${vesselOwner.id}">Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
                             <div class="col-xl-2">
-                                <!-- Profile picture card-->
-                                <div class="card mb-2 mb-xl-0">
-                                    <div class="card-header">Vessel Owner Picture</div>
-                                    <div class="card-body text-center">
-										<!-- Profile picture image-->
-										 <img class="img-account-profile rounded-circle mb-2"
-											src="../assets/img/illustrations/profiles/logo-1.png"
-											alt="" id='preview'/>
+                                <!-- Two factor authentication card-->
+                                   <div class="card mb-4">
+                                       <div class="card-header">Profile Picture</div>
+                                       <div class="card-body">
+                                           <!-- Profile picture help block-->
+                                        <c:choose>
+                                            <c:when test="${vesselOwner.photoId>0}">
+                                                <img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}" alt="" id='preview' />
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input type='file' id='file-input' hidden name="image">
+                                                <img class="img-account-profile rounded-circle mb-2"
+                                                    src="../assets/img/illustrations/profiles/logo-1.png"
+                                                    alt="" id='preview' />
+                                                <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <!-- Profile picture upload button-->
+                                        <button id="myBtn" class="btn btn-primary" type="button">Upload an image</button>
 
-											<input type='file' id='file-input' hidden name="image">
-
-										<div id='container'>
-											<!-- Profile picture help block-->
-											<div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-											<!-- Profile picture upload button-->
-											<button id="myBtn" class="btn btn-primary" type="button">Upload an image</button>
-
-										</div>
-
-								</div>
-                                </div>
-                            </div>
+                                       </div>
+                                   </div>
                             <div class="col-xl-10">
                                 <!-- Account details card-->
                                 <div class="card mb-6">

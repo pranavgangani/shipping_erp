@@ -24,13 +24,14 @@
             <div id="layoutSidenav_content">
                 <main>
                  <c:choose>
-                    <c:when test="${vessel!=null && vessel.id > 0}">
-                        <form method="POST" enctype="multipart/form-data" action="/vessel/vessel_owner_details?${vesselOwner.id}">
+                    <c:when test="${vesselOwner!=null && vesselOwner.id > 0}">
+                        <form method="POST" enctype="multipart/form-data" action="/vessel/update_vessel_owner">
                     </c:when>
                     <c:otherwise>
                         <form method="POST" enctype="multipart/form-data" action="/vessel/add_vessel_owner">
                     </c:otherwise>
                 </c:choose>
+                <input type="hidden" name="vesselOwnerId" value="${vesselOwnerId}"/>
 
                 <%@ include file="add_owner_header.jsp" %>
 
@@ -39,7 +40,7 @@
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
                             <a class="nav-link active ms-0">Profile</a>
-                            <a class="nav-link" href="/vessel/vessel_details?action=view&vesselOwnerId=${vesselOwner.id}">Vessels</a>
+                            <a class="nav-link" href="/vessel/owner_vessel_list?vesselOwnerId=${vesselOwner.id}">Vessels</a>
                             <a class="nav-link" href="/vessel/document_list?action=view&vesselOwnerId=${vesselOwner.id}">Documents</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
@@ -151,7 +152,7 @@
                                                             <select class="form-select" aria-label="Default select example" name="primaryFlag">
                                                                 <option selected disabled>Select a Primary Flag:</option>
                                                                 <c:forEach items="${flags}" var="flag">
-                                                                    <option <c:if test="${flag.code == vesselOwner.primaryFlagObj.code}"></c:if> value="${flag.code}">${flag.name}</option>
+                                                                    <option <c:if test="${flag.code == vesselOwner.primaryFlagObj.code}">selected="true"</c:if> value="${flag.code}">${flag.name}</option>
                                                                 </c:forEach>
                                                             </select>
 															</div>
@@ -171,7 +172,7 @@
 		                                                <td><div class="col-md-8 mb-3">
                                                             <select class="form-select" aria-label="Default select example" name="regFlag">
                                                                 <c:forEach items="${flags}" var="flag">
-                                                                       <option <c:if test="${flag.code == vesselOwner.registerdFlagObj.code}"></c:if> value="${flag.code}">${flag.name}</option>
+                                                                       <option <c:if test="${flag.code == vesselOwner.registerdFlagObj.code}">selected="true"</c:if> value="${flag.code}">${flag.name}</option>
                                                                    </c:forEach>
                                                             </select>
 															</div>

@@ -79,7 +79,7 @@
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
 														</div> Profile
-													</a><a class="dropdown-item" href="/vessel/add_vessel?vesselOwnerId=${owner.id}">
+													</a><a class="dropdown-item" href="/vessel/vessel_details?action=add&vesselOwnerId=${owner.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="settings"></i>
 														</div> Add Vessel

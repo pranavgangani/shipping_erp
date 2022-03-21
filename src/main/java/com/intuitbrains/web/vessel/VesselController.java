@@ -32,6 +32,8 @@ import com.intuitbrains.model.vessel.*;
 import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.ParamUtil;
 
+import com.intuitbrains.util.StandardWebParameter;
+import com.intuitbrains.util.StringUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,10 +142,95 @@ public class VesselController {
         System.out.println("New vesselId ---> " + vesselId);
 
         try {
+            if (image != null) {
+                VesselPhoto photo = new VesselPhoto(vesselId, String.valueOf(vesselId));
+                photo.setId(sequenceGenerator.generateSequence(VesselPhoto.SEQUENCE_NAME));
+                photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+                photo = vesselPhotoDao.insert(photo);
+                long photoId = photo.getId();
+                System.out.println("VesselId ---> " + vesselId + " Photo ID: " + photoId);
+
+                photo = vesselPhotoDao.findById(photoId).get();
+                //model.addAttribute("title", photo.getTitle());
+                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+
+                vessel.setPhotoId(photoId);
+                vesselDao.save(vessel);
+            }
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        //Audit
+        AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.ADD);
+        audit.setActionBy(empId);
+        audit.setActionDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.VESSEL);
+        audit.setText("New Vessel - <b>" + (vessel.getVesselName()) + "</b> added!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(vesselId);
+        auditTrailDao.insert(audit);
+
+        mv.addObject("vessel", vessel);
+        return mv;
+    }
+
+    @PostMapping(value = "/update_vessel", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView updateVessel(MultipartHttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("redirect:/vessel/vessel_list");
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
+        long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+
+        Vessel vessel = vesselDao.findById(vesselId).get();
+
+        Employee user = (Employee) req.getSession().getAttribute("currentUser");
+        String empId = user.getEmpId();
+
+        String vesselName = req.getParameter("vesselName");
+        String imo = req.getParameter("imo");
+        String mmsi = req.getParameter("mmsi");
+        String flag = req.getParameter("flag");
+        String callSign = req.getParameter("callSign");
+        int vesselSubTypeId = ParamUtil.parseInt(req.getParameter("vesselSubTypeId"), -1);
+        int length = ParamUtil.parseInt(req.getParameter("length"), -1);
+        int beam = ParamUtil.parseInt(req.getParameter("beam"), -1);
+        int draught = ParamUtil.parseInt(req.getParameter("draught"), -1);
+
+        int grossTon = ParamUtil.parseInt(req.getParameter("grossTon"), -1);
+        int yearOfBuilt = ParamUtil.parseInt(req.getParameter("yearOfBuilt"), -1);
+        String vesselDesc = req.getParameter("vesselDesc");
+
+        MultipartFile image = req.getFile("image");
+        System.out.println("vesselName: " + vesselName);
+
+        vessel.setVesselName(vesselName);
+        vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
+        vessel.setImo(imo);
+        vessel.setMmsi(mmsi);
+        vessel.setFlagCode(flag);
+        vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
+        vessel.setLength(length);
+        vessel.setBeam(beam);
+        vessel.setDraught(draught);
+        vessel.setCallSign(callSign);
+        vessel.setGrossTonnage(grossTon);
+        vessel.setYearOfBuilt(yearOfBuilt);
+        vessel.setVesselDesc(vesselDesc);
+        vessel.setEnteredBy(empId);
+        vessel.setEnteredDateTime(LocalDateTime.now());
+        vesselDao.save(vessel);
+
+        vesselId = vessel.getId();
+        System.out.println("New vesselId ---> " + vesselId);
+
+        try {
             VesselPhoto photo = new VesselPhoto(vesselId, String.valueOf(vesselId));
-            photo.setId(sequenceGenerator.generateSequence(VesselPhoto.SEQUENCE_NAME));
+            photo.setId(vessel.getPhotoId());
             photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-            photo = vesselPhotoDao.insert(photo);
+            photo = vesselPhotoDao.save(photo);
             long photoId = photo.getId();
             System.out.println("VesselId ---> " + vesselId + " Photo ID: " + photoId);
 
@@ -151,17 +238,13 @@ public class VesselController {
             //model.addAttribute("title", photo.getTitle());
             mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
-            vessel.setPhotoId(photoId);
-            vesselDao.save(vessel);
-
-
             //Audit
             AuditTrail audit = new AuditTrail();
-            audit.setAction("add");
+            audit.setAction(StandardWebParameter.MODIFY);
             audit.setActionBy(empId);
             audit.setActionDateTime(LocalDateTime.now());
             audit.setCollection(Collection.VESSEL);
-            audit.setText("New Vessel Owner - <b>" + (vessel.getVesselName()) + "</b> added!");
+            audit.setText("Modified Vessel - <b>" + (vessel.getVesselName()) + "</b> added!");
             audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
             audit.setUniqueId(vesselId);
             auditTrailDao.insert(audit);
@@ -179,6 +262,7 @@ public class VesselController {
         ModelAndView mv = new ModelAndView("/vessel/vessel_details");
         Employee user = (Employee) req.getSession().getAttribute("currentUser");
         long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
         //String action = StringUtil.trim(req.getParameter("action"));
 
         if (vesselId > 0) {
@@ -205,6 +289,7 @@ public class VesselController {
             mv.addObject("vessel", vessel);
 
         }
+        mv.addObject("vesselOwnerId", vesselOwnerId);
         mv.addObject("flags", flagDao.findAll());
         mv.addObject("vesselTypes", VesselType.getList());
         mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());

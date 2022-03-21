@@ -24,12 +24,14 @@
                 <main>
                 <c:choose>
                     <c:when test="${vessel!=null && vessel.id > 0}">
-                        <form method="POST" enctype="multipart/form-data" action="/vessel/vessel_details?${vessel.id}">
+                        <form method="POST" enctype="multipart/form-data" action="/vessel/update_vessel_details">
                     </c:when>
                     <c:otherwise>
                         <form method="POST" enctype="multipart/form-data" action="/vessel/add_vessel">
                     </c:otherwise>
                 </c:choose>
+
+                <input type="hidden" name="vesselId" value="${vessel.id}"/>
 
                 <%@ include file="add_vessel_header.jsp" %>
                     
@@ -80,7 +82,7 @@
                                                     <select class="form-select" aria-label="Default select example" name="vesselOwnerId">
 														<option selected disabled>Select Owner of this Vessel:</option>
 														<c:forEach items="${vesselOwners}" var="owner">
-															<option value="${owner.id}">${owner.ownerName}</option>
+															<option <c:if test="${vesselOwnerId == owner.id}">selected="true"</c:if> value="${owner.id}">${owner.ownerName}</option>
 														</c:forEach>
 												</select>
                                                 </div>

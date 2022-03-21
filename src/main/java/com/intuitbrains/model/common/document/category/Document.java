@@ -10,6 +10,7 @@ import com.intuitbrains.util.DateTime;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,13 +23,13 @@ public abstract class Document {
     protected long id;
     protected String _type;
     protected DocumentCategory documentCategory;
-    private Flag flag;
+    private String flagCode;
     protected List<Integer> forVesselTypes;
     protected List<Integer> forVesselSubTypes;
     protected List<Integer> forRankCategories;
     protected List<Integer> forRankSubCategories;
     protected List<Integer> forRanks;
-    private boolean isMandatory, isRequiredBeforeJoining, isRequiredAfterJoining, isUploaded;
+    private boolean isMandatory, isRequiredBeforeJoining, isRequiredAfterJoining, isRequiredOnBoard, isUploaded;
 
     //Doc details
     protected String docName, docDesc;
@@ -37,7 +38,8 @@ public abstract class Document {
     private long docTypeId;
     private String givenName;
     private String remarks;
-    private DateTime dateOfIssue, dateOfExpiry;
+    private LocalDateTime dateOfIssue, dateOfExpiry;
+    private String placeOfIssue;
     private int versionId;
     private FieldStatus fieldStatus;
 
@@ -78,12 +80,12 @@ public abstract class Document {
         this.documentCategory = documentCategory;
     }
 
-    public Flag getFlag() {
-        return flag;
+    public String getFlagCode() {
+        return flagCode;
     }
 
-    public void setFlag(Flag flag) {
-        this.flag = flag;
+    public void setFlagCode(String flagCode) {
+        this.flagCode = flagCode;
     }
 
     public String getDocName() {
@@ -158,19 +160,19 @@ public abstract class Document {
         this.remarks = remarks;
     }
 
-    public DateTime getDateOfIssue() {
+    public LocalDateTime getDateOfIssue() {
         return dateOfIssue;
     }
 
-    public void setDateOfIssue(DateTime dateOfIssue) {
+    public void setDateOfIssue(LocalDateTime dateOfIssue) {
         this.dateOfIssue = dateOfIssue;
     }
 
-    public DateTime getDateOfExpiry() {
+    public LocalDateTime getDateOfExpiry() {
         return dateOfExpiry;
     }
 
-    public void setDateOfExpiry(DateTime dateOfExpiry) {
+    public void setDateOfExpiry(LocalDateTime dateOfExpiry) {
         this.dateOfExpiry = dateOfExpiry;
     }
 
@@ -229,6 +231,14 @@ public abstract class Document {
 
     public void setRequiredAfterJoining(boolean requiredAfterJoining) {
         isRequiredAfterJoining = requiredAfterJoining;
+    }
+
+    public boolean isRequiredOnBoard() {
+        return isRequiredOnBoard;
+    }
+
+    public void setRequiredOnBoard(boolean requiredOnBoard) {
+        isRequiredOnBoard = requiredOnBoard;
     }
 
     public boolean isUploaded() {
@@ -297,6 +307,14 @@ public abstract class Document {
 
     public void setVersionId(int versionId) {
         this.versionId = versionId;
+    }
+
+    public String getPlaceOfIssue() {
+        return placeOfIssue;
+    }
+
+    public void setPlaceOfIssue(String placeOfIssue) {
+        this.placeOfIssue = placeOfIssue;
     }
 
     @Override

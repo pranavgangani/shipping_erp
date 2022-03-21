@@ -35,6 +35,7 @@ import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselVacancy;
 import com.intuitbrains.model.vessel.VesselVacancyAttributes;
 import com.intuitbrains.util.ListUtil;
+import com.intuitbrains.util.StandardWebParameter;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -261,7 +262,7 @@ public class CrewController {
             mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
             AuditTrail audit = new AuditTrail();
-            audit.setAction("add");
+            audit.setAction(StandardWebParameter.ADD);
             audit.setActionDateTime(LocalDateTime.now());
             audit.setCollection(Collection.CREW);
             audit.setActionBy("Pranav");
@@ -375,7 +376,7 @@ public class CrewController {
 
         //Audit
         AuditTrail audit = new AuditTrail();
-        audit.setAction("add");
+        audit.setAction(StandardWebParameter.ADD);
         audit.setActionBy(emp.getEmpId());
         audit.setActionDateTime(LocalDateTime.now());
         audit.setCollection(Collection.CREW);

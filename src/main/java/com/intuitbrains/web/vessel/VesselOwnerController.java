@@ -135,25 +135,96 @@ public class VesselOwnerController {
             owner.setPhotoId(photoId);
             vesselOwnerDao.save(owner);
 
-            //Audit
-            AuditTrail audit = new AuditTrail();
-            audit.setAction("add");
-            audit.setActionBy(empId);
-            audit.setActionDateTime(LocalDateTime.now());
-            audit.setCollection(Collection.VESSEL_OWNER);
-            audit.setText("New Vessel Owner - <b>" + (owner.getOwnerName()) + "</b> added!");
-            audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
-            audit.setUniqueId(ownerId);
-            auditTrailDao.insert(audit);
-
             mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        //Audit
+        AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.ADD);
+        audit.setActionBy(empId);
+        audit.setActionDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.VESSEL_OWNER);
+        audit.setText("New Vessel Owner - <b>" + (owner.getOwnerName()) + "</b> added!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(ownerId);
+        auditTrailDao.insert(audit);
         return mv;
     }
+
+    @PostMapping(value = "/update_vessel_owner", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView updateVesselOwner(MultipartHttpServletRequest req, Model model) {
+        Employee user = (Employee) req.getSession().getAttribute("currentUser");
+        ModelAndView mv = new ModelAndView("redirect:/vessel/vessel_owner_list");
+
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
+        VesselOwner persistedVesselOwner = vesselOwnerDao.findById(vesselOwnerId).get();
+
+        String empId = user.getEmpId();
+        String ownerName = req.getParameter("ownerName");
+        String website = req.getParameter("website");
+        String emailId = req.getParameter("emailId");
+        String primaryFlag = req.getParameter("primaryFlag");
+        String regFlag = req.getParameter("regFlag");
+        String primaryContact = req.getParameter("primaryContact");
+        String secondaryContact = req.getParameter("secondaryContact");
+        String primaryAddr = req.getParameter("primaryAddr");
+        String regAddr = req.getParameter("regAddr");
+        int yearOfStart = ParamUtil.parseInt(req.getParameter("yearOfStart"), -1);
+
+        persistedVesselOwner.setOwnerName(ownerName);
+        persistedVesselOwner.setWebsite(website);
+        persistedVesselOwner.setEmailId(emailId);
+        persistedVesselOwner.setPrimaryFlag(flagDao.getByCode(primaryFlag).getId());
+        persistedVesselOwner.setRegisterdFlag(flagDao.getByCode(regFlag).getId());
+        persistedVesselOwner.setYearOfStart(yearOfStart);
+        persistedVesselOwner.setPrimaryContact(primaryContact);
+        persistedVesselOwner.setSecondaryContact(secondaryContact);
+        persistedVesselOwner.setPrimaryAddress(primaryAddr);
+        persistedVesselOwner.setRegisterdAddress(regAddr);
+        persistedVesselOwner.setEnteredBy(empId);
+        persistedVesselOwner.setEnteredDateTime(LocalDateTime.now());
+        vesselOwnerDao.save(persistedVesselOwner);
+
+        mv.addObject("vesselOwner", persistedVesselOwner);
+
+        try {
+            MultipartFile image = req.getFile("image");
+            if (image != null) {
+                VesselOwnerPhoto photo = new VesselOwnerPhoto(vesselOwnerId, String.valueOf(vesselOwnerId));
+                photo.setId(persistedVesselOwner.getPhotoId());
+                photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+                photo = vesselOwnerPhotoDao.save(photo);
+                long photoId = photo.getId();
+                System.out.println("OwnerId ---> " + vesselOwnerId + " Photo ID: " + photoId);
+
+                photo = vesselOwnerPhotoDao.findById(photoId).get();
+                //model.addAttribute("title", photo.getTitle());
+                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+            }
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        //Audit
+        AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.MODIFY);
+        audit.setActionBy(empId);
+        audit.setActionDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.VESSEL_OWNER);
+        audit.setText("Modified Vessel Owner - <b>" + (persistedVesselOwner.getOwnerName()) + "</b>!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(vesselOwnerId);
+        auditTrailDao.insert(audit);
+
+        return mv;
+    }
+
 
     @GetMapping(value = "/vessel_owner_details")
     public ModelAndView vesselOwnerDetails(HttpServletRequest req) {
@@ -171,7 +242,7 @@ public class VesselOwnerController {
             }
 
             //Audit Trails
-            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.VESSEL, vesselOwnerId);
+            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.VESSEL_OWNER, vesselOwnerId);
             if (ListUtil.isNotEmpty(auditTrails)) {
                 System.out.println("auditTrails = " + auditTrails.size());
                 mv.addObject("auditTrails", auditTrails);
@@ -179,9 +250,8 @@ public class VesselOwnerController {
                 System.out.println("No auditTrails");
             }
             //Photo
-            VesselOwnerPhoto photo = null;
             try {
-                photo = vesselOwnerPhotoDao.findById(owner.getPhotoId()).get();
+                VesselOwnerPhoto photo = vesselOwnerPhotoDao.findById(owner.getPhotoId()).get();
                 //mv.addObject("title", photo.getTitle());
                 mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
             } catch (NoSuchElementException e) {
@@ -196,4 +266,24 @@ public class VesselOwnerController {
     }
 
 
+    @GetMapping(value = "/owner_vessel_list")
+    public ModelAndView vesselList(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("vessel/vessel_details_list");
+        long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
+
+        VesselOwner owner = vesselOwnerDao.findById(vesselOwnerId).get();
+
+        mv.addObject("list", vesselDao.findByVesselOwner(vesselOwnerId));
+        mv.addObject("vesselOwnerId", vesselOwnerId);
+
+        //Photo
+        try {
+            VesselOwnerPhoto photo = vesselOwnerPhotoDao.findById(owner.getPhotoId()).get();
+            //mv.addObject("title", photo.getTitle());
+            mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+        }
+        return mv;
+    }
 }
