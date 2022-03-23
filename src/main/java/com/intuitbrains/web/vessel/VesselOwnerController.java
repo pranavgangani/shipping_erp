@@ -113,7 +113,7 @@ public class VesselOwnerController {
         owner.setPrimaryAddress(primaryAddr);
         owner.setRegisterdAddress(regAddr);
         owner.setEnteredBy(empId);
-        owner.setEnteredDateTime(LocalDateTime.now());
+        owner.setEnteredLocalDateTime(LocalDateTime.now());
         owner.setId(sequenceGenerator.generateSequence(VesselOwner.SEQUENCE_NAME));
         vesselOwnerDao.insert(owner);
 
@@ -146,7 +146,7 @@ public class VesselOwnerController {
         AuditTrail audit = new AuditTrail();
         audit.setAction(StandardWebParameter.ADD);
         audit.setActionBy(empId);
-        audit.setActionDateTime(LocalDateTime.now());
+        audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.VESSEL_OWNER);
         audit.setText("New Vessel Owner - <b>" + (owner.getOwnerName()) + "</b> added!");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
@@ -186,7 +186,7 @@ public class VesselOwnerController {
         persistedVesselOwner.setPrimaryAddress(primaryAddr);
         persistedVesselOwner.setRegisterdAddress(regAddr);
         persistedVesselOwner.setEnteredBy(empId);
-        persistedVesselOwner.setEnteredDateTime(LocalDateTime.now());
+        persistedVesselOwner.setEnteredLocalDateTime(LocalDateTime.now());
         vesselOwnerDao.save(persistedVesselOwner);
 
         mv.addObject("vesselOwner", persistedVesselOwner);
@@ -215,7 +215,7 @@ public class VesselOwnerController {
         AuditTrail audit = new AuditTrail();
         audit.setAction(StandardWebParameter.MODIFY);
         audit.setActionBy(empId);
-        audit.setActionDateTime(LocalDateTime.now());
+        audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.VESSEL_OWNER);
         audit.setText("Modified Vessel Owner - <b>" + (persistedVesselOwner.getOwnerName()) + "</b>!");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));

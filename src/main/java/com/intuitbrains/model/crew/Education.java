@@ -2,9 +2,9 @@ package com.intuitbrains.model.crew;
 
 import com.intuitbrains.common.Flag;
 import com.intuitbrains.model.common.document.category.EducationDocument;
-import com.intuitbrains.util.DateTime;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Education {
@@ -12,7 +12,7 @@ public class Education {
     private long id;
     protected String instituteName, instituteAddress;
     private String educationName;
-    private DateTime startDate, endDate;
+    private LocalDate startDate, endDate;
     private List<EducationDocument> educationDocuments;
     private float percentage;
     private String grade;
@@ -50,19 +50,19 @@ public class Education {
         this.educationName = educationName;
     }
 
-    public DateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

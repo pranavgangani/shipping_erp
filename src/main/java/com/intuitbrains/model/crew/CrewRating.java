@@ -1,7 +1,8 @@
 package com.intuitbrains.model.crew;
 
 import com.intuitbrains.model.company.Employee;
-import com.intuitbrains.util.DateTime;
+
+import java.time.LocalDateTime;
 
 public class CrewRating {
 	private int contractId;
@@ -10,5 +11,5 @@ public class CrewRating {
 	private String remarks;
 	
 	private Employee evaluationBy;
-	private DateTime evaluationDateTime;
+	private LocalDateTime evaluationLocalDateTime;
 }

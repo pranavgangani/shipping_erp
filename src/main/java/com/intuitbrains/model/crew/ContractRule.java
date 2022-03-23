@@ -3,7 +3,8 @@ package com.intuitbrains.model.crew;
 import org.springframework.data.annotation.Id;
 
 import com.intuitbrains.model.company.Employee;
-import com.intuitbrains.util.DateTime;
+
+import java.time.LocalDateTime;
 
 public class ContractRule {
 	@Id
@@ -13,6 +14,6 @@ public class ContractRule {
 	private String ruleText;
 	private int rulePriority;
 	
-	private DateTime enteredDateTime;
+	private LocalDateTime enteredLocalDateTime;
 	private Employee enteredByEmp;
 }

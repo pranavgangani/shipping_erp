@@ -74,6 +74,7 @@ class CrewTest {
         crew.setDistinguishMark("Some mark on head");
         crew.setNationalityFlagId(flag.getId());
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
+        crew.setPresentAddress(crew.getPermAddress());
         crew.setEmailId("pranavgangani@gmail.com");
         crew.setPassportNumber("SLJALJLJ");
 
@@ -151,7 +152,7 @@ class CrewTest {
         Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
 
         //Employment
-        Employment emp1 = new Employment();
+        Experience emp1 = new Experience();
         emp1.setEmployerName("Merks");
         emp1.setEmployerAddress("Mumbai");
         Vessel v = new Vessel();
@@ -159,8 +160,8 @@ class CrewTest {
         emp1.setVessel(v);
         emp1.setLastRank(Rank.JR_ENGINEER);
         emp1.setVesselSubType(VesselSubType.LPG_TANKER);
-        //emp1.setStartDate(new DateTime());
-        //emp1.setEndDate(new DateTime());
+        //emp1.setStartDate(new LocalDateTime());
+        //emp1.setEndDate(new LocalDateTime());
         emp1.setFlag(flag);
         List<EmploymentDocument> emp1Docs = new ArrayList<>();
 
@@ -173,7 +174,7 @@ class CrewTest {
         emp1Docs.add(emp1Doc2);
         emp1.setEmploymentDocuments(emp1Docs);
 
-        Employment emp2 = new Employment();
+        Experience emp2 = new Experience();
         emp2.setEmployerName("MSC");
         emp2.setEmployerAddress("Mumbai");
         v = new Vessel();
@@ -181,8 +182,8 @@ class CrewTest {
         emp1.setVessel(v);
         emp2.setLastRank(Rank.JR_ENGINEER);
         emp2.setVesselSubType(VesselSubType.LNG_TANKER);
-        //emp2.setStartDate(new DateTime());
-        //emp2.setEndDate(new DateTime());
+        //emp2.setStartDate(new LocalDateTime());
+        //emp2.setEndDate(new LocalDateTime());
 
         List<EmploymentDocument> emp2Docs = new ArrayList<>();
         EmploymentDocument emp2Doc1 = new SalarySlip();
@@ -272,7 +273,7 @@ class CrewTest {
         Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
 
         List<Education> eduList = crew.getEducationHistory();
-        List<Employment> empList = crew.getEmploymentHistory();
+        List<Experience> empList = crew.getEmploymentHistory();
 
         List<Document> existingDocs = crew.getExistingDocuments();
         System.out.println(existingDocs != null ? existingDocs.size() : 0);
@@ -354,13 +355,13 @@ class CrewTest {
         flight.setFlightName("Air India");
         flight.setFlightNumber("12434");
         flight.setTravelModeId(Travel.TravelMode.FLIGHT.getId());
-        flight.setStartDateTime(LocalDateTime.of(2022, 3, 23, 22, 20, 2));
-        flight.setEndDateTime(LocalDateTime.of(2022, 3, 23, 0, 20, 2));
+        flight.setStartLocalDateTime(LocalDateTime.of(2022, 3, 23, 22, 20, 2));
+        flight.setEndLocalDateTime(LocalDateTime.of(2022, 3, 23, 0, 20, 2));
 
         Hotel hotel = new Hotel();
         hotel.setAccomodationName("Oberoi");
-        hotel.setStartDateTime(LocalDateTime.of(2022, 3, 24, 02, 30, 2));
-        hotel.setEndDateTime(LocalDateTime.of(2022, 3, 24, 04, 30, 2));
+        hotel.setStartLocalDateTime(LocalDateTime.of(2022, 3, 24, 02, 30, 2));
+        hotel.setEndLocalDateTime(LocalDateTime.of(2022, 3, 24, 04, 30, 2));
         flight.setTravelModeId(Accomodation.AccomodationType.HOTEL.getId());
         contract.setTravelAndAccomodations(new LinkedList<>(Arrays.asList(flight, hotel)));
 

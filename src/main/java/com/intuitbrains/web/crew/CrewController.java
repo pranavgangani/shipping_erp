@@ -219,7 +219,7 @@ public class CrewController {
         crew.setGender(gender);
         crew.setDistinguishMark(distinguishMark);
         crew.setManningOffice(manningOffice);
-        crew.setEnteredDateTime(LocalDateTime.now());
+        crew.setEnteredLocalDateTime(LocalDateTime.now());
         crew.setEnteredBy(emp.getEmpId());
 
         CrewFieldStatus fs = crew.getFieldStatus();
@@ -263,7 +263,7 @@ public class CrewController {
 
             AuditTrail audit = new AuditTrail();
             audit.setAction(StandardWebParameter.ADD);
-            audit.setActionDateTime(LocalDateTime.now());
+            audit.setActionLocalDateTime(LocalDateTime.now());
             audit.setCollection(Collection.CREW);
             audit.setActionBy("Pranav");
             audit.setUniqueId(crewId);
@@ -378,7 +378,7 @@ public class CrewController {
         AuditTrail audit = new AuditTrail();
         audit.setAction(StandardWebParameter.ADD);
         audit.setActionBy(emp.getEmpId());
-        audit.setActionDateTime(LocalDateTime.now());
+        audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.CREW);
         audit.setText("New Document - <b>" + (docToUpload.getDocName()) + "</b> added!");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));

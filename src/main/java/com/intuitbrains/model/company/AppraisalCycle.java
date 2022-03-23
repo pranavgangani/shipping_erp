@@ -1,11 +1,11 @@
 package com.intuitbrains.model.company;
 
-import com.intuitbrains.util.DateTime;
+import java.time.LocalDateTime;
 
 public class AppraisalCycle {
 	private int appraisalCycleId;
 	private int appraisalName;
-	private DateTime cycleStartDate, cycleEndDate;
+	private LocalDateTime cycleStartDate, cycleEndDate;
 	//private Map<Designation, UserRating> 
 	
 }

@@ -3,7 +3,6 @@ package com.intuitbrains.model.vessel;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.intuitbrains.util.DateTime;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -39,10 +38,10 @@ public class VesselOwner {
 	private String emailId;
 
 	private String enteredBy;
-	private LocalDateTime enteredDateTime;
+	private LocalDateTime enteredLocalDateTime;
 
 	private String reviewedBy;
-	private LocalDateTime reviewedDateTime;
+	private LocalDateTime reviewedLocalDateTime;
 
 	private List<Vessel> managedVessels;
 
@@ -159,12 +158,12 @@ public class VesselOwner {
 		this.enteredBy = enteredBy;
 	}
 
-	public LocalDateTime getEnteredDateTime() {
-		return enteredDateTime;
+	public LocalDateTime getEnteredLocalDateTime() {
+		return enteredLocalDateTime;
 	}
 
-	public void setEnteredDateTime(LocalDateTime enteredDateTime) {
-		this.enteredDateTime = enteredDateTime;
+	public void setEnteredLocalDateTime(LocalDateTime enteredLocalDateTime) {
+		this.enteredLocalDateTime = enteredLocalDateTime;
 	}
 
 	public String getReviewedBy() {
@@ -175,12 +174,12 @@ public class VesselOwner {
 		this.reviewedBy = reviewedBy;
 	}
 
-	public LocalDateTime getReviewedDateTime() {
-		return reviewedDateTime;
+	public LocalDateTime getReviewedLocalDateTime() {
+		return reviewedLocalDateTime;
 	}
 
-	public void setReviewedDateTime(LocalDateTime reviewedDateTime) {
-		this.reviewedDateTime = reviewedDateTime;
+	public void setReviewedLocalDateTime(LocalDateTime reviewedLocalDateTime) {
+		this.reviewedLocalDateTime = reviewedLocalDateTime;
 	}
 
 	public Flag getPrimaryFlagObj() {

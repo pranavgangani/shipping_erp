@@ -1,6 +1,7 @@
 package com.intuitbrains.model.crew.contract;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +11,6 @@ import com.intuitbrains.model.common.document.category.Document;
 import com.intuitbrains.model.crew.ContractRule;
 import org.springframework.data.annotation.Id;
 
-import com.intuitbrains.util.DateTime;
 import org.springframework.data.annotation.Transient;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW_CONTRACT)
@@ -24,8 +24,7 @@ public class CrewContract {
     private int rankId;
     private long vesselId;
 	private String contractName;
-	private DateTime startDate;
-	private DateTime endDate;
+	private LocalDate startDate, endDate;
 	private String placeOfContract;
     private Flag placeOfContractFlag;
 	
@@ -38,7 +37,7 @@ public class CrewContract {
     private List<TravelAndAccomodation> travelAndAccomodations;
 
 	//Audit
-	private DateTime generatedDateTime;
+	private LocalDate generatedLocalDateTime;
 
     public long getId() {
         return id;
@@ -72,19 +71,19 @@ public class CrewContract {
         this.contractName = contractName;
     }
 
-    public DateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -128,12 +127,12 @@ public class CrewContract {
         this.wageCurrency = wageCurrency;
     }
 
-    public DateTime getGeneratedDateTime() {
-        return generatedDateTime;
+    public LocalDate getGeneratedLocalDateTime() {
+        return generatedLocalDateTime;
     }
 
-    public void setGeneratedDateTime(DateTime generatedDateTime) {
-        this.generatedDateTime = generatedDateTime;
+    public void setGeneratedLocalDateTime(LocalDate generatedLocalDateTime) {
+        this.generatedLocalDateTime = generatedLocalDateTime;
     }
 
     public Flag getPlaceOfContractFlag() {

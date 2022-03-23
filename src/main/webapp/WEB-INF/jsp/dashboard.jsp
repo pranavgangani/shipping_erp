@@ -357,7 +357,7 @@
 						</div>
 					</div>
 					<!-- Example Charts for Dashboard Demo-->
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-xl-6 mb-4">
 							<div class="card card-header-actions h-100">
 								<div class="card-header">
@@ -421,6 +421,7 @@
 							</div>
 						</div>
 					</div>
+					-->
 					<!-- Example DataTable for Dashboard Demo-->
 					<div class="card mb-4">
 						<div class="card-header">Personnel Management</div>

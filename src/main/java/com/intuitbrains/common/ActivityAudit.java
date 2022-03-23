@@ -1,9 +1,9 @@
 package com.intuitbrains.common;
 
-import com.intuitbrains.util.DateTime;
+import java.time.LocalDateTime;
 
 public class ActivityAudit {
-	private DateTime activityDateTime;
+	private LocalDateTime activityLocalDateTime;
 	private int uniqueId;
 	private String tableName;
 	private String activityDesc;

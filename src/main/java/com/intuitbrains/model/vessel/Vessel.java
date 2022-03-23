@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Transient;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
-import com.intuitbrains.util.DateTime;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,9 +38,9 @@ public class Vessel {
 	private boolean isActive;
 
 	private String enteredBy;
-	private LocalDateTime enteredDateTime;
+	private LocalDateTime enteredLocalDateTime;
 	private String reviewedBy;
-	private LocalDateTime reviewedDateTime;
+	private LocalDateTime reviewedLocalDateTime;
 
 	private List<VesselVacancy> vacancies;
 	private List<VesselManager> vesselManagers;
@@ -189,11 +188,11 @@ public class Vessel {
 		this.vesselManagers = vesselManagers;
 	}
 
-	public LocalDateTime getEnteredDateTime() {
-		return enteredDateTime;
+	public LocalDateTime getEnteredLocalDateTime() {
+		return enteredLocalDateTime;
 	}
-	public void setEnteredDateTime(LocalDateTime enteredDateTime) {
-		this.enteredDateTime = enteredDateTime;
+	public void setEnteredLocalDateTime(LocalDateTime enteredLocalDateTime) {
+		this.enteredLocalDateTime = enteredLocalDateTime;
 	}
 
 	public String getEnteredBy() {
@@ -228,12 +227,12 @@ public class Vessel {
 		this.reviewedBy = reviewedBy;
 	}
 
-	public LocalDateTime getReviewedDateTime() {
-		return reviewedDateTime;
+	public LocalDateTime getReviewedLocalDateTime() {
+		return reviewedLocalDateTime;
 	}
 
-	public void setReviewedDateTime(LocalDateTime reviewedDateTime) {
-		this.reviewedDateTime = reviewedDateTime;
+	public void setReviewedLocalDateTime(LocalDateTime reviewedLocalDateTime) {
+		this.reviewedLocalDateTime = reviewedLocalDateTime;
 	}
 
 	public VesselFieldStatus getFieldStatus() {

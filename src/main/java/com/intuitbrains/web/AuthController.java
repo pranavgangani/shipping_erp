@@ -65,7 +65,7 @@ public class AuthController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Employee user = userService.findUserByEmailId(auth.getName());
 
-        List<AuditTrail> auditTrails = auditTrailDao.findAll(Sort.by(Sort.Direction.DESC, "actionDateTime")).stream().limit(7).collect(Collectors.toList());
+        List<AuditTrail> auditTrails = auditTrailDao.findAll(Sort.by(Sort.Direction.DESC, "actionLocalDateTime")).stream().limit(7).collect(Collectors.toList());
 
         if (ListUtil.isNotEmpty(auditTrails)) {
             System.out.println("auditTrails = " + auditTrails.size());

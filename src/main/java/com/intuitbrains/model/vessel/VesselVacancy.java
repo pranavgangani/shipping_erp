@@ -3,9 +3,10 @@ package com.intuitbrains.model.vessel;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.Crew;
-import com.intuitbrains.util.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+
+import java.time.LocalDateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL_VACANCY)
 public class VesselVacancy {
@@ -19,11 +20,11 @@ public class VesselVacancy {
     private String remarks;
     private int statusId;
     private Status status;
-    private DateTime crewEmbarkDate;
-    private DateTime vacancyStartDate;
-    private DateTime vacancyEndDate;
+    private LocalDateTime crewEmbarkDate;
+    private LocalDateTime vacancyStartDate;
+    private LocalDateTime vacancyEndDate;
     private Employee enteredBy;
-    private DateTime enteredDateTime;
+    private LocalDateTime enteredLocalDateTime;
 
 
     private Vessel vessel;
@@ -65,27 +66,27 @@ public class VesselVacancy {
     }
 
 
-    public DateTime getCrewEmbarkDate() {
+    public LocalDateTime getCrewEmbarkDate() {
         return crewEmbarkDate;
     }
 
-    public void setCrewEmbarkDate(DateTime crewEmbarkDate) {
+    public void setCrewEmbarkDate(LocalDateTime crewEmbarkDate) {
         this.crewEmbarkDate = crewEmbarkDate;
     }
 
-    public DateTime getVacancyStartDate() {
+    public LocalDateTime getVacancyStartDate() {
         return vacancyStartDate;
     }
 
-    public void setVacancyStartDate(DateTime vacancyStartDate) {
+    public void setVacancyStartDate(LocalDateTime vacancyStartDate) {
         this.vacancyStartDate = vacancyStartDate;
     }
 
-    public DateTime getVacancyEndDate() {
+    public LocalDateTime getVacancyEndDate() {
         return vacancyEndDate;
     }
 
-    public void setVacancyEndDate(DateTime vacancyEndDate) {
+    public void setVacancyEndDate(LocalDateTime vacancyEndDate) {
         this.vacancyEndDate = vacancyEndDate;
     }
 
@@ -97,12 +98,12 @@ public class VesselVacancy {
         this.enteredBy = enteredBy;
     }
 
-    public DateTime getEnteredDateTime() {
-        return enteredDateTime;
+    public LocalDateTime getEnteredLocalDateTime() {
+        return enteredLocalDateTime;
     }
 
-    public void setEnteredDateTime(DateTime enteredDateTime) {
-        this.enteredDateTime = enteredDateTime;
+    public void setEnteredLocalDateTime(LocalDateTime enteredLocalDateTime) {
+        this.enteredLocalDateTime = enteredLocalDateTime;
     }
 
     public VesselVacancyAttributes getVacancyAttributes() {

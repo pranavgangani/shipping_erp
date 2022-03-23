@@ -1,10 +1,11 @@
 package com.intuitbrains.model.common.document.category;
 
-import com.intuitbrains.util.DateTime;
+
+import java.time.LocalDate;
 
 public abstract class EducationDocument extends Document {
     protected String instituteName, instituteAddress;
-    protected DateTime startDate, endDate;
+    protected LocalDate startDate, endDate;
     private long certificateTypeId;
 
     public String getInstituteName() {
@@ -23,19 +24,19 @@ public abstract class EducationDocument extends Document {
         this.instituteAddress = instituteAddress;
     }
 
-    public DateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

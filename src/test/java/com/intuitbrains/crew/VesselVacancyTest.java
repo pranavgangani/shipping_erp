@@ -8,7 +8,7 @@ import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.crew.Crew;
-import com.intuitbrains.model.crew.Employment;
+import com.intuitbrains.model.crew.Experience;
 import com.intuitbrains.model.crew.Rank;
 import com.intuitbrains.model.vessel.*;
 import com.intuitbrains.service.common.SequenceGeneratorService;
@@ -138,7 +138,7 @@ class VesselVacancyTest {
     void findMatchingVacanciesToCrew() {
         final List<Crew> crews = crewDao.findAll();
         crews.forEach(c->{
-            List<Employment> employmentList = c.getEmploymentHistory();
+            List<Experience> employmentList = c.getEmploymentHistory();
             final List<Integer> rankExp = new ArrayList<>();
             employmentList.forEach(emp -> rankExp.add(emp.getLastRank().getId()));
             final List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);

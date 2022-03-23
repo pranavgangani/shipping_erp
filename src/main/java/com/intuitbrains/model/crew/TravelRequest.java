@@ -2,13 +2,13 @@ package com.intuitbrains.model.crew;
 
 import org.springframework.data.annotation.Id;
 
-import com.intuitbrains.util.DateTime;
+import java.time.LocalDateTime;
 
 public class TravelRequest extends Request {
 	@Id
 	private long id;
 	private String travelName, source, destination;
-	private DateTime fromDate, toDate;
-	private DateTime requestedDateTime;
+	private LocalDateTime fromDate, toDate;
+	private LocalDateTime requestedLocalDateTime;
 	private String requestedBy;
 }

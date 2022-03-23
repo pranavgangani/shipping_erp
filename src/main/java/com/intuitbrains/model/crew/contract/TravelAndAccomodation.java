@@ -13,7 +13,7 @@ public abstract class TravelAndAccomodation {
 
     @Id
     private long id;
-    protected LocalDateTime startDateTime, endDateTime;
+    protected LocalDateTime startLocalDateTime, endLocalDateTime;
     protected Flag startFlag, endFlag;
     protected int statusId;
 
@@ -25,20 +25,20 @@ public abstract class TravelAndAccomodation {
         this.id = id;
     }
 
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
+    public LocalDateTime getStartLocalDateTime() {
+        return startLocalDateTime;
     }
 
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
+    public void setStartLocalDateTime(LocalDateTime startLocalDateTime) {
+        this.startLocalDateTime = startLocalDateTime;
     }
 
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
+    public LocalDateTime getEndLocalDateTime() {
+        return endLocalDateTime;
     }
 
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
+    public void setEndLocalDateTime(LocalDateTime endLocalDateTime) {
+        this.endLocalDateTime = endLocalDateTime;
     }
 
     public Flag getStartFlag() {

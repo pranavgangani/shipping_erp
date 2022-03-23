@@ -5,7 +5,8 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.intuitbrains.common.Collection;
-import com.intuitbrains.util.DateTime;
+
+import java.time.LocalDateTime;
 
 @Document(collection = Collection.TRAVEL_HISTORY)
 public class TravelAudit {
@@ -15,6 +16,6 @@ public class TravelAudit {
 	@Id
 	private long id;
 	private String startDest, endDest;
-	private DateTime travelStartDate, travelEndDate;
+	private LocalDateTime travelStartDate, travelEndDate;
 
 }

@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class FieldStatus {
     private String makerBy, checkerBy;
-    private LocalDateTime makerDateTime, checkerDateTime;
+    private LocalDateTime makerLocalDateTime, checkerLocalDateTime;
 
-    public FieldStatus(String makerBy, LocalDateTime makerDateTime, String checkerBy, LocalDateTime checkerDateTime) {
+    public FieldStatus(String makerBy, LocalDateTime makerLocalDateTime, String checkerBy, LocalDateTime checkerLocalDateTime) {
         this.makerBy = makerBy;
         this.checkerBy = checkerBy;
-        this.makerDateTime = makerDateTime;
-        this.checkerDateTime = checkerDateTime;
+        this.makerLocalDateTime = makerLocalDateTime;
+        this.checkerLocalDateTime = checkerLocalDateTime;
     }
 
     public String getMakerBy() {
@@ -29,19 +29,19 @@ public class FieldStatus {
         this.checkerBy = checkerBy;
     }
 
-    public LocalDateTime getMakerDateTime() {
-        return makerDateTime;
+    public LocalDateTime getMakerLocalDateTime() {
+        return makerLocalDateTime;
     }
 
-    public void setMakerDateTime(LocalDateTime makerDateTime) {
-        this.makerDateTime = makerDateTime;
+    public void setMakerLocalDateTime(LocalDateTime makerLocalDateTime) {
+        this.makerLocalDateTime = makerLocalDateTime;
     }
 
-    public LocalDateTime getCheckerDateTime() {
-        return checkerDateTime;
+    public LocalDateTime getCheckerLocalDateTime() {
+        return checkerLocalDateTime;
     }
 
-    public void setCheckerDateTime(LocalDateTime checkerDateTime) {
-        this.checkerDateTime = checkerDateTime;
+    public void setCheckerLocalDateTime(LocalDateTime checkerLocalDateTime) {
+        this.checkerLocalDateTime = checkerLocalDateTime;
     }
 }

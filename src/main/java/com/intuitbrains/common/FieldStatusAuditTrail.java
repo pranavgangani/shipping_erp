@@ -18,7 +18,7 @@ public class FieldStatusAuditTrail {
     private long uniqueId;
     private String action;
     private String actionBy;
-    private LocalDateTime actionDateTime;
+    private LocalDateTime actionLocalDateTime;
 
     public long getId() {
         return id;
@@ -52,12 +52,12 @@ public class FieldStatusAuditTrail {
         this.actionBy = actionBy;
     }
 
-    public LocalDateTime getActionDateTime() {
-        return actionDateTime;
+    public LocalDateTime getActionLocalDateTime() {
+        return actionLocalDateTime;
     }
 
-    public void setActionDateTime(LocalDateTime actionDateTime) {
-        this.actionDateTime = actionDateTime;
+    public void setActionLocalDateTime(LocalDateTime actionLocalDateTime) {
+        this.actionLocalDateTime = actionLocalDateTime;
     }
 
     public String getPropertyName() {
@@ -90,16 +90,16 @@ public class FieldStatusAuditTrail {
 
     public String getAgo() {
         String ago;
-        if (ChronoUnit.MINUTES.between(getActionDateTime(), LocalDateTime.now()) < 60) {
-            ago = ChronoUnit.MINUTES.between(getActionDateTime(), LocalDateTime.now()) + " min ago";
-        } else if (ChronoUnit.HOURS.between(getActionDateTime(), LocalDateTime.now()) < 24) {
-            ago = ChronoUnit.HOURS.between(getActionDateTime(), LocalDateTime.now()) + " hr ago";
-        } else if (ChronoUnit.DAYS.between(getActionDateTime(), LocalDateTime.now()) <= 31) {
-            ago = ChronoUnit.DAYS.between(getActionDateTime(), LocalDateTime.now()) + " days ago";
-        } else if (ChronoUnit.MONTHS.between(getActionDateTime(), LocalDateTime.now()) <= 3) {
-            ago = ChronoUnit.MONTHS.between(getActionDateTime(), LocalDateTime.now()) + " months ago";
+        if (ChronoUnit.MINUTES.between(getActionLocalDateTime(), LocalDateTime.now()) < 60) {
+            ago = ChronoUnit.MINUTES.between(getActionLocalDateTime(), LocalDateTime.now()) + " min ago";
+        } else if (ChronoUnit.HOURS.between(getActionLocalDateTime(), LocalDateTime.now()) < 24) {
+            ago = ChronoUnit.HOURS.between(getActionLocalDateTime(), LocalDateTime.now()) + " hr ago";
+        } else if (ChronoUnit.DAYS.between(getActionLocalDateTime(), LocalDateTime.now()) <= 31) {
+            ago = ChronoUnit.DAYS.between(getActionLocalDateTime(), LocalDateTime.now()) + " days ago";
+        } else if (ChronoUnit.MONTHS.between(getActionLocalDateTime(), LocalDateTime.now()) <= 3) {
+            ago = ChronoUnit.MONTHS.between(getActionLocalDateTime(), LocalDateTime.now()) + " months ago";
         } else {
-            ago = ChronoUnit.YEARS.between(getActionDateTime(), LocalDateTime.now()) + " years ago";
+            ago = ChronoUnit.YEARS.between(getActionLocalDateTime(), LocalDateTime.now()) + " years ago";
         }
         return ago;
     }

@@ -15,7 +15,6 @@ public class DurationType {
 	public final static DurationType MONTHS = new DurationType(4, "Months");
 	public final static DurationType YEARS = new DurationType(5, "Years");
 
-	@Id
 	private long id;
 	private String typeName;
 

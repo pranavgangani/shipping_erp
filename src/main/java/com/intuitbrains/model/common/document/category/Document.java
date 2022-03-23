@@ -2,11 +2,9 @@ package com.intuitbrains.model.common.document.category;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Comment;
-import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.FieldStatus;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.crew.DocumentMatrix;
-import com.intuitbrains.util.DateTime;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 

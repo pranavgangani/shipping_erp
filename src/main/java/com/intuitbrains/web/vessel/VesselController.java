@@ -134,7 +134,7 @@ public class VesselController {
         vessel.setYearOfBuilt(yearOfBuilt);
         vessel.setVesselDesc(vesselDesc);
         vessel.setEnteredBy(empId);
-        vessel.setEnteredDateTime(LocalDateTime.now());
+        vessel.setEnteredLocalDateTime(LocalDateTime.now());
         vessel.setId(sequenceGenerator.generateSequence(Vessel.SEQUENCE_NAME));
         vesselDao.insert(vessel);
 
@@ -167,7 +167,7 @@ public class VesselController {
         AuditTrail audit = new AuditTrail();
         audit.setAction(StandardWebParameter.ADD);
         audit.setActionBy(empId);
-        audit.setActionDateTime(LocalDateTime.now());
+        audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.VESSEL);
         audit.setText("New Vessel - <b>" + (vessel.getVesselName()) + "</b> added!");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
@@ -220,7 +220,7 @@ public class VesselController {
         vessel.setYearOfBuilt(yearOfBuilt);
         vessel.setVesselDesc(vesselDesc);
         vessel.setEnteredBy(empId);
-        vessel.setEnteredDateTime(LocalDateTime.now());
+        vessel.setEnteredLocalDateTime(LocalDateTime.now());
         vesselDao.save(vessel);
 
         vesselId = vessel.getId();
@@ -242,7 +242,7 @@ public class VesselController {
             AuditTrail audit = new AuditTrail();
             audit.setAction(StandardWebParameter.MODIFY);
             audit.setActionBy(empId);
-            audit.setActionDateTime(LocalDateTime.now());
+            audit.setActionLocalDateTime(LocalDateTime.now());
             audit.setCollection(Collection.VESSEL);
             audit.setText("Modified Vessel - <b>" + (vessel.getVesselName()) + "</b> added!");
             audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));

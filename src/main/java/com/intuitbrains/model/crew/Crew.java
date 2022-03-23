@@ -35,12 +35,12 @@ public class Crew extends Person {
     private int age;
 
     //Personal
-    private String permAddress, tempAddress;
+    private String permAddress, presentAddress;
     private String contact1, contact2;
     private String nearestAirport, maritalStatus;
 
     // Past
-    private List<Employment> employmentHistory;
+    private List<Experience> employmentHistory;
     private List<Education> educationHistory;
     private List<MedicalHistory> medicalHistory;
     private List<TravelAudit> travelHistory;
@@ -59,7 +59,7 @@ public class Crew extends Person {
     private LocalDate dob;
 
     private String enteredBy;
-    private LocalDateTime enteredDateTime;
+    private LocalDateTime enteredLocalDateTime;
 
     private int statusId;
 
@@ -125,11 +125,11 @@ public class Crew extends Person {
         this.rank = rank;
     }
 
-    public List<Employment> getEmploymentHistory() {
+    public List<Experience> getEmploymentHistory() {
         return employmentHistory;
     }
 
-    public void setEmploymentHistory(List<Employment> employmentHistory) {
+    public void setEmploymentHistory(List<Experience> employmentHistory) {
         this.employmentHistory = employmentHistory;
     }
 
@@ -295,12 +295,12 @@ public class Crew extends Person {
         this.permAddress = permAddress;
     }
 
-    public String getTempAddress() {
-        return tempAddress;
+    public String getPresentAddress() {
+        return presentAddress;
     }
 
-    public void setTempAddress(String tempAddress) {
-        this.tempAddress = tempAddress;
+    public void setPresentAddress(String presentAddress) {
+        this.presentAddress = presentAddress;
     }
 
     public String getContact1() {
@@ -381,12 +381,12 @@ public class Crew extends Person {
         this.enteredBy = enteredBy;
     }
 
-    public LocalDateTime getEnteredDateTime() {
-        return enteredDateTime;
+    public LocalDateTime getEnteredLocalDateTime() {
+        return enteredLocalDateTime;
     }
 
-    public void setEnteredDateTime(LocalDateTime enteredDateTime) {
-        this.enteredDateTime = enteredDateTime;
+    public void setEnteredLocalDateTime(LocalDateTime enteredLocalDateTime) {
+        this.enteredLocalDateTime = enteredLocalDateTime;
     }
 
     public enum Status {

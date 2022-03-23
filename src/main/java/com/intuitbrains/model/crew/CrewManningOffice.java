@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.intuitbrains.util.DateTime;
+import java.time.LocalDateTime;
 
 @Document(collection = "CrewManningOffice")
 public class CrewManningOffice {
@@ -17,8 +17,8 @@ public class CrewManningOffice {
 	private long crewId;
 	private long manningOfficeId;
 	private boolean isLatest;
-	private DateTime officeStartDateTime;
-	private DateTime officeEndDateTime;
+	private LocalDateTime officeStartLocalDateTime;
+	private LocalDateTime officeEndLocalDateTime;
 	public long getId() {
 		return id;
 	}
@@ -43,17 +43,17 @@ public class CrewManningOffice {
 	public void setLatest(boolean isLatest) {
 		this.isLatest = isLatest;
 	}
-	public DateTime getOfficeStartDateTime() {
-		return officeStartDateTime;
+	public LocalDateTime getOfficeStartLocalDateTime() {
+		return officeStartLocalDateTime;
 	}
-	public void setOfficeStartDateTime(DateTime officeStartDateTime) {
-		this.officeStartDateTime = officeStartDateTime;
+	public void setOfficeStartLocalDateTime(LocalDateTime officeStartLocalDateTime) {
+		this.officeStartLocalDateTime = officeStartLocalDateTime;
 	}
-	public DateTime getOfficeEndDateTime() {
-		return officeEndDateTime;
+	public LocalDateTime getOfficeEndLocalDateTime() {
+		return officeEndLocalDateTime;
 	}
-	public void setOfficeEndDateTime(DateTime officeEndDateTime) {
-		this.officeEndDateTime = officeEndDateTime;
+	public void setOfficeEndLocalDateTime(LocalDateTime officeEndLocalDateTime) {
+		this.officeEndLocalDateTime = officeEndLocalDateTime;
 	}
 	@Override
 	public int hashCode() {
@@ -78,8 +78,8 @@ public class CrewManningOffice {
 	@Override
 	public String toString() {
 		return "CrewManningOffice [id=" + id + ", crewId=" + crewId + ", manningOfficeId=" + manningOfficeId
-				+ ", isLatest=" + isLatest + ", officeStartDateTime=" + officeStartDateTime + ", officeEndDateTime="
-				+ officeEndDateTime + "]";
+				+ ", isLatest=" + isLatest + ", officeStartLocalDateTime=" + officeStartLocalDateTime + ", officeEndLocalDateTime="
+				+ officeEndLocalDateTime + "]";
 	}
 	
 	

@@ -4,12 +4,13 @@ import com.intuitbrains.common.Flag;
 import com.intuitbrains.model.common.document.category.EmploymentDocument;
 import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselSubType;
-import com.intuitbrains.util.DateTime;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-public class Employment {
+public class Experience {
     @Id
     private long id;
     private String employerName, employerAddress;
@@ -17,7 +18,7 @@ public class Employment {
     private Rank lastRank;
     private Vessel vessel;
     private VesselSubType vesselSubType;
-    private DateTime startDate, endDate;
+    private LocalDate startDate, endDate;
     private List<EmploymentDocument> employmentDocuments;
     private Flag flag;
 
@@ -69,19 +70,19 @@ public class Employment {
         this.vessel = vessel;
     }
 
-    public DateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
