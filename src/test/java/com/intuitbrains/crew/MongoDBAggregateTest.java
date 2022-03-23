@@ -36,15 +36,15 @@ public class MongoDBAggregateTest {
     @Test
     public void test() {
         MongoCollection<Document> audits = db.getCollection(Collection.AUDIT_TRAIL);
-        threeMostPopulatedCitiesInTexas(audits);
+        getModifiedUptoLimit(audits, 4);
     }
 
-    private static void threeMostPopulatedCitiesInTexas(MongoCollection<Document> audits) {
+    private static void getModifiedUptoLimit(MongoCollection<Document> audits, int limitCnt) {
         Bson match = match(eq("action", "modify"));
         //Bson group = group("$city", sum("totalPop", "$pop"));
-        Bson project = project(fields(excludeId(), include("text")));
+        Bson project = project(fields(excludeId(), include("text", "actionDateTime")));
         Bson sort = sort(descending("actionDateTime"));
-        Bson limit = limit(3);
+        Bson limit = limit(limitCnt);
 
         List<Document> results = audits.aggregate(Arrays.asList(match, project, sort, limit))
                 .into(new ArrayList<>());
