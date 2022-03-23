@@ -103,7 +103,7 @@ class DocumentTest {
         documentDao.insert(trainingCert);
     }
 
-    @Test
+  /*  @Test
     void addFireTrainingDoc() {
         MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
@@ -119,10 +119,10 @@ class DocumentTest {
         trainingCert.setRequiredBeforeJoining(true);//Mandatory only if joining this Type of Vessle
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
-    }
+    }*/
 
     @Test
-    void addBasicSTCWTrainingDocs() {
+    void add5BasicSTCWTrainingDocsForAnyCrew() {
         MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
@@ -201,19 +201,54 @@ class DocumentTest {
 
 
     @Test
-    void addIndianDocs() {
-        String flag = flagDao.getByCode("IN").getCode();
-
+    void addDocsRequiredForIndianCrew() {
         Document passport = new Passport();
         passport.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         passport.setDocumentCategory(DocumentCategory.TRAVEL);
         DocumentType dt = docTypeDao.findByName("Indian Passport");
         passport.setDocTypeId(dt.getId());
         passport.setDocName(dt.getName());
-        passport.setFlagCode(flag);
+        passport.setFlagCode(dt.getFlagCode());
+        passport.setValidity(10, DurationType.YEARS);
         passport.setRequiredBeforeJoining(true);
         passport.setRequiredAfterJoining(true);
         documentDao.insert(passport);
+
+        Document usB1B2 = new Passport();
+        usB1B2.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        usB1B2.setDocumentCategory(DocumentCategory.TRAVEL);
+        dt = docTypeDao.findByName("US B1/B2");
+        usB1B2.setDocTypeId(dt.getId());
+        usB1B2.setDocName(dt.getName());
+        usB1B2.setFlagCode(dt.getFlagCode());
+        usB1B2.setValidity(10, DurationType.YEARS);
+        usB1B2.setRequiredBeforeJoining(true);
+        usB1B2.setRequiredAfterJoining(true);
+        documentDao.insert(usB1B2);
+
+        Document usC1D = new Passport();
+        usC1D.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        usC1D.setDocumentCategory(DocumentCategory.TRAVEL);
+        dt = docTypeDao.findByName("US C1/D");
+        usC1D.setDocTypeId(dt.getId());
+        usC1D.setDocName(dt.getName());
+        usC1D.setFlagCode(dt.getFlagCode());
+        usC1D.setValidity(10, DurationType.YEARS);
+        usC1D.setRequiredBeforeJoining(true);
+        usC1D.setRequiredAfterJoining(true);
+        documentDao.insert(usC1D);
+
+        Document ausMCV = new Passport();
+        ausMCV.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        ausMCV.setDocumentCategory(DocumentCategory.TRAVEL);
+        dt = docTypeDao.findByName("Australian MCV");
+        ausMCV.setDocTypeId(dt.getId());
+        ausMCV.setDocName(dt.getName());
+        ausMCV.setFlagCode(dt.getFlagCode());
+        ausMCV.setValidity(10, DurationType.YEARS);
+        ausMCV.setRequiredBeforeJoining(true);
+        ausMCV.setRequiredAfterJoining(true);
+        documentDao.insert(ausMCV);
 
         Document aadharCard = new NationalID();
         aadharCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
@@ -221,17 +256,70 @@ class DocumentTest {
         dt = docTypeDao.findByName("Aadhar Card");
         aadharCard.setDocTypeId(dt.getId());
         aadharCard.setDocName(dt.getName());
-        aadharCard.setFlagCode(flag);
+        aadharCard.setFlagCode(dt.getFlagCode());
         aadharCard.setRequiredBeforeJoining(true);
         documentDao.insert(aadharCard);
+
+        Document indLicense = new License();
+        indLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        indLicense.setDocumentCategory(DocumentCategory.TRAVEL);
+        dt = docTypeDao.findByName("Indian License");
+        indLicense.setDocTypeId(dt.getId());
+        indLicense.setDocName(dt.getName());
+        indLicense.setFlagCode(dt.getFlagCode());
+        indLicense.setValidity(5, DurationType.YEARS);
+        indLicense.setRequiredBeforeJoining(true);
+        indLicense.setRequiredAfterJoining(true);
+        indLicense.setRequiredOnBoard(true);
+        documentDao.insert(indLicense);
+
+        Document libLicense = new License();
+        libLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        libLicense.setDocumentCategory(DocumentCategory.TRAVEL);
+        dt = docTypeDao.findByName("Liberian License");
+        libLicense.setDocTypeId(dt.getId());
+        libLicense.setDocName(dt.getName());
+        libLicense.setFlagCode(dt.getFlagCode());
+        libLicense.setValidity(5, DurationType.YEARS);
+        libLicense.setRequiredBeforeJoining(true);
+        libLicense.setRequiredAfterJoining(true);
+        libLicense.setRequiredOnBoard(true);
+        documentDao.insert(libLicense);
+
+        Document panaLicense = new License();
+        panaLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        panaLicense.setDocumentCategory(DocumentCategory.TRAVEL);
+        dt = docTypeDao.findByName("Panama License");
+        panaLicense.setDocTypeId(dt.getId());
+        panaLicense.setDocName(dt.getName());
+        panaLicense.setFlagCode(dt.getFlagCode());
+        panaLicense.setValidity(5, DurationType.YEARS);
+        panaLicense.setRequiredBeforeJoining(true);
+        panaLicense.setRequiredAfterJoining(true);
+        panaLicense.setRequiredOnBoard(true);
+        documentDao.insert(panaLicense);
+
+        Document ukLicense = new License();
+        ukLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
+        ukLicense.setDocumentCategory(DocumentCategory.TRAVEL);
+        dt = docTypeDao.findByName("Panama License");
+        ukLicense.setDocTypeId(dt.getId());
+        ukLicense.setDocName(dt.getName());
+        ukLicense.setFlagCode(dt.getFlagCode());
+        ukLicense.setValidity(5, DurationType.YEARS);
+        ukLicense.setRequiredBeforeJoining(true);
+        ukLicense.setRequiredAfterJoining(true);
+        ukLicense.setRequiredOnBoard(true);
+        documentDao.insert(ukLicense);
+
 
         Document panCard = new TaxID();
         panCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         panCard.setDocumentCategory(DocumentCategory.FINANCIAL);
-        dt = docTypeDao.findByName("Pan Card");
+        dt = docTypeDao.findByName("PAN");
         panCard.setDocTypeId(dt.getId());
         panCard.setDocName(dt.getName());
-        panCard.setFlagCode(flag);
+        panCard.setFlagCode(dt.getFlagCode());
         panCard.setRequiredBeforeJoining(true);
         documentDao.insert(panCard);
 
@@ -241,7 +329,7 @@ class DocumentTest {
         dt = docTypeDao.findByName("Indian CDC");
         cdc.setDocTypeId(dt.getId());
         cdc.setDocName(dt.getName());
-        cdc.setFlagCode(flag);
+        cdc.setFlagCode(dt.getFlagCode());
         cdc.setValidity(10, DurationType.YEARS);
         cdc.setRequiredBeforeJoining(true);
         cdc.setRequiredAfterJoining(true);
@@ -253,8 +341,8 @@ class DocumentTest {
         dt = docTypeDao.findByName("INDOS");
         indos.setDocTypeId(dt.getId());
         indos.setDocName(dt.getName());
-        indos.setDocName("INDOS");
-        indos.setFlagCode(flag);
+        indos.setFlagCode(dt.getFlagCode());
+        indos.setValidity(5, DurationType.YEARS);
         indos.setRequiredBeforeJoining(true);
         indos.setRequiredAfterJoining(true);
         documentDao.insert(indos);
@@ -265,7 +353,8 @@ class DocumentTest {
         dt = docTypeDao.findByName("Yellow Fever");
         yellowFeverCert.setDocTypeId(dt.getId());
         yellowFeverCert.setDocName(dt.getName());
-        yellowFeverCert.setFlagCode(flag);
+        yellowFeverCert.setFlagCode(dt.getFlagCode());
+        indos.setValidity(5, DurationType.YEARS);
         yellowFeverCert.setRequiredBeforeJoining(true);
         yellowFeverCert.setRequiredAfterJoining(true);
         documentDao.insert(yellowFeverCert);
@@ -360,18 +449,18 @@ class DocumentTest {
         //Assert.assertNotNull(persistedInsurance);
     }
 
-
     @Test
-    void addIndianPassport() {
+    void addSTCW() {
         DocumentType type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
-        type.setDocumentCategory(DocumentCategory.TRAVEL);
-        type.setDocumentPool(DocumentPool.PASSPORT);
-        type.setName("Indian Passport");
-        type.setFlagCode(flagDao.getByCode("IN").getCode());
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("STCW 2010");
+        type.setName("STCW 2010 Basic Safety Training");
+        type.setDesc("International Convention on Standards of Training, Certification and Watchkeeping for Seafarers (STCW), 1978 sets minimum qualification standards for masters, officers and watch personnel on seagoing merchant ships and large yachts.");
         docTypeDao.insert(type);
-    }
 
+    }
 
     @Test
     void addAllValidDocTypes() {
@@ -382,6 +471,14 @@ class DocumentTest {
         type.setName("Indian Passport");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Indian CDC");
+        type.setFlagCode(flagDao.getByCode("IN").getCode());
+        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");        docTypeDao.insert(type);
 
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
@@ -500,7 +597,7 @@ class DocumentTest {
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
-        type.setName("Indian");
+        type.setName("Indian License");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
 
@@ -508,7 +605,7 @@ class DocumentTest {
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
-        type.setName("Liberian");
+        type.setName("Liberian License");
         type.setFlagCode(flagDao.getByCode("LR").getCode());
         docTypeDao.insert(type);
 
@@ -516,7 +613,7 @@ class DocumentTest {
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
-        type.setName("UK");
+        type.setName("UK License");
         type.setFlagCode(flagDao.getByCode("GB").getCode());
         docTypeDao.insert(type);
 
@@ -524,33 +621,19 @@ class DocumentTest {
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.LICENSE);
-        type.setName("Panama");
+        type.setName("Panama License");
         type.setFlagCode(flagDao.getByCode("PA").getCode());
         docTypeDao.insert(type);
 
-
-    }
-
-    @Test
-    void addSTCW() {
-        DocumentType type = new DocumentType();
+        type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("STCW 2010");
         type.setName("STCW 2010 Basic Safety Training");
         type.setDesc("International Convention on Standards of Training, Certification and Watchkeeping for Seafarers (STCW), 1978 sets minimum qualification standards for masters, officers and watch personnel on seagoing merchant ships and large yachts.");
         docTypeDao.insert(type);
-
     }
-    @Test
-    void addIndianCDC() {
-        DocumentType type = new DocumentType();
-        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
-        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
-        type.setName("Indian CDC");
-        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");
-        docTypeDao.insert(type);
 
-    }
+
 }

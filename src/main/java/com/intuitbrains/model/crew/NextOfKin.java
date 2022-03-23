@@ -1,5 +1,7 @@
 package com.intuitbrains.model.crew;
 
+import com.intuitbrains.model.common.document.Passport;
+
 public class NextOfKin  {
 	private int nomineeId;
 	private String nomineeName;
@@ -7,6 +9,7 @@ public class NextOfKin  {
 	private String gender;
 	private String address;
 	private String dateOfBirth;
+	private Passport passport;
 	private float perOfAmount;
 
 	public int getNomineeId() {
@@ -63,6 +66,14 @@ public class NextOfKin  {
 
 	public void setPerOfAmount(float perOfAmount) {
 		this.perOfAmount = perOfAmount;
+	}
+
+	public Passport getPassport() {
+		return passport;
+	}
+
+	public void setPassport(Passport passport) {
+		this.passport = passport;
 	}
 
 	public enum RelationType{

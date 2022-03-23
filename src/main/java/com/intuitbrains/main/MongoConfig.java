@@ -3,6 +3,7 @@ package com.intuitbrains.main;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.mongodb.client.MongoDatabase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -52,4 +53,9 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     public MongoTemplate mongoTemplate() throws Exception {
         return new MongoTemplate(mongoClient(), getDatabaseName());
     }*/
+
+    @Bean
+    public MongoDatabase getDB(){
+        return mongoClient().getDatabase(getDatabaseName());
+    }
 }

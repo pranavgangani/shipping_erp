@@ -59,6 +59,7 @@
 
                                        </div>
                                    </div>
+                            </div>
                             <div class="col-xl-10">
                                 <!-- Account details card-->
                                 <div class="card mb-6">

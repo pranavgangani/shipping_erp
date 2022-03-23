@@ -42,7 +42,7 @@ public class Crew extends Person {
     // Past
     private List<Employment> employmentHistory;
     private List<Education> educationHistory;
-    private List<Medical> medicalHistory;
+    private List<MedicalHistory> medicalHistory;
     private List<TravelAudit> travelHistory;
 
     //Current
@@ -197,11 +197,11 @@ public class Crew extends Person {
         this.photoId = photoId;
     }
 
-    public List<Medical> getMedicalHistory() {
+    public List<MedicalHistory> getMedicalHistory() {
         return medicalHistory;
     }
 
-    public void setMedicalHistory(List<Medical> medicalHistory) {
+    public void setMedicalHistory(List<MedicalHistory> medicalHistory) {
         this.medicalHistory = medicalHistory;
     }
 

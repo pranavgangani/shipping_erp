@@ -7,10 +7,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.util.DateTime;
 
-@Document(collection = Collection.TRAVEL)
+@Document(collection = Collection.TRAVEL_HISTORY)
 public class TravelAudit {
 	@Transient
-	public static final String SEQUENCE_NAME = Collection.TRAVEL;
+	public static final String SEQUENCE_NAME = Collection.TRAVEL_HISTORY;
 	
 	@Id
 	private long id;

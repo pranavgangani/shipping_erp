@@ -5,8 +5,8 @@ public class Collection {
 	public final static String CREW = "Crew";
 	public final static String CREW_PHOTO = "CrewPhoto";
 	
-	public final static String MEDICAL = "Medical";
-	public final static String TRAVEL = "Travel";
+	public final static String MEDICAL_HISTORY = "MedicalHistory";
+	public final static String TRAVEL_HISTORY = "TravelHistory";
 	
 	//Vessel
 	public final static String VESSEL = "Vessel";
