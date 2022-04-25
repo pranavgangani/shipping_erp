@@ -91,17 +91,19 @@ public class AuditTrail {
     }
 
     public String getAgo() {
-        String ago;
-        if (ChronoUnit.MINUTES.between(getActionLocalDateTime(), LocalDateTime.now()) < 60) {
-            ago = ChronoUnit.MINUTES.between(getActionLocalDateTime(), LocalDateTime.now()) + " min ago";
-        } else if (ChronoUnit.HOURS.between(getActionLocalDateTime(), LocalDateTime.now()) < 24) {
-            ago = ChronoUnit.HOURS.between(getActionLocalDateTime(), LocalDateTime.now()) + " hr ago";
-        } else if (ChronoUnit.DAYS.between(getActionLocalDateTime(), LocalDateTime.now()) <= 31) {
-            ago = ChronoUnit.DAYS.between(getActionLocalDateTime(), LocalDateTime.now()) + " days ago";
-        } else if (ChronoUnit.MONTHS.between(getActionLocalDateTime(), LocalDateTime.now()) <= 3) {
-            ago = ChronoUnit.MONTHS.between(getActionLocalDateTime(), LocalDateTime.now()) + " months ago";
-        } else {
-            ago = ChronoUnit.YEARS.between(getActionLocalDateTime(), LocalDateTime.now()) + " years ago";
+        String ago = null;
+        if(getActionLocalDateTime()!=null) {
+            if (ChronoUnit.MINUTES.between(getActionLocalDateTime(), LocalDateTime.now()) < 60) {
+                ago = ChronoUnit.MINUTES.between(getActionLocalDateTime(), LocalDateTime.now()) + " min ago";
+            } else if (ChronoUnit.HOURS.between(getActionLocalDateTime(), LocalDateTime.now()) < 24) {
+                ago = ChronoUnit.HOURS.between(getActionLocalDateTime(), LocalDateTime.now()) + " hr ago";
+            } else if (ChronoUnit.DAYS.between(getActionLocalDateTime(), LocalDateTime.now()) <= 31) {
+                ago = ChronoUnit.DAYS.between(getActionLocalDateTime(), LocalDateTime.now()) + " days ago";
+            } else if (ChronoUnit.MONTHS.between(getActionLocalDateTime(), LocalDateTime.now()) <= 3) {
+                ago = ChronoUnit.MONTHS.between(getActionLocalDateTime(), LocalDateTime.now()) + " months ago";
+            } else {
+                ago = ChronoUnit.YEARS.between(getActionLocalDateTime(), LocalDateTime.now()) + " years ago";
+            }
         }
         return ago;
     }

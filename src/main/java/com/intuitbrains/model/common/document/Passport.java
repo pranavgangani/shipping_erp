@@ -4,7 +4,7 @@ import com.intuitbrains.model.common.document.category.TravelDocument;
 
 public class Passport extends TravelDocument {
     private int blankPages;
-    private boolean isECNRRequired;
+    private Boolean isECNRRequired;
 
     public int getBlankPages() {
         return blankPages;
@@ -14,11 +14,11 @@ public class Passport extends TravelDocument {
         this.blankPages = blankPages;
     }
 
-    public boolean isECNRRequired() {
+    public Boolean isECNRRequired() {
         return isECNRRequired;
     }
 
-    public void setECNRRequired(boolean ECNRRequired) {
+    public void setECNRRequired(Boolean ECNRRequired) {
         isECNRRequired = ECNRRequired;
     }
 }

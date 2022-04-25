@@ -1,9 +1,13 @@
 package com.intuitbrains.crew;
 
+import com.intuitbrains.common.AuditTrail;
+import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
+import com.intuitbrains.dao.common.AuditTrailRepository;
 import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
+import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewContractRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
@@ -11,6 +15,7 @@ import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.common.document.category.EducationDocument;
 import com.intuitbrains.model.common.document.category.EmploymentDocument;
 import com.intuitbrains.model.crew.*;
@@ -20,6 +25,7 @@ import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.model.vessel.VesselVacancy;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
+import com.intuitbrains.util.StandardWebParameter;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +63,84 @@ class CrewTest {
     private CrewContractRepository crewContractDao;
     @Autowired
     private VesselRepository vesselDao;
+    @Autowired
+    private EmployeeRepository employeeDao;
+    @Autowired
+    private AuditTrailRepository auditTrailDao;
+
+    @Test
+    void addNewCrewDetails() {
+        LocalDate dob = LocalDate.of(1985, 7, 23);
+
+        Flag flag = flagDao.getByCode("IN");
+
+        Crew crew = new Crew();
+        crew.setfName("Pranav");
+        crew.setmName("Jayanti");
+        crew.setlName("Gangani");
+        crew.setDob(dob);
+        crew.setGender("male");
+        crew.setRank(Rank.JR_ENGINEER);
+        crew.setNationalityFlagId(flag.getId());
+        crew.setNationality("Indian");
+        crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
+        crew.setPresentAddress(crew.getPermAddress());
+        crew.setDistinguishMark("Some mark on head");
+
+        crew.setEmailId("pranavgangani@gmail.com");
+        crew.setPassportNumber("SLJALJLJ");
+
+
+        //Education
+        Education ssc = new Education();
+        ssc.setEducationName("S.S.C");
+        ssc.setInstituteName("Sharon School");
+        ssc.setInstituteAddress("Mulund, Mumbai");
+        ssc.setPercentage(50f);
+        ssc.setFlag(flag);
+        ssc.setStartDate(LocalDate.of(2001, 4, 23));
+        ssc.setEndDate(LocalDate.of(2002, 4, 23));
+
+        EducationDocument sscDoc = new Certificate();
+        sscDoc.setDocTypeId(docTypeDao.findByName("SSC").getId());
+        //sscDoc.setFile();
+        ssc.setEducationDocuments(new ArrayList<>(Arrays.asList(sscDoc)));
+
+        Education hsc = new Education();
+        hsc.setEducationName("H.S.C");
+        hsc.setInstituteName("Somaiya College");
+        hsc.setInstituteAddress("Vidyavihar, Mumbai");
+        hsc.setPercentage(90.99f);
+        hsc.setFlag(flag);
+        hsc.setStartDate(LocalDate.of(2003, 4, 23));
+        hsc.setEndDate(LocalDate.of(2006, 4, 23));
+
+        EducationDocument hscDoc = new Certificate();
+        hscDoc.setDocTypeId(docTypeDao.findByName("HSC").getId());
+        //empDoc2.setFile();
+        hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
+
+        crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
+
+        crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
+        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
+        crew.setEnteredBy(employeeDao.findByEmailId("pgangani@saar.com").getEmpId());
+        crew.setEnteredLocalDateTime(LocalDateTime.now());
+        crewDao.insert(crew);
+
+
+        //Audit
+        AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.ADD);
+        audit.setActionLocalDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.CREW);
+        audit.setActionBy(crew.getEnteredBy());
+        audit.setUniqueId(crew.getId());
+        audit.setText("New Crew - <b>" + (crew.getName()) + "</b> recruited!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        auditTrailDao.insert(audit);
+    }
+
 
     @Test
     void addCrewDetails() {

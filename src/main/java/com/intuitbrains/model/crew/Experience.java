@@ -7,7 +7,6 @@ import com.intuitbrains.model.vessel.VesselSubType;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Experience {
@@ -20,6 +19,7 @@ public class Experience {
     private VesselSubType vesselSubType;
     private LocalDate startDate, endDate;
     private List<EmploymentDocument> employmentDocuments;
+    private boolean isPreSeaExperience;
     private Flag flag;
 
     public long getId() {

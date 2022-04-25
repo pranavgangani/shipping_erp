@@ -461,7 +461,6 @@ class DocumentTest {
         docTypeDao.insert(type);
 
     }
-
     @Test
     void addAllValidDocTypes() {
         DocumentType type = new DocumentType();
@@ -478,14 +477,43 @@ class DocumentTest {
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setName("Indian CDC");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
-        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");        docTypeDao.insert(type);
+        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Liberian CDC");
+        type.setFlagCode(flagDao.getByCode("LR").getCode());
+        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Panama CDC");
+        type.setFlagCode(flagDao.getByCode("PA").getCode());
+        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Other CDC");
+        //type.setFlagCode(flagDao.getByCode("PA").getCode());
+        type.setDesc("A Continuous Certificate of Discharge or Continuous Discharge Certificate (C.D.C.) is a seafarer's identity document issued by his country. This document certifies that the person holding this is a seaman as per The International Convention on Standards of Training, Certification and Watch keeping for Seafarers (STCW), 1978, as amended 2010. Every seafarer must carry this document while on board, which is also an official and legal record of his sea experience. The master of the vessel signs the document each time a seaman is signed off from the vessel certifying his experience on board.");
+        docTypeDao.insert(type);
+
 
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setShortName("CoE");
-        type.setName("Certificate of Endorsement ("+type.getShortName()+")");
+        type.setName("Certificate of Endorsement (" + type.getShortName() + ")");
         type.setDesc("Requirements for a Flag State Endorsement by the Palau International Ship Registry (PISR) in accordance with the provisions of the International Convention on Standards of Training, Certification and Watch-keeping for Seafarers, (STCW) 1978 as amended.");
         docTypeDao.insert(type);
 
@@ -494,7 +522,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setShortName("CoC");
-        type.setName("Certificate of Competency ("+type.getShortName()+")");
+        type.setName("Certificate of Competency (" + type.getShortName() + ")");
         type.setDesc("Each candidate for an officer certificate who qualifies under the provisions of STCW and successfully completes the appropriate examination will be issued a Certificate of Competency. This certificate states that the officer has been found duly qualified in accordance with the provisions of STCW and in the format prescribed by STCW for those officers qualified to receive STCW certificates.");
         docTypeDao.insert(type);
 
@@ -503,7 +531,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setShortName("CoP");
-        type.setName("Certificate of Proficiency ("+type.getShortName()+")");
+        type.setName("Certificate of Proficiency (" + type.getShortName() + ")");
         type.setDesc("This certificate states that the officer or the Rating has been found duly qualified in accordance with the provisions of STCW and in the format prescribed by STCW for those qualified to receive STCW certificates.");
         docTypeDao.insert(type);
 
@@ -512,7 +540,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.NATIONAL_ID);
         type.setShortName("SIRB");
-        type.setName("Seafarer Identification Record Book ("+type.getShortName()+")");
+        type.setName("Seafarer Identification Record Book (" + type.getShortName() + ")");
         docTypeDao.insert(type);
 
         type = new DocumentType();
@@ -520,7 +548,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setShortName("INDOS");
-        type.setName("Indian National Database Of Seafarers ("+type.getShortName()+")");
+        type.setName("Indian National Database Of Seafarers (" + type.getShortName() + ")");
         type.setDesc("INDoS is a computerised national database of Indian seafarers for use by statutory authorities such as Flag State, Port State, Immigration & Employers etc., to prevent the fraudulent issue of certificates.");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
@@ -530,7 +558,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.EDUCATION);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setShortName("SSC");
-        type.setName("Secondary School Certificate ("+type.getShortName()+")");
+        type.setName("Secondary School Certificate (" + type.getShortName() + ")");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
 
@@ -539,7 +567,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.EDUCATION);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
         type.setShortName("HSC");
-        type.setName("Higher Secondary Certificate ("+type.getShortName()+")");
+        type.setName("Higher Secondary Certificate (" + type.getShortName() + ")");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
 
@@ -548,7 +576,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         type.setDocumentPool(DocumentPool.TAX_ID);
         type.setShortName("PAN");
-        type.setName("Pan Card ("+type.getShortName()+")");
+        type.setName("Pan Card (" + type.getShortName() + ")");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
 
@@ -623,6 +651,14 @@ class DocumentTest {
         type.setDocumentPool(DocumentPool.LICENSE);
         type.setName("Panama License");
         type.setFlagCode(flagDao.getByCode("PA").getCode());
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAVEL);
+        type.setDocumentPool(DocumentPool.LICENSE);
+        type.setName("Singapore License");
+        type.setFlagCode(flagDao.getByCode("SG").getCode());
         docTypeDao.insert(type);
 
         type = new DocumentType();
