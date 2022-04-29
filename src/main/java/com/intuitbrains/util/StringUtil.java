@@ -8,4 +8,7 @@ public class StringUtil {
     public static boolean parseBoolean(String s) {
         return (s!=null && trim(s).equalsIgnoreCase("yes"));
     }
+    public static boolean isNotEmpty(String s) {
+        return (s!=null && !trim(s).equalsIgnoreCase(""));
+    }
 }

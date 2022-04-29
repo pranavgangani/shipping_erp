@@ -6,6 +6,7 @@ import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.Document;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.Crew;
+import com.intuitbrains.model.crew.NextOfKin;
 import com.intuitbrains.util.DateTimeUtil;
 import com.intuitbrains.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -109,8 +110,8 @@ public class ExcelReadTest {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDateTime doi = DateTimeUtil.convertToLocalDateTime(doiVal);
-            LocalDateTime doe = DateTimeUtil.convertToLocalDateTime(doeVal);
+            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
+            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
             String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
             String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
@@ -187,8 +188,8 @@ public class ExcelReadTest {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDateTime doi = DateTimeUtil.convertToLocalDateTime(doiVal);
-            LocalDateTime doe = DateTimeUtil.convertToLocalDateTime(doeVal);
+            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
+            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
             String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
             String remarks = sheet.getRow(remarksCell.getRow()).getCell(remarksCell.getCol()).getRichStringCellValue().getString();
@@ -288,8 +289,74 @@ public class ExcelReadTest {
     }
 
     private void populateNextOfKin(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+        CellReference civilStatusCell = new CellReference("D55");
+        CellReference nokNameCell = new CellReference("D56");
+        CellReference nokAddressCell = new CellReference("D57");
+        CellReference nokRelationCell = new CellReference("O56");
+        CellReference nokPinCodeCell = new CellReference("Q58");
+        CellReference nokContactCell = new CellReference("N59");
 
+        String civilStatus = sheet.getRow(civilStatusCell.getRow()).getCell(civilStatusCell.getCol()).getRichStringCellValue().getString();
+        String nokAddress = sheet.getRow(nokAddressCell.getRow()).getCell(nokAddressCell.getCol()).getRichStringCellValue().getString();
+        String nokPinCode = sheet.getRow(nokPinCodeCell.getRow()).getCell(nokPinCodeCell.getCol()).getRichStringCellValue().getString();
+        String nokContact = sheet.getRow(nokContactCell.getRow()).getCell(nokContactCell.getCol()).getRichStringCellValue().getString();
+
+        //NoK list
+        for (int i = 62; i <= 65; i++) {
+            CellReference docTypeCell = new CellReference("B" + i);
+            String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
+            CellReference nameCell = new CellReference("B" + i);
+            CellReference genderCell = new CellReference("E" + i);
+            CellReference dobCell = new CellReference("F" + i);
+            CellReference passportCell = new CellReference("H" + i);
+            CellReference doICell = new CellReference("K" + i);
+            CellReference poICell = new CellReference("M" + i);
+            CellReference doECell = new CellReference("O" + i);
+            CellReference ecnrCell = new CellReference("Q" + i);
+            CellReference hasUSVisaCell = new CellReference("S" + i);
+
+            Date dobVal = sheet.getRow(dobCell.getRow()).getCell(dobCell.getCol()).getDateCellValue();
+            Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
+            Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
+            LocalDate dob = DateTimeUtil.convertToLocalDate(dobVal);
+            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
+            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
+            String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
+            String name = sheet.getRow(nameCell.getRow()).getCell(nameCell.getCol()).getRichStringCellValue().getString();
+            String gender = sheet.getRow(genderCell.getRow()).getCell(genderCell.getCol()).getRichStringCellValue().getString();
+            String passportNum = sheet.getRow(passportCell.getRow()).getCell(passportCell.getCol()).getRichStringCellValue().getString();
+            boolean isECNR = StringUtil.parseBoolean(sheet.getRow(ecnrCell.getRow()).getCell(ecnrCell.getCol()).getRichStringCellValue().getString());
+            boolean hasUSVisa = StringUtil.parseBoolean(sheet.getRow(hasUSVisaCell.getRow()).getCell(hasUSVisaCell.getCol()).getRichStringCellValue().getString());
+
+            NextOfKin nok = new NextOfKin();
+            NextOfKin.RelationType relationType = null;
+            if (docTypeStr.equalsIgnoreCase("Wife")) {
+                relationType = NextOfKin.RelationType.WIFE;
+            } else if (docTypeStr.startsWith("Child")) {
+                if (gender.equalsIgnoreCase("M"))
+                    relationType = NextOfKin.RelationType.SON;
+                if (gender.equalsIgnoreCase("F"))
+                    relationType = NextOfKin.RelationType.DAUGHTER;
+            }
+            nok.setNomineeName(name);
+            nok.setDateOfBirth(dob);
+            nok.setRelationType(relationType.getRelationTypeName());
+            nok.setAddress(nokAddress);
+            nok.setGender(gender);
+            nok.setHasUSVisa(hasUSVisa);
+
+            Passport nokPassport = new Passport();
+            nokPassport.setDocNumber(passportNum);
+            nokPassport.setGivenName(name);
+            nokPassport.setECNRRequired(isECNR);
+            nokPassport.setDateOfExpiry(doe);
+            nokPassport.setAddress(nokAddress);
+            nokPassport.setDateOfIssue(doi);
+            nokPassport.setPlaceOfIssue(placeOfIssue);
+            nok.setPassport(nokPassport);
+        }
     }
+
     private void populateLicence(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
         //License
         for (int i = 48; i <= 53; i++) {
@@ -304,8 +371,8 @@ public class ExcelReadTest {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDateTime doi = DateTimeUtil.convertToLocalDateTime(doiVal);
-            LocalDateTime doe = DateTimeUtil.convertToLocalDateTime(doeVal);
+            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
+            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
             String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
             String grade = sheet.getRow(gradeCell.getRow()).getCell(gradeCell.getCol()).getRichStringCellValue().getString();

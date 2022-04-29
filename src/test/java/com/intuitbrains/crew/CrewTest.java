@@ -289,7 +289,7 @@ class CrewTest {
         Crew crew = crewDao.findById(26l).get();
         NextOfKin nok1 = new NextOfKin();
         nok1.setNomineeName("Vrushali Rohan Tiwari");
-        nok1.setDateOfBirth("12-Mar-1983");
+       // nok1.setDateOfBirth("12-Mar-1983");
         nok1.setRelationType(NextOfKin.RelationType.WIFE.getRelationTypeName());
         nok1.setAddress("Same as above");
         nok1.setGender("female");
@@ -297,7 +297,7 @@ class CrewTest {
 
         NextOfKin nok2 = new NextOfKin();
         nok2.setNomineeName("Kanchan Pradeep Tiwari");
-        nok2.setDateOfBirth("12-Apr-1964");
+        //nok2.setDateOfBirth("12-Apr-1964");
         nok2.setRelationType(NextOfKin.RelationType.MOTHER.getRelationTypeName());
         nok2.setAddress("Same as above");
         nok2.setGender("female");
@@ -306,14 +306,14 @@ class CrewTest {
         //Below 18
         NextOfKin nok3 = new NextOfKin();
         nok3.setNomineeName("Tanishqa Tiwari");
-        nok3.setDateOfBirth("21-Oct-2012");
+        //nok3.setDateOfBirth("21-Oct-2012");
         nok3.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
         nok3.setAddress("Same as above");
         nok3.setGender("female");
 
         NextOfKin nok4 = new NextOfKin();
         nok4.setNomineeName("Shamika Tiwari");
-        nok4.setDateOfBirth("16-Jun-2015");
+       // nok4.setDateOfBirth("16-Jun-2015");
         nok4.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
         nok4.setAddress("Same as above");
         nok4.setGender("female");

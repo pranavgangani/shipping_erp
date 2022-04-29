@@ -2,14 +2,17 @@ package com.intuitbrains.model.crew;
 
 import com.intuitbrains.model.common.document.Passport;
 
+import java.time.LocalDate;
+
 public class NextOfKin  {
 	private int nomineeId;
 	private String nomineeName;
 	private String relationType;
 	private String gender;
 	private String address;
-	private String dateOfBirth;
+	private LocalDate dateOfBirth;
 	private Passport passport;
+	private Boolean hasUSVisa;
 	private float perOfAmount;
 
 	public int getNomineeId() {
@@ -52,11 +55,11 @@ public class NextOfKin  {
 		this.address = address;
 	}
 
-	public String getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -74,6 +77,14 @@ public class NextOfKin  {
 
 	public void setPassport(Passport passport) {
 		this.passport = passport;
+	}
+
+	public Boolean getHasUSVisa() {
+		return hasUSVisa;
+	}
+
+	public void setHasUSVisa(Boolean hasUSVisa) {
+		this.hasUSVisa = hasUSVisa;
 	}
 
 	public enum RelationType{

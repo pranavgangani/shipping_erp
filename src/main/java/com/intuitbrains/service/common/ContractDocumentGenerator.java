@@ -364,7 +364,7 @@ public class ContractDocumentGenerator {
                     row = tab.createRow(); // New Row
                     row.getCell(0).setText(i + ".");
                     row.getCell(1).setText(nok.getNomineeName());
-                    row.getCell(2).setText(nok.getDateOfBirth());
+                    //row.getCell(2).setText(nok.getDateOfBirth());
                     row.getCell(3).setText(nok.getGender());
                     row.getCell(4).setText(nok.getRelationType());
                     row.getCell(5).setText(nok.getAddress());

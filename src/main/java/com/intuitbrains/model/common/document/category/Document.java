@@ -8,6 +8,7 @@ import com.intuitbrains.model.crew.DocumentMatrix;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +37,7 @@ public abstract class Document {
     private long docTypeId;
     private String givenName;
     private String remarks;
-    private LocalDateTime dateOfIssue, dateOfExpiry;
+    private LocalDate dateOfIssue, dateOfExpiry;
     private String placeOfIssue;
     private int versionId;
     private FieldStatus fieldStatus;
@@ -158,19 +159,19 @@ public abstract class Document {
         this.remarks = remarks;
     }
 
-    public LocalDateTime getDateOfIssue() {
+    public LocalDate getDateOfIssue() {
         return dateOfIssue;
     }
 
-    public void setDateOfIssue(LocalDateTime dateOfIssue) {
+    public void setDateOfIssue(LocalDate dateOfIssue) {
         this.dateOfIssue = dateOfIssue;
     }
 
-    public LocalDateTime getDateOfExpiry() {
+    public LocalDate getDateOfExpiry() {
         return dateOfExpiry;
     }
 
-    public void setDateOfExpiry(LocalDateTime dateOfExpiry) {
+    public void setDateOfExpiry(LocalDate dateOfExpiry) {
         this.dateOfExpiry = dateOfExpiry;
     }
 
