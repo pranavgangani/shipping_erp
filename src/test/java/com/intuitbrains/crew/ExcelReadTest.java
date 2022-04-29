@@ -77,18 +77,18 @@ public class ExcelReadTest {
             boolean isLowerRank = StringUtil.parseBoolean(sheet.getRow(isLowerRankCell.getRow()).getCell(isLowerRankCell.getCol()).getRichStringCellValue().getString());
             Date dateAvailableFrom = sheet.getRow(dateAvailableCell.getRow()).getCell(dateAvailableCell.getCol()).getDateCellValue();
 
-            List<Document> mandatoryDocList = documentDao.findAll();
 
+            //Get Documents
+            List<Document> mandatoryDocList = documentDao.findAll();
             //Passport & Visa
             populatePassportVisa(sheet, mandatoryDocList, documents);
-
             //CDC
             populateCDC(sheet, mandatoryDocList, documents);
-
             //Licence
             populateLicence(sheet, mandatoryDocList, documents);
-
-
+            //NoK
+            populateNextOfKin(sheet, mandatoryDocList, documents);
+            //Set docs
             crew.setExistingDocuments(documents);
 
         } catch (IOException e) {
@@ -287,6 +287,9 @@ public class ExcelReadTest {
         }
     }
 
+    private void populateNextOfKin(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+
+    }
     private void populateLicence(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
         //License
         for (int i = 48; i <= 53; i++) {
@@ -352,8 +355,38 @@ public class ExcelReadTest {
                         break;
                     }
                 }
-            } else if (docTypeStr.equalsIgnoreCase("Panama")) {
+            } else if (docTypeStr.equalsIgnoreCase("UK")) {
                 DocumentType dt = docTypeDao.findByName("UK License");
+                for (Document doc : mandatoryDocList) {
+                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
+                        License lic = (License) doc;
+                        lic.setDateOfExpiry(doe);
+                        lic.setDocNumber(docNum);
+                        lic.setDateOfIssue(doi);
+                        lic.setDateOfExpiry(doe);
+                        lic.setPlaceOfIssue(placeOfIssue);
+                        lic.setGrade(grade);
+                        crewDocsToPopulate.add(lic);
+                        break;
+                    }
+                }
+            } else if (docTypeStr.equalsIgnoreCase("Singapore")) {
+                DocumentType dt = docTypeDao.findByName("Singapore License");
+                for (Document doc : mandatoryDocList) {
+                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
+                        License lic = (License) doc;
+                        lic.setDateOfExpiry(doe);
+                        lic.setDocNumber(docNum);
+                        lic.setDateOfIssue(doi);
+                        lic.setDateOfExpiry(doe);
+                        lic.setPlaceOfIssue(placeOfIssue);
+                        lic.setGrade(grade);
+                        crewDocsToPopulate.add(lic);
+                        break;
+                    }
+                }
+            } else if (docTypeStr.equalsIgnoreCase("Others")) {
+                DocumentType dt = docTypeDao.findByName("Other License");
                 for (Document doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         License lic = (License) doc;
