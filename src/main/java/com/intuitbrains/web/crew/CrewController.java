@@ -15,6 +15,8 @@
  */
 package com.intuitbrains.web.crew;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,6 +36,7 @@ import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselVacancy;
 import com.intuitbrains.model.vessel.VesselVacancyAttributes;
+import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.StandardWebParameter;
 import org.bson.BsonBinarySubType;
@@ -78,6 +81,8 @@ public class CrewController {
     private VesselVacancyRepository vesselVacancyDao;
     @Autowired
     private VesselRepository vesselDao;
+    @Autowired
+    private CrewService crewService;
 
     @GetMapping(value = "/list")
     public ModelAndView crewList(Model model) {
@@ -343,6 +348,35 @@ public class CrewController {
         return "uploadPhoto";
     }
 
+    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public String addDoc(HttpServletRequest req, @RequestParam("file") MultipartFile file,
+                         RedirectAttributes redirectAttributes) {
+        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
+
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        Crew crew = null;
+        try {
+            FileInputStream fi = new FileInputStream(file.getOriginalFilename());
+            crew = crewService.uploadCrewData(fi);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Audit
+        AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.ADD);
+        audit.setActionBy(emp.getEmpId());
+        audit.setActionLocalDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.CREW);
+        audit.setText("New Crew - <b>" + (crew.getName()) + "</b> recruited!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(crew.getId());
+        auditTrailDao.insert(audit);
+
+        return "redirect:/";
+    }
 
     @PostMapping(value = "/addDoc", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String addDoc(HttpServletRequest req, @RequestParam("crewId") long crewId,

@@ -90,6 +90,13 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>2.11.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.mysema.querydsl/querydsl-apt -->
+        <!--<dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>3.7.4</version>
+            <scope>provided</scope>
+        </dependency>-->
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-mongodb</artifactId>
@@ -99,6 +106,10 @@
                     <artifactId>mongo-java-driver</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

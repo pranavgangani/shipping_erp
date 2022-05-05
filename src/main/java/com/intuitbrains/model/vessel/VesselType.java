@@ -36,7 +36,10 @@ public class VesselType {
 	}
 	
 	public static VesselType createFromId(int typeId) {
-		return ((VesselType)(getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
+		return ((getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
 	}
-	
+
+	public static VesselType createFromDesc(String desc) {
+		return (getList().stream().filter(o->o.getDesc().equalsIgnoreCase(desc)).collect(Collectors.toList())).get(0);
+	}
 }

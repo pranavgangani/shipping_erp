@@ -2,31 +2,53 @@ package com.intuitbrains.crew;
 
 import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
+import com.intuitbrains.dao.common.FlagRepository;
+import com.intuitbrains.dao.crew.CrewRepository;
+import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.Document;
 import com.intuitbrains.model.common.document.category.DocumentType;
-import com.intuitbrains.model.crew.Crew;
-import com.intuitbrains.model.crew.NextOfKin;
+import com.intuitbrains.model.company.Employee;
+import com.intuitbrains.model.crew.*;
+import com.intuitbrains.model.vessel.Vessel;
+import com.intuitbrains.model.vessel.VesselSubType;
+import com.intuitbrains.model.vessel.VesselType;
 import com.intuitbrains.util.DateTimeUtil;
 import com.intuitbrains.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFDataValidationHelper;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(
+        classes = CrewManagementApplication.class)
+@AutoConfigureMockMvc
 public class ExcelReadTest {
     @Autowired
     private CrewDocumentRepository documentDao;
     @Autowired
     private DocumentTypeRepository docTypeDao;
+    @Autowired
+    private CrewRepository crewDao;
+    @Autowired
+    private FlagRepository flagDao;
 
     @Test
     public void readFromExcel() {
@@ -37,7 +59,9 @@ public class ExcelReadTest {
             Workbook workbook = new HSSFWorkbook(file);
             Crew crew = new Crew();
             //Next, let's retrieve the first sheet of the file and iterate through each row:
-            Sheet sheet = workbook.getSheetAt(0);
+            Sheet sheet1 = workbook.getSheetAt(0);
+            Sheet sheet2 = workbook.getSheetAt(1);
+            Sheet sheet3 = workbook.getSheetAt(2);
             CellReference postAppliedForCell = new CellReference("B15");
             CellReference isLowerRankCell = new CellReference("B18");
             CellReference dateAvailableCell = new CellReference("B21");
@@ -66,39 +90,142 @@ public class ExcelReadTest {
             CellReference howCometoKnowCell = new CellReference("J31");
 
             //Crew details
-            crew.setfName(sheet.getRow(fNameCell.getRow()).getCell(fNameCell.getCol()).getRichStringCellValue().getString());
-            crew.setmName(sheet.getRow(mNameCell.getRow()).getCell(mNameCell.getCol()).getRichStringCellValue().getString());
-            crew.setlName(sheet.getRow(lNameCell.getRow()).getCell(lNameCell.getCol()).getRichStringCellValue().getString());
-            crew.setNationality(sheet.getRow(nationalityCell.getRow()).getCell(nationalityCell.getCol()).getRichStringCellValue().getString());
-            Date dob = sheet.getRow(dateOfBirthCell.getRow()).getCell(dateOfBirthCell.getCol()).getDateCellValue();
+            crew.setfName(sheet1.getRow(fNameCell.getRow()).getCell(fNameCell.getCol()).getRichStringCellValue().getString());
+            crew.setmName(sheet1.getRow(mNameCell.getRow()).getCell(mNameCell.getCol()).getRichStringCellValue().getString());
+            crew.setlName(sheet1.getRow(lNameCell.getRow()).getCell(lNameCell.getCol()).getRichStringCellValue().getString());
+            crew.setNationality(sheet1.getRow(nationalityCell.getRow()).getCell(nationalityCell.getCol()).getRichStringCellValue().getString());
+            Date dob = sheet1.getRow(dateOfBirthCell.getRow()).getCell(dateOfBirthCell.getCol()).getDateCellValue();
             crew.setDob(DateTimeUtil.convertToLocalDate(dob));
 
             //Vacancy details
-            String postAppliedFor = sheet.getRow(postAppliedForCell.getRow()).getCell(postAppliedForCell.getCol()).getRichStringCellValue().getString();
-            boolean isLowerRank = StringUtil.parseBoolean(sheet.getRow(isLowerRankCell.getRow()).getCell(isLowerRankCell.getCol()).getRichStringCellValue().getString());
-            Date dateAvailableFrom = sheet.getRow(dateAvailableCell.getRow()).getCell(dateAvailableCell.getCol()).getDateCellValue();
+            String postAppliedFor = sheet1.getRow(postAppliedForCell.getRow()).getCell(postAppliedForCell.getCol()).getRichStringCellValue().getString();
+            boolean isLowerRank = StringUtil.parseBoolean(sheet1.getRow(isLowerRankCell.getRow()).getCell(isLowerRankCell.getCol()).getRichStringCellValue().getString());
+            Date dateAvailableFrom = sheet1.getRow(dateAvailableCell.getRow()).getCell(dateAvailableCell.getCol()).getDateCellValue();
 
 
             //Get Documents
             List<Document> mandatoryDocList = documentDao.findAll();
             //Passport & Visa
-            populatePassportVisa(sheet, mandatoryDocList, documents);
+            populatePassportVisa(sheet1, crew, mandatoryDocList, documents);
             //CDC
-            populateCDC(sheet, mandatoryDocList, documents);
+            populateCDC(sheet1, crew, mandatoryDocList, documents);
             //Licence
-            populateLicence(sheet, mandatoryDocList, documents);
+            populateLicence(sheet1, crew, mandatoryDocList, documents);
             //NoK
-            populateNextOfKin(sheet, mandatoryDocList, documents);
+            populateNextOfKin(sheet1, crew, mandatoryDocList, documents);
+            //Courses & Certificates
+            populateCoursesAndCertificates(sheet2, crew);
+            //Education & Apprentice
+            populateEducationHistory(sheet2, crew);
+            //Medical History
+            populateMedicalHistory(sheet2, crew);
+            //Employment
+            populateEmploymentHistory(sheet3, crew);
+
             //Set docs
             crew.setExistingDocuments(documents);
 
+            crewDao.insert(crew);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void populatePassportVisa(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populateMedicalHistory(Sheet sheet, Crew crew) {
+        CellReference signedOffForMedicalReasonsCell = new CellReference("A57");
+        boolean signedOffForMedicalReasons = StringUtil.parseBoolean(sheet.getRow(signedOffForMedicalReasonsCell.getRow()).getCell(signedOffForMedicalReasonsCell.getCol()).getRichStringCellValue().getString());
+
+        crew.setSignedOffForMedicalReasons(signedOffForMedicalReasons);
+        List<IllnessAndInjury> illnesses = new ArrayList<>();
+        if (signedOffForMedicalReasons) {
+            for (int i = 59; i <= 60; i++) {
+                CellReference vesselNameCell = new CellReference("A" + i);
+                CellReference injuryDescriptionCell = new CellReference("A62");
+                CellReference dateOfOccurCell = new CellReference("G" + i);
+                IllnessAndInjury ill = new IllnessAndInjury();
+                ill.setMedicalType(MedicalType.INJURY);
+                ill.setNameOfVessel(sheet.getRow(vesselNameCell.getRow()).getCell(vesselNameCell.getCol()).getRichStringCellValue().getString());
+                ill.setDescription(sheet.getRow(injuryDescriptionCell.getRow()).getCell(injuryDescriptionCell.getCol()).getRichStringCellValue().getString());
+                ill.setDateOfOccurence(DateTimeUtil.convertToLocalDate(sheet.getRow(dateOfOccurCell.getRow()).getCell(dateOfOccurCell.getCol()).getDateCellValue()));
+                illnesses.add(ill);
+            }
+            crew.setIllnessInjury(illnesses);
+        }
+        crew.setHasMalaria(false);
+        crew.setSufferingFromDiseaseThatEndangersLife(false);
+        crew.setDrugAlcoholAddict(false);
+        crew.setHasEpilepsy(false);
+        crew.setHasNervousDisability(false);
+    }
+    private void populateEducationHistory(Sheet sheet, Crew crew) {
+        List<Education> education = new ArrayList<>();
+
+        //10+2
+        for (int i = 47; i <= 48; i++) {
+            CellReference instituteNameCell = new CellReference("A" + i);
+            CellReference startDateCell = new CellReference("F" + i);
+            CellReference endDateCell = new CellReference("G" + i);
+            CellReference degreeNameCell = new CellReference("H" + i);
+
+            Education edu = new Education();
+            edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
+            edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+            edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+            edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
+            education.add(edu);
+        }
+        //Pre-Sea Training/Apprentice
+        for (int i = 52; i <= 53; i++) {
+            CellReference instituteNameCell = new CellReference("A" + i);
+            CellReference startDateCell = new CellReference("F" + i);
+            CellReference endDateCell = new CellReference("G" + i);
+            CellReference degreeNameCell = new CellReference("H" + i);
+
+            Education edu = new Education();
+            edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
+            edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+            edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+            edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
+            education.add(edu);
+        }
+        crew.setEducationHistory(education);
+    }
+
+    private void populateEmploymentHistory(Sheet sheet, Crew crew) {
+        List<Experience> employment = new LinkedList<>();
+
+        for (int i = 7; i <= 48; i++) {
+            CellReference empNameCell = new CellReference("B" + i);
+            CellReference vesselNameCell = new CellReference("C" + i);
+            CellReference rankCell = new CellReference("D" + i);
+            CellReference flagCell = new CellReference("E" + i);
+            CellReference vesselTypeCell = new CellReference("F" + i);
+
+            CellReference startDateCell = new CellReference("L" + i);
+            CellReference endDateCell = new CellReference("M" + i);
+            CellReference signOffReasonCell = new CellReference("O" + i);
+
+            Experience emp = new Experience();
+            emp.setEmployerName(sheet.getRow(empNameCell.getRow()).getCell(empNameCell.getCol()).getRichStringCellValue().getString());
+            Vessel vessel = new Vessel();
+            vessel.setVesselName(sheet.getRow(vesselNameCell.getRow()).getCell(vesselNameCell.getCol()).getRichStringCellValue().getString());
+            vessel.setFlagCode(flagDao.getByCode(sheet.getRow(flagCell.getRow()).getCell(flagCell.getCol()).getRichStringCellValue().getString()).getCode());
+            vessel.setVesselSubType(VesselSubType.createFromDesc(sheet.getRow(vesselTypeCell.getRow()).getCell(vesselTypeCell.getCol()).getRichStringCellValue().getString()));
+            emp.setLastRank(Rank.createFromDesc(sheet.getRow(rankCell.getRow()).getCell(rankCell.getCol()).getRichStringCellValue().getString()));
+            emp.setVessel(vessel);
+            emp.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+            emp.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+            emp.setReasonForSingOff(Experience.ReasonForSingOff.createFromDesc(sheet.getRow(signOffReasonCell.getRow()).getCell(signOffReasonCell.getCol()).getRichStringCellValue().getString()));
+            employment.add(emp);
+        }
+        crew.setEmploymentHistory(employment);
+    }
+
+    private void populateCoursesAndCertificates(Sheet sheet, Crew crew) {
+    }
+
+    private void populatePassportVisa(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
         for (int i = 34; i <= 37; i++) {
             CellReference docTypeCell = new CellReference("B" + i);
             CellReference numCell = new CellReference("E" + i);
@@ -175,7 +302,7 @@ public class ExcelReadTest {
         }
     }
 
-    private void populateCDC(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populateCDC(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
         //CDC
         for (int i = 40; i <= 45; i++) {
             CellReference docTypeCell = new CellReference("B" + i);
@@ -288,7 +415,7 @@ public class ExcelReadTest {
         }
     }
 
-    private void populateNextOfKin(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populateNextOfKin(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
         CellReference civilStatusCell = new CellReference("D55");
         CellReference nokNameCell = new CellReference("D56");
         CellReference nokAddressCell = new CellReference("D57");
@@ -357,7 +484,8 @@ public class ExcelReadTest {
         }
     }
 
-    private void populateLicence(Sheet sheet, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populateLicence(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+
         //License
         for (int i = 48; i <= 53; i++) {
             CellReference docTypeCell = new CellReference("B" + i);
@@ -524,6 +652,52 @@ public class ExcelReadTest {
             outputStream = new FileOutputStream(fileLocation);
             workbook.write(outputStream);
             workbook.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+    @Test
+    public void generateExcelTemplateForNewRecruit() {
+        //some data
+        String[] deckDeptRanks = Rank.getDeckDeptList().stream().map(Rank::getName).collect(Collectors.toList()).toArray(new String[Rank.getDeckDeptList().size()]);
+        String[] engineDeptRanks = Rank.getEngineDeptList().stream().map(Rank::getName).collect(Collectors.toList()).toArray(new String[Rank.getEngineDeptList().size()]);
+        String[] galleyDeptRanks = Rank.getGalleyDeptList().stream().map(Rank::getName).collect(Collectors.toList()).toArray(new String[Rank.getGalleyDeptList().size()]);
+
+        Workbook wb = new XSSFWorkbook();
+
+        //hidden sheet for list values
+        XSSFSheet sheet = (XSSFSheet) wb.createSheet("Sheet 1");
+
+        int rowNum = 0;
+        Row rankSelectRow = sheet.createRow(rowNum++);
+        Cell cell = rankSelectRow.createCell(0);
+        cell.setCellValue("Applied for Rank");
+
+        DataValidation dataValidation = null;
+        DataValidationConstraint constraint = null;
+        DataValidationHelper validationHelper = null;
+
+        validationHelper = new XSSFDataValidationHelper(sheet);
+        CellRangeAddressList addressList = new CellRangeAddressList(1, 1, 0, 0);
+        constraint = validationHelper.createExplicitListConstraint(deckDeptRanks);
+        dataValidation = validationHelper.createValidation(constraint, addressList);
+        dataValidation.setSuppressDropDownArrow(true);
+        sheet.addValidationData(dataValidation);
+
+        //Finally, let's write the content to a “temp.xlsx” file in the current directory and close the workbook:
+        File currDir = new File(".");
+        String path = currDir.getAbsolutePath();
+        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(fileLocation);
+            wb.write(outputStream);
+            wb.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

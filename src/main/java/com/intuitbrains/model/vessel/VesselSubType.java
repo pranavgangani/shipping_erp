@@ -72,8 +72,13 @@ public class VesselSubType {
 	}
 	
 	public static VesselSubType createFromId(int typeId) {
-		return ((VesselSubType)(getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
-	}	
+		return ((getList().stream().filter(o->o.getId() == typeId).collect(Collectors.toList())).get(0));
+	}
+
+	public static VesselSubType createFromDesc(String desc) {
+		return ((getList().stream().filter(o->o.getDesc().equalsIgnoreCase(desc)).collect(Collectors.toList())).get(0));
+	}
+
 
 	public static List<VesselSubType> getList(){
 		return new ArrayList<>(Arrays.asList(ALL, BULK_CARRIER, GENERAL_CARGO, CONTAINER_SHIP, REEFER, RORO, VEHICLE_CARRIER, CEMENT_CARRIER, WOODCHIPS_CARRIER,

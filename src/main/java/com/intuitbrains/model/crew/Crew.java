@@ -42,7 +42,6 @@ public class Crew extends Person {
     // Past
     private List<Experience> employmentHistory;
     private List<Education> educationHistory;
-    private List<MedicalHistory> medicalHistory;
     private List<TravelAudit> travelHistory;
 
     //Current
@@ -52,6 +51,8 @@ public class Crew extends Person {
 
     //Medical
     private List<IllnessAndInjury> illnessInjury;
+    private boolean isSignedOffForMedicalReasons, isSufferingFromDiseaseThatEndangersLife, isDrugAlcoholAddict,
+            hasMalaria, hasEpilepsy, hasDiabetes, hasNervousDisability;
 
     // KYC
     private List<NextOfKin> nextOfKins;
@@ -70,10 +71,6 @@ public class Crew extends Person {
     public void setStatusId(int statusId) {
         this.statusId = statusId;
     }
-    // Requests
-	/*private List<CourseRequest> trainingRequests;
-	private List<TravelRequest> travelRequests;
-	private List<MedicalRequest> medicalRequests;*/
 
     public Crew() {
         if (this.getFieldStatus() == null) this.setFieldStatus(new CrewFieldStatus());
@@ -195,14 +192,6 @@ public class Crew extends Person {
 
     public void setPhotoId(long photoId) {
         this.photoId = photoId;
-    }
-
-    public List<MedicalHistory> getMedicalHistory() {
-        return medicalHistory;
-    }
-
-    public void setMedicalHistory(List<MedicalHistory> medicalHistory) {
-        this.medicalHistory = medicalHistory;
     }
 
     public List<TravelAudit> getTravelHistory() {
@@ -388,6 +377,62 @@ public class Crew extends Person {
     public void setEnteredLocalDateTime(LocalDateTime enteredLocalDateTime) {
         this.enteredLocalDateTime = enteredLocalDateTime;
     }
+    public boolean isSignedOffForMedicalReasons() {
+        return isSignedOffForMedicalReasons;
+    }
+
+    public void setSignedOffForMedicalReasons(boolean signedOffForMedicalReasons) {
+        isSignedOffForMedicalReasons = signedOffForMedicalReasons;
+    }
+
+    public boolean isSufferingFromDiseaseThatEndangersLife() {
+        return isSufferingFromDiseaseThatEndangersLife;
+    }
+
+    public void setSufferingFromDiseaseThatEndangersLife(boolean sufferingFromDiseaseThatEndangersLife) {
+        isSufferingFromDiseaseThatEndangersLife = sufferingFromDiseaseThatEndangersLife;
+    }
+
+    public boolean isDrugAlcoholAddict() {
+        return isDrugAlcoholAddict;
+    }
+
+    public void setDrugAlcoholAddict(boolean drugAlcoholAddict) {
+        isDrugAlcoholAddict = drugAlcoholAddict;
+    }
+
+    public boolean isHasMalaria() {
+        return hasMalaria;
+    }
+
+    public void setHasMalaria(boolean hasMalaria) {
+        this.hasMalaria = hasMalaria;
+    }
+
+    public boolean isHasEpilepsy() {
+        return hasEpilepsy;
+    }
+
+    public void setHasEpilepsy(boolean hasEpilepsy) {
+        this.hasEpilepsy = hasEpilepsy;
+    }
+
+    public boolean isHasDiabetes() {
+        return hasDiabetes;
+    }
+
+    public void setHasDiabetes(boolean hasDiabetes) {
+        this.hasDiabetes = hasDiabetes;
+    }
+
+    public boolean isHasNervousDisability() {
+        return hasNervousDisability;
+    }
+
+    public void setHasNervousDisability(boolean hasNervousDisability) {
+        this.hasNervousDisability = hasNervousDisability;
+    }
+
 
     public enum Status {
         NEW_RECRUIT(1, "New Recruit"),
