@@ -59,8 +59,8 @@ public class Crew extends Person {
     private List<Bank> banks;
     private LocalDate dob;
 
-    private String enteredBy;
-    private LocalDateTime enteredLocalDateTime;
+    private String enteredBy, updatedBy;
+    private LocalDateTime enteredLocalDateTime, updatedLocalDateTime;
 
     private int statusId;
 
@@ -433,6 +433,21 @@ public class Crew extends Person {
         this.hasNervousDisability = hasNervousDisability;
     }
 
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDateTime getUpdatedLocalDateTime() {
+        return updatedLocalDateTime;
+    }
+
+    public void setUpdatedLocalDateTime(LocalDateTime updatedLocalDateTime) {
+        this.updatedLocalDateTime = updatedLocalDateTime;
+    }
 
     public enum Status {
         NEW_RECRUIT(1, "New Recruit"),

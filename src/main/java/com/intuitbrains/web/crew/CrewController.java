@@ -15,9 +15,7 @@
  */
 package com.intuitbrains.web.crew;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -44,6 +42,7 @@ import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -224,8 +223,6 @@ public class CrewController {
         crew.setGender(gender);
         crew.setDistinguishMark(distinguishMark);
         crew.setManningOffice(manningOffice);
-        crew.setEnteredLocalDateTime(LocalDateTime.now());
-        crew.setEnteredBy(emp.getEmpId());
 
         CrewFieldStatus fs = crew.getFieldStatus();
         fs.setName(new FieldStatus(maker, LocalDateTime.now(), null, null));
@@ -244,9 +241,8 @@ public class CrewController {
         fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
         crew.setFieldStatus(fs);
 
-        crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
-        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
-        crewDao.insert(crew);
+        crew.setEnteredBy(emp.getEmpId());
+        crewService.addCrew(crew);
         long crewId = crew.getId();
         System.out.println("New crewId ---> " + crewId);
         mv.addObject("crewId", crewId);
@@ -266,15 +262,6 @@ public class CrewController {
             crewDao.save(crew);
             mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
-            AuditTrail audit = new AuditTrail();
-            audit.setAction(StandardWebParameter.ADD);
-            audit.setActionLocalDateTime(LocalDateTime.now());
-            audit.setCollection(Collection.CREW);
-            audit.setActionBy("Pranav");
-            audit.setUniqueId(crewId);
-            audit.setText("New Crew - <b>" + (crew.getName()) + "</b> recruited!");
-            audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
-            auditTrailDao.insert(audit);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -348,34 +335,32 @@ public class CrewController {
         return "uploadPhoto";
     }
 
+    @GetMapping(value = "/upload_crew")
+    public ModelAndView uploadCrewData(Model model) {
+        ModelAndView mv = new ModelAndView("crew/upload_crew");
+        return mv;
+    }
+
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String addDoc(HttpServletRequest req, @RequestParam("file") MultipartFile file,
+    public ModelAndView uploadExcel(HttpServletRequest req, @RequestParam("file") MultipartFile file,
                          RedirectAttributes redirectAttributes) {
+        ModelAndView mv = new ModelAndView("crew/crew_list");
         Employee emp = (Employee)req.getSession().getAttribute("currentUser");
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        Crew crew = null;
         try {
-            FileInputStream fi = new FileInputStream(file.getOriginalFilename());
-            crew = crewService.uploadCrewData(fi);
+            String uploadPath = req.getServletContext().getRealPath("") + File.separator + "temp" + File.separator;
+            String newFilePath = uploadPath+file.getOriginalFilename();
+            FileCopyUtils.copy(file.getBytes(), new File(newFilePath));
+            FileInputStream fi = new FileInputStream(newFilePath);
+            crewService.uploadCrewData(emp.getEmpId(), fi);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //Audit
-        AuditTrail audit = new AuditTrail();
-        audit.setAction(StandardWebParameter.ADD);
-        audit.setActionBy(emp.getEmpId());
-        audit.setActionLocalDateTime(LocalDateTime.now());
-        audit.setCollection(Collection.CREW);
-        audit.setText("New Crew - <b>" + (crew.getName()) + "</b> recruited!");
-        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
-        audit.setUniqueId(crew.getId());
-        auditTrailDao.insert(audit);
-
-        return "redirect:/";
+        return mv;
     }
 
     @PostMapping(value = "/addDoc", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -399,6 +384,17 @@ public class CrewController {
         try {
             docToUpload.setFile(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
             docToUpload.setFieldStatus(new FieldStatus(emp.getEmpId(), LocalDateTime.now(), null, null));
+
+            //Audit
+            AuditTrail audit = new AuditTrail();
+            audit.setAction(StandardWebParameter.ADD);
+            audit.setActionBy(emp.getEmpId());
+            audit.setActionLocalDateTime(LocalDateTime.now());
+            audit.setCollection(Collection.CREW);
+            audit.setText("New Document - <b>" + (docToUpload.getDocName()) + "</b> added!");
+            audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+            audit.setUniqueId(crew.getId());
+            auditTrailDao.insert(audit);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -406,18 +402,7 @@ public class CrewController {
         documents.add(docToUpload);
 
         crew.setExistingDocuments(documents);
-        crewDao.save(crew);
-
-        //Audit
-        AuditTrail audit = new AuditTrail();
-        audit.setAction(StandardWebParameter.ADD);
-        audit.setActionBy(emp.getEmpId());
-        audit.setActionLocalDateTime(LocalDateTime.now());
-        audit.setCollection(Collection.CREW);
-        audit.setText("New Document - <b>" + (docToUpload.getDocName()) + "</b> added!");
-        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
-        audit.setUniqueId(crew.getId());
-        auditTrailDao.insert(audit);
+        crewService.updateCrew(crew);
 
         return "redirect:/";
     }

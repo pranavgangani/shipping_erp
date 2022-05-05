@@ -50,7 +50,7 @@
                                     </div>
                                     <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavPagesMenu">
                                         <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="/crew/upload">Upload New Recruit Data</a>
+                                            <a class="nav-link" href="/crew/upload_crew">Upload New Recruit Data</a>
                                         </nav>
                                     </div>
                                 </nav>
