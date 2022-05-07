@@ -214,7 +214,7 @@ class DocumentTest {
         passport.setRequiredAfterJoining(true);
         documentDao.insert(passport);
 
-        Document usB1B2 = new Passport();
+        Document usB1B2 = new Visa();
         usB1B2.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         usB1B2.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("US B1/B2");
@@ -226,7 +226,7 @@ class DocumentTest {
         usB1B2.setRequiredAfterJoining(true);
         documentDao.insert(usB1B2);
 
-        Document usC1D = new Passport();
+        Document usC1D = new Visa();
         usC1D.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         usC1D.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("US C1/D");
@@ -238,7 +238,7 @@ class DocumentTest {
         usC1D.setRequiredAfterJoining(true);
         documentDao.insert(usC1D);
 
-        Document ausMCV = new Passport();
+        Document ausMCV = new Visa();
         ausMCV.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         ausMCV.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("Australian MCV");
