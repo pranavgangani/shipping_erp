@@ -16,6 +16,7 @@ public class Experience {
     private long id;
     private String employerName, employerAddress;
     private String jobDescription;
+    private int lastRankId;
     private Rank lastRank;
     private Vessel vessel;
     private VesselSubType vesselSubType;
@@ -54,6 +55,14 @@ public class Experience {
 
     public void setJobDescription(String jobDescription) {
         this.jobDescription = jobDescription;
+    }
+
+    public int getLastRankId() {
+        return lastRankId;
+    }
+
+    public void setLastRankId(int lastRankId) {
+        this.lastRankId = lastRankId;
     }
 
     public Rank getLastRank() {

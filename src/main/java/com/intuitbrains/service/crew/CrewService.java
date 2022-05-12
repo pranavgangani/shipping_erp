@@ -86,9 +86,6 @@ public class CrewService {
         List<Crew> crewList = new LinkedList<>();
         Bson filter = Filters.empty();
         collection.find(filter).projection(projection).into(crewList);
-        //collection.find(filter).projection(projection).forEach(doc -> System.out.println(doc.getfName()));
-        //crewIterable.forEach(doc -> System.out.println(doc.getFirstName() + " - "+doc.getFullName()));
-
         return crewList;
     }
 
@@ -99,6 +96,10 @@ public class CrewService {
     }
 
     public List<Experience> getEmploymentHistory(long crewId) {
-        return crewDao.getEmploymentHistory(crewId);
+        MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
+        Bson projection = Projections.fields(Projections.include("employmentHistory"));
+        List<Experience> experienceList = new LinkedList<>();
+        Bson filter = Filters.eq("_id", crewId);
+        return collection.find(filter).projection(projection).first().getEmploymentHistory();
     }
 }

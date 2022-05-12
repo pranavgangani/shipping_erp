@@ -236,8 +236,8 @@ class CrewTest {
 
     @Test
     void updateEmploymentDetails() {
-        Crew crew = crewDao.findById(26l).get();
-        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
+        Crew crew = crewService.getById(1);
+        Flag flag = flagDao.getByCode("IN");
 
         //Employment
         Experience emp1 = new Experience();
@@ -406,6 +406,13 @@ class CrewTest {
         crews.forEach(c->System.out.println(c.getFirstName()));
         crews = crewService.getList();
         crews.forEach(c->System.out.println(c.getFirstName()));
+        Crew c = crewService.getById(1);
+        System.out.println(c.getFirstName());
+    }
+    @Test
+    void testExperienceList() {
+        List<Experience> experienceList = crewService.getEmploymentHistory(1);
+        experienceList.forEach(e->System.out.println(e.getEmployerName()));
     }
 
     @Test
