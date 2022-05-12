@@ -82,12 +82,12 @@ public class CrewService {
 
     public List<Crew> getList() {
         MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
-        //Bson projection = Projections.fields(Projections.include("fName"));
+        Bson projection = Projections.fields(Projections.include("firstName"));
         List<Crew> crewList = new LinkedList<>();
         Bson filter = Filters.empty();
-        FindIterable<Crew> crewIterable = collection.find(filter);
+        collection.find(filter).projection(projection).into(crewList);
         //collection.find(filter).projection(projection).forEach(doc -> System.out.println(doc.getfName()));
-        crewIterable.forEach(doc -> System.out.println(doc.getFirstName() + " - "+doc.getFullName()));
+        //crewIterable.forEach(doc -> System.out.println(doc.getFirstName() + " - "+doc.getFullName()));
 
         return crewList;
     }
