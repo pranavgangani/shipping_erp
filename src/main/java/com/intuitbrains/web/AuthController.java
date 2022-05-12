@@ -72,7 +72,7 @@ public class AuthController {
             mv.addObject("auditTrails", auditTrails);
         }
         session.setAttribute("currentUser", user);
-        session.setAttribute("fullName", user.getName());
+        session.setAttribute("fullName", user.getFullName());
         //modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
         mv.setViewName("dashboard");
         return mv;

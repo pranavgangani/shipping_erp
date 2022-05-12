@@ -143,7 +143,7 @@ class VesselVacancyTest {
             employmentList.forEach(emp -> rankExp.add(emp.getLastRank().getId()));
             final List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);
             if(ListUtil.isNotEmpty(vacancies)) {
-                System.out.println("Got ["+vacancies.size()+"]  vacancies for "+c.getName() + " | CrewId:"+c.getId());
+                System.out.println("Got ["+vacancies.size()+"]  vacancies for "+c.getFullName() + " | CrewId:"+c.getId());
                 vacancies.forEach(v->{
                     System.out.print("VacancyID::"+v.getId() + " for Post [");
                     v.getVacancyAttributes().getMinRankList().forEach(r->{

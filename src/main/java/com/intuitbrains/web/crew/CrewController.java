@@ -87,7 +87,7 @@ public class CrewController {
     @GetMapping(value = "/list")
     public ModelAndView crewList(Model model) {
         ModelAndView mv = new ModelAndView("crew/crew_list");
-        List<Crew> list = crewDao.getList();
+        List<Crew> list = crewService.getList();
         mv.addObject("list", list);
         return mv;
     }
@@ -275,9 +275,9 @@ public class CrewController {
 
         //Add New Crew
         Crew crew = new Crew();
-        crew.setfName(fName);
-        crew.setlName(lName);
-        crew.setmName(mName);
+        crew.setFirstName(fName);
+        crew.setLastName(lName);
+        crew.setMiddleName(mName);
         crew.setEmailId(emailId);
         crew.setContact1(contact1);
         crew.setContact2(contact2);

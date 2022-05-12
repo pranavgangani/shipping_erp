@@ -79,9 +79,9 @@ class CrewTest {
         Flag flag = flagDao.getByCode("IN");
 
         Crew crew = new Crew();
-        crew.setfName("Pranav");
-        crew.setmName("Jayanti");
-        crew.setlName("Gangani");
+        crew.setFirstName("Pranav");
+        crew.setMiddleName("Jayanti");
+        crew.setLastName("Gangani");
         crew.setDob(dob);
         crew.setGender("male");
         crew.setRank(Rank.JR_ENGINEER);
@@ -140,7 +140,7 @@ class CrewTest {
         audit.setCollection(Collection.CREW);
         audit.setActionBy(crew.getEnteredBy());
         audit.setUniqueId(crew.getId());
-        audit.setText("New Crew - <b>" + (crew.getName()) + "</b> recruited!");
+        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> recruited!");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         auditTrailDao.insert(audit);
     }
@@ -153,9 +153,9 @@ class CrewTest {
         Flag flag = flagDao.getByCode("IN");
 
         Crew crew = new Crew();
-        crew.setfName("Pranav");
-        crew.setmName("J");
-        crew.setlName("Gangani");
+        crew.setFirstName("Pranav");
+        crew.setMiddleName("J");
+        crew.setLastName("Gangani");
         crew.setDob(dob);
         crew.setGender("male");
         crew.setRank(Rank.JR_ENGINEER);
@@ -179,7 +179,7 @@ class CrewTest {
         List<Crew> crews = crewDao.findByDOB(LocalDate.of(1985, 7, 22));
         Assert.assertNotNull(crews);
         crews.forEach(c -> {
-            System.out.println(c.getName());
+            System.out.println(c.getFullName());
         });
 
     }
@@ -402,7 +402,10 @@ class CrewTest {
 
     @Test
     void testGetList() {
-        crewService.getList(1);
+        List<Crew> crews = crewDao.findAll();
+        crews.forEach(c->System.out.println(c.getFirstName()));
+        crews = crewService.getList();
+        crews.forEach(c->System.out.println(c.getFirstName()));
     }
 
     @Test

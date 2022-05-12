@@ -22,7 +22,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
-    private CodecRegistry pojoCodecRegistry;
+    private CodecRegistry codecRegistry;
 
     @Override
     protected String getDatabaseName() {
@@ -32,12 +32,15 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Override
     public MongoClient mongoClient() {
         final ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/admin");
+        // create codec registry for POJOs
+        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
+        codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+                pojoCodecRegistry);
+
         final MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
+                .codecRegistry(codecRegistry)
                 .build();
-        // create codec registry for POJOs
-        pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         return MongoClients.create(mongoClientSettings);
     }
 
@@ -65,6 +68,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Bean
     public MongoDatabase getDB() {
-        return mongoClient().getDatabase(getDatabaseName()).withCodecRegistry(pojoCodecRegistry);
+        return mongoClient().getDatabase(getDatabaseName());
     }
 }

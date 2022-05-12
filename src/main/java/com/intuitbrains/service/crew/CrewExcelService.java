@@ -13,6 +13,8 @@ import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.util.DateTimeUtil;
 import com.intuitbrains.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
@@ -83,9 +85,9 @@ public class CrewExcelService {
             CellReference howCometoKnowCell = new CellReference("J31");
 
             //Crew details
-            crew.setfName(sheet1.getRow(fNameCell.getRow()).getCell(fNameCell.getCol()).getRichStringCellValue().getString());
-            crew.setmName(sheet1.getRow(mNameCell.getRow()).getCell(mNameCell.getCol()).getRichStringCellValue().getString());
-            crew.setlName(sheet1.getRow(lNameCell.getRow()).getCell(lNameCell.getCol()).getRichStringCellValue().getString());
+            crew.setFirstName(sheet1.getRow(fNameCell.getRow()).getCell(fNameCell.getCol()).getRichStringCellValue().getString());
+            crew.setMiddleName(sheet1.getRow(mNameCell.getRow()).getCell(mNameCell.getCol()).getRichStringCellValue().getString());
+            crew.setLastName(sheet1.getRow(lNameCell.getRow()).getCell(lNameCell.getCol()).getRichStringCellValue().getString());
             crew.setNationality(sheet1.getRow(nationalityCell.getRow()).getCell(nationalityCell.getCol()).getRichStringCellValue().getString());
             Date dob = sheet1.getRow(dateOfBirthCell.getRow()).getCell(dateOfBirthCell.getCol()).getDateCellValue();
             crew.setDob(DateTimeUtil.convertToLocalDate(dob));
@@ -306,6 +308,15 @@ public class CrewExcelService {
             CellReference poICell = new CellReference("L" + i);
             CellReference doECell = new CellReference("O" + i);
             CellReference remarksCell = new CellReference("R" + i);
+
+            Cell c = sheet.getRow(i).getCell(numCell.getCol());
+            if (c != null || c.getCellType() != CellType.BLANK) {
+               System.out.println("Cell is not empty");
+            }else {
+                System.out.println("Cell is empty");
+            }
+            double docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getNumericCellValue();
+
             String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
@@ -313,7 +324,7 @@ public class CrewExcelService {
             LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
             LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
-            String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
+
             String remarks = sheet.getRow(remarksCell.getRow()).getCell(remarksCell.getCol()).getRichStringCellValue().getString();
 
             if (docTypeStr.equalsIgnoreCase("Indian")) {
@@ -322,7 +333,7 @@ public class CrewExcelService {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(docNum);
+                        cdc.setDocNumber(String.valueOf(docNum));
                         cdc.setDateOfIssue(doi);
                         cdc.setDateOfExpiry(doe);
                         cdc.setPlaceOfIssue(placeOfIssue);
@@ -337,7 +348,7 @@ public class CrewExcelService {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(docNum);
+                        cdc.setDocNumber(String.valueOf(docNum));
                         cdc.setDateOfIssue(doi);
                         cdc.setDateOfExpiry(doe);
                         cdc.setPlaceOfIssue(placeOfIssue);
@@ -352,7 +363,7 @@ public class CrewExcelService {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(docNum);
+                        cdc.setDocNumber(String.valueOf(docNum));
                         cdc.setDateOfIssue(doi);
                         cdc.setDateOfExpiry(doe);
                         cdc.setPlaceOfIssue(placeOfIssue);
@@ -367,7 +378,7 @@ public class CrewExcelService {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(docNum);
+                        cdc.setDocNumber(String.valueOf(docNum));
                         cdc.setDateOfIssue(doi);
                         cdc.setDateOfExpiry(doe);
                         cdc.setPlaceOfIssue(placeOfIssue);
@@ -382,13 +393,13 @@ public class CrewExcelService {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(docNum);
+                        cdc.setDocNumber(String.valueOf(docNum));
                         cdc.setDateOfIssue(doi);
                         cdc.setDateOfExpiry(doe);
                         cdc.setPlaceOfIssue(placeOfIssue);
                         cdc.setRemarks(remarks);
                         crewDocsToPopulate.add(cdc);
-                        crew.setIndosNumber(docNum);
+                        crew.setIndosNumber(String.valueOf(docNum));
                         break;
                     }
                 }
@@ -398,7 +409,7 @@ public class CrewExcelService {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         Certificate cert = (Certificate) doc;
                         cert.setDateOfExpiry(doe);
-                        cert.setDocNumber(docNum);
+                        cert.setDocNumber(String.valueOf(docNum));
                         cert.setDateOfIssue(doi);
                         cert.setDateOfExpiry(doe);
                         cert.setPlaceOfIssue(placeOfIssue);

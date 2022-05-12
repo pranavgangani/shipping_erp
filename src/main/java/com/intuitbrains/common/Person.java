@@ -1,36 +1,36 @@
 package com.intuitbrains.common;
 
 public abstract class Person {
-	protected String fName, mName, lName;
+	protected String firstName, middleName, lastName;
 	protected String gender;
 	protected String userName, password, emailId;
 
-	public String getName() {
-		return (getfName() + " " + getmName() + " " + getlName());
+	public String getFullName() {
+		return (getFirstName() + " " + getMiddleName() + " " + getLastName());
 	}
 
-	public String getfName() {
-		return fName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setfName(String fName) {
-		this.fName = fName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getmName() {
-		return mName;
+	public String getMiddleName() {
+		return middleName;
 	}
 
-	public void setmName(String mName) {
-		this.mName = mName;
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
-	public String getlName() {
-		return lName;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setlName(String lName) {
-		this.lName = lName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getGender() {

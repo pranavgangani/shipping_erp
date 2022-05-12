@@ -13,7 +13,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
-import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +57,7 @@ public class CrewService {
         audit.setCollection(Collection.CREW);
         audit.setActionBy(crew.getEnteredBy());
         audit.setUniqueId(crew.getId());
-        audit.setText("New Crew - <b>" + (crew.getName()) + "</b> recruited!");
+        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> recruited!");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         auditTrailDao.insert(audit);
         return crew;
@@ -74,20 +73,29 @@ public class CrewService {
         audit.setActionBy(crew.getUpdatedBy());
         audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.CREW);
-        audit.setText("Updated Crew - <b>" + (crew.getName()) + "</b> updated!");
+        audit.setText("Updated Crew - <b>" + (crew.getFullName()) + "</b> updated!");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         audit.setUniqueId(crew.getId());
         auditTrailDao.insert(audit);
         return crew;
     }
 
-    public List<Crew> getList(long crewId) {
+    public List<Crew> getList() {
+        MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
+        //Bson projection = Projections.fields(Projections.include("fName"));
+        List<Crew> crewList = new LinkedList<>();
+        Bson filter = Filters.empty();
+        FindIterable<Crew> crewIterable = collection.find(filter);
+        //collection.find(filter).projection(projection).forEach(doc -> System.out.println(doc.getfName()));
+        crewIterable.forEach(doc -> System.out.println(doc.getFirstName() + " - "+doc.getFullName()));
+
+        return crewList;
+    }
+
+    public Crew getById(long crewId) {
         MongoCollection<Crew> collection = db.getCollection("Crew", Crew.class);
         Bson filter = Filters.eq("_id", crewId);
-        Bson projection = Projections.fields(Projections.include("fName", "mName", "lName"));
-        //collection.find(filter).projection(projection).forEach(doc -> System.out.println(doc));
-        List<Crew> crewList = collection.find(filter).projection(projection).into(new LinkedList<Crew>());
-        return crewList;
+        return collection.find(filter).first();
     }
 
     public List<Experience> getEmploymentHistory(long crewId) {

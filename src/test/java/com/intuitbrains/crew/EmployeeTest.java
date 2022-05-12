@@ -75,9 +75,9 @@ class EmployeeTest {
         user.setEmailId("pgangani@saar.com");
         user.setPassword("pranav");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
-        user.setfName("Pranav");
-        user.setmName("Jayanti");
-        user.setlName("Gangani");
+        user.setFirstName("Pranav");
+        user.setMiddleName("Jayanti");
+        user.setLastName("Gangani");
         user.setGender("male");
         user.setEmpId(generateEmployeeId());
         Set set = new HashSet();
@@ -90,9 +90,9 @@ class EmployeeTest {
         user.setEmailId("rtiwari@saar.com");
         user.setPassword("rtiwari");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
-        user.setfName("Rohan");
-        user.setmName("Pradeep");
-        user.setlName("Tiwari");
+        user.setFirstName("Rohan");
+        user.setMiddleName("Pradeep");
+        user.setLastName("Tiwari");
         user.setGender("male");
         user.setEmpId(generateEmployeeId());
         set = new HashSet();
@@ -105,9 +105,9 @@ class EmployeeTest {
         user.setEmailId("vmore@saar.com");
         user.setPassword("vmore");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
-        user.setfName("Vinayak");
-        user.setmName("B");
-        user.setlName("More");
+        user.setFirstName("Vinayak");
+        user.setMiddleName("B");
+        user.setLastName("More");
         user.setGender("male");
         user.setEmpId(generateEmployeeId());
         set = new HashSet();
