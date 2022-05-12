@@ -143,7 +143,7 @@ public class CrewService {
         long crewId = modifiedCrew.getId();
         Class clazz = modifiedCrew.getClass();
         for (final Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(aClass)) {
+            if (method.isAnnotationPresent(ACrew.class)) {
                 try {
                     String setterMethodName = method.getName();
                     String getterMethodName = setterMethodName.replace("set", "get");
