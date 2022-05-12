@@ -414,7 +414,11 @@ class CrewTest {
         List<Experience> experienceList = crewService.getEmploymentHistory(1);
         experienceList.forEach(e->System.out.println(e.getEmployerName()));
     }
-
+    @Test
+    void testTravelHistoryList() {
+        List<Travel> travelList = crewService.getTravelHistory(1);
+        travelList.forEach(e->System.out.println(Travel.TravelMode.createFromId(e.getTravelModeId()).getName()));
+    }
     @Test
     void generateContract() {
         //Get Crew Details

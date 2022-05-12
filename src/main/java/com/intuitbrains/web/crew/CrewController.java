@@ -352,6 +352,15 @@ public class CrewController {
         return mv;
     }
 
+    @GetMapping(value = "/education")
+    public ModelAndView education(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/education_list");
+        long crewId = Long.parseLong(req.getParameter("crewId"));
+        List<Education> educations = crewService.getEducationHistory(crewId);
+        mv.addObject("educations", educations);
+        return mv;
+    }
+
     @PostMapping(value = "/add_employment")
     public ModelAndView addEmployment(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("crew/employment_list");

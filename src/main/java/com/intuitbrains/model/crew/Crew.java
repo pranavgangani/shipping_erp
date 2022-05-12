@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.crew.contract.Travel;
+import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -33,8 +35,11 @@ public class Crew extends Person {
     private long photoId;
     private ObjectId nationalityFlagId;
     private String nationality;
+    private LocalDate dob;
     private int age;
     private Contract currentContract;
+
+    //Contracts
     private List<Contract> historicalContracts;
 
     //Personal
@@ -45,7 +50,7 @@ public class Crew extends Person {
     // Past
     private List<Experience> employmentHistory;
     private List<Education> educationHistory;
-    private List<TravelAudit> travelHistory;
+    private List<TravelAndAccomodation> travelAndAccomodationHistory;
 
     //Current
     private List<Document> existingDocuments;
@@ -60,7 +65,6 @@ public class Crew extends Person {
     // KYC
     private List<NextOfKin> nextOfKins;
     private List<Bank> banks;
-    private LocalDate dob;
 
     private String enteredBy, updatedBy;
     private LocalDateTime enteredLocalDateTime, updatedLocalDateTime;
@@ -182,88 +186,6 @@ public class Crew extends Person {
         this.photoId = photoId;
     }
 
-    public List<TravelAudit> getTravelHistory() {
-        return travelHistory;
-    }
-
-    public void setTravelHistory(List<TravelAudit> travelAuditHistory) {
-        this.travelHistory = travelAuditHistory;
-    }
-
-    public List<Document> getPreJoiningDocuments() {
-        return preJoiningDocuments;
-    }
-
-    public void setPreJoiningDocuments(List<Document> preJoiningDocuments) {
-        this.preJoiningDocuments = preJoiningDocuments;
-    }
-
-    public List<Document> getPostJoiningDocuments() {
-        return postJoiningDocuments;
-    }
-
-    public void setPostJoiningDocuments(List<Document> postJoiningDocuments) {
-        this.postJoiningDocuments = postJoiningDocuments;
-    }
-
-    public List<IllnessAndInjury> getIllnessInjury() {
-        return illnessInjury;
-    }
-
-    public void setIllnessInjury(List<IllnessAndInjury> illnessInjury) {
-        this.illnessInjury = illnessInjury;
-    }
-
-    public List<NextOfKin> getNextOfKins() {
-        return nextOfKins;
-    }
-
-    public void setNextOfKins(List<NextOfKin> nextOfKins) {
-        this.nextOfKins = nextOfKins;
-    }
-
-    public List<Bank> getBanks() {
-        return banks;
-    }
-
-    public void setBanks(List<Bank> banks) {
-        this.banks = banks;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public List<AuditTrail> getAuditTails() {
-        return auditTails;
-    }
-
-    public void setAuditTails(List<AuditTrail> auditTails) {
-        this.auditTails = auditTails;
-    }
-
-
-    public List<Document> getExistingDocuments() {
-        return existingDocuments;
-    }
-
-    public void setExistingDocuments(List<Document> existingDocuments) {
-        this.existingDocuments = existingDocuments;
-    }
-
-
     public String getPermAddress() {
         return permAddress;
     }
@@ -310,6 +232,87 @@ public class Crew extends Person {
 
     public void setMaritalStatus(String maritalStatus) {
         this.maritalStatus = maritalStatus;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public List<TravelAndAccomodation> getTravelAndAccomodationHistory() {
+        return travelAndAccomodationHistory;
+    }
+
+    public void setTravelAndAccomodationHistory(List<TravelAndAccomodation> travelAndAccomodationHistory) {
+        this.travelAndAccomodationHistory = travelAndAccomodationHistory;
+    }
+
+    public List<Document> getPreJoiningDocuments() {
+        return preJoiningDocuments;
+    }
+
+    public void setPreJoiningDocuments(List<Document> preJoiningDocuments) {
+        this.preJoiningDocuments = preJoiningDocuments;
+    }
+
+    public List<Document> getPostJoiningDocuments() {
+        return postJoiningDocuments;
+    }
+
+    public void setPostJoiningDocuments(List<Document> postJoiningDocuments) {
+        this.postJoiningDocuments = postJoiningDocuments;
+    }
+
+    public List<IllnessAndInjury> getIllnessInjury() {
+        return illnessInjury;
+    }
+
+    public void setIllnessInjury(List<IllnessAndInjury> illnessInjury) {
+        this.illnessInjury = illnessInjury;
+    }
+
+    public List<NextOfKin> getNextOfKins() {
+        return nextOfKins;
+    }
+
+    public void setNextOfKins(List<NextOfKin> nextOfKins) {
+        this.nextOfKins = nextOfKins;
+    }
+
+    public List<Bank> getBanks() {
+        return banks;
+    }
+
+    public void setBanks(List<Bank> banks) {
+        this.banks = banks;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<AuditTrail> getAuditTails() {
+        return auditTails;
+    }
+
+    public void setAuditTails(List<AuditTrail> auditTails) {
+        this.auditTails = auditTails;
+    }
+
+
+    public List<Document> getExistingDocuments() {
+        return existingDocuments;
+    }
+
+    public void setExistingDocuments(List<Document> existingDocuments) {
+        this.existingDocuments = existingDocuments;
     }
 
     public int getAge() {
