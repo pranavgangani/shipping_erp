@@ -22,8 +22,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,10 +42,11 @@ public class CrewService {
     private AuditTrailRepository auditTrailDao;
     @Autowired
     private MongoDatabase db;
+    private static Bson projections = Projections.include("firstName", "middleName", "lastName");
 
     public List<Crew> getList() {
         MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
-        Bson projection = Projections.fields(Projections.include("firstName"));
+        Bson projection = Projections.fields(projections);
         List<Crew> crewList = new LinkedList<>();
         Bson filter = Filters.empty();
         collection.find(filter).projection(projection).into(crewList);
@@ -52,7 +56,7 @@ public class CrewService {
     public Crew getById(long crewId) {
         MongoCollection<Crew> collection = db.getCollection("Crew", Crew.class);
         Bson filter = Filters.eq("_id", crewId);
-        return collection.find(filter).first();
+        return collection.find(filter).projection(projections).first();
     }
 
     public Crew addCrew(Crew crew) {
@@ -127,8 +131,64 @@ public class CrewService {
         List<Bank> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("banks"))).first().getBanks();
         return list;
     }
+
     public List<Contract> getContracts(long crewId) {
         List<Contract> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("historicalContracts"))).first().getHistoricalContracts();
         return list;
+    }
+
+    public void addToAudit(Crew modifiedCrew) {
+        List<CrewFieldAudit> audits = new LinkedList<>();
+        String enteredBy = modifiedCrew.getEnteredBy();
+        long crewId = modifiedCrew.getId();
+        Class clazz = modifiedCrew.getClass();
+        for (final Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(aClass)) {
+                try {
+                    String setterMethodName = method.getName();
+                    String getterMethodName = setterMethodName.replace("set", "get");
+                    Method getterMethod = clazz.getMethod(getterMethodName);
+                    Object val = getterMethod.invoke(modifiedCrew);
+                    ACrew aCrew = method.getAnnotation(ACrew.class);
+                    CrewField field = aCrew.name();
+                    if (val != null) {
+                        CrewFieldAudit crewFieldAudit = new CrewFieldAudit();
+                        if (val.getClass().equals(String.class)) {
+                            String txt = (String) val;
+                            crewFieldAudit.setFieldValue(txt);
+                        }
+                        else if (val.getClass().equals(Boolean.class)) {
+                            Boolean value = (Boolean) val;
+                            crewFieldAudit.setFieldValue((value ? "YES" : "NO"));
+                        }
+                        else if (val.getClass().equals(Integer.class)) {
+                            Integer value = (Integer) val;
+                            crewFieldAudit.setFieldValue(String.valueOf(value));
+                        }
+                        else if (val.getClass().equals(Double.class)) {
+                            Double value = (Double) val;
+                            crewFieldAudit.setFieldValue(String.valueOf(value));
+                        }
+                        else if (val.getClass().equals(LocalDate.class)) {
+                            LocalDate value = (LocalDate) val;
+                            crewFieldAudit.setFieldValue(value.toString());
+                        }
+                        crewFieldAudit.setCrewId(crewId);
+                        crewFieldAudit.setFieldName(field.getFieldName());
+                        crewFieldAudit.setEnteredBy(enteredBy);
+                        crewFieldAudit.setEnteredDateTime(LocalDateTime.now());
+                        audits.add(crewFieldAudit);
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 }

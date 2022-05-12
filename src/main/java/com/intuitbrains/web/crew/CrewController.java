@@ -64,8 +64,6 @@ import com.intuitbrains.util.ParamUtil;
 @RequestMapping(value = "/crew")
 public class CrewController {
     @Autowired
-    private CrewRepository crewDao;
-    @Autowired
     private PhotoRepository photoDao;
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
@@ -101,14 +99,13 @@ public class CrewController {
         return mv;
     }
 
-
     @GetMapping(value = "/modify")
     public ModelAndView modifyCrew(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("/crew/crew_details");
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
-            Crew crew = crewDao.findById(crewId).get();
+            Crew crew = crewService.getById(crewId);
 
             CrewFieldStatus fs = crew.getFieldStatus();
 
@@ -167,7 +164,7 @@ public class CrewController {
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
-            Crew crew = crewDao.findById(crewId).get();
+            Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
             List<Document> existingDocuments = crew.getExistingDocuments();
 
@@ -213,7 +210,7 @@ public class CrewController {
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
-            Crew crew = crewDao.findById(crewId).get();
+            Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
             List<Document> existingDocuments = crew.getExistingDocuments();
 
@@ -331,7 +328,7 @@ public class CrewController {
 
             //Save PhotoId to Crew
             crew.setPhotoId(photoId);
-            crewDao.save(crew);
+            crewService.updateCrew(crew);
             mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
         } catch (IOException e) {
@@ -452,7 +449,7 @@ public class CrewController {
                          @RequestParam("docId") long docId,
                          @RequestParam("file") MultipartFile file,
                          RedirectAttributes redirectAttributes) {
-        Crew crew = crewDao.findById(crewId).get();
+        Crew crew = crewService.getById(crewId);
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
 
         redirectAttributes.addFlashAttribute("message",
@@ -505,7 +502,7 @@ public class CrewController {
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         List<VesselVacancy> vacancies = new ArrayList<>();
         if (crewId > 0) {
-            Crew crew = crewDao.findById(crewId).get();
+            Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
             //vacancies = vesselVacancyDao.findVacanciesByRank(crew.getRank().getId());
             vacancies = vesselVacancyDao.findAll();
@@ -533,7 +530,7 @@ public class CrewController {
             }
             v.setVessel(vessel);
             if (v.getFilledByCrewId() > 0) {
-                v.setFilledByCrew(crewDao.findById(v.getFilledByCrewId()).get());
+                v.setFilledByCrew(crewService.getById(v.getFilledByCrewId()));
             }
             v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
             System.out.print(" ]");

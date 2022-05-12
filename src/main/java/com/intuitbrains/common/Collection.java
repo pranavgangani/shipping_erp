@@ -31,7 +31,8 @@ public class Collection {
 	public final static String CREW_CONTRACT = "CrewContract";
 	public final static String TRAVEL_AND_ACCOMODATION = "TravelAndAccomodation";
 
-	//Audit 
+	//Audit
+	public final static String CREW_FIELD_AUDIT = "CrewFieldAudit";
 	public final static String AUDIT_TRAIL = "AuditTrail";
 	public final static String FS_AUDIT_TRAIL = "FieldStatusAuditTrail";
 	public final static String COMMENT = "Comment";

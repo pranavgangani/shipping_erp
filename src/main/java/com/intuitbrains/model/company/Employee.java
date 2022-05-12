@@ -17,6 +17,9 @@ public class Employee extends Person {
 
     @Id
     private String id;
+    protected String firstName, middleName, lastName;
+    protected String gender;
+    protected String userName, password, emailId;
 
     private Office office;
     private Designation designation;
@@ -32,6 +35,10 @@ public class Employee extends Person {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFullName() {
+        return (getFirstName() + " " + getMiddleName() + " " + getLastName());
     }
 
     public String getPassword() {
@@ -80,5 +87,53 @@ public class Employee extends Person {
 
     public void setEmpId(String empId) {
         this.empId = empId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }

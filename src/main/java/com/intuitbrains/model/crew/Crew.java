@@ -28,6 +28,10 @@ public class Crew extends Person {
 
     @Id
     private long id;
+    protected String firstName, middleName, lastName;
+    protected String gender;
+    protected String userName, password, emailId;
+
     private String passportNumber, indosNumber;
     private String distinguishMark;
     private Rank rank;
@@ -71,6 +75,69 @@ public class Crew extends Person {
 
     private int statusId;
     private Status status;
+
+    public String getFullName() {
+        return (getFirstName() + " " + getMiddleName() + " " + getLastName());
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    @ACrew(name = CrewField.FIRST_NAME)
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    @ACrew(name = CrewField.MIDDLE_NAME)
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    @ACrew(name = CrewField.LAST_NAME)
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 
     public int getStatusId() {
         return statusId;
@@ -234,6 +301,7 @@ public class Crew extends Person {
         this.maritalStatus = maritalStatus;
     }
 
+    @ACrew(name = CrewField.DOB)
     public LocalDate getDob() {
         return dob;
     }
