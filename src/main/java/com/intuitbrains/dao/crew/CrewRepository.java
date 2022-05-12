@@ -1,5 +1,6 @@
 package com.intuitbrains.dao.crew;
 
+import com.intuitbrains.model.crew.Experience;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.intuitbrains.model.crew.Crew;
@@ -17,5 +18,12 @@ public interface CrewRepository extends MongoRepository<Crew, Long> {
 
     @Query("{ 'dob' : { $gt: ?0 } }")
     public List<Crew> findByDOB(LocalDate date);
+
+    //{"fName":1, "lName":2,_id:0}
+    @Query("{_id:1, fName:2, lName:3 ,mName:4, rank:5, gender:6, passportNumber:7, indosNumber:8, statusId:9}")
+    public List<Crew> getList();
+
+    @Query("{_id:1, employmentHistory:2}")
+    public List<Experience> getEmploymentHistory(long crewId);
 
 }

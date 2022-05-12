@@ -23,8 +23,8 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/add">
-                
+                <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/${action}">
+                <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
                 <%@ include file="add_crew_header.jsp" %>
                     
                     <!-- Main page content-->
@@ -39,6 +39,7 @@
                             <a class="nav-link" href="/crew/add_bank_account?crewId=${crew.id}">Bank Account</a>
                             <a class="nav-link" href="/crew/add_nominee?crewId=${crew.id}">Nominee</a>
                             <a class="nav-link" href="/crew/document_list?crewId=${crew.id}">Other Documents</a>
+                            <a class="nav-link" href="/crew/contract_list?crewId=${crew.id}">Contracts</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
@@ -69,7 +70,10 @@
                                 <div class="card mb-4">
                                     <div class="card-header">Actions</div>
                                     <div class="card-body">
-                                        <button class="btn btn-primary" type="submit">Add</button> 	
+                                    <c:choose>
+                                        <c:when test="${action == 'modify'}"><button class="btn btn-primary" type="submit">Save</button></c:when>
+                                        <c:otherwise><button class="btn btn-primary" type="submit">Add</button></c:otherwise>
+                                    </c:choose>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +117,7 @@
 		                                                <td><div class="col-md-8 mb-3">
 			                                                <select class="form-select" id="maritalStatus" name="maritalStatus" aria-label="Default select example">
 																<option selected disabled>Marital Status:</option>
-																<option <c:if test="${crew.maritalStatus=='unmarried'}">selected</c:if> value="unmarried">Unmarried</option>
+																<option <c:if test="${crew.maritalStatus=='single'}">selected</c:if> value="single">Single</option>
 																<option <c:if test="${crew.maritalStatus=='married'}">selected</c:if> value="married">Married</option>
 															</select>
 															</div>
@@ -310,7 +314,7 @@
 		                                </div>
                                     </div>
                                 </div>
-                                <c:if test="${action == 'Edit'}">
+                                <c:if test="${action == 'modify'}">
                                     <div class="card mb-4">
                                         <div class="card-header">Audit Trail</div>
                                         <div class="card-body">

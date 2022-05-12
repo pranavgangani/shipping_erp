@@ -25,6 +25,7 @@ import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.model.vessel.VesselVacancy;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
+import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.StandardWebParameter;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,6 +69,8 @@ class CrewTest {
     private EmployeeRepository employeeDao;
     @Autowired
     private AuditTrailRepository auditTrailDao;
+    @Autowired
+    private CrewService crewService;
 
     @Test
     void addNewCrewDetails() {
@@ -395,6 +399,12 @@ class CrewTest {
 
     }
 
+
+    @Test
+    void testGetList() {
+        crewService.getList(1);
+    }
+
     @Test
     void generateContract() {
         //Get Crew Details
@@ -415,7 +425,8 @@ class CrewTest {
         contract.setPlaceOfContract("Mumbai");
         Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
         contract.setPlaceOfContractFlag(flag);
-        contract.setWageCurrency(15000);
+        contract.setMonthlyWage(new BigDecimal(15000));
+        contract.setWageCurrency("USD");
         contract.setStatusId(CrewContract.Status.GENERATED.getId());
 
         //Generate Contract Docs

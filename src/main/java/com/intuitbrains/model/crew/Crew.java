@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.common.document.category.Document;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -25,7 +26,7 @@ public class Crew extends Person {
 
     @Id
     private long id;
-    private String passportNumber, visaNumber;
+    private String passportNumber, indosNumber;
     private String distinguishMark;
     private Rank rank;
     private String manningOffice;
@@ -33,6 +34,8 @@ public class Crew extends Person {
     private ObjectId nationalityFlagId;
     private String nationality;
     private int age;
+    private Contract currentContract;
+    private List<Contract> historicalContracts;
 
     //Personal
     private String permAddress, presentAddress;
@@ -63,6 +66,7 @@ public class Crew extends Person {
     private LocalDateTime enteredLocalDateTime, updatedLocalDateTime;
 
     private int statusId;
+    private Status status;
 
     public int getStatusId() {
         return statusId;
@@ -70,6 +74,14 @@ public class Crew extends Person {
 
     public void setStatusId(int statusId) {
         this.statusId = statusId;
+    }
+
+    public Status getStatus() {
+        return (this.getStatusId() > 0 ? Status.createFromId(this.getStatusId()) : null);
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Crew() {
@@ -146,12 +158,12 @@ public class Crew extends Person {
         this.passportNumber = passportNumber;
     }
 
-    public String getVisaNumber() {
-        return visaNumber;
+    public String getIndosNumber() {
+        return indosNumber;
     }
 
-    public void setVisaNumber(String visaNumber) {
-        this.visaNumber = visaNumber;
+    public void setIndosNumber(String indosNumber) {
+        this.indosNumber = indosNumber;
     }
 
     public String getDistinguishMark() {
@@ -377,6 +389,7 @@ public class Crew extends Person {
     public void setEnteredLocalDateTime(LocalDateTime enteredLocalDateTime) {
         this.enteredLocalDateTime = enteredLocalDateTime;
     }
+
     public boolean isSignedOffForMedicalReasons() {
         return isSignedOffForMedicalReasons;
     }
@@ -431,6 +444,22 @@ public class Crew extends Person {
 
     public void setHasNervousDisability(boolean hasNervousDisability) {
         this.hasNervousDisability = hasNervousDisability;
+    }
+
+    public Contract getCurrentContract() {
+        return currentContract;
+    }
+
+    public void setCurrentContract(Contract currentContract) {
+        this.currentContract = currentContract;
+    }
+
+    public List<Contract> getHistoricalContracts() {
+        return historicalContracts;
+    }
+
+    public void setHistoricalContracts(List<Contract> historicalContracts) {
+        this.historicalContracts = historicalContracts;
     }
 
     public String getUpdatedBy() {

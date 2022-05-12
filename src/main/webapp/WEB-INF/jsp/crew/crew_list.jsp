@@ -24,6 +24,28 @@
 
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
+
+				<div class="card mb-4">
+                						<div class="card-header">Filter</div>
+                						<div class="card-body">
+                                            <table>
+                                                <tr>
+                                                    <td>Status: </td>
+                                                    <td>
+                                                        <select class="form-select" id="filterStatus" name="filterStatus" aria-label="Default select example">
+                                                            <option value="availability">Availability</option>
+                                                            <option value="debriefPending">De-Brief Pending</option>
+                                                            <option value="newApplication">New Applicant</option>
+                                                            <option value="pendingApproval">Pending Approval</option>
+                                                            <option value="pendingReview">Pending Review</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                						</div>
+                					</div>
+
+
 					<div class="card mb-4">
 						<div class="card-header">Crew List</div>
 						<div class="card-body">
@@ -31,11 +53,12 @@
 								<thead>
 									<tr>
 										<th>Name</th>
-                                        <th>Position</th>
-                                        <th>Department</th>
-                                        <th>Manning Office</th>
+                                        <th>Rank</th>
+                                        <th>Gender</th>
                                         <th>Age</th>
-                                        <th>Start date</th>
+                                        <th>Passport#</th>
+                                        <th>INDOS#</th>
+                                        <th>Manning Office</th>
                                         <th>Wage</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -44,14 +67,15 @@
 								<tfoot>
 									<tr>
 										<th>Name</th>
-										<th>Position</th>
-										<th>Department</th>
-										<th>Manning Office</th>
-										<th>Age</th>
-										<th>Start date</th>
-										<th>Wage</th>
-										<th>Status</th>
-										<th>Actions</th>
+                                        <th>Rank</th>
+                                        <th>Gender</th>
+                                        <th>Age</th>
+                                        <th>Passport#</th>
+                                        <th>INDOS#</th>
+                                        <th>Manning Office</th>
+                                        <th>Wage</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
 									</tr>
 								</tfoot>
 								<tbody>
@@ -60,15 +84,15 @@
 								    <tr>
 										<td>${crew.fName} ${crew.mName} ${crew.lName}</td>
 										<td>${crew.rank.name}</td>
-										<td>${crew.rank.rankCategory.name}</td>										
-										<td>${crew.manningOffice}</td>
+										<td>${crew.gender}</td>
 										<td>${crew.age}</td>
-										<td>2011/04/25</td>
-										<td>$320,800</td>
+										<td>${crew.passportNumber}</td>
+										<td>${crew.indosNumber}</td>
+										<td>${crew.manningOffice}</td>
+										<td>${crew.currentContract.wageCurrency} ${crew.currentContract.monthlyWage}</td>
+										<td>${crew.status.desc}</td>
 										<td>
-
-										<div class="badge bg-primary text-white rounded-pill">Full-time</div></td>
-										<td>
+										    <!--<div class="badge bg-primary text-white rounded-pill">Full-time</div></td>-->
 										    <button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
 													id="dropdownMenuButton" type="button"

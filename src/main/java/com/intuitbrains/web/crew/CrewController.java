@@ -37,6 +37,7 @@ import com.intuitbrains.model.vessel.VesselVacancyAttributes;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.StandardWebParameter;
+import com.intuitbrains.util.StringUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class CrewController {
     @GetMapping(value = "/list")
     public ModelAndView crewList(Model model) {
         ModelAndView mv = new ModelAndView("crew/crew_list");
-        List<Crew> list = crewDao.findAll();
+        List<Crew> list = crewDao.getList();
         mv.addObject("list", list);
         return mv;
     }
@@ -94,10 +95,70 @@ public class CrewController {
     @GetMapping(value = "/add")
     public ModelAndView addCrew(Model model) {
         ModelAndView mv = new ModelAndView("crew/crew_details");
+        mv.addObject("action", StandardWebParameter.ADD);
         mv.addObject("rankMap", Rank.getByGroup());
         mv.addObject("flags", flagDao.findAll());
         return mv;
     }
+
+
+    @GetMapping(value = "/modify")
+    public ModelAndView modifyCrew(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/crew/crew_details");
+
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            Crew crew = crewDao.findById(crewId).get();
+
+            CrewFieldStatus fs = crew.getFieldStatus();
+
+            mv.addObject("crew", crew);
+            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
+            if (ListUtil.isNotEmpty(auditTrails)) {
+                System.out.println("auditTrails = " + auditTrails.size());
+                mv.addObject("auditTrails", auditTrails);
+            } else {
+                System.out.println("No auditTrails");
+            }
+            CrewPhoto photo = null;
+
+            try {
+                photo = photoDao.findById(crew.getPhotoId()).get();
+                //mv.addObject("title", photo.getTitle());
+                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+            } catch (NoSuchElementException e) {
+
+            }
+
+        }
+        mv.addObject("action", StandardWebParameter.MODIFY);
+        mv.addObject("rankMap", Rank.getByGroup());
+        return mv;
+    }
+
+
+    @PostMapping(value = "/save")
+    public ModelAndView saveCrew(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/crew/crew_details");
+
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            Enumeration enumer = req.getParameterNames();
+            Iterator iter = enumer.asIterator();
+            while (iter.hasNext()) {
+                String paramName = (String) iter.next();
+                System.out.println(paramName + " : " + req.getParameter(paramName));
+            }
+            //Crew crew = crewDao.findById(crewId).get();
+
+
+        }
+        mv.addObject("action", StandardWebParameter.MODIFY);
+        mv.addObject("rankMap", Rank.getByGroup());
+        return mv;
+    }
+
 
     @GetMapping(value = "/document_list")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
@@ -145,24 +206,23 @@ public class CrewController {
         return mv;
     }
 
-    @GetMapping(value = "/edit")
-    public ModelAndView editCrew(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("/crew/crew_details");
+    @GetMapping(value = "/contract_list")
+    public ModelAndView contractList(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/contract_list");
+        List<Document> documents = documentDao.findAll();
 
-        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewDao.findById(crewId).get();
-
-            CrewFieldStatus fs = crew.getFieldStatus();
-
             mv.addObject("crew", crew);
-            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
-            if (ListUtil.isNotEmpty(auditTrails)) {
-                System.out.println("auditTrails = " + auditTrails.size());
-                mv.addObject("auditTrails", auditTrails);
-            } else {
-                System.out.println("No auditTrails");
+            List<Document> existingDocuments = crew.getExistingDocuments();
+
+            if (ListUtil.isNotEmpty(existingDocuments)) {
+                existingDocuments.forEach(doc -> {
+                    doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
+                    System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
+                });
+                mv.addObject("existingDocuments", existingDocuments);
             }
             CrewPhoto photo = null;
 
@@ -174,9 +234,21 @@ public class CrewController {
 
             }
 
+
+            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crew.getId());
+            if (ListUtil.isNotEmpty(auditTrails)) {
+                System.out.println("auditTrails = " + auditTrails.size());
+                mv.addObject("auditTrails", auditTrails);
+            } else {
+                System.out.println("No auditTrails");
+            }
+
         }
+
         mv.addObject("action", "Edit");
-        mv.addObject("rankMap", Rank.getByGroup());
+        mv.addObject("list", documents);
+
+
         return mv;
     }
 
@@ -195,9 +267,9 @@ public class CrewController {
                                 @RequestParam("birthDate") String dob,
                                 @RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
                                 Model model) {
-        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         String maker = emp.getEmpId();
-        ModelAndView mv = new ModelAndView("/crew/add_employment");
+        ModelAndView mv = new ModelAndView("/crew/employment_list");
         System.out.println("add_crew: " + fName);
         System.out.println("image: " + image);
 
@@ -271,17 +343,20 @@ public class CrewController {
         return mv;
     }
 
-
-    @GetMapping(value = "/add_employment")
-    public ModelAndView addEmployment(Model model) {
-        ModelAndView mv = new ModelAndView("crew/add_employment");
+    @GetMapping(value = "/employment")
+    public ModelAndView employment(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/employment_list");
+        long crewId = Long.parseLong(req.getParameter("crewId"));
+        List<Experience> experiences = crewService.getEmploymentHistory(crewId);
+        mv.addObject("experiences", experiences);
         return mv;
     }
 
     @PostMapping(value = "/add_employment")
     public ModelAndView addEmployment(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("crew/add_employment");
-        int crewId = Integer.parseInt(req.getParameter("crewId"));
+        ModelAndView mv = new ModelAndView("crew/employment_list");
+        String empName = StringUtil.trim(req.getParameter("empName"));
+        long crewId = Long.parseLong(req.getParameter("crewId"));
         return mv;
     }
 
@@ -343,16 +418,16 @@ public class CrewController {
 
     @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ModelAndView uploadExcel(HttpServletRequest req, @RequestParam("file") MultipartFile file,
-                         RedirectAttributes redirectAttributes) {
+                                    RedirectAttributes redirectAttributes) {
         ModelAndView mv = new ModelAndView("crew/crew_list");
-        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
         try {
             String uploadPath = req.getServletContext().getRealPath("") + File.separator + "temp" + File.separator;
-            String newFilePath = uploadPath+file.getOriginalFilename();
+            String newFilePath = uploadPath + file.getOriginalFilename();
             FileCopyUtils.copy(file.getBytes(), new File(newFilePath));
             FileInputStream fi = new FileInputStream(newFilePath);
             crewService.uploadCrewData(emp.getEmpId(), fi);
@@ -369,7 +444,7 @@ public class CrewController {
                          @RequestParam("file") MultipartFile file,
                          RedirectAttributes redirectAttributes) {
         Crew crew = crewDao.findById(crewId).get();
-        Employee emp = (Employee)req.getSession().getAttribute("currentUser");
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");

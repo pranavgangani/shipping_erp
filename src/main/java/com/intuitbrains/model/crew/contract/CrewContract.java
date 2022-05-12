@@ -31,7 +31,7 @@ public class CrewContract {
 	private List<Document> documents;
 	private List<ContractRule> otherContractRules;
 	private BigDecimal monthlyWage;
-	private double wageCurrency;
+	private String wageCurrency;
     private int statusId;
 
     private List<TravelAndAccomodation> travelAndAccomodations;
@@ -119,11 +119,11 @@ public class CrewContract {
         this.monthlyWage = monthlyWage;
     }
 
-    public double getWageCurrency() {
+    public String getWageCurrency() {
         return wageCurrency;
     }
 
-    public void setWageCurrency(double wageCurrency) {
+    public void setWageCurrency(String wageCurrency) {
         this.wageCurrency = wageCurrency;
     }
 

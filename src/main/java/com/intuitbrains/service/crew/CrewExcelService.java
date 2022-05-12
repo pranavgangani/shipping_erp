@@ -250,6 +250,7 @@ public class CrewExcelService {
                         passport.setECNRRequired(StringUtil.parseBoolean(sheet.getRow(ecnrCell.getRow()).getCell(ecnrCell.getCol()).getRichStringCellValue().getString()));
                         passport.setBlankPages((int) sheet.getRow(blankCell.getRow()).getCell(blankCell.getCol()).getNumericCellValue());
                         crewDocsToPopulate.add(passport);
+                        crew.setPassportNumber(docNum);
                         break;
                     }
                 }
@@ -387,6 +388,7 @@ public class CrewExcelService {
                         cdc.setPlaceOfIssue(placeOfIssue);
                         cdc.setRemarks(remarks);
                         crewDocsToPopulate.add(cdc);
+                        crew.setIndosNumber(docNum);
                         break;
                     }
                 }

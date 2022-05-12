@@ -5,14 +5,25 @@ import com.intuitbrains.common.Collection;
 import com.intuitbrains.dao.common.AuditTrailRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.model.crew.Crew;
+import com.intuitbrains.model.crew.Experience;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.util.StandardWebParameter;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class CrewService {
@@ -24,6 +35,8 @@ public class CrewService {
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
     private AuditTrailRepository auditTrailDao;
+    @Autowired
+    private MongoDatabase db;
 
     public Crew uploadCrewData(String uploadByEmpId, FileInputStream file) throws IOException {
         Crew crew = crewExcelService.upload(file);
@@ -66,5 +79,18 @@ public class CrewService {
         audit.setUniqueId(crew.getId());
         auditTrailDao.insert(audit);
         return crew;
+    }
+
+    public List<Crew> getList(long crewId) {
+        MongoCollection<Crew> collection = db.getCollection("Crew", Crew.class);
+        Bson filter = Filters.eq("_id", crewId);
+        Bson projection = Projections.fields(Projections.include("fName", "mName", "lName"));
+        //collection.find(filter).projection(projection).forEach(doc -> System.out.println(doc));
+        List<Crew> crewList = collection.find(filter).projection(projection).into(new LinkedList<Crew>());
+        return crewList;
+    }
+
+    public List<Experience> getEmploymentHistory(long crewId) {
+        return crewDao.getEmploymentHistory(crewId);
     }
 }

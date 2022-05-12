@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.mongodb.client.MongoDatabase;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -15,8 +17,12 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
+    private CodecRegistry pojoCodecRegistry;
 
     @Override
     protected String getDatabaseName() {
@@ -29,6 +35,9 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         final MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
+        // create codec registry for POJOs
+        pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         return MongoClients.create(mongoClientSettings);
     }
 
@@ -55,7 +64,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     }*/
 
     @Bean
-    public MongoDatabase getDB(){
-        return mongoClient().getDatabase(getDatabaseName());
+    public MongoDatabase getDB() {
+        return mongoClient().getDatabase(getDatabaseName()).withCodecRegistry(pojoCodecRegistry);
     }
 }
