@@ -117,7 +117,7 @@ public class CrewService {
     }
 
     public List<Education> getEducationHistory(long crewId) {
-        List<Education> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("educationtHistory"))).first().getEducationHistory();
+        List<Education> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("educationHistory"))).first().getEducationHistory();
         return list;
     }
 

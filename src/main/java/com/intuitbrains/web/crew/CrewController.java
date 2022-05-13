@@ -107,8 +107,6 @@ public class CrewController {
         if (crewId > 0) {
             Crew crew = crewService.getById(crewId);
 
-            CrewFieldStatus fs = crew.getFieldStatus();
-
             mv.addObject("crew", crew);
             List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
             if (ListUtil.isNotEmpty(auditTrails)) {
@@ -128,6 +126,7 @@ public class CrewController {
             }
 
         }
+        mv.addObject("crewId", crewId);
         mv.addObject("flags", flagDao.findAll());
         mv.addObject("action", StandardWebParameter.MODIFY);
         mv.addObject("rankMap", Rank.getByGroup());
@@ -344,15 +343,17 @@ public class CrewController {
         ModelAndView mv = new ModelAndView("crew/experience");
         long crewId = Long.parseLong(req.getParameter("crewId"));
         List<Experience> experiences = crewService.getEmploymentHistory(crewId);
+        mv.addObject("crewId", crewId);
         mv.addObject("experiences", experiences);
         return mv;
     }
 
     @GetMapping(value = "/education")
     public ModelAndView education(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/education_list");
+        ModelAndView mv = new ModelAndView("crew/education");
         long crewId = Long.parseLong(req.getParameter("crewId"));
         List<Education> educations = crewService.getEducationHistory(crewId);
+        mv.addObject("crewId", crewId);
         mv.addObject("educations", educations);
         return mv;
     }

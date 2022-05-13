@@ -16,7 +16,7 @@ public class Education {
     private List<EducationDocument> educationDocuments;
     private float percentage;
     private String grade;
-    private Flag flag;
+    private String flagCode;
 
     public long getId() {
         return id;
@@ -74,12 +74,12 @@ public class Education {
         this.educationDocuments = educationDocuments;
     }
 
-    public Flag getFlag() {
-        return flag;
+    public String getFlagCode() {
+        return flagCode;
     }
 
-    public void setFlag(Flag flag) {
-        this.flag = flag;
+    public void setFlagCode(String flagCode) {
+        this.flagCode = flagCode;
     }
 
     public float getPercentage() {

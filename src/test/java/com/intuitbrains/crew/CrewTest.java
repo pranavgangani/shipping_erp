@@ -108,7 +108,7 @@ class CrewTest {
         ssc.setInstituteName("Sharon School");
         ssc.setInstituteAddress("Mulund, Mumbai");
         ssc.setPercentage(50f);
-        ssc.setFlag(flag);
+        ssc.setFlagCode("IN");
         ssc.setStartDate(LocalDate.of(2001, 4, 23));
         ssc.setEndDate(LocalDate.of(2002, 4, 23));
 
@@ -122,7 +122,7 @@ class CrewTest {
         hsc.setInstituteName("Somaiya College");
         hsc.setInstituteAddress("Vidyavihar, Mumbai");
         hsc.setPercentage(90.99f);
-        hsc.setFlag(flag);
+        ssc.setFlagCode("IN");
         hsc.setStartDate(LocalDate.of(2003, 4, 23));
         hsc.setEndDate(LocalDate.of(2006, 4, 23));
 
@@ -277,7 +277,7 @@ class CrewTest {
         emp1.setVesselSubType(VesselSubType.LPG_TANKER);
         //emp1.setStartDate(new LocalDateTime());
         //emp1.setEndDate(new LocalDateTime());
-        emp1.setFlag(flag);
+        emp1.setFlagCode(flag.getCode());
         List<EmploymentDocument> emp1Docs = new ArrayList<>();
 
         EmploymentDocument emp1Doc1 = new SalarySlip();
@@ -309,7 +309,7 @@ class CrewTest {
         //empDoc2.setFile();
         emp2Docs.add(emp2Doc2);
         emp2.setEmploymentDocuments(emp2Docs);
-        emp2.setFlag(flag);
+        emp2.setFlagCode(flag.getCode());
         crew.setEmploymentHistory(new ArrayList<>(Arrays.asList(emp1, emp2)));
 
         Bson updates = Updates.set("employmentHistory", new ArrayList<>(Arrays.asList(emp1, emp2)));
@@ -447,6 +447,11 @@ class CrewTest {
     void testExperienceList() {
         List<Experience> experienceList = crewService.getEmploymentHistory(24);
         experienceList.forEach(e->System.out.println(e.getEmployerName()));
+    }
+    @Test
+    void testEducationList() {
+        List<Education> list = crewService.getEducationHistory(24);
+        list.forEach(e->System.out.println(e.getInstituteName()));
     }
     @Test
     void testTravelAndAccomodationList() {

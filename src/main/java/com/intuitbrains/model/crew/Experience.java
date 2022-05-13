@@ -21,7 +21,7 @@ public class Experience {
     private VesselSubType vesselSubType;
     private LocalDate startDate, endDate;
     private List<EmploymentDocument> employmentDocuments;
-    private Flag flag;
+    private String flagCode;
     private ReasonForSingOff reasonForSingOff;
 
     public long getId() {
@@ -30,6 +30,10 @@ public class Experience {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setFlagCode(String flagCode) {
+        this.flagCode = flagCode;
     }
 
     public String getEmployerName() {
@@ -112,12 +116,8 @@ public class Experience {
         this.vesselSubType = vesselSubType;
     }
 
-    public Flag getFlag() {
-        return flag;
-    }
-
-    public void setFlag(Flag flag) {
-        this.flag = flag;
+    public String getFlagCode() {
+        return flagCode;
     }
 
     public ReasonForSingOff getReasonForSingOff() {

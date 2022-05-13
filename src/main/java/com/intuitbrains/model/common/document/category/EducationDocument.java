@@ -3,10 +3,13 @@ package com.intuitbrains.model.common.document.category;
 
 import java.time.LocalDate;
 
-public abstract class EducationDocument extends Document {
+public class EducationDocument extends Document {
     protected String instituteName, instituteAddress;
     protected LocalDate startDate, endDate;
     private long certificateTypeId;
+
+    public EducationDocument() {
+    }
 
     public String getInstituteName() {
         return instituteName;

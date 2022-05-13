@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>${action} Crew</title>
+        <title>${action} Crew - Experience</title>
 
         <%@ include file="../includes/header_includes.jsp" %>
         <script src="../js/crew/crew_details.js"></script>
@@ -31,15 +31,15 @@
                     <div class="container-fluid px-4">
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
-                            <a class="nav-link" href="/crew/modify?crewId=${crew.id}">Profile</a>
-                            <a class="nav-link active ms-0" href="/crew/experience?crewId=${crew.id}">Employment</a>
-                            <a class="nav-link" href="/crew/education?crewId=${crew.id}">Education</a>
-                            <a class="nav-link" href="/crew/passport_visa?crewId=${crew.id}">Passport/Visa</a>
-                            <a class="nav-link" href="/crew/medical?crewId=${crew.id}">Medical</a>
-                            <a class="nav-link" href="/crew/bank?crewId=${crew.id}">Bank Account</a>
-                            <a class="nav-link" href="/crew/nominee?crewId=${crew.id}">Nominee</a>
-                            <a class="nav-link" href="/crew/documents?crewId=${crew.id}">Other Documents</a>
-                            <a class="nav-link" href="/crew/contracts?crewId=${crew.id}">Contracts</a>
+                            <a class="nav-link" href="/crew/modify?crewId=${crewId}">Profile</a>
+                            <a class="nav-link active ms-0" href="/crew/experience?crewId=${crewId}">Employment</a>
+                            <a class="nav-link" href="/crew/education?crewId=${crewId}">Education</a>
+                            <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
+                            <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
+                            <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
+                            <a class="nav-link" href="/crew/nominee?crewId=${crewId}">Nominee</a>
+                            <a class="nav-link" href="/crew/documents?crewId=${crewId}">Other Documents</a>
+                            <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-10">
-                                <!-- Change password card-->
+                               <c:forEach items="${experiences}" var="exp">
                                 <div class="card mb-4">
                                     <div class="card-body">
                                         <div class="table-responsive table-billing-history">
@@ -93,24 +93,49 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
-		                                            <tr>
-		                                               <c:forEach items="${experiences}" var="exp">
-                                                        <td><label class="small mb-3">Employer Name</label></td>
-                                                        <td>
-                                                            <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="employerName" id="employerName" type="text" placeholder="Enter name" value="${exp.employerName}" /></div>
-                                                        </td>
-                                                        <td><label class="small mb-3">Employer Address</label></td>
-                                                        <td>
-                                                            <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="employerAddress" id="employerAddress" type="text" placeholder="Enter name" value="${exp.employerAddress}" /></div>
-                                                        </td>
-		                                               </c:forEach>
-		                                            </tr>
-
+                                                       <tr>
+                                                            <td><label class="small mb-3">Employer Name</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="employerName" id="employerName" type="text" placeholder="Enter name" value="${exp.employerName}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Employer Address</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="employerAddress" id="employerAddress" type="text" placeholder="Enter name" value="${exp.employerAddress}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Vessel Name</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="vesselName" id="vesselName" type="text" placeholder="Enter Vessel Name" value="${exp.vesselName}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Vessel Type</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="vesselSubType" id="vesselSubType" type="text" placeholder="" value="${exp.vesselSubType.desc}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Start Date</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="startDate" id="startDate" type="text" placeholder="Enter Start Date" value="${exp.startDate}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Start Date</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="endDate" id="endDate" type="text" placeholder="Enter End Date" value="${exp.endDate}" /></div>
+                                                            </td>
+                                                        </tr>
 		                                        </tbody>
 		                                    </table>
 		                                </div>
                                     </div>
                                 </div>
+                            </c:forEach>
+
                                 <c:if test="${action == 'modify'}">
                                     <div class="card mb-4">
                                         <div class="card-header">Audit Trail</div>
