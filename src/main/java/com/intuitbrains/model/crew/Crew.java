@@ -50,7 +50,9 @@ public class Crew extends Person {
     //Personal
     private String permAddress, presentAddress;
     private String contact1, contact2;
-    private String nearestAirport, maritalStatus;
+    private String nearestAirport;
+    private int maritalStatusId;
+    private MaritalStatus maritalStatus;
 
     // Past
     private List<Experience> employmentHistory;
@@ -120,6 +122,7 @@ public class Crew extends Person {
         return gender;
     }
 
+    @ACrew(name = CrewField.GENDER)
     public void setGender(String gender) {
         this.gender = gender;
     }
@@ -144,6 +147,7 @@ public class Crew extends Person {
         return emailId;
     }
 
+    @ACrew(name = CrewField.EMAILID)
     public void setEmailId(String emailId) {
         this.emailId = emailId;
     }
@@ -210,6 +214,7 @@ public class Crew extends Person {
         return passportNumber;
     }
 
+    @ACrew(name = CrewField.PASSPORT_NUM)
     public void setPassportNumber(String passportNumber) {
         this.passportNumber = passportNumber;
     }
@@ -218,6 +223,7 @@ public class Crew extends Person {
         return indosNumber;
     }
 
+    @ACrew(name = CrewField.INDOS_NUM)
     public void setIndosNumber(String indosNumber) {
         this.indosNumber = indosNumber;
     }
@@ -234,6 +240,7 @@ public class Crew extends Person {
         return manningOffice;
     }
 
+    @ACrew(name = CrewField.MANNING_OFFICE)
     public void setManningOffice(String manningOffice) {
         this.manningOffice = manningOffice;
     }
@@ -242,6 +249,7 @@ public class Crew extends Person {
         return nationalityFlagId;
     }
 
+    @ACrew(name = CrewField.NATIONALITY_ID)
     public void setNationalityFlagId(ObjectId nationalityFlagId) {
         this.nationalityFlagId = nationalityFlagId;
     }
@@ -250,6 +258,7 @@ public class Crew extends Person {
         return nationality;
     }
 
+    @ACrew(name = CrewField.NATIONALITY)
     public void setNationality(String nationality) {
         this.nationality = nationality;
     }
@@ -266,6 +275,7 @@ public class Crew extends Person {
         return permAddress;
     }
 
+    @ACrew(name = CrewField.PERMANENT_ADDRRESS)
     public void setPermAddress(String permAddress) {
         this.permAddress = permAddress;
     }
@@ -274,6 +284,7 @@ public class Crew extends Person {
         return presentAddress;
     }
 
+    @ACrew(name = CrewField.PRESENT_ADDRRESS)
     public void setPresentAddress(String presentAddress) {
         this.presentAddress = presentAddress;
     }
@@ -282,6 +293,7 @@ public class Crew extends Person {
         return contact1;
     }
 
+    @ACrew(name = CrewField.CONTACT_1)
     public void setContact1(String contact1) {
         this.contact1 = contact1;
     }
@@ -290,6 +302,7 @@ public class Crew extends Person {
         return contact2;
     }
 
+    @ACrew(name = CrewField.CONTACT_2)
     public void setContact2(String contact2) {
         this.contact2 = contact2;
     }
@@ -298,23 +311,33 @@ public class Crew extends Person {
         return nearestAirport;
     }
 
+    @ACrew(name = CrewField.NEAREST_AIRPORT)
     public void setNearestAirport(String nearestAirport) {
         this.nearestAirport = nearestAirport;
     }
 
-    public String getMaritalStatus() {
-        return maritalStatus;
+    public int getMaritalStatusId() {
+        return maritalStatusId;
     }
 
-    public void setMaritalStatus(String maritalStatus) {
+    @ACrew(name = CrewField.MARITAL_STATUS_ID)
+    public void setMaritalStatusId(int maritalStatusId) {
+        this.maritalStatusId = maritalStatusId;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return MaritalStatus.createFromId(getMaritalStatusId());
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 
-    @ACrew(name = CrewField.DOB)
     public LocalDate getDob() {
         return dob;
     }
 
+    @ACrew(name = CrewField.DOB)
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
@@ -559,10 +582,40 @@ public class Crew extends Person {
         }
 
         public static Status createFromId(int typeId) {
-            return ((Status) (getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
+            return ((getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
         }
 
         public static List<Status> getList() {
+            return new ArrayList<>(Arrays.asList(values()));
+        }
+    }
+
+
+    public enum MaritalStatus {
+        SINGLE(1, "Single"),
+        MARRIED(2, "Married");
+
+        private int id;
+        private String desc;
+
+        MaritalStatus(int id, String desc) {
+            this.id = id;
+            this.desc = desc;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public static MaritalStatus createFromId(int typeId) {
+            return ((getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
+        }
+
+        public static List<MaritalStatus> getList() {
             return new ArrayList<>(Arrays.asList(values()));
         }
     }

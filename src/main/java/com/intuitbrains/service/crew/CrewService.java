@@ -44,7 +44,7 @@ public class CrewService {
     @Autowired
     private MongoDatabase db;
     private static Bson projections = Projections.include("firstName", "middleName", "lastName", "rankId", "dob", "gender", "statusId", "passportNumber", "indosNumber",
-            "Distinguishing Mark", "photoId", "nationalityFlagId", "nationality", "permAddress", "presentAddress", "");
+            "Distinguishing Mark", "photoId", "nationalityFlagId", "nationality", "permAddress", "presentAddress", "fieldStatus");
 
     public List<Crew> getList() {
         MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
@@ -62,28 +62,12 @@ public class CrewService {
     }
 
     public Crew addCrew(Crew crew) {
-        String maker = crew.getEnteredBy();
         crew.setEnteredLocalDateTime(LocalDateTime.now());
         crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
-        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
 
-        CrewFieldStatus fs = crew.getFieldStatus();
-        fs.setName(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setGender(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setMaritalStatus(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setPermAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setPresentAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setNearestAirport(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setNationality(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setNationalityCode(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setContact1(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        crew.setFieldStatus(fs);
+        addToAudit(crew);
+
+        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
 
         crewDao.insert(crew);
 
@@ -161,9 +145,14 @@ public class CrewService {
 
     public void addToAudit(Crew modifiedCrew) {
         List<CrewFieldAudit> audits = new LinkedList<>();
+        String maker = modifiedCrew.getEnteredBy();
+        CrewFieldStatus fs = modifiedCrew.getFieldStatus();
         String enteredBy = modifiedCrew.getEnteredBy();
         long crewId = modifiedCrew.getId();
         Class clazz = modifiedCrew.getClass();
+        Class fsClazz = fs.getClass();
+        LocalDateTime now = LocalDateTime.now();
+
         for (final Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(ACrew.class)) {
                 try {
@@ -174,6 +163,7 @@ public class CrewService {
                     ACrew aCrew = method.getAnnotation(ACrew.class);
                     CrewField field = aCrew.name();
                     if (val != null) {
+                        Method setterMethod = fsClazz.getDeclaredMethod(setterMethodName, FieldStatus.class);
                         CrewFieldAudit crewFieldAudit = new CrewFieldAudit();
                         if (val.getClass().equals(String.class)) {
                             String txt = (String) val;
@@ -195,11 +185,15 @@ public class CrewService {
                             LocalDate value = (LocalDate) val;
                             crewFieldAudit.setFieldValue(value.toString());
                         }
+
                         crewFieldAudit.setCrewId(crewId);
                         crewFieldAudit.setFieldName(field.getFieldName());
                         crewFieldAudit.setEnteredBy(enteredBy);
                         crewFieldAudit.setEnteredDateTime(LocalDateTime.now());
                         audits.add(crewFieldAudit);
+
+                        setterMethod.invoke(fs, new FieldStatus(maker, now, null, null));
+
                     }
 
                 } catch (IllegalAccessException e) {
@@ -211,6 +205,6 @@ public class CrewService {
                 }
             }
         }
-
+        modifiedCrew.setFieldStatus(fs);
     }
 }

@@ -280,7 +280,7 @@ public class CrewController {
         crew.setContact1(contact1);
         crew.setContact2(contact2);
         crew.setNearestAirport(nearestAirport);
-        crew.setMaritalStatus(maritalStatus);
+        crew.setMaritalStatusId(0);
         crew.setPermAddress(homeAddress);
         crew.setNationality(nationality);
         crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
@@ -295,9 +295,7 @@ public class CrewController {
         crew.setManningOffice(manningOffice);
 
         CrewFieldStatus fs = crew.getFieldStatus();
-        fs.setName(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setGender(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setMaritalStatus(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
@@ -307,7 +305,6 @@ public class CrewController {
         fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setNationality(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setNationalityCode(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setContact1(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
         crew.setFieldStatus(fs);

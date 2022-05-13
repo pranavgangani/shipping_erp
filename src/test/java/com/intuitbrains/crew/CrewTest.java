@@ -74,17 +74,18 @@ class CrewTest {
 
     @Test
     void addNewCrewDetails() {
-        LocalDate dob = LocalDate.of(1990, 7, 12);
+        LocalDate dob = LocalDate.of(1985, 7, 24);
 
         Flag flag = flagDao.getByCode("IN");
 
         Crew crew = new Crew();
-        crew.setFirstName("Joseph");
-        crew.setMiddleName("R");
-        crew.setLastName("Fernandes");
+        crew.setFirstName("Rohan");
+        crew.setMiddleName("P");
+        crew.setLastName("Tiwari");
         crew.setDob(dob);
         crew.setGender("male");
-        crew.setRankId(Rank.CHIEF_OFFICER.getId());
+        crew.setMaritalStatusId(Crew.MaritalStatus.MARRIED.getId());
+        crew.setRankId(Rank.JR_ENGINEER.getId());
         crew.setNationalityFlagId(flag.getId());
         crew.setNationality("Indian");
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");

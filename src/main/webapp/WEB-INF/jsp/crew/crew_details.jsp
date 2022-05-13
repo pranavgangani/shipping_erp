@@ -97,10 +97,8 @@
 		                                                <td><label class="small mb-3">Name</label></td>
 		                                                <td>
 			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="firstName" id="firstName" type="text" placeholder="Enter first name" value="${crew.firstName}" /></div>
-			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="middleName" id="middleName" type="text" placeholder="Enter middle name" value="${crew.middleName}" /></div>
-		                                                	<div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="lastName" id="lastName" type="text" placeholder="Enter last name" value="${crew.lastName}" /></div>
 		                                                </td>
-		                                                <td><label class="small mb-3" for="firstName">${crew.fieldStatus.name.makerBy}</label></td>
+		                                                <td><label class="small mb-3" for="firstName">${crew.fieldStatus.firstName.makerBy}</label></td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
@@ -112,20 +110,52 @@
 		                                                <!-- <span class="badge bg-success">Paid</span> -->
 														</td>
 		                                            </tr>
+		                                           <tr>
+                                                       <td><label class="small mb-3">Middle Name</label></td>
+                                                        <td>
+                                                            <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="middleName" id="middleName" type="text" placeholder="Enter middle name" value="${crew.middleName}" /></div>
+                                                        </td>
+                                                        <td><label class="small mb-3" for="middleName">${crew.fieldStatus.middleName.makerBy}</label></td>
+                                                        <td>
+                                                            <div class="form-check mb-3">
+                                                                <input class="form-check-input" id="checkMiddleName" type="checkbox"  />
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                             <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                             <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                        </td>
+                                                   </tr>
+                                                    <tr>
+                                                        <td><label class="small mb-3">Last Name</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="lastName" id="lastName" type="text" placeholder="Enter last name" value="${crew.lastName}" /></div>
+                                                            </td>
+                                                            <td><label class="small mb-3" for="lastName">${crew.fieldStatus.lastName.makerBy}</label></td>
+                                                            <td>
+                                                                <div class="form-check mb-3">
+                                                                    <input class="form-check-input" id="checkLastName" type="checkbox"  />
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                                 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                            </td>
+                                                    </tr>
 		                                            <tr>
-		                                                <td><label class="small mb-3" for="maritalStatus">Marital Status</label></td>
+		                                                <td><label class="small mb-3" for="maritalStatusId">Marital Status</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-			                                                <select class="form-select" id="maritalStatus" name="maritalStatus" aria-label="Default select example">
+			                                                <select class="form-select" id="maritalStatusId" name="maritalStatusId" aria-label="Default select example">
 																<option selected disabled>Marital Status:</option>
-																<option <c:if test="${crew.maritalStatus=='single'}">selected</c:if> value="single">Single</option>
-																<option <c:if test="${crew.maritalStatus=='married'}">selected</c:if> value="married">Married</option>
+																<option <c:if test="${crew.maritalStatusId==1}">selected</c:if> value="single">Single</option>
+																<option <c:if test="${crew.maritalStatusId==2}">selected</c:if> value="married">Married</option>
 															</select>
 															</div>
 		                                                </td>
-		                                                <td>${crew.fieldStatus.maritalStatus.makerBy}</td>
+		                                                <td>${crew.fieldStatus.maritalStatusId.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
+	                                                    		<input class="form-check-input" id="checkMaritalStatusId" type="checkbox"  />
 	                                                		</div>
                                                 		</td>	                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>

@@ -6,6 +6,9 @@ public class FieldStatus {
     private String makerBy, checkerBy;
     private LocalDateTime makerLocalDateTime, checkerLocalDateTime;
 
+    public FieldStatus() {
+    }
+
     public FieldStatus(String makerBy, LocalDateTime makerLocalDateTime, String checkerBy, LocalDateTime checkerLocalDateTime) {
         this.makerBy = makerBy;
         this.checkerBy = checkerBy;
