@@ -96,11 +96,11 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3">Name</label></td>
 		                                                <td>
-			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="fName" id="fName" type="text" placeholder="Enter first name" value="${crew.fName}" /></div>
-			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="mName" id="mName" type="text" placeholder="Enter middle name" value="${crew.mName}" /></div>
-		                                                	<div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="lName" id="lName" type="text" placeholder="Enter last name" value="${crew.lName}" /></div>
+			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="firstName" id="firstName" type="text" placeholder="Enter first name" value="${crew.firstName}" /></div>
+			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="middleName" id="middleName" type="text" placeholder="Enter middle name" value="${crew.middleName}" /></div>
+		                                                	<div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="lastName" id="lastName" type="text" placeholder="Enter last name" value="${crew.lastName}" /></div>
 		                                                </td>
-		                                                <td><label class="small mb-3" for="fName">${crew.fieldStatus.name.makerBy}</label></td>
+		                                                <td><label class="small mb-3" for="firstName">${crew.fieldStatus.name.makerBy}</label></td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
@@ -201,7 +201,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="manningOffice">Manning Office</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-		                                                    <input class="form-control" id="manningOffice" name="manningOffice" type="text" placeholder="Enter Nearest Airport" value="${crew.manningOffice}" />
+		                                                    <input class="form-control" id="manningOffice" name="manningOffice" type="text" placeholder="Enter Manning Office" value="${crew.manningOffice}" />
 															</div>
 		                                                </td>
 		                                                <td>${crew.fieldStatus.manningOffice.makerBy}</td>
@@ -244,6 +244,21 @@
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
 		                                            </tr>
+		                                            <tr>
+                                                        <td><label class="small mb-3" for="homeAddress">Present Address</label></td>
+                                                        <td>
+                                                            <textarea name="homeAddress" id="homeAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.presentAddress}</textarea>
+                                                        </td>
+                                                        <td>${crew.fieldStatus.presentAddress.makerBy}</td>
+                                                        <td>
+                                                            <div class="form-check mb-3">
+                                                                <input class="form-check-input" id="checkFirstName" type="checkbox"  />
+                                                            </div>
+                                                        </td>
+                                                        <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                             <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                        </td>
+                                                    </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="nearestAirport">Nearest Airport</label></td>
 		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="nearestAirport" name="nearestAirport" type="text" placeholder="Enter Nearest Airport" value="${crew.nearestAirport}" /></div></td>

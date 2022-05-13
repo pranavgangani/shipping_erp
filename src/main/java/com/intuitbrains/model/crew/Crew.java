@@ -34,6 +34,7 @@ public class Crew extends Person {
 
     private String passportNumber, indosNumber;
     private String distinguishMark;
+    private int rankId;
     private Rank rank;
     private String manningOffice;
     private long photoId;
@@ -75,6 +76,14 @@ public class Crew extends Person {
 
     private int statusId;
     private Status status;
+
+    public int getRankId() {
+        return rankId;
+    }
+
+    public void setRankId(int rankId) {
+        this.rankId = rankId;
+    }
 
     public String getFullName() {
         return (getFirstName() + " " + getMiddleName() + " " + getLastName());
@@ -174,7 +183,7 @@ public class Crew extends Person {
     }
 
     public Rank getRank() {
-        return rank;
+        return Rank.createFromId(getRankId());
     }
 
     public void setRank(Rank rank) {

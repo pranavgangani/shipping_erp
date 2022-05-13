@@ -74,17 +74,17 @@ class CrewTest {
 
     @Test
     void addNewCrewDetails() {
-        LocalDate dob = LocalDate.of(1985, 7, 23);
+        LocalDate dob = LocalDate.of(1990, 7, 12);
 
         Flag flag = flagDao.getByCode("IN");
 
         Crew crew = new Crew();
-        crew.setFirstName("Pranav");
-        crew.setMiddleName("Jayanti");
-        crew.setLastName("Gangani");
+        crew.setFirstName("Joseph");
+        crew.setMiddleName("R");
+        crew.setLastName("Fernandes");
         crew.setDob(dob);
         crew.setGender("male");
-        crew.setRank(Rank.JR_ENGINEER);
+        crew.setRankId(Rank.CHIEF_OFFICER.getId());
         crew.setNationalityFlagId(flag.getId());
         crew.setNationality("Indian");
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
@@ -126,23 +126,10 @@ class CrewTest {
 
         crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
 
-        crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
-        crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
         crew.setEnteredBy(employeeDao.findByEmailId("pgangani@saar.com").getEmpId());
-        crew.setEnteredLocalDateTime(LocalDateTime.now());
-        crewDao.insert(crew);
+        crewService.addCrew(crew);
 
 
-        //Audit
-        AuditTrail audit = new AuditTrail();
-        audit.setAction(StandardWebParameter.ADD);
-        audit.setActionLocalDateTime(LocalDateTime.now());
-        audit.setCollection(Collection.CREW);
-        audit.setActionBy(crew.getEnteredBy());
-        audit.setUniqueId(crew.getId());
-        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> recruited!");
-        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
-        auditTrailDao.insert(audit);
     }
 
 
@@ -185,10 +172,38 @@ class CrewTest {
     }
 
     @Test
+    void updateName() {
+        Crew crew = crewService.getById(1);
+        crew.setFirstName("Rohan");
+        crew.setMiddleName("P");
+        crew.setLastName("Tiwari");
+        crewDao.save(crew);
+
+    }
+
+    @Test
+    void updateRank() {
+        Crew crew = crewService.getById(1);
+        crew.setRankId(Rank.CAPTAIN.getId());
+        crewDao.save(crew);
+
+    }
+
+    @Test
     void updateDOB() {
-        Crew crew = crewDao.findById(26l).get();
+        Crew crew = crewService.getById(1);
         LocalDate dob = LocalDate.of(1985, 11, 20);
         crew.setDob(dob);
+        crewDao.save(crew);
+
+    }
+
+    @Test
+    void updatePassport() {
+        Crew crew = crewService.getById(1);
+        crew.setId(1);
+        crew.setPassportNumber("PP-ADA24234A");
+        crew.setIndosNumber("INDOS-ADA24234A");
         crewDao.save(crew);
 
     }
@@ -243,9 +258,9 @@ class CrewTest {
         Experience emp1 = new Experience();
         emp1.setEmployerName("Merks");
         emp1.setEmployerAddress("Mumbai");
-        Vessel v = new Vessel();
-        v.setGrossTonnage(7000);
-        emp1.setVessel(v);
+        //Vessel v = new Vessel();
+       // v.setGrossTonnage(7000);
+        //emp1.setVessel(v);
         emp1.setLastRank(Rank.JR_ENGINEER);
         emp1.setVesselSubType(VesselSubType.LPG_TANKER);
         //emp1.setStartDate(new LocalDateTime());
@@ -265,9 +280,9 @@ class CrewTest {
         Experience emp2 = new Experience();
         emp2.setEmployerName("MSC");
         emp2.setEmployerAddress("Mumbai");
-        v = new Vessel();
-        v.setGrossTonnage(500);
-        emp1.setVessel(v);
+        //v = new Vessel();
+       // v.setGrossTonnage(500);
+       // emp1.setVessel(v);
         emp2.setLastRank(Rank.JR_ENGINEER);
         emp2.setVesselSubType(VesselSubType.LNG_TANKER);
         //emp2.setStartDate(new LocalDateTime());
@@ -415,9 +430,9 @@ class CrewTest {
         experienceList.forEach(e->System.out.println(e.getEmployerName()));
     }
     @Test
-    void testTravelHistoryList() {
-        List<Travel> travelList = crewService.getTravelHistory(1);
-        travelList.forEach(e->System.out.println(Travel.TravelMode.createFromId(e.getTravelModeId()).getName()));
+    void testTravelAndAccomodationList() {
+        List<TravelAndAccomodation> travelList = crewService.getTravelAndAccomodationHistory(1);
+        //travelList.forEach(e->System.out.println(Travel.TravelMode.createFromId(e.get()).getName()));
     }
     @Test
     void generateContract() {

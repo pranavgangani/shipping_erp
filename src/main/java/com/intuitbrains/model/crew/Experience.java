@@ -2,7 +2,6 @@ package com.intuitbrains.model.crew;
 
 import com.intuitbrains.common.Flag;
 import com.intuitbrains.model.common.document.category.EmploymentDocument;
-import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselSubType;
 import org.springframework.data.annotation.Id;
 
@@ -18,7 +17,7 @@ public class Experience {
     private String jobDescription;
     private int lastRankId;
     private Rank lastRank;
-    private Vessel vessel;
+    private String vesselName;
     private VesselSubType vesselSubType;
     private LocalDate startDate, endDate;
     private List<EmploymentDocument> employmentDocuments;
@@ -73,12 +72,12 @@ public class Experience {
         this.lastRank = lastRank;
     }
 
-    public Vessel getVessel() {
-        return vessel;
+    public String getVesselName() {
+        return vesselName;
     }
 
-    public void setVessel(Vessel vessel) {
-        this.vessel = vessel;
+    public void setVesselName(String vesselName) {
+        this.vesselName = vesselName;
     }
 
     public LocalDate getStartDate() {

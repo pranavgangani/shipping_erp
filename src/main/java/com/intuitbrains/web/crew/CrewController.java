@@ -128,6 +128,7 @@ public class CrewController {
             }
 
         }
+        mv.addObject("flags", flagDao.findAll());
         mv.addObject("action", StandardWebParameter.MODIFY);
         mv.addObject("rankMap", Rank.getByGroup());
         return mv;
@@ -300,7 +301,8 @@ public class CrewController {
         fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setHomeAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setPermAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setPresentAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setNearestAirport(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
         fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));

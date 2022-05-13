@@ -82,7 +82,7 @@
 								
 								<c:forEach items="${list}" var="crew">
 								    <tr>
-										<td>${crew.fName} ${crew.mName} ${crew.lName}</td>
+										<td>${crew.fullName}</td>
 										<td>${crew.rank.name}</td>
 										<td>${crew.gender}</td>
 										<td>${crew.age}</td>
@@ -122,7 +122,7 @@
 														</div> Add Documents
 													</a>													
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/crew/edit?crewId=${crew.id}">
+													<a class="dropdown-item" href="/crew/modify?crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
