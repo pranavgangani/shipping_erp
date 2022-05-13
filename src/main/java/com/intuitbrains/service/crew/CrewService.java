@@ -29,8 +29,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.elemMatch;
+import static com.mongodb.client.model.Projections.fields;
 
 @Service
 public class CrewService {
@@ -51,7 +56,7 @@ public class CrewService {
 
     public List<Crew> getList() {
         MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
-        Bson projection = Projections.fields(projections);
+        Bson projection = fields(projections);
         List<Crew> crewList = new LinkedList<>();
         Bson filter = Filters.empty();
         collection.find(filter).projection(projection).into(crewList);
@@ -60,7 +65,7 @@ public class CrewService {
 
     public Crew getById(long crewId) {
         MongoCollection<Crew> collection = db.getCollection("Crew", Crew.class);
-        Bson filter = Filters.eq("_id", crewId);
+        Bson filter = eq("_id", crewId);
         return collection.find(filter).projection(projections).first();
     }
 
@@ -112,37 +117,44 @@ public class CrewService {
     }
 
     public List<Experience> getEmploymentHistory(long crewId) {
-        List<Experience> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("employmentHistory"))).first().getEmploymentHistory();
+        List<Experience> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("employmentHistory"))).first().getEmploymentHistory();
         return list;
     }
 
     public List<Education> getEducationHistory(long crewId) {
-        List<Education> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("educationHistory"))).first().getEducationHistory();
+        List<Education> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("educationHistory"))).first().getEducationHistory();
         return list;
     }
 
+    public List<Document> getPassportVisa(long crewId) {
+        Bson filters = and(eq("_id", crewId));
+        Bson projections = fields(elemMatch("existingDocuments", or(eq("docTypeId", 1), eq("docTypeId", 13), eq("docTypeId", 14), eq("docTypeId", 15))));
+        List<Document> documents = db.getCollection(Collection.CREW, Crew.class).find(filters).projection(projections).first().getExistingDocuments();
+        return documents;
+    }
+
     public List<TravelAndAccomodation> getTravelAndAccomodationHistory(long crewId) {
-        List<TravelAndAccomodation> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("travelAndAccomodationHistory"))).first().getTravelAndAccomodationHistory();
+        List<TravelAndAccomodation> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("travelAndAccomodationHistory"))).first().getTravelAndAccomodationHistory();
         return list;
     }
 
     public List<NextOfKin> getNextOfKins(long crewId) {
-        List<NextOfKin> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("nextOfKins"))).first().getNextOfKins();
+        List<NextOfKin> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("nextOfKins"))).first().getNextOfKins();
         return list;
     }
 
     public List<Document> getExistingDocuments(long crewId) {
-        List<Document> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("existingDocuments"))).first().getExistingDocuments();
+        List<Document> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("existingDocuments"))).first().getExistingDocuments();
         return list;
     }
 
     public List<Bank> getBanks(long crewId) {
-        List<Bank> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("banks"))).first().getBanks();
+        List<Bank> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("banks"))).first().getBanks();
         return list;
     }
 
     public List<Contract> getContracts(long crewId) {
-        List<Contract> list = db.getCollection(Collection.CREW, Crew.class).find(Filters.eq("_id", crewId)).projection(Projections.fields(Projections.include("historicalContracts"))).first().getHistoricalContracts();
+        List<Contract> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("historicalContracts"))).first().getHistoricalContracts();
         return list;
     }
 
@@ -210,4 +222,5 @@ public class CrewService {
         }
         modifiedCrew.setFieldStatus(fs);
     }
+
 }

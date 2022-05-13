@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW_DOCUMENT)
-public abstract class Document {
+public class Document {
     @Transient
     public static final String SEQUENCE_NAME = Collection.CREW_DOCUMENT;
 
@@ -29,6 +29,9 @@ public abstract class Document {
     protected List<Integer> forRankSubCategories;
     protected List<Integer> forRanks;
     private boolean isMandatory, isRequiredBeforeJoining, isRequiredAfterJoining, isRequiredOnBoard, isUploaded;
+
+    public Document() {
+    }
 
     //Doc details
     protected String docName, docDesc;

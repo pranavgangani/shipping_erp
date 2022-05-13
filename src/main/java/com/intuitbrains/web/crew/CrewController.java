@@ -357,6 +357,15 @@ public class CrewController {
         mv.addObject("educations", educations);
         return mv;
     }
+    @GetMapping(value = "/passport_visa")
+    public ModelAndView getPassportVisa(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/passport_visa");
+        long crewId = Long.parseLong(req.getParameter("crewId"));
+        List<Document> educations = crewService.getPassportVisa(crewId);
+        mv.addObject("crewId", crewId);
+        mv.addObject("educations", educations);
+        return mv;
+    }
 
     @PostMapping(value = "/add_employment")
     public ModelAndView addEmployment(HttpServletRequest req) {
@@ -372,11 +381,7 @@ public class CrewController {
         return mv;
     }
 
-    @GetMapping(value = "/add_passport_visa")
-    public ModelAndView addPassportVisa(Model model) {
-        ModelAndView mv = new ModelAndView("crew/add_passport_visa");
-        return mv;
-    }
+
 
     @GetMapping(value = "/add_medical")
     public ModelAndView addMedical(Model model) {

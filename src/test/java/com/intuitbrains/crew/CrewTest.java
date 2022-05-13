@@ -369,7 +369,7 @@ class CrewTest {
     void uploadOtherDocs() {
         Crew crew = crewDao.findById(26l).get();
         List<Document> preJoiningMandatoryDocs = documentDao.findAll();
-        crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
+        //crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
         crewDao.save(crew);
     }
 
@@ -445,8 +445,8 @@ class CrewTest {
     }
     @Test
     void testExperienceList() {
-        List<Experience> experienceList = crewService.getEmploymentHistory(24);
-        experienceList.forEach(e->System.out.println(e.getEmployerName()));
+        List<Experience> list = crewService.getEmploymentHistory(24);
+        list.forEach(e->System.out.println(e.getEmployerName()));
     }
     @Test
     void testEducationList() {
@@ -454,10 +454,47 @@ class CrewTest {
         list.forEach(e->System.out.println(e.getInstituteName()));
     }
     @Test
+    void testGetPPVisa() {
+        List<Document> list = crewService.getPassportVisa(24);
+        list.forEach(e->System.out.println("DocTypeId = "+e.getDocTypeId()));
+    }
+
+    @Test
+    void testAddPassportAndVisa() {
+        Passport pp = new Passport();
+        DocumentType dt = docTypeDao.findByName("Indian Passport");
+        pp.setDocNumber("12433453");
+        pp.setGivenName("Tiwari Rohan Pradeep");
+        pp.setECNRRequired(false);
+        pp.setBlankPages(10);
+        pp.setFlagCode("IN");
+        pp.setDateOfIssue(LocalDate.of(2020, 2, 20));
+        pp.setDateOfExpiry(LocalDate.of(2040, 2, 20));
+        pp.setPlaceOfIssue("Mumbai, India");
+        pp.setDocTypeId(dt.getId());
+
+        Visa usC1DVisa = new Visa();
+        dt = docTypeDao.findByName("US C1/D");
+        usC1DVisa.setDocNumber("5678890");
+        usC1DVisa.setGivenName("Tiwari Rohan Pradeep");
+        usC1DVisa.setFlagCode("US");
+        usC1DVisa.setDateOfIssue(LocalDate.of(2021, 2, 20));
+        usC1DVisa.setDateOfExpiry(LocalDate.of(2031, 2, 20));
+        usC1DVisa.setPlaceOfIssue("NY, USA");
+        usC1DVisa.setDocTypeId(dt.getId());
+
+        Bson updates = Updates.set("existingDocuments", new ArrayList<>(Arrays.asList(pp, usC1DVisa)));
+        Bson filter = Filters.eq("_id", 24);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
+
+    }
+
+    @Test
     void testTravelAndAccomodationList() {
         List<TravelAndAccomodation> travelList = crewService.getTravelAndAccomodationHistory(1);
         //travelList.forEach(e->System.out.println(Travel.TravelMode.createFromId(e.get()).getName()));
     }
+
     @Test
     void generateContract() {
         //Get Crew Details

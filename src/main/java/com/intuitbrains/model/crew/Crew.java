@@ -61,8 +61,7 @@ public class Crew extends Person {
 
     //Current
     private List<Document> existingDocuments;
-    private List<Document> preJoiningDocuments;
-    private List<Document> postJoiningDocuments;
+    private List<Document> mandatoryDocuments;
 
     //Medical
     private List<IllnessAndInjury> illnessInjury;
@@ -350,22 +349,6 @@ public class Crew extends Person {
         this.travelAndAccomodationHistory = travelAndAccomodationHistory;
     }
 
-    public List<Document> getPreJoiningDocuments() {
-        return preJoiningDocuments;
-    }
-
-    public void setPreJoiningDocuments(List<Document> preJoiningDocuments) {
-        this.preJoiningDocuments = preJoiningDocuments;
-    }
-
-    public List<Document> getPostJoiningDocuments() {
-        return postJoiningDocuments;
-    }
-
-    public void setPostJoiningDocuments(List<Document> postJoiningDocuments) {
-        this.postJoiningDocuments = postJoiningDocuments;
-    }
-
     public List<IllnessAndInjury> getIllnessInjury() {
         return illnessInjury;
     }
@@ -413,6 +396,14 @@ public class Crew extends Person {
 
     public void setExistingDocuments(List<Document> existingDocuments) {
         this.existingDocuments = existingDocuments;
+    }
+
+    public List<Document> getMandatoryDocuments() {
+        return mandatoryDocuments;
+    }
+
+    public void setMandatoryDocuments(List<Document> mandatoryDocuments) {
+        this.mandatoryDocuments = mandatoryDocuments;
     }
 
     public int getAge() {
