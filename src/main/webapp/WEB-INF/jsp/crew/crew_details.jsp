@@ -31,15 +31,15 @@
                     <div class="container-fluid px-4">
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
-                            <a class="nav-link active ms-0">Profile</a>
-                            <a class="nav-link" href="/crew/add_employment?crewId=${crew.id}">Employment</a>
-                            <a class="nav-link" href="/crew/add_education?crewId=${crew.id}">Education</a>
-                            <a class="nav-link" href="/crew/add_passport_visa?crewId=${crew.id}">Passport/Visa</a>
-                            <a class="nav-link" href="/crew/add_medical?crewId=${crew.id}">Medical</a>
-                            <a class="nav-link" href="/crew/add_bank_account?crewId=${crew.id}">Bank Account</a>
-                            <a class="nav-link" href="/crew/add_nominee?crewId=${crew.id}">Nominee</a>
-                            <a class="nav-link" href="/crew/document_list?crewId=${crew.id}">Other Documents</a>
-                            <a class="nav-link" href="/crew/contract_list?crewId=${crew.id}">Contracts</a>
+                            <a class="nav-link active ms-0" href="/crew/modify?crewId=${crew.id}">Profile</a>
+                            <a class="nav-link" href="/crew/experience?crewId=${crew.id}">Employment</a>
+                            <a class="nav-link" href="/crew/education?crewId=${crew.id}">Education</a>
+                            <a class="nav-link" href="/crew/passport_visa?crewId=${crew.id}">Passport/Visa</a>
+                            <a class="nav-link" href="/crew/medical?crewId=${crew.id}">Medical</a>
+                            <a class="nav-link" href="/crew/bank?crewId=${crew.id}">Bank Account</a>
+                            <a class="nav-link" href="/crew/nominee?crewId=${crew.id}">Nominee</a>
+                            <a class="nav-link" href="/crew/documents?crewId=${crew.id}">Other Documents</a>
+                            <a class="nav-link" href="/crew/contracts?crewId=${crew.id}">Contracts</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">

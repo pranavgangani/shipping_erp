@@ -16,6 +16,8 @@ public class Rank {
     private RankCategory rankCategory;
     private RankSubCategory rankSubCategory;
 
+    public Rank() {
+    }
 
     public static List<Rank> getList() {
         return new ArrayList<>(Arrays.asList(ALL, CAPTAIN, CHIEF_OFFICER, SECOND_OFFICER, THIRD_OFFICER, DECK_CADET,

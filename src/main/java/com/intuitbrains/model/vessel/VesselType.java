@@ -18,6 +18,9 @@ public class VesselType {
 	private int id;
 	private String desc;
 
+	public VesselType() {
+	}
+
 	VesselType(int id, String desc) {
 		this.id = id;
 		this.desc = desc;

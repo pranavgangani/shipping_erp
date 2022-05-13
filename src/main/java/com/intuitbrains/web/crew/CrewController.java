@@ -339,9 +339,9 @@ public class CrewController {
         return mv;
     }
 
-    @GetMapping(value = "/employment")
+    @GetMapping(value = "/experience")
     public ModelAndView employment(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/employment_list");
+        ModelAndView mv = new ModelAndView("crew/experience");
         long crewId = Long.parseLong(req.getParameter("crewId"));
         List<Experience> experiences = crewService.getEmploymentHistory(crewId);
         mv.addObject("experiences", experiences);

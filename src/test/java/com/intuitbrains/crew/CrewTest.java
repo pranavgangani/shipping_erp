@@ -226,14 +226,14 @@ class CrewTest {
     @Test
     void updateEducationDetails() {
         Crew crew = new Crew();
-        crew.setId(25);
+        crew.setId(24);
         //Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
 
 
         //Education
         Education ssc = new Education();
         ssc.setEducationName("S.S.C");
-        ssc.setInstituteName("Sharon School");
+        ssc.setInstituteName("Vani School");
         ssc.setInstituteAddress("Mulund, Mumbai");
         ssc.setPercentage(50f);
        // ssc.setFlag(flag);
@@ -244,7 +244,7 @@ class CrewTest {
 
         Education hsc = new Education();
         hsc.setEducationName("H.S.C");
-        hsc.setInstituteName("Somaiya College");
+        hsc.setInstituteName("Raheja College");
         hsc.setInstituteAddress("Vidyavihar, Mumbai");
         hsc.setPercentage(90.99f);
        // hsc.setFlag(flag);
@@ -255,7 +255,7 @@ class CrewTest {
 
         crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
         Bson updates = Updates.set("educationHistory", new ArrayList<>(Arrays.asList(ssc, hsc)));
-        Bson filter = Filters.eq("_id", 25);
+        Bson filter = Filters.eq("_id", 24);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
     }
 
@@ -263,7 +263,7 @@ class CrewTest {
     void updateEmploymentDetails() {
         //Crew crew = crewService.getById(25);
         Crew crew = new Crew();
-        crew.setId(25);
+        crew.setId(24);
         Flag flag = flagDao.getByCode("IN");
 
         //Employment
@@ -273,7 +273,7 @@ class CrewTest {
         //Vessel v = new Vessel();
        // v.setGrossTonnage(7000);
         //emp1.setVessel(v);
-        emp1.setLastRank(Rank.JR_ENGINEER);
+        emp1.setLastRankId(Rank.JR_ENGINEER.getId());
         emp1.setVesselSubType(VesselSubType.LPG_TANKER);
         //emp1.setStartDate(new LocalDateTime());
         //emp1.setEndDate(new LocalDateTime());
@@ -295,7 +295,7 @@ class CrewTest {
         //v = new Vessel();
        // v.setGrossTonnage(500);
        // emp1.setVessel(v);
-        emp2.setLastRank(Rank.JR_ENGINEER);
+        emp2.setLastRankId(Rank.JR_ENGINEER.getId());
         emp2.setVesselSubType(VesselSubType.LNG_TANKER);
         //emp2.setStartDate(new LocalDateTime());
         //emp2.setEndDate(new LocalDateTime());
@@ -313,14 +313,15 @@ class CrewTest {
         crew.setEmploymentHistory(new ArrayList<>(Arrays.asList(emp1, emp2)));
 
         Bson updates = Updates.set("employmentHistory", new ArrayList<>(Arrays.asList(emp1, emp2)));
-        Bson filter = Filters.eq("_id", 25);
+        Bson filter = Filters.eq("_id", 24);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
        // crewDao.save(crew);
     }
 
     @Test
     void updateNextOfKinDetails() {
-        Crew crew = crewDao.findById(26l).get();
+        Crew crew = new Crew();
+        crew.setId(24);
         NextOfKin nok1 = new NextOfKin();
         nok1.setNomineeName("Vrushali Rohan Tiwari");
        // nok1.setDateOfBirth("12-Mar-1983");
@@ -358,7 +359,10 @@ class CrewTest {
         nextOfKins.add(nok3);
         nextOfKins.add(nok4);
         crew.setNextOfKins(nextOfKins);
-        crewDao.save(crew);
+
+        Bson updates = Updates.set("nextOfKins", nextOfKins);
+        Bson filter = Filters.eq("_id", 24);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
     }
 
     @Test
@@ -441,7 +445,7 @@ class CrewTest {
     }
     @Test
     void testExperienceList() {
-        List<Experience> experienceList = crewService.getEmploymentHistory(1);
+        List<Experience> experienceList = crewService.getEmploymentHistory(24);
         experienceList.forEach(e->System.out.println(e.getEmployerName()));
     }
     @Test

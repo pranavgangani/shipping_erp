@@ -53,6 +53,9 @@ public class VesselSubType {
 	private String desc;
 	private VesselType vesselType;
 
+	public VesselSubType() {
+	}
+
 	VesselSubType(VesselType vesselType, int id, String desc) {
 		this.vesselType = vesselType;
 		this.id = id;
