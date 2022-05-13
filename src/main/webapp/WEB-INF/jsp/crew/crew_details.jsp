@@ -260,11 +260,11 @@
 														</td>
 		                                            </tr>
 		                                            <tr>
-		                                                <td><label class="small mb-3" for="homeAddress">Home Address</label></td>
+		                                                <td><label class="small mb-3" for="permAddress">Paremanent Address</label></td>
 		                                                <td>
-															<textarea name="homeAddress" id="homeAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.permAddress}</textarea>
+															<textarea name="permAddress" id="permAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.permAddress}</textarea>
 		                                                </td>
-		                                                <td>${crew.fieldStatus.homeAddress.makerBy}</td>
+		                                                <td>${crew.fieldStatus.permAddress.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
@@ -275,9 +275,9 @@
 														</td>
 		                                            </tr>
 		                                            <tr>
-                                                        <td><label class="small mb-3" for="homeAddress">Present Address</label></td>
+                                                        <td><label class="small mb-3" for="presentAddress">Present Address</label></td>
                                                         <td>
-                                                            <textarea name="homeAddress" id="homeAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.presentAddress}</textarea>
+                                                            <textarea name="presentAddress" id="presentAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.presentAddress}</textarea>
                                                         </td>
                                                         <td>${crew.fieldStatus.presentAddress.makerBy}</td>
                                                         <td>
@@ -295,7 +295,7 @@
 		                                                <td>${crew.fieldStatus.nearestAirport.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
-	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
+	                                                    		<input class="form-check-input" id="checkNearestAirport" type="checkbox"  />
 	                                                		</div>
                                                 		</td>		                                                
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>

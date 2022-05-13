@@ -4,6 +4,7 @@ import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.dao.common.AuditTrailRepository;
 import com.intuitbrains.dao.common.FieldStatus;
+import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.common.document.category.Document;
@@ -37,6 +38,8 @@ public class CrewService {
     private CrewExcelService crewExcelService;
     @Autowired
     private CrewRepository crewDao;
+    @Autowired
+    private EmployeeRepository employeeDao;
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
@@ -78,7 +81,7 @@ public class CrewService {
         audit.setCollection(Collection.CREW);
         audit.setActionBy(crew.getEnteredBy());
         audit.setUniqueId(crew.getId());
-        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> recruited!");
+        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> added by "+employeeDao.findByEmpId(crew.getEnteredBy()).getFullName());
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         auditTrailDao.insert(audit);
         return crew;

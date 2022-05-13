@@ -9,6 +9,7 @@ public class CrewFieldStatus {
     public CrewFieldStatus() {
         init();
     }
+
     private void init() {
         firstName = new FieldStatus(null, null, null, null);
         middleName = new FieldStatus(null, null, null, null);

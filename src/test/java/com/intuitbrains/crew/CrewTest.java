@@ -27,6 +27,10 @@ import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.StandardWebParameter;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import org.bson.conversions.Bson;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -71,6 +75,8 @@ class CrewTest {
     private AuditTrailRepository auditTrailDao;
     @Autowired
     private CrewService crewService;
+    @Autowired
+    private MongoDatabase db;
 
     @Test
     void addNewCrewDetails() {
@@ -219,8 +225,9 @@ class CrewTest {
 
     @Test
     void updateEducationDetails() {
-        Crew crew = crewDao.findById(29l).get();
-        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
+        Crew crew = new Crew();
+        crew.setId(25);
+        //Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
 
 
         //Education
@@ -229,7 +236,7 @@ class CrewTest {
         ssc.setInstituteName("Sharon School");
         ssc.setInstituteAddress("Mulund, Mumbai");
         ssc.setPercentage(50f);
-        ssc.setFlag(flag);
+       // ssc.setFlag(flag);
 
         EducationDocument sscDoc = new Certificate();
         //sscDoc.setFile();
@@ -240,19 +247,23 @@ class CrewTest {
         hsc.setInstituteName("Somaiya College");
         hsc.setInstituteAddress("Vidyavihar, Mumbai");
         hsc.setPercentage(90.99f);
-        hsc.setFlag(flag);
+       // hsc.setFlag(flag);
 
         EducationDocument hscDoc = new Certificate();
         //empDoc2.setFile();
         hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
 
         crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
-        crewDao.save(crew);
+        Bson updates = Updates.set("educationHistory", new ArrayList<>(Arrays.asList(ssc, hsc)));
+        Bson filter = Filters.eq("_id", 25);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
     }
 
     @Test
     void updateEmploymentDetails() {
-        Crew crew = crewService.getById(1);
+        //Crew crew = crewService.getById(25);
+        Crew crew = new Crew();
+        crew.setId(25);
         Flag flag = flagDao.getByCode("IN");
 
         //Employment
@@ -301,7 +312,10 @@ class CrewTest {
         emp2.setFlag(flag);
         crew.setEmploymentHistory(new ArrayList<>(Arrays.asList(emp1, emp2)));
 
-        crewDao.save(crew);
+        Bson updates = Updates.set("employmentHistory", new ArrayList<>(Arrays.asList(emp1, emp2)));
+        Bson filter = Filters.eq("_id", 25);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
+       // crewDao.save(crew);
     }
 
     @Test
