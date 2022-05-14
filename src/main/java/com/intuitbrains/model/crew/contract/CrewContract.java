@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.ContractRule;
 import org.springframework.data.annotation.Id;
 

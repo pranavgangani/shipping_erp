@@ -30,7 +30,7 @@ import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.model.common.document.Passport;
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;

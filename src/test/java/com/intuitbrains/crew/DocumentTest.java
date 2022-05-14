@@ -1,21 +1,14 @@
 package com.intuitbrains.crew;
 
-import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.dao.common.CrewDocumentRepository;
-import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentCategory;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.common.document.category.DocumentType;
-import com.intuitbrains.model.crew.Rank;
-import com.intuitbrains.model.crew.RankCategory;
-import com.intuitbrains.model.crew.RankSubCategory;
-import com.intuitbrains.model.vessel.VesselSubType;
-import com.intuitbrains.model.vessel.VesselType;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -41,11 +32,11 @@ class DocumentTest {
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
     private FlagRepository flagDao;
-
+/*
     @Test
     void addSTCWDocsFromAnnex() {
         MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Ratings Forming Part of a Navigational Watch");
         trainingCert.setRegulation("Regulation II/4");
@@ -66,7 +57,7 @@ class DocumentTest {
     @Test
     void addHazardousTrainingDoc() {
         MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Hazardous Material Handling");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
@@ -87,7 +78,7 @@ class DocumentTest {
     @Test
     void addCaptainSpecificDoc() {
         MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Some Captain Training Course");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
@@ -101,7 +92,7 @@ class DocumentTest {
         trainingCert.setRequiredBeforeJoining(true);//Mandatory only if joining this Type of Vessle
         trainingCert.setValidity(5, DurationType.YEARS);
         documentDao.insert(trainingCert);
-    }
+    }*/
 
   /*  @Test
     void addFireTrainingDoc() {
@@ -120,11 +111,12 @@ class DocumentTest {
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
     }*/
+/*
 
     @Test
     void add5BasicSTCWTrainingDocsForAnyCrew() {
         MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Elementary First Aid (EFA)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
@@ -139,7 +131,7 @@ class DocumentTest {
         documentDao.insert(trainingCert);
 
         trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Fire Prevention and Fire Fighting (FPFF)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
@@ -154,7 +146,7 @@ class DocumentTest {
         documentDao.insert(trainingCert);
 
         trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Personal Survival Techniques (PST)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
@@ -169,7 +161,7 @@ class DocumentTest {
         documentDao.insert(trainingCert);
 
         trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Personal Safety and Social Responsibility (PSSR)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
@@ -184,7 +176,7 @@ class DocumentTest {
         documentDao.insert(trainingCert);
 
         trainingCert = new MerchantNavyCertificate();
-        trainingCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
         trainingCert.setDocName("Proficiency in Security Awareness (PSA)");
         trainingCert.setDocumentCategory(DocumentCategory.TRAINING);
@@ -198,12 +190,13 @@ class DocumentTest {
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
     }
+*/
 
 
     @Test
     void addDocsRequiredForIndianCrew() {
-        CrewDocument passport = new Passport();
-        passport.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+     /*   Document passport = new Passport();
+        passport.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         passport.setDocumentCategory(DocumentCategory.TRAVEL);
         DocumentType dt = docTypeDao.findByName("Indian Passport");
         passport.setDocTypeId(dt.getId());
@@ -214,8 +207,8 @@ class DocumentTest {
         passport.setRequiredAfterJoining(true);
         documentDao.insert(passport);
 
-        CrewDocument usB1B2 = new Visa();
-        usB1B2.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document usB1B2 = new Visa();
+        usB1B2.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         usB1B2.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("US B1/B2");
         usB1B2.setDocTypeId(dt.getId());
@@ -226,8 +219,8 @@ class DocumentTest {
         usB1B2.setRequiredAfterJoining(true);
         documentDao.insert(usB1B2);
 
-        CrewDocument usC1D = new Visa();
-        usC1D.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document usC1D = new Visa();
+        usC1D.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         usC1D.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("US C1/D");
         usC1D.setDocTypeId(dt.getId());
@@ -238,8 +231,8 @@ class DocumentTest {
         usC1D.setRequiredAfterJoining(true);
         documentDao.insert(usC1D);
 
-        CrewDocument ausMCV = new Visa();
-        ausMCV.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document ausMCV = new Visa();
+        ausMCV.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         ausMCV.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("Australian MCV");
         ausMCV.setDocTypeId(dt.getId());
@@ -250,8 +243,8 @@ class DocumentTest {
         ausMCV.setRequiredAfterJoining(true);
         documentDao.insert(ausMCV);
 
-        CrewDocument aadharCard = new NationalID();
-        aadharCard.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document aadharCard = new NationalID();
+        aadharCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         aadharCard.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         dt = docTypeDao.findByName("Aadhar Card");
         aadharCard.setDocTypeId(dt.getId());
@@ -260,8 +253,8 @@ class DocumentTest {
         aadharCard.setRequiredBeforeJoining(true);
         documentDao.insert(aadharCard);
 
-        CrewDocument indLicense = new License();
-        indLicense.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document indLicense = new License();
+        indLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         indLicense.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("Indian License");
         indLicense.setDocTypeId(dt.getId());
@@ -273,8 +266,8 @@ class DocumentTest {
         indLicense.setRequiredOnBoard(true);
         documentDao.insert(indLicense);
 
-        CrewDocument libLicense = new License();
-        libLicense.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document libLicense = new License();
+        libLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         libLicense.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("Liberian License");
         libLicense.setDocTypeId(dt.getId());
@@ -286,8 +279,8 @@ class DocumentTest {
         libLicense.setRequiredOnBoard(true);
         documentDao.insert(libLicense);
 
-        CrewDocument panaLicense = new License();
-        panaLicense.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document panaLicense = new License();
+        panaLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         panaLicense.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("Panama License");
         panaLicense.setDocTypeId(dt.getId());
@@ -299,8 +292,8 @@ class DocumentTest {
         panaLicense.setRequiredOnBoard(true);
         documentDao.insert(panaLicense);
 
-        CrewDocument ukLicense = new License();
-        ukLicense.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document ukLicense = new License();
+        ukLicense.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         ukLicense.setDocumentCategory(DocumentCategory.TRAVEL);
         dt = docTypeDao.findByName("Panama License");
         ukLicense.setDocTypeId(dt.getId());
@@ -313,8 +306,8 @@ class DocumentTest {
         documentDao.insert(ukLicense);
 
 
-        CrewDocument panCard = new TaxID();
-        panCard.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document panCard = new TaxID();
+        panCard.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         panCard.setDocumentCategory(DocumentCategory.FINANCIAL);
         dt = docTypeDao.findByName("PAN");
         panCard.setDocTypeId(dt.getId());
@@ -323,8 +316,8 @@ class DocumentTest {
         panCard.setRequiredBeforeJoining(true);
         documentDao.insert(panCard);
 
-        CrewDocument cdc = new NationalID();
-        cdc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document cdc = new NationalID();
+        cdc.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         cdc.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         dt = docTypeDao.findByName("Indian CDC");
         cdc.setDocTypeId(dt.getId());
@@ -335,8 +328,8 @@ class DocumentTest {
         cdc.setRequiredAfterJoining(true);
         documentDao.insert(cdc);
 
-        CrewDocument indos = new NationalID();
-        indos.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document indos = new NationalID();
+        indos.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         indos.setDocumentCategory(DocumentCategory.IDENTIFICATION);
         dt = docTypeDao.findByName("INDOS");
         indos.setDocTypeId(dt.getId());
@@ -347,8 +340,8 @@ class DocumentTest {
         indos.setRequiredAfterJoining(true);
         documentDao.insert(indos);
 
-        CrewDocument yellowFeverCert = new Certificate();
-        yellowFeverCert.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document yellowFeverCert = new Certificate();
+        yellowFeverCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         yellowFeverCert.setDocumentCategory(DocumentCategory.MEDICAL);
         dt = docTypeDao.findByName("Yellow Fever");
         yellowFeverCert.setDocTypeId(dt.getId());
@@ -357,7 +350,7 @@ class DocumentTest {
         indos.setValidity(5, DurationType.YEARS);
         yellowFeverCert.setRequiredBeforeJoining(true);
         yellowFeverCert.setRequiredAfterJoining(true);
-        documentDao.insert(yellowFeverCert);
+        documentDao.insert(yellowFeverCert);*/
 
       /*  Document drugAlcoholCert = new Certificate();
         drugAlcoholCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
@@ -394,15 +387,16 @@ class DocumentTest {
         form3A.setDocName("FORM 3A");
         form3A.setFlag(flag);
         documentDao.insert(form3A);*/
-
-        List<CrewDocument> list = documentDao.findAll();
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName() + " - " + doc.getClass().getName()));
+/*
+        List<Document> list = documentDao.findAll();
+        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName() + " - " + doc.getClass().getName()));*/
     }
 
+/*
     void addVisas() {
         Flag usa = flagDao.getByCode("US");
-        CrewDocument usVisa = new Visa();
-        usVisa.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        Document usVisa = new Visa();
+        usVisa.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         usVisa.setDocumentCategory(DocumentCategory.TRAVEL);
         usVisa.setDocName("US Visa");
         //usVisa.setDocType("B1/B2");
@@ -413,7 +407,7 @@ class DocumentTest {
     @Test
     void addInsurance() {
         Insurance insurance = new Insurance();
-        insurance.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        insurance.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         insurance.setDocumentCategory(DocumentCategory.FINANCIAL);
         insurance.setGivenName("Rohan Tiwari");
         insurance.setDocName("Insurance of Bla Bla");
@@ -429,11 +423,12 @@ class DocumentTest {
         //System.out.println(persistedInsurance.getInsuranceCompanyName());
 
     }
+*/
 
     @Test
     void documentGet() {
         List<CrewDocument> list = documentDao.findAll();
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName() + " - " + doc.getClass().getName()));
+        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocType().getDocumentCategory().getName() + " - " + doc.getClass().getName()));
 
         list.forEach(o -> {
             System.out.println(o.getClass().getName());

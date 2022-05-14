@@ -41,8 +41,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -385,7 +383,7 @@ class CrewTest {
         crewDao.save(crew);
     }
 
-    @Test
+ /*   @Test
     void updateCrewDetails() {
         Crew crew = crewDao.findById(26l).get();
         Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
@@ -393,9 +391,9 @@ class CrewTest {
         List<Education> eduList = crew.getEducationHistory();
         List<Experience> empList = crew.getEmploymentHistory();
 
-        List<? extends CrewDocument> existingDocs = crew.getExistingDocuments();
+        List<? extends Document> existingDocs = crew.getExistingDocuments();
         System.out.println(existingDocs != null ? existingDocs.size() : 0);
-        List<CrewDocument> preJoiningMandatoryDocs = documentDao.getPostJoinMandatoryByFlag(flag.getId());
+        List<Document> preJoiningMandatoryDocs = documentDao.getPostJoinMandatoryByFlag(flag.getId());
         System.out.println(preJoiningMandatoryDocs != null ? preJoiningMandatoryDocs.size() : 0);
 
         if (existingDocs == null) {
@@ -428,7 +426,7 @@ class CrewTest {
         }
 
     }
-
+*/
 
     @Test
     void testGetList() {
@@ -461,23 +459,19 @@ class CrewTest {
     void testGetPPVisa() {
         List<CrewDocument> list = crewService.getPassportVisa(24);
 
-        List<Passport> passports = new ArrayList<>();
-        for (CrewDocument doc : list) {
-            Passport passport = (Passport) doc;
-            passports.add(passport);
-        }
         //List<Passport> passport = list.stream().filter(TravelDocument.class::isInstance).map(Passport.class::cast).collect(Collectors.toList());
 
-        passports.forEach(e -> System.out.println("DocTypeId = " + e.getDocTypeId()));
+        list.forEach(e -> System.out.println("DocTypeId = " + e.getDocTypeId()));
     }
 
     @Test
     void testAddPassportAndVisa() {
-        List<CrewDocument> documents = documentDao.findAll();
+        List<DocumentType> documentTypes = docTypeDao.findAll();
         List<CrewDocument> existingDocs = new ArrayList<>();
-        for (CrewDocument doc : documents) {
-            if (doc instanceof Passport && doc.getId() == 21) {
-                Passport pp = (Passport) doc;
+        for (DocumentType dt : documentTypes) {
+            if (dt.getId() == 1) {//Indian Passport
+                Passport pp = new Passport();
+                pp.setCrewId(24);
                 pp.setDocNumber("12433453");
                 pp.setGivenName("Tiwari Rohan Pradeep");
                 pp.setECNRRequired(false);
@@ -486,23 +480,30 @@ class CrewTest {
                 pp.setDateOfIssue(LocalDate.of(2020, 2, 20));
                 pp.setDateOfExpiry(LocalDate.of(2040, 2, 20));
                 pp.setPlaceOfIssue("Mumbai, India");
+                pp.setDocTypeId(dt.getId());
+                pp.setDocType(dt);
                 existingDocs.add(pp);
-            } else if (doc instanceof Visa) {
-                if (doc.getId() == 23) {//US C1/D Visa
-                    Visa usC1DVisa = (Visa)doc;
-                    usC1DVisa.setDocNumber("5678890");
-                    usC1DVisa.setGivenName("Tiwari Rohan Pradeep");
-                    usC1DVisa.setFlagCode("US");
-                    usC1DVisa.setDateOfIssue(LocalDate.of(2021, 2, 20));
-                    usC1DVisa.setDateOfExpiry(LocalDate.of(2031, 2, 20));
-                    usC1DVisa.setPlaceOfIssue("NY, USA");
-                    existingDocs.add(usC1DVisa);
-                }
+            } else if (dt.getId() == 14) {//US C1/D Visa
+                    Visa visa = new Visa();
+                    visa.setCrewId(24);
+                    visa.setDocNumber("5678890");
+                    visa.setGivenName("Tiwari Rohan Pradeep");
+                    visa.setFlagCode("US");
+                    visa.setDateOfIssue(LocalDate.of(2018, 2, 20));
+                    visa.setDateOfExpiry(LocalDate.of(2028, 2, 20));
+                    visa.setPlaceOfIssue("NY, USA");
+                    visa.setDocTypeId(dt.getId());
+                    visa.setDocType(dt);
+                    existingDocs.add(visa);
             }
         }
-        Bson updates = Updates.set("existingDocuments", existingDocs);
+     /*   Bson updates = Updates.set("existingDocuments", existingDocs);
         Bson filter = Filters.eq("_id", 24);
-        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);*/
+        for(CrewDocument doc : existingDocs) {
+            doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        }
+        documentDao.insert(existingDocs);
 
     }
 

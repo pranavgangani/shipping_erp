@@ -1,10 +1,10 @@
-package com.intuitbrains.model.common.document.category;
+package com.intuitbrains.model.crew;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Comment;
 import com.intuitbrains.dao.common.FieldStatus;
 import com.intuitbrains.model.common.DurationType;
-import com.intuitbrains.model.crew.DocumentMatrix;
+import com.intuitbrains.model.common.document.category.DocumentType;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 
@@ -20,14 +20,12 @@ public class CrewDocument {
     @org.springframework.data.annotation.Id
     protected long id;
     protected String _type;
-    protected DocumentCategory documentCategory;
+
+    protected long crewId;
+    private long docTypeId;
+    private DocumentType docType;
     private String flagCode;
-    protected List<Integer> forVesselTypes;
-    protected List<Integer> forVesselSubTypes;
-    protected List<Integer> forRankCategories;
-    protected List<Integer> forRankSubCategories;
-    protected List<Integer> forRanks;
-    private boolean isMandatory, isRequiredBeforeJoining, isRequiredAfterJoining, isRequiredOnBoard, isUploaded;
+    private Binary file;
 
     public CrewDocument() {
     }
@@ -36,8 +34,6 @@ public class CrewDocument {
     protected String docName, docDesc;
     private String docTitle;
     private String docNumber;
-    private long docTypeId;
-    private DocumentType docType;
     private String givenName;
     private String remarks;
     private LocalDate dateOfIssue, dateOfExpiry;
@@ -48,15 +44,19 @@ public class CrewDocument {
     private int validity;
     private DurationType durationType;
 
-    //Validity Level
-    private DocumentMatrix documentMatrix;
-
     //Required when storing against Crew
     private List<Comment> comments;
 
     //Physical File
     private String fileTitle;
-    private Binary file;
+
+    public long getCrewId() {
+        return crewId;
+    }
+
+    public void setCrewId(long crewId) {
+        this.crewId = crewId;
+    }
 
     public long getId() {
         return id;
@@ -72,14 +72,6 @@ public class CrewDocument {
 
     public void set_type(String _type) {
         this._type = _type;
-    }
-
-    public DocumentCategory getDocumentCategory() {
-        return documentCategory;
-    }
-
-    public void setDocumentCategory(DocumentCategory documentCategory) {
-        this.documentCategory = documentCategory;
     }
 
     public String getFlagCode() {
@@ -144,22 +136,6 @@ public class CrewDocument {
 
     public void setGivenName(String givenName) {
         this.givenName = givenName;
-    }
-
-    public DocumentMatrix getDocumentMatrix() {
-        return documentMatrix;
-    }
-
-    public void setDocumentMatrix(DocumentMatrix documentMatrix) {
-        this.documentMatrix = documentMatrix;
-    }
-
-    public boolean isMandatory() {
-        return isMandatory;
-    }
-
-    public void setMandatory(boolean mandatory) {
-        isMandatory = mandatory;
     }
 
     public String getRemarks() {
@@ -227,78 +203,6 @@ public class CrewDocument {
         this.file = file;
     }
 
-    public boolean isRequiredBeforeJoining() {
-        return isRequiredBeforeJoining;
-    }
-
-    public void setRequiredBeforeJoining(boolean requiredBeforeJoining) {
-        isRequiredBeforeJoining = requiredBeforeJoining;
-    }
-
-    public boolean isRequiredAfterJoining() {
-        return isRequiredAfterJoining;
-    }
-
-    public void setRequiredAfterJoining(boolean requiredAfterJoining) {
-        isRequiredAfterJoining = requiredAfterJoining;
-    }
-
-    public boolean isRequiredOnBoard() {
-        return isRequiredOnBoard;
-    }
-
-    public void setRequiredOnBoard(boolean requiredOnBoard) {
-        isRequiredOnBoard = requiredOnBoard;
-    }
-
-    public boolean isUploaded() {
-        return isUploaded;
-    }
-
-    public void setUploaded(boolean uploaded) {
-        isUploaded = uploaded;
-    }
-
-    public List<Integer> getForVesselTypes() {
-        return forVesselTypes;
-    }
-
-    public void setForVesselTypes(List<Integer> forVesselTypes) {
-        this.forVesselTypes = forVesselTypes;
-    }
-
-    public List<Integer> getForVesselSubTypes() {
-        return forVesselSubTypes;
-    }
-
-    public void setForVesselSubTypes(List<Integer> forVesselSubTypes) {
-        this.forVesselSubTypes = forVesselSubTypes;
-    }
-
-    public List<Integer> getForRankCategories() {
-        return forRankCategories;
-    }
-
-    public void setForRankCategories(List<Integer> forRankCategories) {
-        this.forRankCategories = forRankCategories;
-    }
-
-    public List<Integer> getForRankSubCategories() {
-        return forRankSubCategories;
-    }
-
-    public void setForRankSubCategories(List<Integer> forRankSubCategories) {
-        this.forRankSubCategories = forRankSubCategories;
-    }
-
-    public List<Integer> getForRanks() {
-        return forRanks;
-    }
-
-    public void setForRanks(List<Integer> forRanks) {
-        this.forRanks = forRanks;
-    }
-
     public void setValidity(int validity) {
         this.validity = validity;
     }
@@ -325,6 +229,10 @@ public class CrewDocument {
 
     public void setPlaceOfIssue(String placeOfIssue) {
         this.placeOfIssue = placeOfIssue;
+    }
+
+    public boolean isFileUploaded() {
+        return this.getFile() != null;
     }
 
     @Override

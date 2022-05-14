@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.intuitbrains.model.common.document.Contract;
-import com.intuitbrains.model.common.document.category.CrewDocument;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -397,7 +396,7 @@ public class Crew extends Person {
         this.existingDocuments = existingDocuments;
     }
 
-    public List< CrewDocument> getMandatoryDocuments() {
+    public List<CrewDocument> getMandatoryDocuments() {
         return mandatoryDocuments;
     }
 

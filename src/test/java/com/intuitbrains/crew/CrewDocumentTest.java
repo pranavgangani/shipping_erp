@@ -5,7 +5,7 @@ import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.main.CrewManagementApplication;
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.Rank;
 import com.intuitbrains.model.crew.RankSubCategory;
 import com.intuitbrains.model.vessel.VesselSubType;
@@ -40,7 +40,7 @@ class CrewDocumentTest {
         List<CrewDocument> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllRankCat();
         list.addAll(documentDao.getPostJoiningDocsForAllVesselTypeAndSpecificRank(Rank.CAPTAIN.getId()));
 
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
+        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocType().getDocumentCategory().getName()
                 + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
 
     }
@@ -49,7 +49,7 @@ class CrewDocumentTest {
     void getDocsByRating() {
         List<CrewDocument> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(RankSubCategory.RATING.getId());
 
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
+        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocType().getDocumentCategory().getName()
                 + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
 
     }
@@ -79,7 +79,7 @@ class CrewDocumentTest {
         list.addAll(documentDao.getPostJoiningDocs3(vesselTypeId,
                 vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));
 
-        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
+        list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocType().getDocumentCategory().getName()
                 + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
 
         list.forEach(o -> {

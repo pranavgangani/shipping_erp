@@ -3,8 +3,7 @@ package com.intuitbrains.service.common;
 import com.intuitbrains.model.common.document.CheckList;
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.common.document.Declaration;
-import com.intuitbrains.model.common.document.category.CrewDocument;
-import com.intuitbrains.model.common.document.category.DocumentCategory;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.contract.CrewContract;
 import com.intuitbrains.model.crew.NextOfKin;
@@ -163,7 +162,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Contract contract = new Contract();
-            contract.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //contract.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             contract.setFileTitle(fileName);
             contract.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(contract);
@@ -196,7 +195,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             CheckList checkList = new CheckList();
-            checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             checkList.setFileTitle(fileName);
             checkList.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(checkList);
@@ -229,7 +228,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             CheckList checkList = new CheckList();
-            checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             checkList.setFileTitle(fileName);
             checkList.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(checkList);
@@ -262,7 +261,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             CheckList checkList = new CheckList();
-            checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //checkList.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             checkList.setFileTitle(fileName);
             checkList.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(checkList);
@@ -295,7 +294,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Declaration declaration = new Declaration();
-            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             declaration.setFileTitle(fileName);
             declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(declaration);
@@ -329,7 +328,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Declaration declaration = new Declaration();
-            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             declaration.setFileTitle(fileName);
             declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(declaration);
@@ -376,7 +375,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Declaration declaration = new Declaration();
-            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             declaration.setFileTitle(fileName);
             declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(declaration);
@@ -409,7 +408,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Declaration declaration = new Declaration();
-            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             declaration.setFileTitle(fileName);
             declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(declaration);
@@ -442,7 +441,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Declaration declaration = new Declaration();
-            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             declaration.setFileTitle(fileName);
             declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(declaration);
@@ -475,7 +474,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Declaration declaration = new Declaration();
-            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             declaration.setFileTitle(fileName);
             declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(declaration);
@@ -507,7 +506,7 @@ public class ContractDocumentGenerator {
 
             // Save file to contract documents
             Declaration declaration = new Declaration();
-            declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+            //declaration.setDocumentCategory(DocumentCategory.EMPLOYMENT);
             declaration.setFileTitle(fileName);
             declaration.setFile(new Binary(BsonBinarySubType.BINARY, Files.readAllBytes(new File(fileName).toPath())));
             contractDocuments.add(declaration);

@@ -1,6 +1,6 @@
 package com.intuitbrains.dao.common;
 
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

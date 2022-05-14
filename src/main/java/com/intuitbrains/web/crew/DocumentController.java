@@ -2,7 +2,7 @@ package com.intuitbrains.web.crew;
 
 import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.util.ParamUtil;

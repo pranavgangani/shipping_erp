@@ -1,6 +1,8 @@
 package com.intuitbrains.model.common.document.category;
 
 
+import com.intuitbrains.model.crew.CrewDocument;
+
 import java.time.LocalDate;
 
 public class EducationDocument extends CrewDocument {

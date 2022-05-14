@@ -8,7 +8,7 @@ import com.intuitbrains.dao.common.FieldStatus;
 import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.model.common.document.Contract;
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import com.intuitbrains.service.common.SequenceGeneratorService;
@@ -27,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class CrewService {
         audit.setCollection(Collection.CREW);
         audit.setActionBy(crew.getEnteredBy());
         audit.setUniqueId(crew.getId());
-        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> added by "+employeeDao.findByEmpId(crew.getEnteredBy()).getFullName());
+        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> added by " + employeeDao.findByEmpId(crew.getEnteredBy()).getFullName());
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         auditTrailDao.insert(audit);
         return crew;
@@ -126,13 +127,16 @@ public class CrewService {
     }
 
     public List<CrewDocument> getPassportVisa(long crewId) {
-        Bson filters = and(eq("_id", crewId));
-        Bson projections = fields(elemMatch("existingDocuments", or(eq("docTypeId", 1), eq("docTypeId", 13), eq("docTypeId", 14), eq("docTypeId", 15))));
+        Bson filters = and(eq("crewId", crewId),
+                (or(eq("docTypeId", 1),
+                        eq("docTypeId", 13),
+                        eq("docTypeId", 14),
+                        eq("docTypeId", 15))));
+        //Bson projections = (or(eq("docTypeId", 1), eq("docTypeId", 13), eq("docTypeId", 14), eq("docTypeId", 15)));
         //Bson projections = Projections.include("existingDocuments");
-        List<CrewDocument> documents = db.getCollection(Collection.CREW, Crew.class).find(filters).projection(projections).first().getExistingDocuments();
-        for(CrewDocument doc : documents){
-            doc.setDocType(docTypeDao.findById(doc.getDocTypeId()).get());
-        }
+        List<CrewDocument> documents = new ArrayList<>();
+        db.getCollection(Collection.CREW_DOCUMENT, CrewDocument.class).find(filters).into(documents);
+
         return documents;
     }
 
@@ -186,20 +190,16 @@ public class CrewService {
                         if (val.getClass().equals(String.class)) {
                             String txt = (String) val;
                             crewFieldAudit.setFieldValue(txt);
-                        }
-                        else if (val.getClass().equals(Boolean.class)) {
+                        } else if (val.getClass().equals(Boolean.class)) {
                             Boolean value = (Boolean) val;
                             crewFieldAudit.setFieldValue((value ? "YES" : "NO"));
-                        }
-                        else if (val.getClass().equals(Integer.class)) {
+                        } else if (val.getClass().equals(Integer.class)) {
                             Integer value = (Integer) val;
                             crewFieldAudit.setFieldValue(String.valueOf(value));
-                        }
-                        else if (val.getClass().equals(Double.class)) {
+                        } else if (val.getClass().equals(Double.class)) {
                             Double value = (Double) val;
                             crewFieldAudit.setFieldValue(String.valueOf(value));
-                        }
-                        else if (val.getClass().equals(LocalDate.class)) {
+                        } else if (val.getClass().equals(LocalDate.class)) {
                             LocalDate value = (LocalDate) val;
                             crewFieldAudit.setFieldValue(value.toString());
                         }

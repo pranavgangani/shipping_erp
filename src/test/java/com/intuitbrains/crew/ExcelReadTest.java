@@ -6,7 +6,7 @@ import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.common.document.*;
-import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.util.DateTimeUtil;
