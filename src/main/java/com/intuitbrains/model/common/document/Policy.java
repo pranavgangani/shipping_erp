@@ -1,6 +1,6 @@
 package com.intuitbrains.model.common.document;
 
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 
-public class Policy extends Document {
+public class Policy extends CrewDocument {
 }

@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.intuitbrains.model.common.document.Contract;
-import com.intuitbrains.model.common.document.category.Document;
-import com.intuitbrains.model.crew.contract.Travel;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -60,8 +59,8 @@ public class Crew extends Person {
     private List<TravelAndAccomodation> travelAndAccomodationHistory;
 
     //Current
-    private List<Document> existingDocuments;
-    private List<Document> mandatoryDocuments;
+    private List<? extends CrewDocument> existingDocuments;
+    private List<? extends CrewDocument> mandatoryDocuments;
 
     //Medical
     private List<IllnessAndInjury> illnessInjury;
@@ -390,19 +389,19 @@ public class Crew extends Person {
     }
 
 
-    public List<Document> getExistingDocuments() {
+    public List<? extends CrewDocument> getExistingDocuments() {
         return existingDocuments;
     }
 
-    public void setExistingDocuments(List<Document> existingDocuments) {
+    public void setExistingDocuments(List<? extends CrewDocument> existingDocuments) {
         this.existingDocuments = existingDocuments;
     }
 
-    public List<Document> getMandatoryDocuments() {
+    public List<? extends CrewDocument> getMandatoryDocuments() {
         return mandatoryDocuments;
     }
 
-    public void setMandatoryDocuments(List<Document> mandatoryDocuments) {
+    public void setMandatoryDocuments(List<CrewDocument> mandatoryDocuments) {
         this.mandatoryDocuments = mandatoryDocuments;
     }
 

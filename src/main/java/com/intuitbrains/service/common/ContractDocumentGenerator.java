@@ -3,7 +3,7 @@ package com.intuitbrains.service.common;
 import com.intuitbrains.model.common.document.CheckList;
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.common.document.Declaration;
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentCategory;
 import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.contract.CrewContract;
@@ -27,7 +27,7 @@ public class ContractDocumentGenerator {
     private Crew crew;
     private Vessel vessel;
     private CrewContract contract;
-    private List<Document> contractDocuments;
+    private List<CrewDocument> contractDocuments;
 
     public ContractDocumentGenerator(Crew crew, Vessel vessel, CrewContract contract) {
         this.crew = crew;

@@ -23,6 +23,9 @@ public class DocumentCategory {
     private int id;
     private String name;
 
+    public DocumentCategory() {
+    }
+
     public DocumentCategory(int id, String name) {
         this.id = id;
         this.name = name;

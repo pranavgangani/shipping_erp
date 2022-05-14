@@ -1,4 +1,4 @@
 package com.intuitbrains.model.common.document.category;
 
-public abstract class TrainingDocument extends Document {
+public abstract class TrainingDocument extends CrewDocument {
 }

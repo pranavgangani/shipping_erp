@@ -1,13 +1,13 @@
 package com.intuitbrains.dao.common;
 
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
-public interface CrewDocumentRepository extends MongoRepository<Document, Long> {
+public interface CrewDocumentRepository extends MongoRepository<CrewDocument, Long> {
    /* @Query("{'vacancyAttributes.minRankList': { $eq: 1 }}")
     public List<VesselVacancy> findVacanciesByRank(int rankId);
 
@@ -52,7 +52,7 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
             "            {'forRanks': { $eq: ?4 }}]}\n" +
             "    ]\n" +
             "}")
-    public List<Document> getPostJoiningDocs1(int vesselTypeId, int vesselSubTypeId, int rankCatId, int rankSubCatId, int rankId);
+    public List<CrewDocument> getPostJoiningDocs1(int vesselTypeId, int vesselSubTypeId, int rankCatId, int rankSubCatId, int rankId);
 
     @Query("{$or:[\n" +
             "        {$and:[ \n" +
@@ -88,7 +88,7 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
             "            {'forRanks': { $eq: ?4 }}]}\n" +
             "    ]\n" +
             "}")
-    public List<Document> getPostJoiningDocs2(int vesselTypeId, int vesselSubTypeId, int rankCatId, int rankSubCatId, int rankId);
+    public List<CrewDocument> getPostJoiningDocs2(int vesselTypeId, int vesselSubTypeId, int rankCatId, int rankSubCatId, int rankId);
 
     @Query("{$or:[\n" +
             "        {$and:[ \n" +
@@ -124,20 +124,20 @@ public interface CrewDocumentRepository extends MongoRepository<Document, Long> 
             "            {'forRanks': { $eq: ?4 }}]}\n" +
             "    ]\n" +
             "}")
-    public List<Document> getPostJoiningDocs3(int vesselTypeId, int vesselSubTypeId, int rankCatId, int rankSubCatId, int rankId);
+    public List<CrewDocument> getPostJoiningDocs3(int vesselTypeId, int vesselSubTypeId, int rankCatId, int rankSubCatId, int rankId);
 
     @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }")
-    public List<Document> getPostJoiningDocsForAllVesselTypeAndAllRankCat();
+    public List<CrewDocument> getPostJoiningDocsForAllVesselTypeAndAllRankCat();
 
     @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: ?0 }}] }, {'forRankSubCategories': { $eq: 0 }}")
-    public List<Document> getPostJoiningDocsForAllVesselTypeAndAllSpecificDept(int rankCatId);
+    public List<CrewDocument> getPostJoiningDocsForAllVesselTypeAndAllSpecificDept(int rankCatId);
 
     @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }, {'forRankSubCategories': { $eq: 0 }}, {'forRanks': { $eq: ?0 }}")
-    public List<Document> getPostJoiningDocsForAllVesselTypeAndSpecificRank(int rankId);
+    public List<CrewDocument> getPostJoiningDocsForAllVesselTypeAndSpecificRank(int rankId);
 
     @Query("{$and :[{'forVesselTypes': { $eq: 0 }},{'forRankCategories': { $eq: 0 }}] }, {'forRankSubCategories': { $eq: ?0 }}")
-    public List<Document> getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(int flagId);
+    public List<CrewDocument> getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(int flagId);
 
     @Query("{$and :[{'isRequiredAfterJoining': { $eq: true }},{'flag.id': { $eq: ?0 }}] }")
-    public List<Document> getPostJoinMandatoryByFlag(ObjectId flagId);
+    public List<CrewDocument> getPostJoinMandatoryByFlag(ObjectId flagId);
 }

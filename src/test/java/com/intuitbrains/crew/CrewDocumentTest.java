@@ -5,7 +5,7 @@ import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.main.CrewManagementApplication;
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 import com.intuitbrains.model.crew.Rank;
 import com.intuitbrains.model.crew.RankSubCategory;
 import com.intuitbrains.model.vessel.VesselSubType;
@@ -37,7 +37,7 @@ class CrewDocumentTest {
 
     @Test
     void getPostJoiningDocs() {
-        List<Document> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllRankCat();
+        List<CrewDocument> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllRankCat();
         list.addAll(documentDao.getPostJoiningDocsForAllVesselTypeAndSpecificRank(Rank.CAPTAIN.getId()));
 
         list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
@@ -47,7 +47,7 @@ class CrewDocumentTest {
 
     @Test
     void getDocsByRating() {
-        List<Document> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(RankSubCategory.RATING.getId());
+        List<CrewDocument> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(RankSubCategory.RATING.getId());
 
         list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocumentCategory().getName()
                 + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
@@ -68,7 +68,7 @@ class CrewDocumentTest {
         int rankCatId = rank.getRankCategory().getId();
         int rankSubCatId = rank.getRankSubCategory().getId();
 
-        List<Document> list = new ArrayList<>();
+        List<CrewDocument> list = new ArrayList<>();
 
         list.addAll(documentDao.getPostJoiningDocs1(vesselTypeId,
                 vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));

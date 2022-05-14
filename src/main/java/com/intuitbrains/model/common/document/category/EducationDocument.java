@@ -3,7 +3,7 @@ package com.intuitbrains.model.common.document.category;
 
 import java.time.LocalDate;
 
-public class EducationDocument extends Document {
+public class EducationDocument extends CrewDocument {
     protected String instituteName, instituteAddress;
     protected LocalDate startDate, endDate;
     private long certificateTypeId;

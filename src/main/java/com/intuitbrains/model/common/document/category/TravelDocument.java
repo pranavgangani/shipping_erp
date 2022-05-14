@@ -1,6 +1,6 @@
 package com.intuitbrains.model.common.document.category;
 
-public abstract class TravelDocument extends Document {
+public abstract class TravelDocument extends CrewDocument {
     private String address;
 
     public String getAddress() {

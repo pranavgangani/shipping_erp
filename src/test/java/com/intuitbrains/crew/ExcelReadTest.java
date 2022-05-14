@@ -6,13 +6,9 @@ import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.common.document.*;
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentType;
-import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
-import com.intuitbrains.model.vessel.Vessel;
-import com.intuitbrains.model.vessel.VesselSubType;
-import com.intuitbrains.model.vessel.VesselType;
 import com.intuitbrains.util.DateTimeUtil;
 import com.intuitbrains.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -31,7 +27,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.*;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,7 +49,7 @@ public class ExcelReadTest {
     public void readFromExcel() {
         final String fileLocation = "";
         try {
-            List<Document> documents = new ArrayList<>();
+            List<CrewDocument> documents = new ArrayList<>();
             FileInputStream file = new FileInputStream(new File("D:\\Projects\\New_Hires.xls"));
             Workbook workbook = new HSSFWorkbook(file);
             Crew crew = new Crew();
@@ -104,7 +99,7 @@ public class ExcelReadTest {
 
 
             //Get Documents
-            List<Document> mandatoryDocList = documentDao.findAll();
+            List<CrewDocument> mandatoryDocList = documentDao.findAll();
             //Passport & Visa
             populatePassportVisa(sheet1, crew, mandatoryDocList, documents);
             //CDC
@@ -226,7 +221,7 @@ public class ExcelReadTest {
 
     }
 
-    private void populatePassportVisa(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populatePassportVisa(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
         for (int i = 34; i <= 37; i++) {
             CellReference docTypeCell = new CellReference("B" + i);
             CellReference numCell = new CellReference("E" + i);
@@ -246,7 +241,7 @@ public class ExcelReadTest {
 
             if (docTypeStr.equalsIgnoreCase("Passport")) {
                 DocumentType dt = docTypeDao.findByName("Indian Passport");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         Passport passport = (Passport) doc;
                         passport.setDateOfExpiry(doe);
@@ -262,7 +257,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("US Visa C1/D")) {
                 DocumentType dt = docTypeDao.findByName("US C1/D");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         Visa visa = (Visa) doc;
                         visa.setDocNumber(docNum);
@@ -275,7 +270,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("US Visa B1/B2")) {
                 DocumentType dt = docTypeDao.findByName("US B1/B2");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         Visa visa = (Visa) doc;
                         visa.setDocNumber(docNum);
@@ -288,7 +283,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Australian MCV")) {
                 DocumentType dt = docTypeDao.findByName("Australian MCV");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         Visa visa = (Visa) doc;
                         visa.setDocNumber(docNum);
@@ -303,7 +298,7 @@ public class ExcelReadTest {
         }
     }
 
-    private void populateCDC(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populateCDC(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
         //CDC
         for (int i = 40; i <= 45; i++) {
             CellReference docTypeCell = new CellReference("B" + i);
@@ -324,7 +319,7 @@ public class ExcelReadTest {
 
             if (docTypeStr.equalsIgnoreCase("Indian")) {
                 DocumentType dt = docTypeDao.findByName("Indian CDC");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
@@ -339,7 +334,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Liberian")) {
                 DocumentType dt = docTypeDao.findByName("Liberian CDC");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
@@ -354,7 +349,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Panama")) {
                 DocumentType dt = docTypeDao.findByName("Panama CDC");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
@@ -369,7 +364,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Others")) {
                 DocumentType dt = docTypeDao.findByName("Other CDC");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
@@ -384,7 +379,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("INDOS")) {
                 DocumentType dt = docTypeDao.findByName("INDOS");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         NationalID cdc = (NationalID) doc;
                         cdc.setDateOfExpiry(doe);
@@ -399,7 +394,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Yellow Fever")) {
                 DocumentType dt = docTypeDao.findByName("Yellow Fever");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         Certificate cert = (Certificate) doc;
                         cert.setDateOfExpiry(doe);
@@ -416,7 +411,7 @@ public class ExcelReadTest {
         }
     }
 
-    private void populateNextOfKin(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populateNextOfKin(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
         CellReference civilStatusCell = new CellReference("D55");
         CellReference nokNameCell = new CellReference("D56");
         CellReference nokAddressCell = new CellReference("D57");
@@ -478,14 +473,14 @@ public class ExcelReadTest {
             nokPassport.setGivenName(name);
             nokPassport.setECNRRequired(isECNR);
             nokPassport.setDateOfExpiry(doe);
-            nokPassport.setAddress(nokAddress);
+           // nokPassport.setAddress(nokAddress);
             nokPassport.setDateOfIssue(doi);
             nokPassport.setPlaceOfIssue(placeOfIssue);
             nok.setPassport(nokPassport);
         }
     }
 
-    private void populateLicence(Sheet sheet, Crew crew, List<Document> mandatoryDocList, List<Document> crewDocsToPopulate) {
+    private void populateLicence(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
 
         //License
         for (int i = 48; i <= 53; i++) {
@@ -508,7 +503,7 @@ public class ExcelReadTest {
 
             if (docTypeStr.equalsIgnoreCase("Indian")) {
                 DocumentType dt = docTypeDao.findByName("Indian License");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         License lic = (License) doc;
                         lic.setDateOfExpiry(doe);
@@ -523,7 +518,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Liberian")) {
                 DocumentType dt = docTypeDao.findByName("Liberian License");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         License lic = (License) doc;
                         lic.setDateOfExpiry(doe);
@@ -538,7 +533,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Panama")) {
                 DocumentType dt = docTypeDao.findByName("Panama License");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         License lic = (License) doc;
                         lic.setDateOfExpiry(doe);
@@ -553,7 +548,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("UK")) {
                 DocumentType dt = docTypeDao.findByName("UK License");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         License lic = (License) doc;
                         lic.setDateOfExpiry(doe);
@@ -568,7 +563,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Singapore")) {
                 DocumentType dt = docTypeDao.findByName("Singapore License");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         License lic = (License) doc;
                         lic.setDateOfExpiry(doe);
@@ -583,7 +578,7 @@ public class ExcelReadTest {
                 }
             } else if (docTypeStr.equalsIgnoreCase("Others")) {
                 DocumentType dt = docTypeDao.findByName("Other License");
-                for (Document doc : mandatoryDocList) {
+                for (CrewDocument doc : mandatoryDocList) {
                     if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
                         License lic = (License) doc;
                         lic.setDateOfExpiry(doe);

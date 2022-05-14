@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 import com.intuitbrains.model.crew.ContractRule;
 import org.springframework.data.annotation.Id;
 
@@ -28,7 +28,7 @@ public class CrewContract {
 	private String placeOfContract;
     private Flag placeOfContractFlag;
 	
-	private List<Document> documents;
+	private List<CrewDocument> documents;
 	private List<ContractRule> otherContractRules;
 	private BigDecimal monthlyWage;
 	private String wageCurrency;
@@ -95,11 +95,11 @@ public class CrewContract {
         this.placeOfContract = placeOfContract;
     }
 
-    public List<Document> getDocuments() {
+    public List<CrewDocument> getDocuments() {
         return documents;
     }
 
-    public void setDocuments(List<Document> documents) {
+    public void setDocuments(List<CrewDocument> documents) {
         this.documents = documents;
     }
 

@@ -4,7 +4,7 @@ import com.intuitbrains.model.company.Employee;
 
 import java.time.LocalDateTime;
 
-public class Document {
+public class VesselDocument {
 	private int documentId;
 	private String documentName;
 	private LocalDateTime validityStartDate;

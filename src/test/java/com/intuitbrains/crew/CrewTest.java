@@ -1,6 +1,5 @@
 package com.intuitbrains.crew;
 
-import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.AuditTrailRepository;
@@ -14,10 +13,7 @@ import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.common.document.*;
-import com.intuitbrains.model.common.document.category.Document;
-import com.intuitbrains.model.common.document.category.DocumentType;
-import com.intuitbrains.model.common.document.category.EducationDocument;
-import com.intuitbrains.model.common.document.category.EmploymentDocument;
+import com.intuitbrains.model.common.document.category.*;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.*;
 import com.intuitbrains.model.vessel.Vessel;
@@ -26,7 +22,6 @@ import com.intuitbrains.model.vessel.VesselVacancy;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.service.crew.CrewService;
-import com.intuitbrains.util.StandardWebParameter;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -47,6 +42,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -236,7 +232,7 @@ class CrewTest {
         ssc.setInstituteName("Vani School");
         ssc.setInstituteAddress("Mulund, Mumbai");
         ssc.setPercentage(50f);
-       // ssc.setFlag(flag);
+        // ssc.setFlag(flag);
 
         EducationDocument sscDoc = new Certificate();
         //sscDoc.setFile();
@@ -247,7 +243,7 @@ class CrewTest {
         hsc.setInstituteName("Raheja College");
         hsc.setInstituteAddress("Vidyavihar, Mumbai");
         hsc.setPercentage(90.99f);
-       // hsc.setFlag(flag);
+        // hsc.setFlag(flag);
 
         EducationDocument hscDoc = new Certificate();
         //empDoc2.setFile();
@@ -271,7 +267,7 @@ class CrewTest {
         emp1.setEmployerName("Merks");
         emp1.setEmployerAddress("Mumbai");
         //Vessel v = new Vessel();
-       // v.setGrossTonnage(7000);
+        // v.setGrossTonnage(7000);
         //emp1.setVessel(v);
         emp1.setLastRankId(Rank.JR_ENGINEER.getId());
         emp1.setVesselSubType(VesselSubType.LPG_TANKER);
@@ -293,8 +289,8 @@ class CrewTest {
         emp2.setEmployerName("MSC");
         emp2.setEmployerAddress("Mumbai");
         //v = new Vessel();
-       // v.setGrossTonnage(500);
-       // emp1.setVessel(v);
+        // v.setGrossTonnage(500);
+        // emp1.setVessel(v);
         emp2.setLastRankId(Rank.JR_ENGINEER.getId());
         emp2.setVesselSubType(VesselSubType.LNG_TANKER);
         //emp2.setStartDate(new LocalDateTime());
@@ -315,7 +311,7 @@ class CrewTest {
         Bson updates = Updates.set("employmentHistory", new ArrayList<>(Arrays.asList(emp1, emp2)));
         Bson filter = Filters.eq("_id", 24);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
-       // crewDao.save(crew);
+        // crewDao.save(crew);
     }
 
     @Test
@@ -324,7 +320,7 @@ class CrewTest {
         crew.setId(24);
         NextOfKin nok1 = new NextOfKin();
         nok1.setNomineeName("Vrushali Rohan Tiwari");
-       // nok1.setDateOfBirth("12-Mar-1983");
+        // nok1.setDateOfBirth("12-Mar-1983");
         nok1.setRelationType(NextOfKin.RelationType.WIFE.getRelationTypeName());
         nok1.setAddress("Same as above");
         nok1.setGender("female");
@@ -348,7 +344,7 @@ class CrewTest {
 
         NextOfKin nok4 = new NextOfKin();
         nok4.setNomineeName("Shamika Tiwari");
-       // nok4.setDateOfBirth("16-Jun-2015");
+        // nok4.setDateOfBirth("16-Jun-2015");
         nok4.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
         nok4.setAddress("Same as above");
         nok4.setGender("female");
@@ -368,7 +364,7 @@ class CrewTest {
     @Test
     void uploadOtherDocs() {
         Crew crew = crewDao.findById(26l).get();
-        List<Document> preJoiningMandatoryDocs = documentDao.findAll();
+        List<CrewDocument> preJoiningMandatoryDocs = documentDao.findAll();
         //crew.setPreJoiningDocuments(preJoiningMandatoryDocs);
         crewDao.save(crew);
     }
@@ -397,9 +393,9 @@ class CrewTest {
         List<Education> eduList = crew.getEducationHistory();
         List<Experience> empList = crew.getEmploymentHistory();
 
-        List<Document> existingDocs = crew.getExistingDocuments();
+        List<? extends CrewDocument> existingDocs = crew.getExistingDocuments();
         System.out.println(existingDocs != null ? existingDocs.size() : 0);
-        List<Document> preJoiningMandatoryDocs = documentDao.getPostJoinMandatoryByFlag(flag.getId());
+        List<CrewDocument> preJoiningMandatoryDocs = documentDao.getPostJoinMandatoryByFlag(flag.getId());
         System.out.println(preJoiningMandatoryDocs != null ? preJoiningMandatoryDocs.size() : 0);
 
         if (existingDocs == null) {
@@ -437,53 +433,74 @@ class CrewTest {
     @Test
     void testGetList() {
         List<Crew> crews = crewDao.findAll();
-        crews.forEach(c->System.out.println(c.getFirstName()));
+        crews.forEach(c -> System.out.println(c.getFirstName()));
         crews = crewService.getList();
-        crews.forEach(c->System.out.println(c.getFirstName()));
+        crews.forEach(c -> System.out.println(c.getFirstName()));
         Crew c = crewService.getById(1);
         System.out.println(c.getFirstName());
     }
+
     @Test
     void testExperienceList() {
         List<Experience> list = crewService.getEmploymentHistory(24);
-        list.forEach(e->System.out.println(e.getEmployerName()));
+        list.forEach(e -> System.out.println(e.getEmployerName()));
     }
+
     @Test
     void testEducationList() {
         List<Education> list = crewService.getEducationHistory(24);
-        list.forEach(e->System.out.println(e.getInstituteName()));
+        list.forEach(e -> System.out.println(e.getInstituteName()));
     }
+
+    @Test
+    void testCast() {
+
+    }
+
     @Test
     void testGetPPVisa() {
-        List<Document> list = crewService.getPassportVisa(24);
-        list.forEach(e->System.out.println("DocTypeId = "+e.getDocTypeId()));
+        List<? extends CrewDocument> list = crewService.getPassportVisa(24);
+
+        List<Passport> passports = new ArrayList<>();
+        for (CrewDocument doc : list) {
+            Passport passport = (Passport) doc;
+            passports.add(passport);
+        }
+        //List<Passport> passport = list.stream().filter(TravelDocument.class::isInstance).map(Passport.class::cast).collect(Collectors.toList());
+
+        passports.forEach(e -> System.out.println("DocTypeId = " + e.getDocTypeId()));
     }
 
     @Test
     void testAddPassportAndVisa() {
-        Passport pp = new Passport();
-        DocumentType dt = docTypeDao.findByName("Indian Passport");
-        pp.setDocNumber("12433453");
-        pp.setGivenName("Tiwari Rohan Pradeep");
-        pp.setECNRRequired(false);
-        pp.setBlankPages(10);
-        pp.setFlagCode("IN");
-        pp.setDateOfIssue(LocalDate.of(2020, 2, 20));
-        pp.setDateOfExpiry(LocalDate.of(2040, 2, 20));
-        pp.setPlaceOfIssue("Mumbai, India");
-        pp.setDocTypeId(dt.getId());
-
-        Visa usC1DVisa = new Visa();
-        dt = docTypeDao.findByName("US C1/D");
-        usC1DVisa.setDocNumber("5678890");
-        usC1DVisa.setGivenName("Tiwari Rohan Pradeep");
-        usC1DVisa.setFlagCode("US");
-        usC1DVisa.setDateOfIssue(LocalDate.of(2021, 2, 20));
-        usC1DVisa.setDateOfExpiry(LocalDate.of(2031, 2, 20));
-        usC1DVisa.setPlaceOfIssue("NY, USA");
-        usC1DVisa.setDocTypeId(dt.getId());
-
-        Bson updates = Updates.set("existingDocuments", new ArrayList<>(Arrays.asList(pp, usC1DVisa)));
+        List<CrewDocument> documents = documentDao.findAll();
+        List<CrewDocument> existingDocs = new ArrayList<>();
+        for (CrewDocument doc : documents) {
+            if (doc instanceof Passport && doc.getId() == 21) {
+                Passport pp = (Passport) doc;
+                pp.setDocNumber("12433453");
+                pp.setGivenName("Tiwari Rohan Pradeep");
+                pp.setECNRRequired(false);
+                pp.setBlankPages(10);
+                pp.setFlagCode("IN");
+                pp.setDateOfIssue(LocalDate.of(2020, 2, 20));
+                pp.setDateOfExpiry(LocalDate.of(2040, 2, 20));
+                pp.setPlaceOfIssue("Mumbai, India");
+                existingDocs.add(pp);
+            } else if (doc instanceof Visa) {
+                if (doc.getId() == 23) {//US C1/D Visa
+                    Visa usC1DVisa = (Visa)doc;
+                    usC1DVisa.setDocNumber("5678890");
+                    usC1DVisa.setGivenName("Tiwari Rohan Pradeep");
+                    usC1DVisa.setFlagCode("US");
+                    usC1DVisa.setDateOfIssue(LocalDate.of(2021, 2, 20));
+                    usC1DVisa.setDateOfExpiry(LocalDate.of(2031, 2, 20));
+                    usC1DVisa.setPlaceOfIssue("NY, USA");
+                    existingDocs.add(usC1DVisa);
+                }
+            }
+        }
+        Bson updates = Updates.set("existingDocuments", existingDocs);
         Bson filter = Filters.eq("_id", 24);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
 

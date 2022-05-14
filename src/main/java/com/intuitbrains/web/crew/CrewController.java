@@ -19,6 +19,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +29,9 @@ import com.intuitbrains.dao.common.*;
 import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.Passport;
+import com.intuitbrains.model.common.document.category.CrewDocument;
+import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.vessel.Vessel;
@@ -54,7 +57,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.crew.PhotoRepository;
 import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.service.common.SequenceGeneratorService;
@@ -160,13 +162,13 @@ public class CrewController {
     @GetMapping(value = "/document_list")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/document_list");
-        List<Document> documents = documentDao.findAll();
+        List<CrewDocument> documents = documentDao.findAll();
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
-            List<Document> existingDocuments = crew.getExistingDocuments();
+            List<? extends CrewDocument> existingDocuments = crew.getExistingDocuments();
 
             if (ListUtil.isNotEmpty(existingDocuments)) {
                 existingDocuments.forEach(doc -> {
@@ -206,13 +208,13 @@ public class CrewController {
     @GetMapping(value = "/contract_list")
     public ModelAndView contractList(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/contract_list");
-        List<Document> documents = documentDao.findAll();
+        List<CrewDocument> documents = documentDao.findAll();
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
-            List<Document> existingDocuments = crew.getExistingDocuments();
+            List<? extends CrewDocument> existingDocuments = crew.getExistingDocuments();
 
             if (ListUtil.isNotEmpty(existingDocuments)) {
                 existingDocuments.forEach(doc -> {
@@ -361,9 +363,12 @@ public class CrewController {
     public ModelAndView getPassportVisa(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/passport_visa");
         long crewId = Long.parseLong(req.getParameter("crewId"));
-        List<Document> educations = crewService.getPassportVisa(crewId);
+        List<? extends CrewDocument> passportVisa = crewService.getPassportVisa(crewId);
+
+        List<Passport> passport = passportVisa.stream().filter(d->d.getDocType().getDocumentPool().getId() == DocumentPool.PASSPORT.getId()).map(Passport.class::cast).collect(Collectors.toList());
+
         mv.addObject("crewId", crewId);
-        mv.addObject("educations", educations);
+        mv.addObject("passport", passport);
         return mv;
     }
 
@@ -461,11 +466,11 @@ public class CrewController {
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
         System.out.println("docId = " + docId);
 
-        List<Document> documents = crew.getExistingDocuments();
+        List<? extends CrewDocument> documents = crew.getExistingDocuments();
         if (documents == null) {
             documents = new LinkedList<>();
         }
-        Document docToUpload = documentDao.findById(docId).get();
+        CrewDocument docToUpload = documentDao.findById(docId).get();
         docToUpload.setFileTitle(file.getOriginalFilename());
         try {
             docToUpload.setFile(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
@@ -485,7 +490,7 @@ public class CrewController {
             e.printStackTrace();
         }
 
-        documents.add(docToUpload);
+       // documents.add(docToUpload);
 
         crew.setExistingDocuments(documents);
         crewService.updateCrew(crew);

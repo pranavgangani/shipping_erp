@@ -9,12 +9,11 @@ import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW_DOCUMENT)
-public class Document {
+public class CrewDocument {
     @Transient
     public static final String SEQUENCE_NAME = Collection.CREW_DOCUMENT;
 
@@ -30,7 +29,7 @@ public class Document {
     protected List<Integer> forRanks;
     private boolean isMandatory, isRequiredBeforeJoining, isRequiredAfterJoining, isRequiredOnBoard, isUploaded;
 
-    public Document() {
+    public CrewDocument() {
     }
 
     //Doc details
@@ -38,6 +37,7 @@ public class Document {
     private String docTitle;
     private String docNumber;
     private long docTypeId;
+    private DocumentType docType;
     private String givenName;
     private String remarks;
     private LocalDate dateOfIssue, dateOfExpiry;
@@ -128,6 +128,14 @@ public class Document {
 
     public void setDocTypeId(long docTypeId) {
         this.docTypeId = docTypeId;
+    }
+
+    public DocumentType getDocType() {
+        return docType;
+    }
+
+    public void setDocType(DocumentType docType) {
+        this.docType = docType;
     }
 
     public String getGivenName() {
@@ -323,7 +331,7 @@ public class Document {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Document document = (Document) o;
+        CrewDocument document = (CrewDocument) o;
         return id == document.id;
     }
 

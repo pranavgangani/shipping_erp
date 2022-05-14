@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>${action} Crew - Education</title>
+        <title>${action} Crew - Experience</title>
 
         <%@ include file="../includes/header_includes.jsp" %>
         <script src="../js/crew/crew_details.js"></script>
@@ -33,8 +33,8 @@
                         <nav class="nav nav-borders">
                             <a class="nav-link" href="/crew/modify?crewId=${crewId}">Profile</a>
                             <a class="nav-link" href="/crew/experience?crewId=${crewId}">Employment</a>
-                            <a class="nav-link active ms-0" href="/crew/education?crewId=${crewId}">Education</a>
-                            <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
+                            <a class="nav-link" href="/crew/education?crewId=${crewId}">Education</a>
+                            <a class="nav-link active ms-0" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
                             <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
                             <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
                             <a class="nav-link" href="/crew/nominee?crewId=${crewId}">Nominee</a>
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-10">
-                               <c:forEach items="${educations}" var="edu">
+                               <c:forEach items="${passports}" var="pv">
                                 <div class="card mb-4">
                                     <div class="card-body">
                                         <div class="table-responsive table-billing-history">
@@ -93,42 +93,61 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
-                                                       <tr>
-                                                            <td><label class="small mb-3">Institute Name</label></td>
+                                                        <c:if test="${pv.docType.documentPool.id == 1}">
+                                                        <tr>
+                                                            <td><label class="small mb-3">${pv.docType.name}</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="instituteName" id="instituteName" type="text" placeholder="Enter name" value="${edu.instituteName}" /></div>
+                                                                <div class="col-md-10 mb-3">${pv.docName}</div>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label class="small mb-3">Institute Address</label></td>
+                                                            <td><label class="small mb-3">${pv.docType.documentPool.name} Number</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="instituteAddress" id="instituteAddress" type="text" placeholder="Enter name" value="${edu.instituteAddress}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="docNumber" id="docNumber" type="text" placeholder="Enter name" value="${pv.docNumber}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label class="small mb-3">Course Name</label></td>
+                                                            <td><label class="small mb-3">Given Name in ${pv.docType.documentPool.name}</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="educationName" id="educationName" type="text" placeholder="Enter Vessel Name" value="${edu.educationName}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="givenName" id="givenName" type="text" placeholder="Enter Vessel Name" value="${pv.givenName}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label class="small mb-3">Percentage/Grade</label></td>
+                                                            <td><label class="small mb-3">Place of Issue</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="percentageGrade" id="percentageGrade" type="text" placeholder="" value="${edu.percentage} ${edu.grade}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="placeOfIssue" id="placeOfIssue" type="text" placeholder="" value="${pv.placeOfIssue}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label class="small mb-3">Start Date</label></td>
+                                                            <td><label class="small mb-3">Date of Expiry</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="startDate" id="startDate" type="text" placeholder="Enter Start Date" value="${edu.startDate}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfExpiry" id="dateOfExpiry" type="text" placeholder="Enter Start Date" value="${pv.dateOfExpiry}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label class="small mb-3">Start Date</label></td>
+                                                            <td><label class="small mb-3">Date of Issue</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="endDate" id="endDate" type="text" placeholder="Enter End Date" value="${edu.endDate}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfIssue" id="dateOfIssue" type="text" placeholder="Enter End Date" value="${pv.dateOfIssue}" /></div>
                                                             </td>
                                                         </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">ECNR Required</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3">
+                                                                    <select id="ecnrReq" name="ecnrReq">
+                                                                        <option value="0" <c:if test="${!pv.isECNRRequired}">selected</c:if>>No</option>
+                                                                        <option value="1" <c:if test="${pv.isECNRRequired}">selected</c:if>>Yes</option>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Blank Pages</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="blankPages" id="blankPages" type="text" placeholder="Enter Blank Pages" value="${pv.blankPages}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        </c:if>
 		                                        </tbody>
 		                                    </table>
 		                                </div>

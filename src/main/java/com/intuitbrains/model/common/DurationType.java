@@ -18,6 +18,9 @@ public class DurationType {
 	private long id;
 	private String typeName;
 
+	public DurationType() {
+	}
+
 	DurationType(long id, String typeName) {
 		this.id = id;
 		this.typeName = typeName;

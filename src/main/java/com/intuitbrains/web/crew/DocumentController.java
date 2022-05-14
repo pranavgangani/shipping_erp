@@ -2,7 +2,7 @@ package com.intuitbrains.web.crew;
 
 import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
-import com.intuitbrains.model.common.document.category.Document;
+import com.intuitbrains.model.common.document.category.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.util.ParamUtil;
@@ -194,7 +194,7 @@ public class DocumentController {
     @GetMapping(value = "/document_list")
     public ModelAndView mandatoryDocList(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("settings/document_list");
-        List<Document> list = documentDao.findAll();
+        List<CrewDocument> list = documentDao.findAll();
 
         //mv.addObject("action", "Edit");
         mv.addObject("list", list);
