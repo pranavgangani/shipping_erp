@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-10">
-                               <c:forEach items="${passports}" var="pv">
+                               <c:forEach items="${passports}" var="pp">
                                 <div class="card mb-4">
                                     <div class="card-body">
                                         <div class="table-responsive table-billing-history">
@@ -93,41 +93,34 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
-                                                        <c:if test="${pv.docType.documentPool.id == 1}">
                                                         <tr>
-                                                            <td><label class="small mb-3">${pv.docType.name}</label></td>
+                                                            <td><label class="small mb-3">${pp.docType.documentPool.name} Number</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3">${pv.docName}</div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="docNumber" id="docNumber" type="text" placeholder="Enter name" value="${pp.docNumber}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td><label class="small mb-3">${pv.docType.documentPool.name} Number</label></td>
+                                                            <td><label class="small mb-3">Given Name in ${pp.docType.documentPool.name}</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="docNumber" id="docNumber" type="text" placeholder="Enter name" value="${pv.docNumber}" /></div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><label class="small mb-3">Given Name in ${pv.docType.documentPool.name}</label></td>
-                                                            <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="givenName" id="givenName" type="text" placeholder="Enter Vessel Name" value="${pv.givenName}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="givenName" id="givenName" type="text" placeholder="Enter Vessel Name" value="${pp.givenName}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td><label class="small mb-3">Place of Issue</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="placeOfIssue" id="placeOfIssue" type="text" placeholder="" value="${pv.placeOfIssue}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="placeOfIssue" id="placeOfIssue" type="text" placeholder="" value="${pp.placeOfIssue}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td><label class="small mb-3">Date of Expiry</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfExpiry" id="dateOfExpiry" type="text" placeholder="Enter Start Date" value="${pv.dateOfExpiry}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfExpiry" id="dateOfExpiry" type="text" placeholder="Enter Start Date" value="${pp.dateOfExpiry}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td><label class="small mb-3">Date of Issue</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfIssue" id="dateOfIssue" type="text" placeholder="Enter End Date" value="${pv.dateOfIssue}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfIssue" id="dateOfIssue" type="text" placeholder="Enter End Date" value="${pp.dateOfIssue}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -135,8 +128,8 @@
                                                             <td>
                                                                 <div class="col-md-10 mb-3">
                                                                     <select id="ecnrReq" name="ecnrReq">
-                                                                        <option value="0" <c:if test="${!pv.isECNRRequired}">selected</c:if>>No</option>
-                                                                        <option value="1" <c:if test="${pv.isECNRRequired}">selected</c:if>>Yes</option>
+                                                                        <option value="0" <c:if test="${!pp.requiredECNR}">selected</c:if>>No</option>
+                                                                        <option value="1" <c:if test="${pp.requiredECNR}">selected</c:if>>Yes</option>
                                                                     </select>
                                                                 </div>
                                                             </td>
@@ -144,17 +137,78 @@
                                                         <tr>
                                                             <td><label class="small mb-3">Blank Pages</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="blankPages" id="blankPages" type="text" placeholder="Enter Blank Pages" value="${pv.blankPages}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="blankPages" id="blankPages" type="text" placeholder="Enter Blank Pages" value="${pp.blankPages}" /></div>
                                                             </td>
                                                         </tr>
-                                                        </c:if>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Country</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="flagCode" id="flagCode" type="text" placeholder="Enter Flag Code" value="${pp.flagCode}" /></div>
+                                                            </td>
+                                                        </tr>
 		                                        </tbody>
 		                                    </table>
 		                                </div>
                                     </div>
                                 </div>
                             </c:forEach>
-
+                            <c:forEach items="${visas}" var="vs">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="table-responsive table-billing-history">
+		                                    <table class="table mb-0">
+		                                        <thead>
+		                                            <tr>
+		                                                <th class="border-gray-200" scope="col">Datapoint</th>
+		                                                <th class="border-gray-200" scope="col">Value</th>
+		                                                <th class="border-gray-200" scope="col">Maker</th>
+		                                                <th class="border-gray-200" scope="col">Reviewer</th>
+		                                                <th class="border-gray-200" scope="col">Audit</th>
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+                                                        <tr>
+                                                            <td><label class="small mb-3">${pp.docType.documentPool.name} Number</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="docNumber" id="docNumber" type="text" placeholder="Enter name" value="${vs.docNumber}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Given Name in ${vs.docType.documentPool.name}</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="givenName" id="givenName" type="text" placeholder="Enter Vessel Name" value="${vs.givenName}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Place of Issue</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="placeOfIssue" id="placeOfIssue" type="text" placeholder="" value="${vs.placeOfIssue}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Date of Expiry</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfExpiry" id="dateOfExpiry" type="text" placeholder="Enter Start Date" value="${vs.dateOfExpiry}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Date of Issue</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="dateOfIssue" id="dateOfIssue" type="text" placeholder="Enter End Date" value="${vs.dateOfIssue}" /></div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><label class="small mb-3">Country</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="flagCode" id="flagCode" type="text" placeholder="Enter Flag Code" value="${vs.flagCode}" /></div>
+                                                            </td>
+                                                        </tr>
+		                                        </tbody>
+		                                    </table>
+		                                </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
                                 <c:if test="${action == 'modify'}">
                                     <div class="card mb-4">
                                         <div class="card-header">Audit Trail</div>

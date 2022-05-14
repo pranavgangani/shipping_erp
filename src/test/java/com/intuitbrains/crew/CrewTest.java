@@ -458,7 +458,18 @@ class CrewTest {
     @Test
     void testGetPPVisa() {
         List<CrewDocument> list = crewService.getPassportVisa(24);
-
+        List<Passport> passports = new ArrayList<>();
+        List<Visa> visas = new ArrayList<>();
+        for(CrewDocument doc : list) {
+            if(doc.getDocTypeId() == 1) {
+                Passport pp = (Passport)doc;
+                passports.add(pp);
+            }
+            else if(doc instanceof Visa) {
+                Visa visa = (Visa)doc;
+                visas.add(visa);
+            }
+        }
         //List<Passport> passport = list.stream().filter(TravelDocument.class::isInstance).map(Passport.class::cast).collect(Collectors.toList());
 
         list.forEach(e -> System.out.println("DocTypeId = " + e.getDocTypeId()));
@@ -474,7 +485,7 @@ class CrewTest {
                 pp.setCrewId(24);
                 pp.setDocNumber("12433453");
                 pp.setGivenName("Tiwari Rohan Pradeep");
-                pp.setECNRRequired(false);
+                pp.setRequiredECNR(false);
                 pp.setBlankPages(10);
                 pp.setFlagCode("IN");
                 pp.setDateOfIssue(LocalDate.of(2020, 2, 20));

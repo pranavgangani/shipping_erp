@@ -8,6 +8,10 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface CrewDocumentRepository extends MongoRepository<CrewDocument, Long> {
+    //@Query(value="{ 'email' : ?0 }", fields="{ 'firstName' : 1, 'lastName' : 1}")
+    @Query("{'$and': [{'crewId': ?0}, {'$or': [{'docType.documentPool': 'VISA'}, {'docType.documentPool': 'PASSPORT'}]}]}")
+    public List<CrewDocument> getPassportAndVisa(long crewId);
+
    /* @Query("{'vacancyAttributes.minRankList': { $eq: 1 }}")
     public List<VesselVacancy> findVacanciesByRank(int rankId);
 

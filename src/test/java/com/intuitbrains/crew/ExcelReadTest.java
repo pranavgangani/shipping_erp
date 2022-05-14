@@ -249,7 +249,7 @@ public class ExcelReadTest {
                         passport.setDateOfIssue(doi);
                         passport.setDateOfExpiry(doe);
                         passport.setPlaceOfIssue(placeOfIssue);
-                        passport.setECNRRequired(StringUtil.parseBoolean(sheet.getRow(ecnrCell.getRow()).getCell(ecnrCell.getCol()).getRichStringCellValue().getString()));
+                        passport.setRequiredECNR(StringUtil.parseBoolean(sheet.getRow(ecnrCell.getRow()).getCell(ecnrCell.getCol()).getRichStringCellValue().getString()));
                         passport.setBlankPages((int) sheet.getRow(blankCell.getRow()).getCell(blankCell.getCol()).getNumericCellValue());
                         crewDocsToPopulate.add(passport);
                         break;
@@ -471,7 +471,7 @@ public class ExcelReadTest {
             Passport nokPassport = new Passport();
             nokPassport.setDocNumber(passportNum);
             nokPassport.setGivenName(name);
-            nokPassport.setECNRRequired(isECNR);
+            nokPassport.setRequiredECNR(isECNR);
             nokPassport.setDateOfExpiry(doe);
            // nokPassport.setAddress(nokAddress);
             nokPassport.setDateOfIssue(doi);

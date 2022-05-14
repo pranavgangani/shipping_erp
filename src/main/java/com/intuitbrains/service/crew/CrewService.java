@@ -3,6 +3,7 @@ package com.intuitbrains.service.crew;
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.dao.common.AuditTrailRepository;
+import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FieldStatus;
 import com.intuitbrains.dao.company.EmployeeRepository;
@@ -13,10 +14,13 @@ import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.util.StandardWebParameter;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,7 @@ import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,6 +46,8 @@ public class CrewService {
     private CrewExcelService crewExcelService;
     @Autowired
     private CrewRepository crewDao;
+    @Autowired
+    private CrewDocumentRepository documentDao;
     @Autowired
     private DocumentTypeRepository docTypeDao;
     @Autowired
@@ -128,15 +135,17 @@ public class CrewService {
 
     public List<CrewDocument> getPassportVisa(long crewId) {
         Bson filters = and(eq("crewId", crewId),
-                (or(eq("docTypeId", 1),
-                        eq("docTypeId", 13),
-                        eq("docTypeId", 14),
-                        eq("docTypeId", 15))));
+                (or(eq("docType.documentPool", "VISA"),
+                        eq("docType.documentPool", "PASSPORT"))));
         //Bson projections = (or(eq("docTypeId", 1), eq("docTypeId", 13), eq("docTypeId", 14), eq("docTypeId", 15)));
         //Bson projections = Projections.include("existingDocuments");
         List<CrewDocument> documents = new ArrayList<>();
-        db.getCollection(Collection.CREW_DOCUMENT, CrewDocument.class).find(filters).into(documents);
-
+/*        db.getCollection(Collection.CREW_DOCUMENT).find(filters).into(documents);
+        for(Document doc : documents) {
+            CrewDocument cDoc = (CrewDocument)doc.;
+        }*/
+        //filters.toString();
+        documents = documentDao.getPassportAndVisa(crewId);
         return documents;
     }
 

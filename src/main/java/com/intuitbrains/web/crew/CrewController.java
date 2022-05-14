@@ -30,6 +30,7 @@ import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.model.common.document.Passport;
+import com.intuitbrains.model.common.document.Visa;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.company.Employee;
@@ -363,12 +364,25 @@ public class CrewController {
     public ModelAndView getPassportVisa(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/passport_visa");
         long crewId = Long.parseLong(req.getParameter("crewId"));
-        List<? extends CrewDocument> passportVisa = crewService.getPassportVisa(crewId);
+        List<CrewDocument> list = crewService.getPassportVisa(crewId);
 
-        List<Passport> passport = passportVisa.stream().filter(d->d.getDocType().getDocumentPool().getId() == DocumentPool.PASSPORT.getId()).map(Passport.class::cast).collect(Collectors.toList());
+        //List<Passport> passports = passportVisa.stream().filter(d->d.getDocType().getDocumentPool().getId() == DocumentPool.PASSPORT.getId()).map(Passport.class::cast).collect(Collectors.toList());
+        List<Passport> passports = new ArrayList<>();
+        List<Visa> visas = new ArrayList<>();
+        for(CrewDocument doc : list) {
+            if(doc instanceof Passport) {
+                Passport pp = (Passport)doc;
+                passports.add(pp);
+            }
+            else if(doc instanceof Visa) {
+                Visa visa = (Visa)doc;
+                visas.add(visa);
+            }
+        }
 
         mv.addObject("crewId", crewId);
-        mv.addObject("passport", passport);
+        mv.addObject("passports", passports);
+        mv.addObject("visas", visas);
         return mv;
     }
 
