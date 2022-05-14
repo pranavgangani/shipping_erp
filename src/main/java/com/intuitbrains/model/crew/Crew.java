@@ -59,8 +59,8 @@ public class Crew extends Person {
     private List<TravelAndAccomodation> travelAndAccomodationHistory;
 
     //Current
-    private List<? extends CrewDocument> existingDocuments;
-    private List<? extends CrewDocument> mandatoryDocuments;
+    private List<CrewDocument> existingDocuments;
+    private List<CrewDocument> mandatoryDocuments;
 
     //Medical
     private List<IllnessAndInjury> illnessInjury;
@@ -389,15 +389,15 @@ public class Crew extends Person {
     }
 
 
-    public List<? extends CrewDocument> getExistingDocuments() {
+    public List<CrewDocument> getExistingDocuments() {
         return existingDocuments;
     }
 
-    public void setExistingDocuments(List<? extends CrewDocument> existingDocuments) {
+    public void setExistingDocuments(List<CrewDocument> existingDocuments) {
         this.existingDocuments = existingDocuments;
     }
 
-    public List<? extends CrewDocument> getMandatoryDocuments() {
+    public List< CrewDocument> getMandatoryDocuments() {
         return mandatoryDocuments;
     }
 

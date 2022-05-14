@@ -459,7 +459,7 @@ class CrewTest {
 
     @Test
     void testGetPPVisa() {
-        List<? extends CrewDocument> list = crewService.getPassportVisa(24);
+        List<CrewDocument> list = crewService.getPassportVisa(24);
 
         List<Passport> passports = new ArrayList<>();
         for (CrewDocument doc : list) {

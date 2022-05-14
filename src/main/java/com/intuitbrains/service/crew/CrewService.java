@@ -125,11 +125,11 @@ public class CrewService {
         return list;
     }
 
-    public List<? extends CrewDocument> getPassportVisa(long crewId) {
+    public List<CrewDocument> getPassportVisa(long crewId) {
         Bson filters = and(eq("_id", crewId));
         Bson projections = fields(elemMatch("existingDocuments", or(eq("docTypeId", 1), eq("docTypeId", 13), eq("docTypeId", 14), eq("docTypeId", 15))));
         //Bson projections = Projections.include("existingDocuments");
-        List<? extends CrewDocument> documents = db.getCollection(Collection.CREW, Crew.class).find(filters).projection(projections).first().getExistingDocuments();
+        List<CrewDocument> documents = db.getCollection(Collection.CREW, Crew.class).find(filters).projection(projections).first().getExistingDocuments();
         for(CrewDocument doc : documents){
             doc.setDocType(docTypeDao.findById(doc.getDocTypeId()).get());
         }

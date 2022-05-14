@@ -466,7 +466,7 @@ public class CrewController {
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
         System.out.println("docId = " + docId);
 
-        List<? extends CrewDocument> documents = crew.getExistingDocuments();
+        List<CrewDocument> documents = crew.getExistingDocuments();
         if (documents == null) {
             documents = new LinkedList<>();
         }
