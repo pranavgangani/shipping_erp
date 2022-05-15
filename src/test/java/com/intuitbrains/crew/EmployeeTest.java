@@ -35,14 +35,16 @@ class EmployeeTest {
         if (adminRole == null) {
             Role newAdminRole = new Role();
             newAdminRole.setRole("ADMIN");
-            roleDao.save(newAdminRole);
+            newAdminRole.setRoleDesc("User with admin rights");
+            roleDao.insert(newAdminRole);
         }
 
         Role userRole = roleDao.findByRole("USER");
         if (userRole == null) {
             Role newUserRole = new Role();
             newUserRole.setRole("USER");
-            roleDao.save(newUserRole);
+            newUserRole.setRoleDesc("Regular user");
+            roleDao.insert(newUserRole);
         }
 /*
         Role rectruiter = roleDao.findByRole("RECRUITER");

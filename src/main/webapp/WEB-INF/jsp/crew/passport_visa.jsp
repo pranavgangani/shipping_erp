@@ -93,6 +93,12 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
+		                                                <tr>
+                                                            <td><label class="small mb-3">Type</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><label class="small mb-3" for="maritalStatusId">${pp.docType.name}</label></div>
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td><label class="small mb-3">${pp.docType.documentPool.name} Number</label></td>
                                                             <td>
@@ -127,7 +133,7 @@
                                                             <td><label class="small mb-3">ECNR Required</label></td>
                                                             <td>
                                                                 <div class="col-md-10 mb-3">
-                                                                    <select id="ecnrReq" name="ecnrReq">
+                                                                    <select class="form-select" id="ecnrReq" name="ecnrReq">
                                                                         <option value="0" <c:if test="${!pp.requiredECNR}">selected</c:if>>No</option>
                                                                         <option value="1" <c:if test="${pp.requiredECNR}">selected</c:if>>Yes</option>
                                                                     </select>
@@ -167,6 +173,12 @@
 		                                            </tr>
 		                                        </thead>
 		                                        <tbody>
+		                                                 <tr>
+                                                            <td><label class="small mb-3">Type</label></td>
+                                                            <td>
+                                                                <div class="col-md-10 mb-3"><label class="small mb-3" for="maritalStatusId">${vs.docType.name}</label></div>
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td><label class="small mb-3">${pp.docType.documentPool.name} Number</label></td>
                                                             <td>

@@ -32,9 +32,8 @@
 									<tr>
 										<th>Vessel Name</th>
                                         <th>Vessel Type</th>
-                                        <th>Min. Gross Tonnage</th>
-                                        <th>Min Ranks</th>
-                                        <th>Crew on-board</th>
+                                        <th>Rank</th>
+                                        <th>No of open positions</th>
                                         <th>Status</th>
                                         <th>Actions</th>
 									</tr>
@@ -43,9 +42,8 @@
 									<tr>
 										<th>Vessel Name</th>
                                         <th>Vessel Type</th>
-                                        <th>Min. Gross Tonnage</th>
-                                        <th>Min Ranks</th>
-                                        <th>Crew on-board</th>
+                                        <th>Rank</th>
+                                        <th>No of open positions</th>
                                         <th>Status</th>
                                         <th>Actions</th>
 									</tr>
@@ -56,9 +54,7 @@
 								    <tr>
 										<td>${vacancy.vessel.vesselName}</td>
 										<td>${vacancy.vessel.vesselSubType.vesselType.desc} - ${vacancy.vessel.vesselSubType.desc}</td>
-										<td>${vacancy.vacancyAttributes.minGrossTonnage}</td>
-										<td>${vacancy.vacancyAttributes.minRankList}</td>
-										<td>${vacancy.filledByCrew.name}</td>
+										<td>${vacancy.openPositions}</td>
 										<td>
 										    <div class="badge bg-primary text-white rounded-pill">${vacancy.status.desc}</div></td>
 										<td>
@@ -70,10 +66,10 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="/crew/assign_vacancy?crewId=${crew.id}">
+													<a class="dropdown-item" href="/vessel/assign_crew?vacancyId=${vacancy.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Assign this Crew
+														</div> Assign Crew
 													</a>
 													<div class="dropdown-divider"></div>
 													<a class="dropdown-item" href="/crew/edit?crewId=${crew.id}">

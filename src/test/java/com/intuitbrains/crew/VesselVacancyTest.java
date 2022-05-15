@@ -162,7 +162,7 @@ class VesselVacancyTest {
     void assignCrewToVessel() {
         Crew crew = crewDao.findById(26l).get();
         VesselVacancy vacancy = vesselVacancyDao.findById(21l).get();
-        vacancy.setFilledByCrewId(crew.getId());
+        //vacancy.setFilledByCrewId(crew.getId());
         vacancy.setStatusId(VesselVacancy.Status.PENDING_DOCS.getId());
         vesselVacancyDao.save(vacancy);
 

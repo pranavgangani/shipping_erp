@@ -174,6 +174,15 @@ public class CrewService {
         return list;
     }
 
+    public List<Crew> getReadyToSignOffCrew() {
+        //List<Contract> list = db.getCollection(Collection.CREW, Crew.class).find(eq("_id", crewId)).projection(fields(Projections.include("historicalContracts"))).first().getHistoricalContracts();
+        return crewDao.findAll();
+    }
+
+    public void assignVacancy(long vacancyId, long[] crewIds) {
+        //db.getCollection(Collection.CREW, Crew.class).
+    }
+
     public void addToAudit(Crew modifiedCrew) {
         List<CrewFieldAudit> audits = new LinkedList<>();
         String maker = modifiedCrew.getEnteredBy();
@@ -234,5 +243,7 @@ public class CrewService {
         }
         modifiedCrew.setFieldStatus(fs);
     }
+
+
 
 }

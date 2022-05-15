@@ -27,8 +27,10 @@ import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.vessel.*;
 import com.intuitbrains.model.company.Employee;
+import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.Rank;
 import com.intuitbrains.model.vessel.*;
+import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.ParamUtil;
 
@@ -74,7 +76,7 @@ public class VesselController {
     @Autowired
     private VesselVacancyRepository vesselVacancyDao;
     @Autowired
-    private CrewRepository crewDao;
+    private CrewService crewService;
 
     @GetMapping(value = "/vessel_list")
     public ModelAndView vesselList(HttpServletRequest req) {
@@ -297,6 +299,5 @@ public class VesselController {
         mv.addObject("rankMap", Rank.getByGroup());
         return mv;
     }
-
 
 }

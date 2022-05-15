@@ -28,6 +28,7 @@ import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.Rank;
 import com.intuitbrains.model.vessel.*;
 import com.intuitbrains.service.common.SequenceGeneratorService;
+import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.ParamUtil;
 import com.intuitbrains.util.StandardWebParameter;
@@ -73,11 +74,11 @@ public class VesselVacancyController {
     @Autowired
     private VesselVacancyRepository vesselVacancyDao;
     @Autowired
-    private CrewRepository crewDao;
+    private CrewService crewService;
 
-    @GetMapping(value = "/vessel_vacancy_details")
+    @GetMapping(value = "/vacancy_details")
     public ModelAndView addVesselVacancy(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("vessel/vessel_vacancy_details");
+        ModelAndView mv = new ModelAndView("vessel/vacancy_details");
         String action = StringUtil.trim(req.getParameter("action"));
         if (StandardWebParameter.ADD.equalsIgnoreCase(action)) {
 
@@ -145,7 +146,7 @@ public class VesselVacancyController {
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         List<VesselVacancy> vacancies = new ArrayList<>();
         if (crewId > 0) {
-            Crew crew = crewDao.findById(crewId).get();
+            Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
             //vacancies = vesselVacancyDao.findVacanciesByRank(crew.getRank().getId());
             vacancies = vesselVacancyDao.findAll();
@@ -172,14 +173,56 @@ public class VesselVacancyController {
                 System.out.print("Any Vessel");
             }
             v.setVessel(vessel);
-            if (v.getFilledByCrewId() > 0) {
-                v.setFilledByCrew(crewDao.findById(v.getFilledByCrewId()).get());
-            }
+
             v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
             System.out.print(" ]");
             System.out.println();
         });
         mv.addObject("vacancies", vacancies);
+        return mv;
+    }
+
+
+    @GetMapping(value = "/assign_crew")
+    public ModelAndView assignCrew(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/vessel/assign_crew");
+        long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
+        List<Crew> crewList = crewService.getReadyToSignOffCrew();
+        VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
+        mv.addObject("vacancy", vacancy);
+        //mv.addObject("vessels", vesselDao.findAll());
+        //mv.addObject("rankMap", Rank.getByGroup());
+        mv.addObject("crewList", crewList);
+        return mv;
+    }
+
+    @PostMapping(value = "/fill_vacancy")
+    public ModelAndView fillVacancy(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/vessel/assign_crew");
+        long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
+        String crewIdsParam = req.getParameter("crewIds");
+        String[] crewIdArray = crewIdsParam.split(",");
+        for(int i=0;i<crewIdArray.length;i++){
+            long crewId = ParamUtil.parseLong(crewIdArray[i], -1);
+            if(crewId>0){
+                //crewService.
+            }
+        }
+
+
+        return mv;
+    }
+
+    @GetMapping(value = "/add_vacancy")
+    public ModelAndView addVacancy(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/vessel/assign_crew");
+        long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
+        List<Crew> crewList = crewService.getReadyToSignOffCrew();
+        VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
+        mv.addObject("vacancy", vacancy);
+        //mv.addObject("vessels", vesselDao.findAll());
+        //mv.addObject("rankMap", Rank.getByGroup());
+        mv.addObject("crewList", crewList);
         return mv;
     }
 }

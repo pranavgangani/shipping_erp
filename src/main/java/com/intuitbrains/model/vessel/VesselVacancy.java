@@ -16,11 +16,10 @@ public class VesselVacancy {
     @Id
     private long id;
     private long vesselId;
-    private long filledByCrewId;
     private String remarks;
     private int statusId;
+    private int openPositions;
     private Status status;
-    private LocalDateTime crewEmbarkDate;
     private LocalDateTime vacancyStartDate;
     private LocalDateTime vacancyEndDate;
     private Employee enteredBy;
@@ -49,14 +48,6 @@ public class VesselVacancy {
         this.vesselId = vesselId;
     }
 
-    public long getFilledByCrewId() {
-        return filledByCrewId;
-    }
-
-    public void setFilledByCrewId(long filledByCrewId) {
-        this.filledByCrewId = filledByCrewId;
-    }
-
     public String getRemarks() {
         return remarks;
     }
@@ -65,13 +56,12 @@ public class VesselVacancy {
         this.remarks = remarks;
     }
 
-
-    public LocalDateTime getCrewEmbarkDate() {
-        return crewEmbarkDate;
+    public int getOpenPositions() {
+        return openPositions;
     }
 
-    public void setCrewEmbarkDate(LocalDateTime crewEmbarkDate) {
-        this.crewEmbarkDate = crewEmbarkDate;
+    public void setOpenPositions(int openPositions) {
+        this.openPositions = openPositions;
     }
 
     public LocalDateTime getVacancyStartDate() {
@@ -150,7 +140,6 @@ public class VesselVacancy {
     public String toString() {
         return "VesselVacancy{" +
                 "vesselId=" + vesselId +
-                ", filledByCrewId=" + filledByCrewId +
                 ", remarks='" + remarks + '\'' +
                 ", vacancyAttributes=" + vacancyAttributes +
                 '}';

@@ -553,9 +553,9 @@ public class CrewController {
                 System.out.print("Any Vessel");
             }
             v.setVessel(vessel);
-            if (v.getFilledByCrewId() > 0) {
+           /* if (v.getFilledByCrewId() > 0) {
                 v.setFilledByCrew(crewService.getById(v.getFilledByCrewId()));
-            }
+            }*/
             v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
             System.out.print(" ]");
             System.out.println();
