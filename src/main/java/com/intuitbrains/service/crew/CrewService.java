@@ -71,7 +71,7 @@ public class CrewService {
     }
 
     public Crew getById(long crewId) {
-        MongoCollection<Crew> collection = db.getCollection("Crew", Crew.class);
+        MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
         Bson filter = eq("_id", crewId);
         return collection.find(filter).projection(projections).first();
     }

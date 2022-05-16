@@ -2,6 +2,7 @@ package com.intuitbrains.model.company;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Person;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -16,7 +17,7 @@ public class Employee extends Person {
     public static final String SEQUENCE_NAME = Collection.EMPLOYEE;
 
     @Id
-    private String id;
+    private ObjectId id;
     protected String firstName, middleName, lastName;
     protected String gender;
     protected String userName, password, emailId;
@@ -29,11 +30,11 @@ public class Employee extends Person {
     @DBRef
     private Set<Role> roles;
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

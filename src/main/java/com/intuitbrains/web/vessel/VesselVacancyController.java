@@ -28,7 +28,9 @@ import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.Rank;
 import com.intuitbrains.model.vessel.*;
 import com.intuitbrains.service.common.SequenceGeneratorService;
+import com.intuitbrains.service.company.EmployeeService;
 import com.intuitbrains.service.crew.CrewService;
+import com.intuitbrains.service.vessel.VesselService;
 import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.ParamUtil;
 import com.intuitbrains.util.StandardWebParameter;
@@ -75,6 +77,10 @@ public class VesselVacancyController {
     private VesselVacancyRepository vesselVacancyDao;
     @Autowired
     private CrewService crewService;
+    @Autowired
+    private EmployeeService employeeService;
+    @Autowired
+    private VesselService vesselService;
 
     @GetMapping(value = "/vacancy_details")
     public ModelAndView addVesselVacancy(HttpServletRequest req) {
@@ -98,6 +104,7 @@ public class VesselVacancyController {
         } else {
             list = vesselVacancyDao.findAll();
         }
+        list.parallelStream().forEach(v->v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId())));
         mv.addObject("vessels", vesselDao.findAll());
         mv.addObject("rankMap", Rank.getByGroup());
         mv.addObject("list", list);
@@ -105,22 +112,23 @@ public class VesselVacancyController {
     }
 
     @PostMapping(value = "/add_vacancy")
-    public ModelAndView addVacancy(@RequestParam("vesselId") long vesselId, Model model) {
-        ModelAndView mv = new ModelAndView("vessel/vacancy_list");
+    public ModelAndView addVacancy(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("redirect:/vessel/vacancy_list");
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+        int rankId = ParamUtil.parseInt(req.getParameter("rankId"), -1);
+        int openPositions = ParamUtil.parseInt(req.getParameter("openPositions"), -1);
 
-        //Find Vessel
         Vessel vessel = vesselDao.findById(vesselId).get();
+        emp = employeeService.getById(emp.getEmpId());
 
         VesselVacancy vacancy = new VesselVacancy();
         vacancy.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
-        vacancy.setVesselId(vessel.getId());
+        vacancy.setVessel(vessel);
+        vacancy.setOpenPositions(openPositions);
 
-        //All Vacancies
-
-        //Vacancy#1
-        VesselVacancyAttributes att = new VesselVacancyAttributes();
-        //Add Min Rank Attributes
-        att.setMinRankList(new ArrayList<>(Arrays.asList(Rank.JR_ENGINEER.getId())));
+        VesselVacancyAttributes attr = new VesselVacancyAttributes();
+        attr.setMinRankList(new ArrayList<>(Arrays.asList(Rank.createFromId(rankId))));
 
         //Add Min Vessel Type Attributes
         /*att.setMinVesselSubTypeIdList(new ArrayList<>(Arrays.asList(
@@ -131,12 +139,24 @@ public class VesselVacancyController {
         )));*/
 
         //Min Gross Tonn
-        att.setMinGrossTonnage(1000);
-        vacancy.setVacancyAttributes(att);
+        attr.setMinGrossTonnage(3000);
+        vacancy.setVacancyAttributes(attr);
         vacancy.setStatusId(VesselVacancy.Status.OPEN.getId());
+        vacancy.setEnteredBy(emp);
+        vacancy.setEnteredLocalDateTime(LocalDateTime.now());
         vesselVacancyDao.insert(vacancy);
 
-        //mongoTemplate.getCollection(VESSEL_VACANCY).insertMany(vacancies);
+        //Audit
+        AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.ADD);
+        audit.setActionBy(emp.getEmpId());
+        audit.setActionLocalDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.VESSEL_VACANCY);
+        audit.setText("New Vacancy of Rank <b>["+Rank.createFromId(rankId).getName()+"]</b> - added for Vessel <b>[" + (vessel.getVesselName()) + "]</b>");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(vacancy.getId());
+        auditTrailDao.insert(audit);
+
         return mv;
     }
 
@@ -158,19 +178,19 @@ public class VesselVacancyController {
         }
 
         vacancies.forEach(v -> {
-            Vessel vessel = vesselDao.findById(v.getVesselId()).get();
+            Vessel vessel = vesselService.getById(0);
             VesselVacancyAttributes att = v.getVacancyAttributes();
             System.out.print("[" + vessel.getVesselName() + "] has VACANCY -> ");
             System.out.print(" Min Gross Tonnage [" + att.getMinGrossTonnage() + "] | ");
             System.out.print(" Min Ranks required [");
-            att.getMinRankList().forEach(rankId -> {
-                System.out.print(Rank.createFromId(rankId).getName() + ", ");
+            att.getMinRankList().forEach(rank -> {
+                System.out.print(rank.getName() + ", ");
             });
             System.out.print("] | ");
             System.out.print(" Min Vessel Experince in [");
             if (att.getMinVesselSubTypeIdList() != null && !att.getMinVesselSubTypeIdList().isEmpty()) {
-                att.getMinVesselSubTypeIdList().forEach(vesselSubTypeId -> {
-                    System.out.print(VesselSubType.createFromId(vesselSubTypeId).getDesc() + ", ");
+                att.getMinVesselSubTypeIdList().forEach(vesselSubType -> {
+                    System.out.print(vesselSubType.getDesc() + ", ");
                 });
             } else {
                 System.out.print("Any Vessel");
@@ -216,7 +236,7 @@ public class VesselVacancyController {
         return mv;
     }
 
-    @GetMapping(value = "/add_vacancy")
+    /*@GetMapping(value = "/add_vacancy")
     public ModelAndView addVacancy(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("/vessel/assign_crew");
         long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
@@ -227,5 +247,5 @@ public class VesselVacancyController {
         //mv.addObject("rankMap", Rank.getByGroup());
         mv.addObject("crewList", crewList);
         return mv;
-    }
+    }*/
 }

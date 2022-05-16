@@ -27,7 +27,7 @@
 					<div class="card mb-4">
 						<div class="card-header">Vacancy List
 						    <button class="btn btn-blue btn-icon float-end" type="button" data-bs-toggle="modal" data-bs-target="#newVacancyModal">
-                                <i data-feather="feather"></i>
+                                <i data-feather="plus"></i>
                             </button>
 						</div>
 						<div class="card-body">
@@ -38,7 +38,7 @@
                                         <th>Vessel Type</th>
                                         <th>Min. Gross Tonnage</th>
                                         <th>Min Ranks</th>
-                                        <th>Crew on-board</th>
+                                        <th>Entered by</th>
                                         <th>Status</th>
                                         <th>Actions</th>
 									</tr>
@@ -49,20 +49,24 @@
                                         <th>Vessel Type</th>
                                         <th>Min. Gross Tonnage</th>
                                         <th>Min Ranks</th>
-                                        <th>Crew on-board</th>
+                                        <th>Entered by</th>
                                         <th>Status</th>
                                         <th>Actions</th>
 									</tr>
 								</tfoot>
 								<tbody>
 								
-								<c:forEach items="${vacancies}" var="vacancy">
+								<c:forEach items="${list}" var="vacancy">
 								    <tr>
 										<td>${vacancy.vessel.vesselName}</td>
 										<td>${vacancy.vessel.vesselSubType.vesselType.desc} - ${vacancy.vessel.vesselSubType.desc}</td>
 										<td>${vacancy.vacancyAttributes.minGrossTonnage}</td>
-										<td>${vacancy.vacancyAttributes.minRankList}</td>
-										<td>${vacancy.filledByCrew.name}</td>
+										<td>
+										<c:forEach items="${vacancy.vacancyAttributes.minRankList}" var="rank">
+										    ${rank.name}
+										</c:forEach>
+										</td>
+										<td>${vacancy.enteredBy.empId}</td>
 										<td>
 										    <div class="badge bg-primary text-white rounded-pill">${vacancy.status.desc}</div></td>
 										<td>
@@ -118,8 +122,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="col-md-8 mb-3">
-                        <label class="small mb-3" for="vessel">Select a Vessel</label>
-                        <select class="form-select" id="vessel" name="vessel" aria-label="Default select rank">
+                        <label class="small mb-3" for="vesselId">Select a Vessel</label>
+                        <select class="form-select" id="vesselId" name="vesselId" aria-label="Default select vessel">
                             <option selected disabled>Select a Vessel:</option>
                             <c:forEach items="${vessels}" var="vessel">
                                 <option value="${vessel.id}">${vessel.vesselName} (${vessel.vesselSubType.desc})</option>

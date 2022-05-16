@@ -1,34 +1,36 @@
 package com.intuitbrains.model.vessel;
 
+import com.intuitbrains.model.crew.Rank;
+
 import java.util.List;
 
 public class VesselVacancyAttributes {
-    private List<Integer> minRankList;
-    private List<Integer> minVesselTypeIdList;
-    private List<Integer> minVesselSubTypeIdList;
+    private List<Rank> minRankList;
+    private List<VesselType> minVesselTypeIdList;
+    private List<VesselSubType> minVesselSubTypeIdList;
     private int minGrossTonnage;
 
-    public List<Integer> getMinRankList() {
+    public List<Rank> getMinRankList() {
         return minRankList;
     }
 
-    public void setMinRankList(List<Integer> minRankList) {
+    public void setMinRankList(List<Rank> minRankList) {
         this.minRankList = minRankList;
     }
 
-    public List<Integer> getMinVesselTypeIdList() {
+    public List<VesselType> getMinVesselTypeIdList() {
         return minVesselTypeIdList;
     }
 
-    public void setMinVesselTypeIdList(List<Integer> minVesselTypeIdList) {
+    public void setMinVesselTypeIdList(List<VesselType> minVesselTypeIdList) {
         this.minVesselTypeIdList = minVesselTypeIdList;
     }
 
-    public List<Integer> getMinVesselSubTypeIdList() {
+    public List<VesselSubType> getMinVesselSubTypeIdList() {
         return minVesselSubTypeIdList;
     }
 
-    public void setMinVesselSubTypeIdList(List<Integer> minVesselSubTypeIdList) {
+    public void setMinVesselSubTypeIdList(List<VesselSubType> minVesselSubTypeIdList) {
         this.minVesselSubTypeIdList = minVesselSubTypeIdList;
     }
 

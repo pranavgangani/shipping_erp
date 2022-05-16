@@ -22,6 +22,7 @@ import com.intuitbrains.model.vessel.VesselVacancy;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.service.crew.CrewService;
+import com.intuitbrains.service.vessel.VesselService;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -63,6 +64,8 @@ class CrewTest {
     private CrewContractRepository crewContractDao;
     @Autowired
     private VesselRepository vesselDao;
+    @Autowired
+    private VesselService vesselService;
     @Autowired
     private EmployeeRepository employeeDao;
     @Autowired
@@ -533,14 +536,14 @@ class CrewTest {
         VesselVacancy vacancy = vesselVacancyDao.findVacancyByCrewId(crew.getId());
 
         //Get Vessel details
-        Vessel vessel = vesselDao.findById(vacancy.getVesselId()).get();
+        Vessel vessel = vesselService.getById(vacancy.getVessel().getId());
 
 
         CrewContract contract = new CrewContract();
         contract.setId(sequenceGenerator.generateSequence(CrewContract.SEQUENCE_NAME));
         contract.setRankId(Rank.CAPTAIN.getId());
         contract.setCrewId(crew.getId());
-        contract.setVesselId(vacancy.getVesselId());
+        contract.setVesselId(vacancy.getId());
         contract.setPlaceOfContract("Mumbai");
         Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
         contract.setPlaceOfContractFlag(flag);

@@ -68,40 +68,6 @@ class VesselVacancyTest {
         vesselDao.insert(vessel);
     }
 
-    @Test
-    void addVacancyToVessel() {
-
-        //Find Vessel
-        Vessel vessel = vesselDao.findById(12l).get();
-
-        VesselVacancy vacancy = new VesselVacancy();
-        vacancy.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
-        vacancy.setVesselId(vessel.getId());
-
-        //All Vacancies
-
-        //Vacancy#1
-        VesselVacancyAttributes att = new VesselVacancyAttributes();
-        //Add Min Rank Attributes
-        att.setMinRankList(new ArrayList<>(Arrays.asList(Rank.JR_ENGINEER.getId())));
-
-        //Add Min Vessel Type Attributes
-        /*att.setMinVesselSubTypeIdList(new ArrayList<>(Arrays.asList(
-                VesselSubType.LNG_TANKER.getId(),
-                VesselSubType.LPG_TANKER.getId(),
-                VesselSubType.FSO_TANKER.getId(),
-                VesselSubType.OIL_PROD_TANKER.getId()
-        )));*/
-
-        //Min Gross Tonn
-        att.setMinGrossTonnage(1000);
-        vacancy.setVacancyAttributes(att);
-        vacancy.setStatusId(VesselVacancy.Status.OPEN.getId());
-        vesselVacancyDao.insert(vacancy);
-
-        //mongoTemplate.getCollection(VESSEL_VACANCY).insertMany(vacancies);
-
-    }
 
     @Test
     void findVesselsWithVacancies() {
@@ -111,19 +77,19 @@ class VesselVacancyTest {
 
         List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRank((int) Rank.CHIEF_OFFICER.getId());
         vacancies.forEach(v -> {
-            Vessel vessel = vesselDao.findById(v.getVesselId()).get();
+            Vessel vessel = vesselDao.findById(v.getId()).get();
             VesselVacancyAttributes att = v.getVacancyAttributes();
             System.out.print("[" + vessel.getVesselName() + "] has VACANCY -> ");
             System.out.print(" Min Gross Tonnage [" + att.getMinGrossTonnage() + "] | ");
             System.out.print(" Min Ranks required [");
-            att.getMinRankList().forEach(rankId -> {
-                System.out.print(Rank.createFromId(rankId).getName() + ", ");
+            att.getMinRankList().forEach(rank -> {
+                System.out.print(rank.getName() + ", ");
             });
             System.out.print("] | ");
             System.out.print(" Min Vessel Experince in [");
             if (att.getMinVesselSubTypeIdList() != null && !att.getMinVesselSubTypeIdList().isEmpty()) {
-                att.getMinVesselSubTypeIdList().forEach(vesselSubTypeId -> {
-                    System.out.print(VesselSubType.createFromId(vesselSubTypeId).getDesc() + ", ");
+                att.getMinVesselSubTypeIdList().forEach(vesselSubType -> {
+                    System.out.print(vesselSubType.getDesc() + ", ");
                 });
             } else {
                 System.out.print("Any Vessel");
@@ -147,7 +113,7 @@ class VesselVacancyTest {
                 vacancies.forEach(v->{
                     System.out.print("VacancyID::"+v.getId() + " for Post [");
                     v.getVacancyAttributes().getMinRankList().forEach(r->{
-                        System.out.println(Rank.createFromId(r).getName());
+                        System.out.println(r.getName());
                     });
                     System.out.print("]");
                     System.out.println();

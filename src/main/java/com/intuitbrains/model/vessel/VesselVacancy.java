@@ -3,6 +3,7 @@ package com.intuitbrains.model.vessel;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.Crew;
+import com.intuitbrains.model.crew.Rank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -15,7 +16,7 @@ public class VesselVacancy {
 
     @Id
     private long id;
-    private long vesselId;
+    private Vessel vessel;
     private String remarks;
     private int statusId;
     private int openPositions;
@@ -24,10 +25,6 @@ public class VesselVacancy {
     private LocalDateTime vacancyEndDate;
     private Employee enteredBy;
     private LocalDateTime enteredLocalDateTime;
-
-
-    private Vessel vessel;
-    private Crew filledByCrew;
 
     //Other Vacancy Conditions/Attributes
     private VesselVacancyAttributes vacancyAttributes;
@@ -38,14 +35,6 @@ public class VesselVacancy {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getVesselId() {
-        return vesselId;
-    }
-
-    public void setVesselId(long vesselId) {
-        this.vesselId = vesselId;
     }
 
     public String getRemarks() {
@@ -128,18 +117,10 @@ public class VesselVacancy {
         this.status = status;
     }
 
-    public Crew getFilledByCrew() {
-        return filledByCrew;
-    }
-
-    public void setFilledByCrew(Crew filledByCrew) {
-        this.filledByCrew = filledByCrew;
-    }
-
     @Override
     public String toString() {
         return "VesselVacancy{" +
-                "vesselId=" + vesselId +
+                "vessel=" + vessel.getVesselName() +
                 ", remarks='" + remarks + '\'' +
                 ", vacancyAttributes=" + vacancyAttributes +
                 '}';
