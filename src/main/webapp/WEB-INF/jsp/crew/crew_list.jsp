@@ -47,7 +47,11 @@
 
 
 					<div class="card mb-4">
-						<div class="card-header">Crew List</div>
+						<div class="card-header">Crew List
+						  <button class="btn btn-blue btn-icon float-end" type="button" data-bs-toggle="modal" data-bs-target="#newCrewModal">
+                            <i data-feather="plus"></i>
+                            </button>
+                        </div>
 						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
@@ -155,8 +159,80 @@
 
 		<%@ include file="../includes/bottom_includes.jsp"%>
 	</div>
+
+	<div class="modal fade" id="newCrewModal" tabindex="-1" role="dialog" aria-labelledby="newCrewModalLabel" style="display: none;" aria-hidden="true">
+
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Crew</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+ <div class="modal-body">
+                    <div class="container-xl px-4">
+                                            <div class="row justify-content-center">
+                                                <!-- Create Organization-->
+                                                <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11 mt-4">
+                                                    <div class="card text-center h-100">
+                                                        <div class="card-body px-5 pt-5 d-flex flex-column">
+                                                            <div>
+                                                                <div class="h3 text-primary">Manual</div>
+                                                                <p class="text-muted mb-4">Manually enter crew details on UI</p>
+                                                            </div>
+                                                            <div class="icons-org-create align-items-center mx-auto mt-auto">
+                                                                <i class="icon-users" data-feather="users"></i>
+                                                                <i class="icon-plus fas fa-plus"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer bg-transparent px-5 py-4">
+                                                            <div class="small text-center">
+                                                             <form role="form" method="GET" action="/crew/add">
+                                                                <button class="btn btn-primary" type="submit">Add Manually</button>
+                                                            </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Join Organization-->
+                                                <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11 mt-4">
+                                                <form role="form" method="POST" enctype="multipart/form-data" action="/crew/upload">
+                                                    <div class="card text-center h-100">
+                                                        <div class="card-body px-5 pt-5 d-flex flex-column align-items-between">
+                                                            <div>
+                                                                <div class="h3 text-secondary">Upload</div>
+                                                                <p class="text-muted mb-4">Upload crew details via excel upload</p>
+                                                            </div>
+                                                            <div class="icons-org-join align-items-center mx-auto">
+                                                                <i class="icon-user" data-feather="user"></i>
+                                                                <i class="icon-arrow fas fa-long-arrow-alt-right"></i>
+                                                                <i class="icon-users" data-feather="users"></i>
+                                                            </div>
+                                                            <div>
+                                                                <input type="file" name="file">
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer bg-transparent px-5 py-4">
+                                                            <div class="small text-center"><button class="btn btn-secondary" type="submit">Upload excel</button></div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                </div>
+        </div>
+
+
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="../js/datatables/datatables-simple-demo.js"></script>
+
 </body>
 </html>

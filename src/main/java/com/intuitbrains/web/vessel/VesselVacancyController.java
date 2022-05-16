@@ -206,9 +206,9 @@ public class VesselVacancyController {
     }
 
 
-    @GetMapping(value = "/assign_crew")
-    public ModelAndView assignCrew(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("/vessel/assign_crew");
+    @GetMapping(value = "/assign_vacancy")
+    public ModelAndView assignVacancy(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/vessel/assign_vacancy");
         long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
         List<Crew> crewList = crewService.getReadyToSignOffCrew();
         VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();

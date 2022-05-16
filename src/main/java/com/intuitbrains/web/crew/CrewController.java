@@ -86,9 +86,19 @@ public class CrewController {
     private CrewService crewService;
 
     @GetMapping(value = "/list")
-    public ModelAndView crewList(Model model) {
+    public ModelAndView crewList(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/crew_list");
+
+        int crewStatusId = ParamUtil.parseInt(req.getParameter("statusId"), -1);
         List<Crew> list = crewService.getList();
+
+        if (crewStatusId > 0) {
+            Crew filterCrew = new Crew();
+            filterCrew.setStatusId(crewStatusId);
+            list = crewService.getFilteredList(filterCrew);
+        } else {
+            list = crewService.getList();
+        }
         mv.addObject("list", list);
         return mv;
     }
@@ -332,6 +342,7 @@ public class CrewController {
         mv.addObject("educations", educations);
         return mv;
     }
+
     @GetMapping(value = "/passport_visa")
     public ModelAndView getPassportVisa(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/passport_visa");
@@ -341,13 +352,12 @@ public class CrewController {
         //List<Passport> passports = passportVisa.stream().filter(d->d.getDocType().getDocumentPool().getId() == DocumentPool.PASSPORT.getId()).map(Passport.class::cast).collect(Collectors.toList());
         List<Passport> passports = new ArrayList<>();
         List<Visa> visas = new ArrayList<>();
-        for(CrewDocument doc : list) {
-            if(doc instanceof Passport) {
-                Passport pp = (Passport)doc;
+        for (CrewDocument doc : list) {
+            if (doc instanceof Passport) {
+                Passport pp = (Passport) doc;
                 passports.add(pp);
-            }
-            else if(doc instanceof Visa) {
-                Visa visa = (Visa)doc;
+            } else if (doc instanceof Visa) {
+                Visa visa = (Visa) doc;
                 visas.add(visa);
             }
         }
@@ -371,7 +381,6 @@ public class CrewController {
         ModelAndView mv = new ModelAndView("crew/add_education");
         return mv;
     }
-
 
 
     @GetMapping(value = "/add_medical")
@@ -476,7 +485,7 @@ public class CrewController {
             e.printStackTrace();
         }
 
-       // documents.add(docToUpload);
+        // documents.add(docToUpload);
 
         crew.setExistingDocuments(documents);
         crewService.updateCrew(crew);

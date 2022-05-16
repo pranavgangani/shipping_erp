@@ -70,6 +70,15 @@ public class CrewService {
         return crewList;
     }
 
+    public List<Crew> getFilteredList(Crew filterCrew) {
+        MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
+        Bson projection = fields(projections);
+        List<Crew> crewList = new LinkedList<>();
+        Bson filter = eq("statusId", filterCrew.getStatusId());
+        collection.find(filter).projection(projection).into(crewList);
+        return crewList;
+    }
+
     public Crew getById(long crewId) {
         MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
         Bson filter = eq("_id", crewId);
