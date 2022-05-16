@@ -160,9 +160,9 @@ public class CrewController {
     }
 
 
-    @GetMapping(value = "/document_list")
+    @GetMapping(value = "/documents")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/document_list");
+        ModelAndView mv = new ModelAndView("crew/documents");
         List<CrewDocument> documents = documentDao.findAll();
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);

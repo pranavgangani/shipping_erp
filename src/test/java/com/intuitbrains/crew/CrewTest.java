@@ -85,14 +85,14 @@ class CrewTest {
         crew.setDob(dob);
         crew.setGender("male");
         crew.setMaritalStatusId(Crew.MaritalStatus.MARRIED.getId());
-        crew.setRankId(Rank.JR_ENGINEER.getId());
+        crew.setRankId(Rank.CAPTAIN.getId());
         crew.setNationalityFlagId(flag.getId());
         crew.setNationality("Indian");
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setPresentAddress(crew.getPermAddress());
         crew.setDistinguishMark("Some mark on head");
 
-        crew.setEmailId("pranavgangani@gmail.com");
+        crew.setEmailId("rtiwari@gmail.com");
         crew.setPassportNumber("SLJALJLJ");
 
 
@@ -123,7 +123,7 @@ class CrewTest {
         EducationDocument hscDoc = new Certificate();
         hscDoc.setDocTypeId(docTypeDao.findByName("HSC").getId());
         //empDoc2.setFile();
-        hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
+        //hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
 
         crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
 
@@ -257,7 +257,7 @@ class CrewTest {
     void updateEmploymentDetails() {
         //Crew crew = crewService.getById(25);
         Crew crew = new Crew();
-        crew.setId(24);
+        crew.setId(1);
         Flag flag = flagDao.getByCode("IN");
 
         //Employment
@@ -307,7 +307,7 @@ class CrewTest {
         crew.setEmploymentHistory(new ArrayList<>(Arrays.asList(emp1, emp2)));
 
         Bson updates = Updates.set("employmentHistory", new ArrayList<>(Arrays.asList(emp1, emp2)));
-        Bson filter = Filters.eq("_id", 24);
+        Bson filter = Filters.eq("_id", 1);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
         // crewDao.save(crew);
     }
@@ -315,7 +315,7 @@ class CrewTest {
     @Test
     void updateNextOfKinDetails() {
         Crew crew = new Crew();
-        crew.setId(24);
+        crew.setId(1);
         NextOfKin nok1 = new NextOfKin();
         nok1.setNomineeName("Vrushali Rohan Tiwari");
         // nok1.setDateOfBirth("12-Mar-1983");
@@ -369,7 +369,7 @@ class CrewTest {
 
     @Test
     void uploadBankDetails() {
-        Crew crew = crewDao.findById(29l).get();
+        Crew crew = crewService.getById(1);
 
         Bank bank = new Bank();
         bank.setBankName("HDFC Bank");
@@ -457,7 +457,7 @@ class CrewTest {
 
     @Test
     void testGetPPVisa() {
-        List<CrewDocument> list = crewService.getPassportVisa(24);
+        List<CrewDocument> list = crewService.getPassportVisa(1);
         List<Passport> passports = new ArrayList<>();
         List<Visa> visas = new ArrayList<>();
         for(CrewDocument doc : list) {
@@ -482,7 +482,7 @@ class CrewTest {
         for (DocumentType dt : documentTypes) {
             if (dt.getId() == 1) {//Indian Passport
                 Passport pp = new Passport();
-                pp.setCrewId(24);
+                pp.setCrewId(1);
                 pp.setDocNumber("12433453");
                 pp.setGivenName("Tiwari Rohan Pradeep");
                 pp.setRequiredECNR(false);
@@ -496,7 +496,7 @@ class CrewTest {
                 existingDocs.add(pp);
             } else if (dt.getId() == 14) {//US C1/D Visa
                     Visa visa = new Visa();
-                    visa.setCrewId(24);
+                    visa.setCrewId(1);
                     visa.setDocNumber("5678890");
                     visa.setGivenName("Tiwari Rohan Pradeep");
                     visa.setFlagCode("US");
