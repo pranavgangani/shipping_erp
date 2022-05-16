@@ -206,47 +206,19 @@ public class CrewController {
         return mv;
     }
 
-    @GetMapping(value = "/contract_list")
+    @GetMapping(value = "/contracts")
     public ModelAndView contractList(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/contract_list");
-        List<CrewDocument> documents = documentDao.findAll();
+        ModelAndView mv = new ModelAndView("crew/contracts");
+        List<VesselVacancy> list = vesselVacancyDao.findAll();
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
-            List<? extends CrewDocument> existingDocuments = crew.getExistingDocuments();
-
-            if (ListUtil.isNotEmpty(existingDocuments)) {
-                existingDocuments.forEach(doc -> {
-                    doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
-                    System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
-                });
-                mv.addObject("existingDocuments", existingDocuments);
-            }
-            CrewPhoto photo = null;
-
-            try {
-                photo = photoDao.findById(crew.getPhotoId()).get();
-                //mv.addObject("title", photo.getTitle());
-                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-            } catch (NoSuchElementException e) {
-
-            }
-
-
-            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crew.getId());
-            if (ListUtil.isNotEmpty(auditTrails)) {
-                System.out.println("auditTrails = " + auditTrails.size());
-                mv.addObject("auditTrails", auditTrails);
-            } else {
-                System.out.println("No auditTrails");
-            }
-
         }
 
         mv.addObject("action", "Edit");
-        mv.addObject("list", documents);
+        mv.addObject("list", list);
 
 
         return mv;
@@ -519,9 +491,9 @@ public class CrewController {
      * "redirect:/photos/" + id; }
      */
 
-    @GetMapping(value = "/vacancy_list")
+  /*  @GetMapping(value = "/vacancies")
     public ModelAndView vacancyListForACrew(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/vacancy_list");
+        ModelAndView mv = new ModelAndView("crew/vacancies");
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         List<VesselVacancy> vacancies = new ArrayList<>();
@@ -553,15 +525,15 @@ public class CrewController {
                 System.out.print("Any Vessel");
             }
             v.setVessel(vessel);
-           /* if (v.getFilledByCrewId() > 0) {
+           *//* if (v.getFilledByCrewId() > 0) {
                 v.setFilledByCrew(crewService.getById(v.getFilledByCrewId()));
-            }*/
+            }*//*
             v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
             System.out.print(" ]");
             System.out.println();
         });
         mv.addObject("vacancies", vacancies);
         return mv;
-    }
+    }*/
 
 }

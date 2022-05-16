@@ -101,8 +101,8 @@ public class VesselController {
         long vesselOwnerId = ParamUtil.parseLong(req.getParameter("vesselOwnerId"), -1);
         long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
         Vessel vessel = new Vessel();
-        Employee user = (Employee) req.getSession().getAttribute("currentUser");
-        String empId = user.getEmpId();
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        String empId = emp.getEmpId();
 
         String vesselName = req.getParameter("vesselName");
         String imo = req.getParameter("imo");

@@ -25,7 +25,11 @@
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
 					<div class="card mb-4">
-						<div class="card-header">Vacancy List</div>
+						<div class="card-header">Vacancy List
+						    <button class="btn btn-blue btn-icon float-end" type="button" data-bs-toggle="modal" data-bs-target="#newVacancyModal">
+                                <i data-feather="feather"></i>
+                            </button>
+						</div>
 						<div class="card-body">
 							<table id="datatablesSimple">
 								<thead>
@@ -103,6 +107,50 @@
 
 		<%@ include file="../includes/bottom_includes.jsp"%>
 	</div>
+
+	<div class="modal fade" id="newVacancyModal" tabindex="-1" role="dialog" aria-labelledby="newVacancyModalLabel" style="display: none;" aria-hidden="true">
+	    <form id="vacancy-fill-form" role="form" method="POST" action="/vessel/add_vacancy">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Vacancy</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-8 mb-3">
+                        <label class="small mb-3" for="vessel">Select a Vessel</label>
+                        <select class="form-select" id="vessel" name="vessel" aria-label="Default select rank">
+                            <option selected disabled>Select a Vessel:</option>
+                            <c:forEach items="${vessels}" var="vessel">
+                                <option value="${vessel.id}">${vessel.vesselName} (${vessel.vesselSubType.desc})</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <select class="form-select" id="rankId" name="rankId" aria-label="Default select rank">
+                            <option selected disabled>Select a Rank:</option>
+                            <c:forEach var="optionGroup" items="${rankMap}">
+                               <optgroup label="${optionGroup.key}">
+                               <c:forEach var="option" items="${optionGroup.value}">
+                                  <option <c:if test="${crew.rank.id==option.id}">selected</c:if> value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>
+                               </c:forEach>
+                               </optgroup>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label class="small mb-3" for="openPositions">No. of open positions</label>
+                        <input class="small mb-2 form-control" name="openPositions" id="openPositions" type="text" placeholder="Enter No. of open positions" value="1" />
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </div>
+                 </div>
+            </div>
+        </form>
+    </div>
+
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="../js/datatables/datatables-simple-demo.js"></script>

@@ -89,20 +89,23 @@ public class VesselVacancyController {
     }
 
     @GetMapping(value = "/vacancy_list")
-    public ModelAndView getVacancyList(@RequestParam("vesselId") long vesselId, Model model) {
+    public ModelAndView getVacancyList(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("vessel/vacancy_list");
+        long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
         List<VesselVacancy> list = null;
         if (vesselId > 0) {
             list = vesselVacancyDao.findVacanciesByVessel(vesselId);
         } else {
             list = vesselVacancyDao.findAll();
         }
+        mv.addObject("vessels", vesselDao.findAll());
+        mv.addObject("rankMap", Rank.getByGroup());
         mv.addObject("list", list);
         return mv;
     }
 
     @PostMapping(value = "/add_vacancy")
-    public ModelAndView addVacancyToVessel(@RequestParam("vesselId") long vesselId, Model model) {
+    public ModelAndView addVacancy(@RequestParam("vesselId") long vesselId, Model model) {
         ModelAndView mv = new ModelAndView("vessel/vacancy_list");
 
         //Find Vessel

@@ -33,14 +33,15 @@
                                     <div class="container-fluid px-4">
                                         <!-- Account page navigation-->
                                         <nav class="nav nav-borders">
-                                            <a class="nav-link" href="/crew/edit?crewId=${crew.id}">Profile</a>
-                                            <a class="nav-link" href="/crew/add_employment">Employment</a>
-                                            <a class="nav-link" href="/crew/add_education">Education</a>
-                                            <a class="nav-link" href="/crew/add_passport_visa">Passport/Visa</a>
-                                            <a class="nav-link" href="/crew/add_medical">Medical</a>
-                                            <a class="nav-link" href="/crew/add_bank_account">Bank Account</a>
-                                            <a class="nav-link" href="/crew/add_nominee">Next of Kin</a>
-                                            <a class="nav-link active ms-0">Other Documents</a>
+                                            <a class="nav-link" href="/crew/modify?crewId=${crewId}">Profile</a>
+                                            <a class="nav-link" href="/crew/experience?crewId=${crewId}">Employment</a>
+                                            <a class="nav-link" href="/crew/education?crewId=${crewId}">Education</a>
+                                            <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
+                                            <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
+                                            <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
+                                            <a class="nav-link" href="/crew/nominee?crewId=${crewId}">Nominee</a>
+                                            <a class="nav-link active ms-0" href="/crew/documents?crewId=${crewId}">Other Documents</a>
+                                            <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
                                         </nav>
                                         <hr class="mt-0 mb-4" />
                                         <div class="row">
