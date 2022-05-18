@@ -71,6 +71,9 @@
 										<td>
 										    <div class="badge bg-primary text-white rounded-pill">${vacancy.status.desc}</div></td>
 										<td>
+										<button onclick="VesselDetails.openSelectCrewModal(${vacancy.id})" class="btn btn-datatable btn-icon btn-transparent-dark">
+                                            <i data-feather="users"></i>
+
 										    <button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
 													id="dropdownMenuButton" type="button"
@@ -79,13 +82,8 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item">
-														<div id="selectCrewModalBtn" class="dropdown-item-icon">
-															<i data-feather="user"></i>
-														</div> Assign Crew
-													</a>
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/crew/edit?crewId=${crew.id}">
+													<a class="dropdown-item" href="/vessel/vacancy_details?action=modify&vacancyId=${vacancy.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
@@ -106,16 +104,10 @@
 					</div>
 
 				</div>
-			</main>
-			<%@ include file="../includes/copyright.jsp"%>
-		</div>
-
-		<%@ include file="../includes/bottom_includes.jsp"%>
-	</div>
 
 	<div class="modal fade" id="newVacancyModal" tabindex="-1" role="dialog" aria-labelledby="newVacancyModalLabel" style="display: none;" aria-hidden="true">
 	    <form id="vacancy-fill-form" role="form" method="POST" action="/vessel/add_vacancy">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">New Vacancy</h5>
@@ -153,12 +145,14 @@
                     </div>
                  </div>
             </div>
+        </div>
         </form>
     </div>
 
     <div class="modal fade" id="selectCrewModal" tabindex="-1" role="dialog" aria-labelledby="selectCrewModalLabel" style="display: none;" aria-hidden="true">
-    	    <form id="vacancy-fill-form" role="form" method="POST" action="/vessel/assign_vacancy">
-            <div class="modal-dialog modal-xl" role="document">
+    	    <form id="vacancy-assign-form" role="form" method="POST">
+    	   <input type="hidden" id="vacancyId" value="${vacancy.id}">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Select Crew</h5>
@@ -196,11 +190,19 @@
                         </div>
                      </div>
                 </div>
+            </div>
             </form>
         </div>
 
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 		crossorigin="anonymous"></script>
 	<script src="../js/datatables/datatables-simple-demo.js"></script>
+				</main>
+    			<%@ include file="../includes/copyright.jsp"%>
+    		</div>
+
+    		<%@ include file="../includes/bottom_includes.jsp"%>
+    	</div>
+
 </body>
 </html>

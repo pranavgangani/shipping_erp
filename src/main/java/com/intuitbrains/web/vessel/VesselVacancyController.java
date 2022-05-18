@@ -16,6 +16,8 @@
 package com.intuitbrains.web.vessel;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.dao.common.AuditTrailRepository;
@@ -38,13 +40,13 @@ import com.intuitbrains.util.StringUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,6 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 @RequestMapping(value = "/vessel")
@@ -89,8 +92,12 @@ public class VesselVacancyController {
         if (StandardWebParameter.ADD.equalsIgnoreCase(action)) {
 
         } else if (StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
-
+            long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
+            VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
+            mv.addObject("vacancy", vacancy);
         }
+        mv.addObject("vessels", vesselDao.findAll());
+        mv.addObject("rankMap", Rank.getByGroup());
         return mv;
     }
 
@@ -206,17 +213,44 @@ public class VesselVacancyController {
     }
 
 
-    @GetMapping(value = "/assign_vacancy")
-    public ModelAndView assignVacancy(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("/vessel/assign_vacancy");
+    @PostMapping(value = "/assign_vacancy")
+    public @ResponseBody
+    String assignVacancy(HttpServletRequest req, Model model)  {
+
+        //Map<String, Object> mapping = new ObjectMapper().readValue(payload, HashMap.class);
         long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
-        List<Crew> crewList = crewService.getReadyToSignOffCrew();
-        VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
-        mv.addObject("vacancy", vacancy);
-        //mv.addObject("vessels", vesselDao.findAll());
-        //mv.addObject("rankMap", Rank.getByGroup());
-        mv.addObject("crewList", crewList);
-        return mv;
+        if(vacancyId>0) {
+            List<Crew> crewList = crewService.getReadyToSignOffCrew();
+            VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
+            model.addAttribute("vacancy", vacancy);
+            model.addAttribute("crewList", crewList);
+
+            JSONArray crewArr = new JSONArray();
+            crewList.forEach(c->{
+                try {
+                    JSONObject obj = new JSONObject();
+                    obj.put("fullName", c.getFullName());
+                    obj.put("status", c.getStatus().getDesc());
+                    crewArr.put(obj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("crew", crewArr);
+
+                JSONObject vacancyObj = new JSONObject();
+                vacancyObj.put("status", VesselVacancy.Status.createFromId(vacancy.getStatusId()).getDesc());
+                //vacancyObj.put("status", vacancy.getVacancyAttributes().getMinRankList().forEach(r->r.getName()));
+                obj.put("vacancy", vacancyObj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return obj.toString();
+        }
+        return "error";
+
     }
 
     @PostMapping(value = "/fill_vacancy")

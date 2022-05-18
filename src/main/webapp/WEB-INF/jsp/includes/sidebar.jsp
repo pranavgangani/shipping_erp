@@ -28,28 +28,28 @@
                             </a>
                             <div class="sidenav-menu-heading">List</div>
                             <a class="nav-link collapsed" href="/crew/list"  aria-expanded="false">
-                                <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                                Crew List
+                                <div class="nav-link-icon"><i data-feather="users"></i></div>
+                                Crew
                             </a>
                             <a class="nav-link collapsed" href="/crew/doc_list"  aria-expanded="false">
-                                <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                                Crew Document List
+                                <div class="nav-link-icon"><i data-feather="briefcase"></i></div>
+                                Crew Documents
                             </a>
                             <a class="nav-link collapsed" href="/vessel/vacancy_list"  aria-expanded="false">
-                                <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                                Vacancy List
+                                <div class="nav-link-icon"><i data-feather="target"></i></div>
+                                Vacancies
                             </a>
                             <a class="nav-link collapsed" href="/vessel/vessel_list"  aria-expanded="false">
-                                <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                                Vessel List
+                                <div class="nav-link-icon"><i data-feather="anchor"></i></div>
+                                Vessels
                             </a>
                             <a class="nav-link collapsed" href="/vessel/vessel_owner_list"  aria-expanded="false">
-                                <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                                Vessel Owner List
+                                <div class="nav-link-icon"><i data-feather="user"></i></div>
+                                Vessel Owners
                             </a>
                             <a class="nav-link collapsed" href="/crew/travel_request_list"  aria-expanded="false">
-                                <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                                Crew Travel Request List
+                                <div class="nav-link-icon"><i data-feather="globe"></i></div>
+                                Travel Requests
                             </a>
                              <!-- Sidenav Heading (Custom)-->
                              <div class="sidenav-menu-heading">Management</div>

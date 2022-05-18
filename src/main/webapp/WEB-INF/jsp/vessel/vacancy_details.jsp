@@ -7,39 +7,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>${action} Crew</title>
-    
+        <title>${action} Vacancy</title>
+
         <%@ include file="../includes/header_includes.jsp" %>
         <script src="../js/crew/crew_details.js"></script>
     </head>
 
     <body class="nav-fixed">
     <%@ include file="../includes/top_nav_bar.jsp" %>
-       
-       
+
+
         <div id="layoutSidenav">
-        
+
         <%@ include file="../includes/sidebar.jsp" %>
-            
+
             <div id="layoutSidenav_content">
                 <main>
-                <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/add">
-                
-                <%@ include file="add_crew_header.jsp" %>
-                    
+                <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/vessel/vacancy_details?action=update">
+
+
                     <!-- Main page content-->
                     <div class="container-fluid px-4">
                         <!-- Account page navigation-->
-                        <nav class="nav nav-borders">
-                            <a class="nav-link active ms-0">Profile</a>
-                            <a class="nav-link" href="/crew/add_employment?crewId=${crew.id}">Employment</a>
-                            <a class="nav-link" href="/crew/add_education?crewId=${crew.id}">Education</a>
-                            <a class="nav-link" href="/crew/add_passport_visa?crewId=${crew.id}">Passport/Visa</a>
-                            <a class="nav-link" href="/crew/add_medical?crewId=${crew.id}">Medical</a>
-                            <a class="nav-link" href="/crew/add_bank_account?crewId=${crew.id}">Bank Account</a>
-                            <a class="nav-link" href="/crew/add_nominee?crewId=${crew.id}">Nominee</a>
-                            <a class="nav-link" href="/crew/document_list?crewId=${crew.id}">Other Documents</a>
-                        </nav>
+
                         <hr class="mt-0 mb-4" />
                         <div class="row">
                         <div class="col-lg-2">
@@ -50,7 +40,7 @@
                                         <!-- Profile picture help block-->
 										<c:choose>
 											<c:when test="${crew.photoId>0}">
-												<img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}" alt="" id='preview' />													
+												<img class="img-account-profile rounded-circle mb-2" alt="img" src="data:image/jpeg;base64,${image}" alt="" id='preview' />
 											</c:when>
 											<c:otherwise>
 											    <input type='file' id='file-input' hidden name="image">
@@ -62,14 +52,14 @@
 										</c:choose>
 										<!-- Profile picture upload button-->
 										<button id="myBtn" class="btn btn-primary" type="button">Upload an image</button>
-										
+
                                     </div>
                                 </div>
                                 <!-- Delete account card-->
                                 <div class="card mb-4">
                                     <div class="card-header">Actions</div>
                                     <div class="card-body">
-                                        <button class="btn btn-primary" type="submit">Add</button> 	
+                                        <button class="btn btn-primary" type="submit">Add</button>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +113,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>	                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -144,7 +134,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>		                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -158,7 +148,7 @@
 															       <optgroup label="${optionGroup.key}">
 															       <c:forEach var="option" items="${optionGroup.value}">
 															          <option <c:if test="${crew.rank.id==option.id}">selected</c:if> value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>
-															       </c:forEach>                                                          
+															       </c:forEach>
 															       </optgroup>
 															    </c:forEach>
 															</select>
@@ -169,7 +159,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>	                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -189,7 +179,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>	                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -205,7 +195,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>	                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -220,7 +210,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>	                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -235,7 +225,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>	                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -248,7 +238,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>		                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -261,7 +251,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="emailId" type="checkbox"  />
 	                                                		</div>
-                                                		</td>		                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -274,7 +264,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>		                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -287,7 +277,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>		                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
@@ -300,7 +290,7 @@
 			                                                <div class="form-check mb-3">
 	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox"  />
 	                                                		</div>
-                                                		</td>		                                                
+                                                		</td>
 		                                                <td><div class="page-header-icon"><i data-feather="user-plus"></i></div>
 		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
 														</td>
