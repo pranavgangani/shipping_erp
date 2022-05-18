@@ -20,6 +20,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Updates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.elemMatch;
@@ -86,7 +84,7 @@ public class CrewService {
     }
 
     public Crew addCrew(Crew crew) {
-        crew.setEnteredLocalDateTime(LocalDateTime.now());
+        crew.setEnteredDateTime(LocalDateTime.now());
         crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
 
         addToAudit(crew);
@@ -116,7 +114,7 @@ public class CrewService {
     }
 
     public Crew updateCrew(Crew crew) {
-        crew.setUpdatedLocalDateTime(LocalDateTime.now());
+        crew.setUpdatedDateTime(LocalDateTime.now());
         crewDao.save(crew);
 
         //Audit
@@ -130,6 +128,16 @@ public class CrewService {
         audit.setUniqueId(crew.getId());
         auditTrailDao.insert(audit);
         return crew;
+    }
+
+    public void updateVacancy(long vacancyId, List<Long> crewIds, String assignedBy) {
+        Bson updates = Updates.combine(
+                Updates.set("assignedVacancyId", vacancyId),
+                Updates.set("assignedVacancyDateTime", LocalDateTime.now()),
+                Updates.set("assignedVacancyBy", assignedBy)
+        );
+        Bson filter = Filters.all("_id", crewIds);
+        db.getCollection(Collection.CREW, Crew.class).updateMany(filter, updates);
     }
 
     public List<Experience> getEmploymentHistory(long crewId) {

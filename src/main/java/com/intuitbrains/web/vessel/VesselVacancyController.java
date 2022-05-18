@@ -111,7 +111,7 @@ public class VesselVacancyController {
         } else {
             list = vesselVacancyDao.findAll();
         }
-        list.parallelStream().forEach(v->v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId())));
+        list.parallelStream().forEach(v -> v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId())));
         mv.addObject("vessels", vesselDao.findAll());
         mv.addObject("rankMap", Rank.getByGroup());
         mv.addObject("list", list);
@@ -159,7 +159,7 @@ public class VesselVacancyController {
         audit.setActionBy(emp.getEmpId());
         audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.VESSEL_VACANCY);
-        audit.setText("New Vacancy of Rank <b>["+Rank.createFromId(rankId).getName()+"]</b> - added for Vessel <b>[" + (vessel.getVesselName()) + "]</b>");
+        audit.setText("New Vacancy of Rank <b>[" + Rank.createFromId(rankId).getName() + "]</b> - added for Vessel <b>[" + (vessel.getVesselName()) + "]</b>");
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         audit.setUniqueId(vacancy.getId());
         auditTrailDao.insert(audit);
@@ -168,6 +168,70 @@ public class VesselVacancyController {
     }
 
 
+    @PostMapping(value = "/assign_vacancy")
+    public @ResponseBody
+    String assignVacancy(HttpServletRequest req, Model model) {
+
+        //Map<String, Object> mapping = new ObjectMapper().readValue(payload, HashMap.class);
+        long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
+        if (vacancyId > 0) {
+            List<Crew> crewList = crewService.getReadyToSignOffCrew();
+            VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
+            model.addAttribute("vacancy", vacancy);
+            model.addAttribute("crewList", crewList);
+
+            JSONArray crewArr = new JSONArray();
+            crewList.forEach(c -> {
+                try {
+                    JSONObject obj = new JSONObject();
+                    obj.put("id", c.getId());
+                    obj.put("fullName", c.getFullName());
+                    obj.put("status", c.getStatus().getDesc());
+                    crewArr.put(obj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("crew", crewArr);
+
+                JSONObject vacancyObj = new JSONObject();
+                vacancyObj.put("status", VesselVacancy.Status.createFromId(vacancy.getStatusId()).getDesc());
+                //vacancyObj.put("status", vacancy.getVacancyAttributes().getMinRankList().forEach(r->r.getName()));
+                vacancyObj.put("openPositions", vacancy.getOpenPositions());
+                obj.put("vacancy", vacancyObj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return obj.toString();
+        }
+        return "error";
+
+    }
+
+    @PostMapping(value = "/fill_vacancy")
+    public ModelAndView fillVacancy(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("redirect:/crew/crew_list?status="+Crew.Status.ASSIGNED.getId());
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
+        //String crewIdsParam = req.getParameter("crewIds");
+        Iterator<String> iter = req.getParameterNames().asIterator();
+        List<Long> crewIds = new ArrayList<>();
+        while (iter.hasNext()) {
+            String param = iter.next();
+            if (param.contains("crew_")) {
+                boolean isChecked = req.getParameter(param).equals("on");
+                if(isChecked) {
+                    crewIds.add(ParamUtil.parseLong(param.substring(param.indexOf('_') + 1, param.length()), -1));
+                }
+            }
+        }
+        crewService.updateVacancy(vacancyId, crewIds, emp.getEmpId());
+        return mv;
+    }
+
+    //---------------------------------------------------------------------//
 
     @GetMapping(value = "/vacancy_list_for_crew")
     public ModelAndView assignVessel(HttpServletRequest req, Model model) {
@@ -213,64 +277,6 @@ public class VesselVacancyController {
     }
 
 
-    @PostMapping(value = "/assign_vacancy")
-    public @ResponseBody
-    String assignVacancy(HttpServletRequest req, Model model)  {
-
-        //Map<String, Object> mapping = new ObjectMapper().readValue(payload, HashMap.class);
-        long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
-        if(vacancyId>0) {
-            List<Crew> crewList = crewService.getReadyToSignOffCrew();
-            VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
-            model.addAttribute("vacancy", vacancy);
-            model.addAttribute("crewList", crewList);
-
-            JSONArray crewArr = new JSONArray();
-            crewList.forEach(c->{
-                try {
-                    JSONObject obj = new JSONObject();
-                    obj.put("id", c.getId());
-                    obj.put("fullName", c.getFullName());
-                    obj.put("status", c.getStatus().getDesc());
-                    crewArr.put(obj);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            });
-            JSONObject obj = new JSONObject();
-            try {
-                obj.put("crew", crewArr);
-
-                JSONObject vacancyObj = new JSONObject();
-                vacancyObj.put("status", VesselVacancy.Status.createFromId(vacancy.getStatusId()).getDesc());
-                //vacancyObj.put("status", vacancy.getVacancyAttributes().getMinRankList().forEach(r->r.getName()));
-                vacancyObj.put("openPositions", vacancy.getOpenPositions());
-                obj.put("vacancy", vacancyObj);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return obj.toString();
-        }
-        return "error";
-
-    }
-
-    @PostMapping(value = "/fill_vacancy")
-    public ModelAndView fillVacancy(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("/vessel/assign_crew");
-        long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
-        String crewIdsParam = req.getParameter("crewIds");
-        String[] crewIdArray = crewIdsParam.split(",");
-        for(int i=0;i<crewIdArray.length;i++){
-            long crewId = ParamUtil.parseLong(crewIdArray[i], -1);
-            if(crewId>0){
-                //crewService.
-            }
-        }
-
-
-        return mv;
-    }
 
     /*@GetMapping(value = "/add_vacancy")
     public ModelAndView addVacancy(HttpServletRequest req) {

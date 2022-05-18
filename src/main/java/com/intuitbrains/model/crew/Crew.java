@@ -41,6 +41,9 @@ public class Crew extends Person {
     private LocalDate dob;
     private int age;
     private Contract currentContract;
+    private long assignedVacancyId;
+    private LocalDateTime assignedVacancyDateTime;
+    private String assignedVacancyBy;
 
     //Contracts
     private List<Contract> historicalContracts;
@@ -71,7 +74,7 @@ public class Crew extends Person {
     private List<Bank> banks;
 
     private String enteredBy, updatedBy;
-    private LocalDateTime enteredLocalDateTime, updatedLocalDateTime;
+    private LocalDateTime enteredDateTime, updatedDateTime;
 
     private int statusId;
     private Status status;
@@ -90,6 +93,14 @@ public class Crew extends Person {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public long getAssignedVacancyId() {
+        return assignedVacancyId;
+    }
+
+    public void setAssignedVacancyId(long assignedVacancyId) {
+        this.assignedVacancyId = assignedVacancyId;
     }
 
     @ACrew(name = CrewField.FIRST_NAME)
@@ -450,12 +461,20 @@ public class Crew extends Person {
         this.enteredBy = enteredBy;
     }
 
-    public LocalDateTime getEnteredLocalDateTime() {
-        return enteredLocalDateTime;
+    public void setAssignedVacancyDateTime(LocalDateTime assignedVacancyDateTime) {
+        this.assignedVacancyDateTime = assignedVacancyDateTime;
     }
 
-    public void setEnteredLocalDateTime(LocalDateTime enteredLocalDateTime) {
-        this.enteredLocalDateTime = enteredLocalDateTime;
+    public void setAssignedVacancyBy(String assignedVacancyBy) {
+        this.assignedVacancyBy = assignedVacancyBy;
+    }
+
+    public void setEnteredDateTime(LocalDateTime enteredDateTime) {
+        this.enteredDateTime = enteredDateTime;
+    }
+
+    public void setUpdatedDateTime(LocalDateTime updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
     }
 
     public boolean isSignedOffForMedicalReasons() {
@@ -538,21 +557,30 @@ public class Crew extends Person {
         this.updatedBy = updatedBy;
     }
 
-    public LocalDateTime getUpdatedLocalDateTime() {
-        return updatedLocalDateTime;
+    public LocalDateTime getAssignedVacancyDateTime() {
+        return assignedVacancyDateTime;
     }
 
-    public void setUpdatedLocalDateTime(LocalDateTime updatedLocalDateTime) {
-        this.updatedLocalDateTime = updatedLocalDateTime;
+    public String getAssignedVacancyBy() {
+        return assignedVacancyBy;
+    }
+
+    public LocalDateTime getEnteredDateTime() {
+        return enteredDateTime;
+    }
+
+    public LocalDateTime getUpdatedDateTime() {
+        return updatedDateTime;
     }
 
     public enum Status {
         NEW_RECRUIT(1, "New Recruit"),
         PENDING_DOCS(2, "Pending Docs"),
         SIGN_ON_READY(3, "Sign-On Ready"),
-        SIGNED_ON(4, "Signed-On"),
-        SIGNED_OFF(5, "Signed-Off"),
-        INJURED(10, "Injured");
+        ASSIGNED(4, "Assigned"),
+        SIGNED_ON(5, "Signed-On"),
+        SIGNED_OFF(6, "Signed-Off"),
+        INJURED(7, "Injured");
 
         private int id;
         private String desc;

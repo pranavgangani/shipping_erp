@@ -151,8 +151,8 @@
     </div>
 
     <div class="modal fade" id="selectCrewModal" tabindex="-1" role="dialog" aria-labelledby="selectCrewModalLabel" style="display: none;" aria-hidden="true">
-    	   <form id="vacancy-assign-form" role="form" method="POST">
-    	   <input type="hidden" id="vacancyId" value="${vacancy.id}">
+    	   <form id="vacancy-assign-form" role="form" method="POST" action="/vessel/fill_vacancy">
+    	   <input type="hidden" id="vacancyId" name="vacancyId" value="">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -161,7 +161,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="col-md-8 mb-3">
-                            <label class="small mb-3" for="statusText">Status</label>
+                            <label class="small mb-3" for="statusText">Vacancy Status</label>
                             <label class="small mb-3" id="statusText"></label>
                         </div>
                         <div class="col-md-8 mb-3">
