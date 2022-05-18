@@ -11,6 +11,7 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <%@ include file="../includes/header_includes.jsp" %>
         <script src="../js/vessel/vessel_details.js"></script>
+
 </head>
 <body class="nav-fixed">
 	<%@ include file="../includes/top_nav_bar.jsp"%>
@@ -150,43 +151,43 @@
     </div>
 
     <div class="modal fade" id="selectCrewModal" tabindex="-1" role="dialog" aria-labelledby="selectCrewModalLabel" style="display: none;" aria-hidden="true">
-    	    <form id="vacancy-assign-form" role="form" method="POST">
+    	   <form id="vacancy-assign-form" role="form" method="POST">
     	   <input type="hidden" id="vacancyId" value="${vacancy.id}">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Select Crew</h5>
+                        <h5 class="modal-title">Select Crew for Vacancy#<span id="vacancyIdSpan"/></h5>
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="col-md-8 mb-3">
-                            <label class="small mb-3" for="vesselId">Select a Vessel</label>
-                            <select class="form-select" id="vesselId" name="vesselId" aria-label="Default select vessel">
-                                <option selected disabled>Select a Vessel:</option>
-                                <c:forEach items="${vessels}" var="vessel">
-                                    <option value="${vessel.id}">${vessel.vesselName} (${vessel.vesselSubType.desc})</option>
-                                </c:forEach>
-                            </select>
+                            <label class="small mb-3" for="statusText">Status</label>
+                            <label class="small mb-3" id="statusText"></label>
                         </div>
                         <div class="col-md-8 mb-3">
-                            <select class="form-select" id="rankId" name="rankId" aria-label="Default select rank">
-                                <option selected disabled>Select a Rank:</option>
-                                <c:forEach var="optionGroup" items="${rankMap}">
-                                   <optgroup label="${optionGroup.key}">
-                                   <c:forEach var="option" items="${optionGroup.value}">
-                                      <option <c:if test="${crew.rank.id==option.id}">selected</c:if> value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>
-                                   </c:forEach>
-                                   </optgroup>
-                                </c:forEach>
-                            </select>
+                            <label class="small mb-3" for="openPositionText">Open Positions#</label>
+                            <label class="small mb-3" id="openPositionText"></label>
                         </div>
-                        <div class="col-md-8 mb-3">
-                            <label class="small mb-3" for="openPositions">No. of open positions</label>
-                            <input class="small mb-2 form-control" name="openPositions" id="openPositions" type="text" placeholder="Enter No. of open positions" value="1" />
-                        </div>
+
+                                <div id="table-select-crew" class="table-responsive">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-gray-200" scope="col">#</th>
+                                                <th class="border-gray-200" scope="col">Crew Name</th>
+                                                <th class="border-gray-200" scope="col">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
                         <div class="modal-footer">
                             <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
-                            <button class="btn btn-primary" type="submit">Add</button>
+                            <button class="btn btn-primary" type="submit">Add Selected</button>
                         </div>
                      </div>
                 </div>

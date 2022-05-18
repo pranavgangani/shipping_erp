@@ -229,6 +229,7 @@ public class VesselVacancyController {
             crewList.forEach(c->{
                 try {
                     JSONObject obj = new JSONObject();
+                    obj.put("id", c.getId());
                     obj.put("fullName", c.getFullName());
                     obj.put("status", c.getStatus().getDesc());
                     crewArr.put(obj);
@@ -243,6 +244,7 @@ public class VesselVacancyController {
                 JSONObject vacancyObj = new JSONObject();
                 vacancyObj.put("status", VesselVacancy.Status.createFromId(vacancy.getStatusId()).getDesc());
                 //vacancyObj.put("status", vacancy.getVacancyAttributes().getMinRankList().forEach(r->r.getName()));
+                vacancyObj.put("openPositions", vacancy.getOpenPositions());
                 obj.put("vacancy", vacancyObj);
             } catch (JSONException e) {
                 e.printStackTrace();
