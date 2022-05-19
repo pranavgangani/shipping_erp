@@ -31,7 +31,7 @@
                                 <div class="nav-link-icon"><i data-feather="users"></i></div>
                                 Crew
                             </a>
-                            <a class="nav-link collapsed" href="/crew/doc_list"  aria-expanded="false">
+                            <a class="nav-link collapsed" href="/crew/documents"  aria-expanded="false">
                                 <div class="nav-link-icon"><i data-feather="briefcase"></i></div>
                                 Crew Documents
                             </a>

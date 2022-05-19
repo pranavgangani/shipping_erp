@@ -111,10 +111,49 @@ class DocumentTest {
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
     }*/
-/*
+
 
     @Test
+    void add5BasicSTCWTrainingDocs() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Elementary First Aid (EFA) - STCW 2010 Basic Safety Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Fire Prevention and Fire Fighting (FPFF) - STCW 2010 Basic Safety Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Personal Survival Techniques (PST) - STCW 2010 Basic Safety Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Personal Safety and Social Responsibility (PSSR) - STCW 2010 Basic Safety Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setName("Proficiency in Security Awareness (PSA) - STCW 2010 Basic Safety Training");
+        docTypeDao.insert(type);
+    }
+
+   /* @Test
     void add5BasicSTCWTrainingDocsForAnyCrew() {
+
         MerchantNavyCertificate trainingCert = new MerchantNavyCertificate();
         trainingCert.setId(sequenceGenerator.generateSequence(Document.SEQUENCE_NAME));
         trainingCert.setDocTypeId(docTypeDao.findByName("STCW 2010 Basic Safety Training").getId());
@@ -189,8 +228,7 @@ class DocumentTest {
         trainingCert.setRequiredBeforeJoining(true);//Mandatory only if joining this Type of Vessle
         trainingCert.setValidity(2, DurationType.YEARS);
         documentDao.insert(trainingCert);
-    }
-*/
+    }*/
 
 
     @Test
@@ -456,6 +494,7 @@ class DocumentTest {
         docTypeDao.insert(type);
 
     }
+
     @Test
     void addAllValidDocTypes() {
         DocumentType type = new DocumentType();

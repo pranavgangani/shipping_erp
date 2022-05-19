@@ -179,14 +179,15 @@ public class CrewController {
 
     @GetMapping(value = "/documents")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/documents");
-        List<CrewDocument> documents = documentDao.findAll();
+        ModelAndView mv = null;
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
+            mv = new ModelAndView("crew/documents");
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
-            List<? extends CrewDocument> existingDocuments = crew.getExistingDocuments();
+
+            List<CrewDocument> existingDocuments = documentDao.findAll();
 
             if (ListUtil.isNotEmpty(existingDocuments)) {
                 existingDocuments.forEach(doc -> {
@@ -214,10 +215,13 @@ public class CrewController {
                 System.out.println("No auditTrails");
             }
 
+        }else {
+            mv = new ModelAndView("crew/doc_list");
+            List<CrewDocument> existingDocuments = documentDao.findAll();
+            mv.addObject("existingDocuments", existingDocuments);
         }
 
         mv.addObject("action", "Edit");
-        mv.addObject("list", documents);
 
 
         return mv;
