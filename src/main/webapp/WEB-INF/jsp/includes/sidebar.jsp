@@ -76,27 +76,7 @@
                                     </div>
                                 </nav>
                             </div>
-                            <!-- Sidenav Accordion (Pages)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseVacancies" aria-expanded="false" aria-controls="collapseVacancies">
-                                <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                                Vacancy
-                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseVacancies" data-bs-parent="#accordionSidenav">
-                                <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavVacancies">
 
-                                    <!-- Nested Sidenav Accordion (Pages -> Account)-->
-                                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAccount" aria-expanded="false" aria-controls="pagesCollapseAccount">
-                                        Add New
-                                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAccount" data-bs-parent="#accordionSidenavVacancies">
-                                        <nav class="sidenav-menu-nested nav">
-                                            <a class="nav-link" href="/vacancy/vacancy_details">Add New Vacancy</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div>
                             <!-- Sidenav Accordion (Applications)-->
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseVessel" aria-expanded="false" aria-controls="collapseVessel">
                                 <div class="nav-link-icon"><i data-feather="globe"></i></div>
@@ -125,7 +105,7 @@
                                     Request
                                     <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
-                               <div class="collapse" id="collapseFlows" data-bs-parent="#accordionSidenav">
+                               <div class="collapse" id="collapseRequest" data-bs-parent="#accordionSidenav">
                                    <nav class="sidenav-menu-nested nav">
                                        <a class="nav-link" href="/vessel/mandatory_document_list">Hotel Document List</a>
                                        <a class="nav-link" href="/crew/mandatory_document_list">Crew Document List</a>
@@ -175,7 +155,6 @@
                                     <div class="collapse" id="collapseLayoutSidenavVariations" data-bs-parent="#accordionSidenavLayout">
                                         <nav class="sidenav-menu-nested nav">
                                             <a class="nav-link" href="/settings/ranks">Rank</a>
-                                            <a class="nav-link" href="/settings/document_list">Crew Document List</a>
                                             <a class="nav-link" href="/settings/document_type_list">Document Type List</a>
                                         </nav>
                                     </div>

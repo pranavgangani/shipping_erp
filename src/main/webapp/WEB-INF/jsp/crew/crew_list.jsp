@@ -131,6 +131,13 @@
 															<i data-feather="log-out"></i>
 														</div> Edit
 													</a>
+													<c:if test="${crew.statusId == 4}">
+                                                        <a class="dropdown-item" href="/crew/generateContract?crewId=${crew.id}">
+                                                            <div class="dropdown-item-icon">
+                                                                <i data-feather="briefcase"></i>
+                                                            </div> Generate Contract
+                                                        </a>
+                                                    </c:if>
 													<div class="dropdown-divider"></div>
 													<a class="dropdown-item" href="/crew/vacancy_list?crewId=${crew.id}">
 														<div class="dropdown-item-icon">

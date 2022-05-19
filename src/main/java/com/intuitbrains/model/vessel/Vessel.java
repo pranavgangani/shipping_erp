@@ -30,9 +30,7 @@ public class Vessel {
 	private double grossTonnage;
 	private long length, beam, draught;
 	private String imo, mmsi, callSign;
-	private int homePortId;
-	private Port homePort;
-	private String flagCode;
+	private String homePort;
 	private Flag flag;
 	private VesselStatus vesselStatus;
 	private boolean isActive;
@@ -77,14 +75,6 @@ public class Vessel {
 	}
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
-	}
-
-	public String getFlagCode() {
-		return flagCode;
-	}
-
-	public void setFlagCode(String flagCode) {
-		this.flagCode = flagCode;
 	}
 
 	public int getYearOfBuilt() {
@@ -136,16 +126,10 @@ public class Vessel {
 	public void setCallSign(String callSign) {
 		this.callSign = callSign;
 	}
-	public int getHomePortId() {
-		return homePortId;
-	}
-	public void setHomePortId(int homePortId) {
-		this.homePortId = homePortId;
-	}
-	public Port getHomePort() {
+	public String getHomePort() {
 		return homePort;
 	}
-	public void setHomePort(Port homePort) {
+	public void setHomePort(String homePort) {
 		this.homePort = homePort;
 	}
 	public Flag getFlag() {

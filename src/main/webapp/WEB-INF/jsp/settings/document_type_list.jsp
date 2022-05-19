@@ -7,8 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Add Doc</title>
-
+        <title>Document Types</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <%@ include file="../includes/header_includes.jsp" %>
     </head>
 
@@ -22,83 +22,46 @@
 
             <div id="layoutSidenav_content">
                 <main>
-
-					<header
-						class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
-						<div class="container-fluid px-4">
-							<div class="page-header-content">
-								<div class="row align-items-center justify-content-between pt-3">
-									<div class="col-auto mb-3">
-										<h1 class="page-header-title">
-											<div class="page-header-icon">
-												<i data-feather="user-plus"></i>
-											</div>
-											Add New Doc
-										</h1>
-									</div>
-									<div class="col-12 col-xl-auto mb-3">
-										<a class="btn btn-sm btn-light text-primary"
-											href="/settings/document_list"> <i class="me-1"
-											data-feather="arrow-left"></i> Go to Doc List
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</header>
-
-
-					<!-- Main page content-->
-                    <div class="container-fluid px-4">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <!-- Account details card-->
-                                <div class="card mb-6">
-                                    <div class="card-header">Add Doc</div>
-                                    <div class="card-body">
-                                        <form action="/settings/add_new_doc" method="POST">
-
-										<div class="row gx-3 mb-3">
-											<div class="col-md-4">
-												<label class="small mb-1" for="docCategoryId">Doc Category</label>
-												<select class="form-select" aria-label="Default select example" id="docCategoryId" name="docCategoryId">
-                                                    <option selected disabled>Select Category:</option>
-                                                    <c:forEach items="${docCategoryList}" var="docCat">
-                                                            <option value="${docCat.id}">${docCat.name}</option>
-                                                    </c:forEach>
-                                                </select>
-											</div>
-											<div class="col-md-4">
-												<label class="small mb-1" for="docCategoryId">Doc Pool</label>
-                                                    <select class="form-select" aria-label="Default select example" id="docCategoryId" name="docCategoryId">
-                                                        <option selected disabled>Select Pool:</option>
-                                                        <c:forEach items="${docPoolList}" var="docPool">
-                                                                <option value="${docPool.name}">${docPool.name}</option>
-                                                        </c:forEach>
-                                                    </select>
-											</div>
-											 <div class="row gx-3 mb-3">
-                                                <div class="col-md-4">
-                                                    <label class="small mb-1" for="docTypeName">Document Type</label>
-                                                    <input class="form-control" name="docTypeName" type="text" placeholder="Enter Doc Type Name" value="" />
-                                                </div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                                <div class="col-md-4">
-                                                    <label class="small mb-1" for="docTypeDesc">Document Type Description</label>
-                                                    <input class="form-control" name="docTypeDesc" type="text" placeholder="Enter Doc Type Description" value="" />
-                                                </div>
-                                            </div>
-										</div>
-										<!-- Save changes button-->
-                                            <button class="btn btn-primary" type="submit">Add</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="card mb-4">
+						<div class="card-header">Document Type List
+						  <button class="btn btn-blue btn-icon float-end" type="button" data-bs-toggle="modal" data-bs-target="#newDocTypeModal">
+                            <i data-feather="plus"></i>
+                            </button>
                         </div>
-                    </div>
+						<div class="card-body">
+							<table id="datatablesSimple">
+								<thead>
+									<tr>
+										<th>Name</th>
+                                        <th>Flag</th>
+                                        <th>Category</th>
+                                        <th>Pool</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>Name</th>
+                                        <th>Flag</th>
+                                        <th>Category</th>
+                                        <th>Pool</th>
+									</tr>
+								</tfoot>
+								<tbody>
 
+								<c:forEach items="${documentTypeList}" var="dt">
+								    <tr>
+										<td>${dt.name}</td>
+										<td>${dt.flagCode}</td>
+										<td>${dt.documentCategory.name}</td>
+										<td>${dt.documentPool}</td>
+									</tr>
+								</c:forEach>
+
+
+								</tbody>
+							</table>
+						</div>
+					</div>
                 </main>
 
                 <%@ include file="../includes/copyright.jsp" %>
@@ -108,27 +71,59 @@
 
         <%@ include file="../includes/bottom_includes.jsp" %>
 
-    </body>
 
-<script>
+	<div class="modal fade" id="newDocTypeModal" tabindex="-1" role="dialog" aria-labelledby="newDocTypeModalLabel" style="display: none;" aria-hidden="true">
+	    <form id="vacancy-fill-form" role="form" method="POST" action="/vessel/add_vacancy">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Vacancy</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-8 mb-3">
+                        <label class="small mb-3" for="vesselId">Select a Pool</label>
+                        <select class="form-select" aria-label="Default select example" id="docCategoryId" name="docCategoryId">
+                            <option selected disabled>Select Pool:</option>
+                            <c:forEach items="${docPoolList}" var="docPool">
+                                    <option value="${docPool.name}">${docPool.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <select class="form-select" aria-label="Default select example" id="nationalityFlagCode" name="nationalityFlagCode">
+                            <option selected disabled>Select Nationality Flag:</option>
+                            <c:forEach items="${flags}" var="flag">
+                                    <option value="${flag.code}">${flag.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                         <label class="small mb-1" for="docTypeName">Document Type</label>
+                            <input class="form-control" name="docTypeName" type="text" placeholder="Enter Doc Type Name" value="" />
 
-var input = document.querySelector("#file-input");
+                             <label class="small mb-1" for="docTypeDesc">Document Type Description</label>
+                                <input class="form-control" name="docTypeDesc" type="text" placeholder="Enter Doc Type Description" value="" />
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        </form>
+    </div>
 
-document.getElementById("myBtn").addEventListener("click", function () {
-  input.click();
-});
 
-input.addEventListener("change", preview);
-function preview() {
-  var fileObject = this.files[0];
-  var fileReader = new FileReader();
-  fileReader.readAsDataURL(fileObject);
-  fileReader.onload = function () {
-    var result = fileReader.result;
-    var img = document.querySelector("#preview");
-    img.setAttribute("src", result);
-  };
-}
+	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+		crossorigin="anonymous"></script>
+	<script src="../js/datatables/datatables-simple-demo.js"></script>
+				</main>
+    			<%@ include file="../includes/copyright.jsp"%>
+    		</div>
 
-</script>
+    		<%@ include file="../includes/bottom_includes.jsp"%>
+    	</div>
+</body>
 </html>

@@ -82,20 +82,20 @@ class CrewTest {
         Flag flag = flagDao.getByCode("IN");
 
         Crew crew = new Crew();
-        crew.setFirstName("Rohan");
-        crew.setMiddleName("P");
-        crew.setLastName("Tiwari");
+        crew.setFirstName("Pranav");
+        crew.setMiddleName("J");
+        crew.setLastName("Gangani");
         crew.setDob(dob);
         crew.setGender("male");
         crew.setMaritalStatusId(Crew.MaritalStatus.MARRIED.getId());
-        crew.setRankId(Rank.CAPTAIN.getId());
+        crew.setRankId(Rank.CHIEF_ENGINEER.getId());
         crew.setNationalityFlagId(flag.getId());
         crew.setNationality("Indian");
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setPresentAddress(crew.getPermAddress());
         crew.setDistinguishMark("Some mark on head");
 
-        crew.setEmailId("rtiwari@gmail.com");
+        crew.setEmailId("pgangani@gmail.com");
         crew.setPassportNumber("SLJALJLJ");
 
 
@@ -358,7 +358,7 @@ class CrewTest {
         crew.setNextOfKins(nextOfKins);
 
         Bson updates = Updates.set("nextOfKins", nextOfKins);
-        Bson filter = Filters.eq("_id", 24);
+        Bson filter = Filters.eq("_id", 1);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
     }
 

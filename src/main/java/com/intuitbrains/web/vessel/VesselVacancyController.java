@@ -212,7 +212,7 @@ public class VesselVacancyController {
 
     @PostMapping(value = "/fill_vacancy")
     public ModelAndView fillVacancy(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("redirect:/crew/crew_list?status="+Crew.Status.ASSIGNED.getId());
+        ModelAndView mv = new ModelAndView("redirect:/crew/list?statusId="+Crew.Status.ASSIGNED.getId());
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
         //String crewIdsParam = req.getParameter("crewIds");

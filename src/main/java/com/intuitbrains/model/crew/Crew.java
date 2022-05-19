@@ -38,7 +38,8 @@ public class Crew extends Person {
     private long photoId;
     private ObjectId nationalityFlagId;
     private String nationality;
-    private LocalDate dob;
+    private String placeOfBirth;
+    private LocalDate dob, passportExpirationDate, indosExpirationDate;
     private int age;
     private Contract currentContract;
     private long assignedVacancyId;
@@ -227,6 +228,24 @@ public class Crew extends Person {
         this.passportNumber = passportNumber;
     }
 
+    public LocalDate getPassportExpirationDate() {
+        return passportExpirationDate;
+    }
+
+    @ACrew(name = CrewField.PASSPORT_EXPIRY_DATE)
+    public void setPassportExpirationDate(LocalDate passportExpirationDate) {
+        this.passportExpirationDate = passportExpirationDate;
+    }
+
+    public LocalDate getIndosExpirationDate() {
+        return indosExpirationDate;
+    }
+
+    @ACrew(name = CrewField.INDOS_EXPIRY_DATE)
+    public void setIndosExpirationDate(LocalDate indosExpirationDate) {
+        this.indosExpirationDate = indosExpirationDate;
+    }
+
     public String getIndosNumber() {
         return indosNumber;
     }
@@ -269,6 +288,15 @@ public class Crew extends Person {
     @ACrew(name = CrewField.NATIONALITY)
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    @ACrew(name = CrewField.PLACE_OF_BIRTH)
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
     }
 
     public long getPhotoId() {

@@ -16,6 +16,7 @@
 package com.intuitbrains.web.crew;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -25,8 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
+import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.*;
 import com.intuitbrains.dao.company.EmployeeRepository;
+import com.intuitbrains.dao.crew.CrewContractRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.model.common.document.Passport;
@@ -35,13 +38,14 @@ import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
+import com.intuitbrains.model.crew.contract.CrewContract;
 import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselVacancy;
 import com.intuitbrains.model.vessel.VesselVacancyAttributes;
+import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.crew.CrewService;
-import com.intuitbrains.util.ListUtil;
-import com.intuitbrains.util.StandardWebParameter;
-import com.intuitbrains.util.StringUtil;
+import com.intuitbrains.service.vessel.VesselService;
+import com.intuitbrains.util.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +65,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.intuitbrains.dao.crew.PhotoRepository;
 import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.service.common.SequenceGeneratorService;
-import com.intuitbrains.util.ParamUtil;
 
 @RestController
 @RequestMapping(value = "/crew")
@@ -84,6 +87,10 @@ public class CrewController {
     private VesselRepository vesselDao;
     @Autowired
     private CrewService crewService;
+    @Autowired
+    private CrewContractRepository crewContractDao;
+    @Autowired
+    private VesselService vesselService;
 
     @GetMapping(value = "/list")
     public ModelAndView crewList(HttpServletRequest req, Model model) {
@@ -214,6 +221,86 @@ public class CrewController {
 
 
         return mv;
+    }
+
+    @GetMapping(value = "/generateContract")
+    public ModelAndView generateContract(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/contract_details");
+
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            Crew crew = crewService.getObjectById(crewId);
+            crew.setMaritalStatus(Crew.MaritalStatus.createFromId(crew.getMaritalStatusId()));
+
+            VesselVacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
+            mv.addObject("crew", crew);
+            mv.addObject("vessel", vacancy.getVessel());
+            mv.addObject("crewId", crewId);
+        }
+
+
+        return mv;
+    }
+
+    @PostMapping(value = "/generateContract")
+    public ModelAndView generateContractFiles(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/crew_list");
+
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        double monthlyWage = Double.parseDouble(req.getParameter("wage"));
+        String embarkPort = StringUtil.trim(req.getParameter("embarkPort"));
+
+        //Date
+        String embarkDateStr = StringUtil.trim(req.getParameter("embarkDate"));
+        String[] embarkDateArr = embarkDateStr.split("/");
+        int month = ParamUtil.parseInt(embarkDateArr[0], -1);
+        int day = ParamUtil.parseInt(embarkDateArr[1], -1);
+        int year = ParamUtil.parseInt(embarkDateArr[2], -1);
+        LocalDate embarkDate = LocalDate.of(year, month, day);
+
+        if (crewId > 0) {
+            Crew crew = crewService.getById(crewId);
+            generateContract(crew);
+            mv.addObject("crew", crew);
+            mv.addObject("crewId", crewId);
+        }
+
+
+        return mv;
+    }
+
+    private void generateContract(Crew crew) {
+
+        //Get Vessel details on which the crew has been assigned
+        VesselVacancy vacancy = vesselVacancyDao.findVacancyByCrewId(crew.getId());
+
+        //Get Vessel details
+        Vessel vessel = vesselService.getById(crew.getAssignedVacancyId());
+
+        CrewContract contract = new CrewContract();
+        contract.setId(sequenceGenerator.generateSequence(CrewContract.SEQUENCE_NAME));
+        contract.setRankId(crew.getRankId());
+        contract.setCrewId(crew.getId());
+        contract.setVesselId(vacancy.getId());
+        contract.setPlaceOfContract("Mumbai");
+        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
+        contract.setPlaceOfContractFlag(flag);
+        contract.setMonthlyWage(new BigDecimal(15000));
+        contract.setWageCurrency("USD");
+        contract.setStatusId(CrewContract.Status.GENERATED.getId());
+
+        //Generate Contract Docs
+        ContractDocumentGenerator wordDocument = new ContractDocumentGenerator(crew, vessel, contract);
+        try {
+            wordDocument.generate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Add Contract
+        crewContractDao.insert(contract);
+
+
     }
 
     @GetMapping(value = "/contracts")

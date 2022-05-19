@@ -83,6 +83,10 @@ public class CrewService {
         return collection.find(filter).projection(projections).first();
     }
 
+    public Crew getObjectById(long crewId) {
+        return crewDao.findById(crewId).get();
+    }
+
     public Crew addCrew(Crew crew) {
         crew.setEnteredDateTime(LocalDateTime.now());
         crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
@@ -132,6 +136,7 @@ public class CrewService {
 
     public void updateVacancy(long vacancyId, List<Long> crewIds, String assignedBy) {
         Bson updates = Updates.combine(
+                Updates.set("statusId", Crew.Status.ASSIGNED.getId()),
                 Updates.set("assignedVacancyId", vacancyId),
                 Updates.set("assignedVacancyDateTime", LocalDateTime.now()),
                 Updates.set("assignedVacancyBy", assignedBy)

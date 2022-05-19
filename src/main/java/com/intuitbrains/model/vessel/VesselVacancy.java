@@ -2,8 +2,6 @@ package com.intuitbrains.model.vessel;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.model.company.Employee;
-import com.intuitbrains.model.crew.Crew;
-import com.intuitbrains.model.crew.Rank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 

@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
+import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.AuditTrailRepository;
 import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
@@ -108,6 +109,7 @@ public class VesselController {
         String imo = req.getParameter("imo");
         String mmsi = req.getParameter("mmsi");
         String flag = req.getParameter("flag");
+        Flag flagObj = flagDao.getByCode(flag);
         String callSign = req.getParameter("callSign");
         int vesselSubTypeId = ParamUtil.parseInt(req.getParameter("vesselSubTypeId"), -1);
         int length = ParamUtil.parseInt(req.getParameter("length"), -1);
@@ -125,7 +127,8 @@ public class VesselController {
         vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
         vessel.setImo(imo);
         vessel.setMmsi(mmsi);
-        vessel.setFlagCode(flag);
+        vessel.setHomePort(flag);
+        vessel.setFlag(flagObj);
         //vessel.setVesselType(VesselType.createFromId(vesselTypeId));
         vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
         vessel.setLength(length);
@@ -212,7 +215,7 @@ public class VesselController {
         vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
         vessel.setImo(imo);
         vessel.setMmsi(mmsi);
-        vessel.setFlagCode(flag);
+        vessel.setHomePort(flag);
         vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
         vessel.setLength(length);
         vessel.setBeam(beam);
