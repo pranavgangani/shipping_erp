@@ -161,5 +161,9 @@ public class Experience {
         public static ReasonForSingOff createFromDesc(String desc) {
             return ((Arrays.stream(values()).filter(o->o.getTypeName().equalsIgnoreCase(desc)).collect(Collectors.toList())).get(0));
         }
+
+        public static void main(String[] args) {
+            Arrays.stream(ReasonForSingOff.values()).forEach(v->System.out.println(v.getTypeName()));
+        }
     }
 }

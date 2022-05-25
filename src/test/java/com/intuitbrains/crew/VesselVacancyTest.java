@@ -137,4 +137,9 @@ class VesselVacancyTest {
     }
 
 
+    @Test
+    void getVesselSubTypes() {
+        VesselSubType.getList().forEach(v->System.out.println(v.getDesc() + " ("+v.getVesselType()+")"));
+    }
+
 }

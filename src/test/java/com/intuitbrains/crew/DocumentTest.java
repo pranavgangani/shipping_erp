@@ -765,4 +765,9 @@ class DocumentTest {
         docTypeDao.findAll().forEach(dt->System.out.println(dt.getName() + " ("+dt.getShortName()+")"));
     }
 
+    @Test
+    void getFlags() {
+        flagDao.findAll().forEach(f->System.out.println(f.getName() + " ("+f.getCode()+")"));
+    }
+
 }

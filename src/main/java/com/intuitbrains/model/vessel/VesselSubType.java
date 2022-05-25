@@ -107,4 +107,8 @@ public class VesselSubType {
 		return vesselSubTypeMap;
 	}
 
+	public static void main(String[] args) {
+		VesselSubType.getList().forEach(v->System.out.println(v.getDesc()));
+	}
+
 }
