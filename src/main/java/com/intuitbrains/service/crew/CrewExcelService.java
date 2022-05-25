@@ -229,8 +229,8 @@ public class CrewExcelService {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
-            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
+            LocalDate doi = doiVal!=null? DateTimeUtil.convertToLocalDate(doiVal) : null;
+            LocalDate doe = doeVal!=null? DateTimeUtil.convertToLocalDate(doeVal) : null;
             String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
             String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
@@ -317,8 +317,8 @@ public class CrewExcelService {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
-            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
+            LocalDate doi = doiVal!=null?DateTimeUtil.convertToLocalDate(doiVal):null;
+            LocalDate doe = doeVal!=null? DateTimeUtil.convertToLocalDate(doeVal):null;
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
 
             String remarks = sheet.getRow(remarksCell.getRow()).getCell(remarksCell.getCol()).getRichStringCellValue().getString();
@@ -502,10 +502,10 @@ public class CrewExcelService {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
-            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
+            LocalDate doi = doiVal!=null? DateTimeUtil.convertToLocalDate(doiVal):null;
+            LocalDate doe = doeVal!=null?DateTimeUtil.convertToLocalDate(doeVal):null;
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
-            String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
+            String docNum = String.valueOf(sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getNumericCellValue());
             String grade = sheet.getRow(gradeCell.getRow()).getCell(gradeCell.getCol()).getRichStringCellValue().getString();
 
             if (docTypeStr.equalsIgnoreCase("Indian")) {

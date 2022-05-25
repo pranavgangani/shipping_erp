@@ -189,4 +189,8 @@ public class Rank {
         return list;
     }
 
+    public static void main(String[] args) {
+        getList().forEach(r-> System.out.println(r.getName()));
+
+    }
 }
