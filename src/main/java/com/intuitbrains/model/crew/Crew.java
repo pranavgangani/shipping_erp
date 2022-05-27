@@ -428,7 +428,7 @@ public class Crew extends Person {
 
 
     public List<CrewDocument> getExistingDocuments() {
-        return existingDocuments;
+        return existingDocuments != null ? existingDocuments : new ArrayList<>();
     }
 
     public void setExistingDocuments(List<CrewDocument> existingDocuments) {

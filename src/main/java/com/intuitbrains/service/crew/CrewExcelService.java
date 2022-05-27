@@ -6,6 +6,7 @@ import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
+import com.intuitbrains.model.common.document.category.EducationDocument;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.*;
@@ -106,8 +107,6 @@ public class CrewExcelService {
             populateLicence(sheet1, crew, mandatoryDocList, documents);
             //NoK
             populateNextOfKin(sheet1, crew, mandatoryDocList, documents);
-            //Courses & Certificates
-            populateCoursesAndCertificates(sheet2, crew);
             //Education & Apprentice
             populateTraining(sheet2, crew);
             //Education & Apprentice
@@ -134,30 +133,33 @@ public class CrewExcelService {
             CellReference courseNameCell = new CellReference("A" + i);
 
             String courseName = sheet.getRow(courseNameCell.getRow()).getCell(courseNameCell.getCol()).getRichStringCellValue().getString();
-            courseName = courseName.substring(courseName.lastIndexOf("(") + 1, courseName.lastIndexOf(")"));
-            DocumentType dt = docTypeDao.getByShortName(courseName);
 
-            if (dt != null) {
-                CellReference docNumberCell = new CellReference("D" + i);
-                CellReference doICell = new CellReference("F" + i);
-                CellReference doeCell = new CellReference("G" + i);
-                CellReference nameOfInstCell = new CellReference("H" + i);
-                CellReference durationDaysCell = new CellReference("I" + i);
-                CellReference placeOfInstCell = new CellReference("J" + i);
+            if (StringUtil.isNotEmpty(courseName)) {
+                courseName = courseName.substring(courseName.lastIndexOf("(") + 1, courseName.lastIndexOf(")"));
+                DocumentType dt = docTypeDao.getByShortName(courseName);
 
-                MerchantNavyCertificate cert = new MerchantNavyCertificate();
-                cert.setDocType(dt);
-                cert.setDocNumber(sheet.getRow(docNumberCell.getRow()).getCell(docNumberCell.getCol()).getRichStringCellValue().getString());
-                cert.setDateOfIssue(DateTimeUtil.convertToLocalDate(sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue()));
-                cert.setDateOfExpiry(DateTimeUtil.convertToLocalDate(sheet.getRow(doeCell.getRow()).getCell(doeCell.getCol()).getDateCellValue()));
-                cert.setInstituteName(sheet.getRow(nameOfInstCell.getRow()).getCell(nameOfInstCell.getCol()).getRichStringCellValue().getString());
-                cert.setDurationType(DurationType.DAYS);
-                cert.setValidity((int) sheet.getRow(durationDaysCell.getRow()).getCell(durationDaysCell.getCol()).getNumericCellValue());
-                cert.setInstituteAddress(sheet.getRow(placeOfInstCell.getRow()).getCell(placeOfInstCell.getCol()).getRichStringCellValue().getString());
-                trainingCerts.add(cert);
+                if (dt != null) {
+                    CellReference docNumberCell = new CellReference("D" + i);
+                    CellReference doICell = new CellReference("F" + i);
+                    CellReference doeCell = new CellReference("G" + i);
+                    CellReference nameOfInstCell = new CellReference("H" + i);
+                    CellReference durationDaysCell = new CellReference("I" + i);
+                    CellReference placeOfInstCell = new CellReference("J" + i);
+
+                    MerchantNavyCertificate cert = new MerchantNavyCertificate();
+                    cert.setDocType(dt);
+                    cert.setDocNumber(sheet.getRow(docNumberCell.getRow()).getCell(docNumberCell.getCol()).getRichStringCellValue().getString());
+                    cert.setDateOfIssue(DateTimeUtil.convertToLocalDate(sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue()));
+                    cert.setDateOfExpiry(DateTimeUtil.convertToLocalDate(sheet.getRow(doeCell.getRow()).getCell(doeCell.getCol()).getDateCellValue()));
+                    cert.setInstituteName(sheet.getRow(nameOfInstCell.getRow()).getCell(nameOfInstCell.getCol()).getRichStringCellValue().getString());
+                    cert.setDurationType(DurationType.DAYS);
+                    cert.setValidity((int) sheet.getRow(durationDaysCell.getRow()).getCell(durationDaysCell.getCol()).getNumericCellValue());
+                    cert.setInstituteAddress(sheet.getRow(placeOfInstCell.getRow()).getCell(placeOfInstCell.getCol()).getRichStringCellValue().getString());
+                    trainingCerts.add(cert);
+                }
             }
         }
-        crew.setExistingDocuments(trainingCerts);
+        crew.getExistingDocuments().addAll(trainingCerts);
     }
 
     private void populateMedicalHistory(Sheet sheet, Crew crew) {
@@ -180,11 +182,19 @@ public class CrewExcelService {
             }
             crew.setIllnessInjury(illnesses);
         }
-        crew.setHasMalaria(false);
-        crew.setSufferingFromDiseaseThatEndangersLife(false);
-        crew.setDrugAlcoholAddict(false);
-        crew.setHasEpilepsy(false);
-        crew.setHasNervousDisability(false);
+        CellReference endangerCell = new CellReference("H64");
+        CellReference drugCell = new CellReference("H65");
+        CellReference malariaCell = new CellReference("E67");
+        CellReference diabetesCell = new CellReference("J67");
+        CellReference epilepsyCell = new CellReference("E68");
+        CellReference nervousCell = new CellReference("J68");
+
+        crew.setHasMalaria(StringUtil.parseBoolean(sheet.getRow(malariaCell.getRow()).getCell(malariaCell.getCol()).getRichStringCellValue().getString()));
+        crew.setSufferingFromDiseaseThatEndangersLife(StringUtil.parseBoolean(sheet.getRow(endangerCell.getRow()).getCell(endangerCell.getCol()).getRichStringCellValue().getString()));
+        crew.setHasDiabetes(StringUtil.parseBoolean(sheet.getRow(diabetesCell.getRow()).getCell(diabetesCell.getCol()).getRichStringCellValue().getString()));
+        crew.setDrugAlcoholAddict(StringUtil.parseBoolean(sheet.getRow(drugCell.getRow()).getCell(drugCell.getCol()).getRichStringCellValue().getString()));
+        crew.setHasEpilepsy(StringUtil.parseBoolean(sheet.getRow(epilepsyCell.getRow()).getCell(epilepsyCell.getCol()).getRichStringCellValue().getString()));
+        crew.setHasNervousDisability(StringUtil.parseBoolean(sheet.getRow(nervousCell.getRow()).getCell(nervousCell.getCol()).getRichStringCellValue().getString()));
     }
 
     private void populateEducationHistory(Sheet sheet, Crew crew) {
@@ -196,13 +206,24 @@ public class CrewExcelService {
             CellReference startDateCell = new CellReference("F" + i);
             CellReference endDateCell = new CellReference("G" + i);
             CellReference degreeNameCell = new CellReference("H" + i);
+            String courseName = sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString();
 
-            Education edu = new Education();
-            edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
-            edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
-            edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
-            edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
-            education.add(edu);
+            if (StringUtil.isNotEmpty(courseName)) {
+                DocumentType dt = docTypeDao.getByShortName(courseName);
+                Education edu = new Education();
+                edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
+                edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+                edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+                edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
+                education.add(edu);
+
+                EducationDocument cert = new EducationDocument();
+                cert.setInstituteName(edu.getInstituteName());
+                cert.setStartDate(edu.getStartDate());
+                cert.setEndDate(edu.getEndDate());
+                cert.setDocType(dt);
+                crew.getExistingDocuments().add(cert);
+            }
         }
         //Pre-Sea Training/Apprentice
         for (int i = 52; i <= 53; i++) {
@@ -210,13 +231,24 @@ public class CrewExcelService {
             CellReference startDateCell = new CellReference("F" + i);
             CellReference endDateCell = new CellReference("G" + i);
             CellReference degreeNameCell = new CellReference("H" + i);
+            String courseName = sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString();
 
-            Education edu = new Education();
-            edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
-            edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
-            edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
-            edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
-            education.add(edu);
+            if (StringUtil.isNotEmpty(courseName)) {
+                DocumentType dt = docTypeDao.getByShortName(courseName);
+                Education edu = new Education();
+                edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
+                edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+                edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+                edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
+                education.add(edu);
+
+                EducationDocument cert = new EducationDocument();
+                cert.setInstituteName(edu.getInstituteName());
+                cert.setStartDate(edu.getStartDate());
+                cert.setEndDate(edu.getEndDate());
+                cert.setDocType(dt);
+                crew.getExistingDocuments().add(cert);
+            }
         }
         crew.setEducationHistory(education);
     }
@@ -248,10 +280,6 @@ public class CrewExcelService {
             employment.add(emp);
         }
         crew.setEmploymentHistory(employment);
-    }
-
-    private void populateCoursesAndCertificates(Sheet sheet, Crew crew) {
-
     }
 
     private void populatePassportVisa(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
