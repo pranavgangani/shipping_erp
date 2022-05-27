@@ -22,7 +22,6 @@ public class CrewDocument {
     protected String _type;
 
     protected long crewId;
-    private long docTypeId;
     private DocumentType docType;
     private String flagCode;
     private Binary file;
@@ -112,14 +111,6 @@ public class CrewDocument {
 
     public void setDocNumber(String docNumber) {
         this.docNumber = docNumber;
-    }
-
-    public long getDocTypeId() {
-        return docTypeId;
-    }
-
-    public void setDocTypeId(long docTypeId) {
-        this.docTypeId = docTypeId;
     }
 
     public DocumentType getDocType() {

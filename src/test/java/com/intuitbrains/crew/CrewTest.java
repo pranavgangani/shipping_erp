@@ -110,7 +110,7 @@ class CrewTest {
         ssc.setEndDate(LocalDate.of(2002, 4, 23));
 
         EducationDocument sscDoc = new Certificate();
-        sscDoc.setDocTypeId(docTypeDao.findByName("SSC").getId());
+        sscDoc.setDocType(docTypeDao.findByName("SSC"));
         //sscDoc.setFile();
         ssc.setEducationDocuments(new ArrayList<>(Arrays.asList(sscDoc)));
 
@@ -124,7 +124,7 @@ class CrewTest {
         hsc.setEndDate(LocalDate.of(2006, 4, 23));
 
         EducationDocument hscDoc = new Certificate();
-        hscDoc.setDocTypeId(docTypeDao.findByName("HSC").getId());
+        hscDoc.setDocType(docTypeDao.findByName("HSC"));
         //empDoc2.setFile();
         //hsc.setEducationDocuments(new ArrayList<>(Arrays.asList(hscDoc)));
 
@@ -456,22 +456,21 @@ class CrewTest {
 
     @Test
     void testGetPPVisa() {
-        List<CrewDocument> list = crewService.getPassportVisa(1);
+        List<CrewDocument> list = crewService.getPassportVisa(4);
         List<Passport> passports = new ArrayList<>();
         List<Visa> visas = new ArrayList<>();
-        for(CrewDocument doc : list) {
-            if(doc.getDocTypeId() == 1) {
-                Passport pp = (Passport)doc;
+        for (CrewDocument doc : list) {
+            if (doc instanceof Passport) {
+                Passport pp = (Passport) doc;
                 passports.add(pp);
-            }
-            else if(doc instanceof Visa) {
-                Visa visa = (Visa)doc;
+            } else if (doc instanceof Visa) {
+                Visa visa = (Visa) doc;
                 visas.add(visa);
             }
         }
         //List<Passport> passport = list.stream().filter(TravelDocument.class::isInstance).map(Passport.class::cast).collect(Collectors.toList());
 
-        list.forEach(e -> System.out.println("DocTypeId = " + e.getDocTypeId()));
+        list.forEach(e -> System.out.println("Doc = " + e.getDocType().getName()));
     }
 
     @Test
@@ -479,7 +478,7 @@ class CrewTest {
         List<DocumentType> documentTypes = docTypeDao.findAll();
         List<CrewDocument> existingDocs = new ArrayList<>();
         for (DocumentType dt : documentTypes) {
-            if (dt.getId() == 1) {//Indian Passport
+            if (dt.getDocumentPool().equals(DocumentPool.PASSPORT)) {
                 Passport pp = new Passport();
                 pp.setCrewId(1);
                 pp.setDocNumber("12433453");
@@ -490,27 +489,25 @@ class CrewTest {
                 pp.setDateOfIssue(LocalDate.of(2020, 2, 20));
                 pp.setDateOfExpiry(LocalDate.of(2040, 2, 20));
                 pp.setPlaceOfIssue("Mumbai, India");
-                pp.setDocTypeId(dt.getId());
                 pp.setDocType(dt);
                 existingDocs.add(pp);
-            } else if (dt.getId() == 14) {//US C1/D Visa
-                    Visa visa = new Visa();
-                    visa.setCrewId(1);
-                    visa.setDocNumber("5678890");
-                    visa.setGivenName("Tiwari Rohan Pradeep");
-                    visa.setFlagCode("US");
-                    visa.setDateOfIssue(LocalDate.of(2018, 2, 20));
-                    visa.setDateOfExpiry(LocalDate.of(2028, 2, 20));
-                    visa.setPlaceOfIssue("NY, USA");
-                    visa.setDocTypeId(dt.getId());
-                    visa.setDocType(dt);
-                    existingDocs.add(visa);
+            } else if (dt.getDocumentPool().equals(DocumentPool.VISA)) {
+                Visa visa = new Visa();
+                visa.setCrewId(1);
+                visa.setDocNumber("5678890");
+                visa.setGivenName("Tiwari Rohan Pradeep");
+                visa.setFlagCode("US");
+                visa.setDateOfIssue(LocalDate.of(2018, 2, 20));
+                visa.setDateOfExpiry(LocalDate.of(2028, 2, 20));
+                visa.setPlaceOfIssue("NY, USA");
+                visa.setDocType(dt);
+                existingDocs.add(visa);
             }
         }
      /*   Bson updates = Updates.set("existingDocuments", existingDocs);
         Bson filter = Filters.eq("_id", 24);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);*/
-        for(CrewDocument doc : existingDocs) {
+        for (CrewDocument doc : existingDocs) {
             doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
         }
         documentDao.insert(existingDocs);

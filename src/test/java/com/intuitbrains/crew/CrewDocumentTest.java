@@ -41,7 +41,7 @@ class CrewDocumentTest {
         list.addAll(documentDao.getPostJoiningDocsForAllVesselTypeAndSpecificRank(Rank.CAPTAIN.getId()));
 
         list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocType().getDocumentCategory().getName()
-                + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
+                + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
 
     }
 
@@ -50,7 +50,7 @@ class CrewDocumentTest {
         List<CrewDocument> list = documentDao.getPostJoiningDocsForAllVesselTypeAndAllSpecificSubCat(RankSubCategory.RATING.getId());
 
         list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocType().getDocumentCategory().getName()
-                + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
+                + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
 
     }
 
@@ -80,7 +80,7 @@ class CrewDocumentTest {
                 vesselSubTypeId, rankCatId, rankSubCatId, rank.getId()));
 
         list.forEach(doc -> System.out.println(doc.getId() + " - " + doc.getDocType().getDocumentCategory().getName()
-                + " - " + doc.getDocTypeId() + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
+                + " - " + doc.getDocName() + " - " + doc.getClass().getName()));
 
         list.forEach(o -> {
 

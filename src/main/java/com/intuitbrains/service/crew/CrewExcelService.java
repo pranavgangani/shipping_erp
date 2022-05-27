@@ -332,7 +332,6 @@ public class CrewExcelService {
                     if (docTypeStr.equalsIgnoreCase("Passport")) {
                         DocumentType dt = docTypeDao.findByName("Indian Passport");
                         Passport passport = new Passport();
-                        passport.setDocName(dt.getName());
                         passport.setDocType(dt);
                         passport.setDateOfExpiry(doe);
                         passport.setDocNumber(docNum);
@@ -347,7 +346,6 @@ public class CrewExcelService {
                         DocumentType dt = docTypeDao.findByName("US C1/D");
                         Visa visa = new Visa();
                         visa.setDocType(dt);
-                        visa.setDocName(dt.getName());
                         visa.setDocNumber(docNum);
                         visa.setDateOfIssue(doi);
                         visa.setDateOfExpiry(doe);
@@ -356,6 +354,7 @@ public class CrewExcelService {
                     } else if (docTypeStr.equalsIgnoreCase("US Visa B1/B2")) {
                         DocumentType dt = docTypeDao.findByName("US B1/B2");
                         Visa visa = new Visa();
+                        visa.setDocType(dt);
                         visa.setDocNumber(docNum);
                         visa.setDateOfIssue(doi);
                         visa.setDateOfExpiry(doe);
@@ -364,6 +363,7 @@ public class CrewExcelService {
                     } else if (docTypeStr.equalsIgnoreCase("Australian MCV")) {
                         DocumentType dt = docTypeDao.findByName("Australian MCV");
                         Visa visa = new Visa();
+                        visa.setDocType(dt);
                         visa.setDocNumber(docNum);
                         visa.setDateOfIssue(doi);
                         visa.setDateOfExpiry(doe);
