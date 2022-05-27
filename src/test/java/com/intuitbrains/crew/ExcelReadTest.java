@@ -52,7 +52,7 @@ class ExcelReadTest {
     @Test
     public void readFromExcel() {
         try {
-            FileInputStream file = new FileInputStream("D:\\shipping_erp\\Rohan.xlsx");
+            FileInputStream file = new FileInputStream("D:\\shipping_erp\\Pranav.xlsx");
             crewService.uploadCrewData("IND001",file);
         } catch (IOException e) {
             e.printStackTrace();

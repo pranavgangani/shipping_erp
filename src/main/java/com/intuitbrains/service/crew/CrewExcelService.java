@@ -219,7 +219,7 @@ public class CrewExcelService {
                     edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
                     education.add(edu);
 
-                    EducationDocument cert = new EducationDocument();
+                    Certificate cert = new Certificate();
                     cert.setInstituteName(edu.getInstituteName());
                     cert.setStartDate(edu.getStartDate());
                     cert.setEndDate(edu.getEndDate());
@@ -248,7 +248,7 @@ public class CrewExcelService {
                     edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
                     education.add(edu);
 
-                    EducationDocument cert = new EducationDocument();
+                    Certificate cert = new Certificate();
                     cert.setInstituteName(edu.getInstituteName());
                     cert.setStartDate(edu.getStartDate());
                     cert.setEndDate(edu.getEndDate());
@@ -392,7 +392,7 @@ public class CrewExcelService {
             } else {
                 System.out.println("Cell is empty");
             }
-            double docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getNumericCellValue();
+            String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
 
             String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
 
@@ -409,7 +409,7 @@ public class CrewExcelService {
                 NationalID cdc = new NationalID();
                 cdc.setDateOfExpiry(doe);
                 cdc.setDocType(dt);
-                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDocNumber(docNum);
                 cdc.setDateOfIssue(doi);
                 cdc.setDateOfExpiry(doe);
                 cdc.setPlaceOfIssue(placeOfIssue);
@@ -420,7 +420,7 @@ public class CrewExcelService {
                 NationalID cdc = new NationalID();
                 cdc.setDateOfExpiry(doe);
                 cdc.setDocType(dt);
-                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDocNumber(docNum);
                 cdc.setDateOfIssue(doi);
                 cdc.setDateOfExpiry(doe);
                 cdc.setPlaceOfIssue(placeOfIssue);
@@ -431,7 +431,7 @@ public class CrewExcelService {
                 NationalID cdc = new NationalID();
                 cdc.setDocType(dt);
                 cdc.setDateOfExpiry(doe);
-                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDocNumber(docNum);
                 cdc.setDateOfIssue(doi);
                 cdc.setDateOfExpiry(doe);
                 cdc.setPlaceOfIssue(placeOfIssue);
@@ -442,7 +442,7 @@ public class CrewExcelService {
                 NationalID cdc = new NationalID();
                 cdc.setDocType(dt);
                 cdc.setDateOfExpiry(doe);
-                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDocNumber(docNum);
                 cdc.setDateOfIssue(doi);
                 cdc.setDateOfExpiry(doe);
                 cdc.setPlaceOfIssue(placeOfIssue);
@@ -453,7 +453,7 @@ public class CrewExcelService {
                 NationalID cdc = new NationalID();
                 cdc.setDocType(dt);
                 cdc.setDateOfExpiry(doe);
-                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDocNumber(docNum);
                 cdc.setDateOfIssue(doi);
                 cdc.setDateOfExpiry(doe);
                 cdc.setPlaceOfIssue(placeOfIssue);
@@ -465,7 +465,7 @@ public class CrewExcelService {
                 Certificate cert = new Certificate();
                 cert.setDocType(dt);
                 cert.setDateOfExpiry(doe);
-                cert.setDocNumber(String.valueOf(docNum));
+                cert.setDocNumber(docNum);
                 cert.setDateOfIssue(doi);
                 cert.setDateOfExpiry(doe);
                 cert.setPlaceOfIssue(placeOfIssue);
