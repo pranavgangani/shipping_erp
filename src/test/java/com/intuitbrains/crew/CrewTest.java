@@ -87,7 +87,7 @@ class CrewTest {
         crew.setLastName("Gangani");
         crew.setDob(dob);
         crew.setGender("male");
-        crew.setMaritalStatusId(Crew.MaritalStatus.MARRIED.getId());
+        crew.setMaritalStatus(Crew.MaritalStatus.MARRIED.getDesc());
         crew.setRankId(Rank.CHIEF_ENGINEER.getId());
         crew.setNationalityFlagId(flag.getId());
         crew.setNationality("Indian");

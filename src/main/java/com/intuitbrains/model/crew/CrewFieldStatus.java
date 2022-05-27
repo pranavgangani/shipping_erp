@@ -3,7 +3,7 @@ package com.intuitbrains.model.crew;
 import com.intuitbrains.dao.common.FieldStatus;
 
 public class CrewFieldStatus {
-    private FieldStatus firstName, middleName, lastName, maritalStatusId, gender, nationalityFlagId, nationality, rank, manningOffice, nearestAirport,
+    private FieldStatus firstName, middleName, lastName, maritalStatus, gender, nationalityFlagId, nationality, rank, manningOffice, nearestAirport,
             distinguishingMark, permAddress, presentAddress, emailId, contact1, contact2, dob, passportNumber, indosNumber;
 
     public CrewFieldStatus() {
@@ -14,7 +14,7 @@ public class CrewFieldStatus {
         firstName = new FieldStatus(null, null, null, null);
         middleName = new FieldStatus(null, null, null, null);
         lastName = new FieldStatus(null, null, null, null);
-        maritalStatusId = new FieldStatus(null, null, null, null);
+        maritalStatus = new FieldStatus(null, null, null, null);
         gender = new FieldStatus(null, null, null, null);
         nationalityFlagId = new FieldStatus(null, null, null, null);
         nationality = new FieldStatus(null, null, null, null);
@@ -53,8 +53,8 @@ public class CrewFieldStatus {
         this.lastName = lastName;
     }
 
-    public void setMaritalStatusId(FieldStatus maritalStatusId) {
-        this.maritalStatusId = maritalStatusId;
+    public void setMaritalStatus(FieldStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public void setGender(FieldStatus gender) {
@@ -132,8 +132,8 @@ public class CrewFieldStatus {
         return lastName;
     }
 
-    public FieldStatus getMaritalStatusId() {
-        return maritalStatusId;
+    public FieldStatus getMaritalStatus() {
+        return maritalStatus;
     }
 
     public FieldStatus getGender() {

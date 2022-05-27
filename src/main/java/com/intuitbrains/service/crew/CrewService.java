@@ -111,9 +111,18 @@ public class CrewService {
     }
 
     public Crew uploadCrewData(String uploadByEmpId, FileInputStream file) throws IOException {
-        Crew crew = crewExcelService.upload(file);
+        Crew crew = crewExcelService.readFromExcel(file);
         crew.setEnteredBy(uploadByEmpId);
+
         this.addCrew(crew);
+
+        List<CrewDocument> docsToUpload = crew.getExistingDocuments();
+        for(CrewDocument doc : docsToUpload) {
+            doc.setCrewId(crew.getId());
+            doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        }
+        documentDao.insert(docsToUpload);
+
         return crew;
     }
 

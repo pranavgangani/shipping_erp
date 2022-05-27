@@ -234,7 +234,6 @@ public class CrewController {
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewService.getObjectById(crewId);
-            crew.setMaritalStatus(Crew.MaritalStatus.createFromId(crew.getMaritalStatusId()));
 
             VesselVacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
             mv.addObject("crew", crew);
@@ -355,7 +354,7 @@ public class CrewController {
         crew.setContact1(contact1);
         crew.setContact2(contact2);
         crew.setNearestAirport(nearestAirport);
-        crew.setMaritalStatusId(0);
+        crew.setMaritalStatus(maritalStatus);
         crew.setPermAddress(homeAddress);
         crew.setNationality(nationality);
         crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());

@@ -53,8 +53,7 @@ public class Crew extends Person {
     private String permAddress, presentAddress;
     private String contact1, contact2;
     private String nearestAirport;
-    private int maritalStatusId;
-    private MaritalStatus maritalStatus;
+    private String maritalStatus;
 
     // Past
     private List<Experience> employmentHistory;
@@ -352,20 +351,12 @@ public class Crew extends Person {
         this.nearestAirport = nearestAirport;
     }
 
-    public int getMaritalStatusId() {
-        return maritalStatusId;
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 
-    @ACrew(name = CrewField.MARITAL_STATUS_ID)
-    public void setMaritalStatusId(int maritalStatusId) {
-        this.maritalStatusId = maritalStatusId;
-    }
-
-    public MaritalStatus getMaritalStatus() {
-        return MaritalStatus.createFromId(getMaritalStatusId());
-    }
-
-    public void setMaritalStatus(MaritalStatus maritalStatus) {
+    @ACrew(name = CrewField.MARITAL_STATUS)
+    public void setMaritalStatus(String maritalStatus) {
         this.maritalStatus = maritalStatus;
     }
 
@@ -428,7 +419,7 @@ public class Crew extends Person {
 
 
     public List<CrewDocument> getExistingDocuments() {
-        return existingDocuments != null ? existingDocuments : new ArrayList<>();
+        return existingDocuments;
     }
 
     public void setExistingDocuments(List<CrewDocument> existingDocuments) {
@@ -637,27 +628,17 @@ public class Crew extends Person {
 
 
     public enum MaritalStatus {
-        SINGLE(1, "Single"),
-        MARRIED(2, "Married");
+        SINGLE("Single"),
+        MARRIED("Married");
 
-        private int id;
         private String desc;
 
-        MaritalStatus(int id, String desc) {
-            this.id = id;
+        MaritalStatus(String desc) {
             this.desc = desc;
-        }
-
-        public int getId() {
-            return id;
         }
 
         public String getDesc() {
             return desc;
-        }
-
-        public static MaritalStatus createFromId(int typeId) {
-            return ((getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
         }
 
         public static List<MaritalStatus> getList() {

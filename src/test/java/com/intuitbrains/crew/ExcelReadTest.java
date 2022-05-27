@@ -10,6 +10,7 @@ import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.service.crew.CrewExcelService;
+import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.DateTimeUtil;
 import com.intuitbrains.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -46,13 +47,13 @@ class ExcelReadTest {
     @Autowired
     private FlagRepository flagDao;
     @Autowired
-    private CrewExcelService crewExcelService;
+    private CrewService crewService;
 
     @Test
     public void readFromExcel() {
         try {
             FileInputStream file = new FileInputStream("D:\\shipping_erp\\Rohan.xlsx");
-            crewExcelService.upload(file);
+            crewService.uploadCrewData("IND001",file);
         } catch (IOException e) {
             e.printStackTrace();
         }

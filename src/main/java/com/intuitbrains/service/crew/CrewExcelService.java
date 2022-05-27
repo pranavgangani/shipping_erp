@@ -1,5 +1,6 @@
 package com.intuitbrains.service.crew;
 
+import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
@@ -10,6 +11,7 @@ import com.intuitbrains.model.common.document.category.EducationDocument;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.*;
+import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.util.DateTimeUtil;
 import com.intuitbrains.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -41,14 +43,14 @@ public class CrewExcelService {
     @Autowired
     private FlagRepository flagDao;
 
-    public Crew upload(FileInputStream file) {
+    public Crew readFromExcel(FileInputStream file) {
         Crew crew = new Crew();
-        readFromExcel(file, crew);
+        read(file, crew);
         return crew;
     }
 
 
-    private void readFromExcel(FileInputStream file, Crew crew) {
+    private Crew read(FileInputStream file, Crew crew) {
         try {
             List<CrewDocument> documents = new ArrayList<>();
             Workbook workbook = new XSSFWorkbook(file);
@@ -106,27 +108,26 @@ public class CrewExcelService {
             //Licence
             populateLicence(sheet1, crew, mandatoryDocList, documents);
             //NoK
-            populateNextOfKin(sheet1, crew, mandatoryDocList, documents);
+            populateNextOfKin(sheet1, crew, documents);
             //Education & Apprentice
-            populateTraining(sheet2, crew);
+            populateTraining(sheet2, crew, documents);
             //Education & Apprentice
-            populateEducationHistory(sheet2, crew);
+            populateEducationHistory(sheet2, crew, documents);
             //Medical History
             populateMedicalHistory(sheet2, crew);
             //Employment
-            populateEmploymentHistory(sheet3, crew);
+            populateEmploymentHistory(sheet3, crew, documents);
 
             //Set docs
             crew.setExistingDocuments(documents);
 
-            crewDao.insert(crew);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return crew;
     }
 
-    private void populateTraining(Sheet sheet, Crew crew) {
-        List<CrewDocument> trainingCerts = new ArrayList<>();
+    private void populateTraining(Sheet sheet, Crew crew,  List<CrewDocument> crewDocsToPopulate) {
 
         //10+2
         for (int i = 2; i <= 38; i++) {
@@ -155,11 +156,10 @@ public class CrewExcelService {
                     cert.setDurationType(DurationType.DAYS);
                     cert.setValidity((int) sheet.getRow(durationDaysCell.getRow()).getCell(durationDaysCell.getCol()).getNumericCellValue());
                     cert.setInstituteAddress(sheet.getRow(placeOfInstCell.getRow()).getCell(placeOfInstCell.getCol()).getRichStringCellValue().getString());
-                    trainingCerts.add(cert);
+                    crewDocsToPopulate.add(cert);
                 }
             }
         }
-        crew.getExistingDocuments().addAll(trainingCerts);
     }
 
     private void populateMedicalHistory(Sheet sheet, Crew crew) {
@@ -197,87 +197,112 @@ public class CrewExcelService {
         crew.setHasNervousDisability(StringUtil.parseBoolean(sheet.getRow(nervousCell.getRow()).getCell(nervousCell.getCol()).getRichStringCellValue().getString()));
     }
 
-    private void populateEducationHistory(Sheet sheet, Crew crew) {
+    private void populateEducationHistory(Sheet sheet, Crew crew,  List<CrewDocument> crewDocsToPopulate) {
         List<Education> education = new ArrayList<>();
 
         //10+2
         for (int i = 47; i <= 48; i++) {
             CellReference instituteNameCell = new CellReference("A" + i);
-            CellReference startDateCell = new CellReference("F" + i);
-            CellReference endDateCell = new CellReference("G" + i);
-            CellReference degreeNameCell = new CellReference("H" + i);
-            String courseName = sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString();
+            String instituteName = sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString();
 
-            if (StringUtil.isNotEmpty(courseName)) {
+            if (StringUtil.isNotEmpty(instituteName)) {
+                CellReference startDateCell = new CellReference("F" + i);
+                CellReference endDateCell = new CellReference("G" + i);
+                CellReference degreeNameCell = new CellReference("H" + i);
+                String courseName = sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString();
                 DocumentType dt = docTypeDao.getByShortName(courseName);
-                Education edu = new Education();
-                edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
-                edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
-                edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
-                edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
-                education.add(edu);
+                if (dt != null) {
+                    Education edu = new Education();
+                    edu.setInstituteName(instituteName);
+                    edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+                    edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+                    edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
+                    education.add(edu);
 
-                EducationDocument cert = new EducationDocument();
-                cert.setInstituteName(edu.getInstituteName());
-                cert.setStartDate(edu.getStartDate());
-                cert.setEndDate(edu.getEndDate());
-                cert.setDocType(dt);
-                crew.getExistingDocuments().add(cert);
+                    EducationDocument cert = new EducationDocument();
+                    cert.setInstituteName(edu.getInstituteName());
+                    cert.setStartDate(edu.getStartDate());
+                    cert.setEndDate(edu.getEndDate());
+                    cert.setDocType(dt);
+
+                    crewDocsToPopulate.add(cert);
+                }
             }
         }
         //Pre-Sea Training/Apprentice
         for (int i = 52; i <= 53; i++) {
             CellReference instituteNameCell = new CellReference("A" + i);
-            CellReference startDateCell = new CellReference("F" + i);
-            CellReference endDateCell = new CellReference("G" + i);
-            CellReference degreeNameCell = new CellReference("H" + i);
-            String courseName = sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString();
+            String instituteName = sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString();
 
-            if (StringUtil.isNotEmpty(courseName)) {
+            if (StringUtil.isNotEmpty(instituteName)) {
+                CellReference startDateCell = new CellReference("F" + i);
+                CellReference endDateCell = new CellReference("G" + i);
+                CellReference degreeNameCell = new CellReference("H" + i);
+                String courseName = sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString();
                 DocumentType dt = docTypeDao.getByShortName(courseName);
-                Education edu = new Education();
-                edu.setInstituteName(sheet.getRow(instituteNameCell.getRow()).getCell(instituteNameCell.getCol()).getRichStringCellValue().getString());
-                edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
-                edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
-                edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
-                education.add(edu);
+                if (dt != null) {
+                    Education edu = new Education();
+                    edu.setInstituteName(instituteName);
+                    edu.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+                    edu.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+                    edu.setEducationName(sheet.getRow(degreeNameCell.getRow()).getCell(degreeNameCell.getCol()).getRichStringCellValue().getString());
+                    education.add(edu);
 
-                EducationDocument cert = new EducationDocument();
-                cert.setInstituteName(edu.getInstituteName());
-                cert.setStartDate(edu.getStartDate());
-                cert.setEndDate(edu.getEndDate());
-                cert.setDocType(dt);
-                crew.getExistingDocuments().add(cert);
+                    EducationDocument cert = new EducationDocument();
+                    cert.setInstituteName(edu.getInstituteName());
+                    cert.setStartDate(edu.getStartDate());
+                    cert.setEndDate(edu.getEndDate());
+                    cert.setDocType(dt);
+                    crewDocsToPopulate.add(cert);
+                }
             }
         }
         crew.setEducationHistory(education);
     }
 
-    private void populateEmploymentHistory(Sheet sheet, Crew crew) {
+    private void populateEmploymentHistory(Sheet sheet, Crew crew,  List<CrewDocument> crewDocsToPopulate) {
         List<Experience> employment = new LinkedList<>();
 
-        for (int i = 7; i <= 48; i++) {
+        for (int i = 4; i <= 48; i++) {
             CellReference empNameCell = new CellReference("B" + i);
-            CellReference vesselNameCell = new CellReference("C" + i);
-            CellReference rankCell = new CellReference("D" + i);
-            CellReference flagCell = new CellReference("E" + i);
-            CellReference vesselTypeCell = new CellReference("F" + i);
+            String empName = sheet.getRow(empNameCell.getRow()).getCell(empNameCell.getCol()).getRichStringCellValue().getString();
+            if (StringUtil.isNotEmpty(empName)) {
+                CellReference vesselNameCell = new CellReference("C" + i);
+                CellReference rankCell = new CellReference("D" + i);
+                CellReference flagCell = new CellReference("E" + i);
+                String flagCode = StringUtil.trim(sheet.getRow(flagCell.getRow()).getCell(flagCell.getCol()).getRichStringCellValue().getString());
+                flagCode = flagCode.substring(flagCode.lastIndexOf("(") + 1, flagCode.lastIndexOf(")"));
+                //Flag flag = flagDao.getByCode(flagCode);
+                CellReference vesselTypeCell = new CellReference("F" + i);
+                String vesselType = StringUtil.trim(sheet.getRow(vesselTypeCell.getRow()).getCell(vesselTypeCell.getCol()).getRichStringCellValue().getString());
+                VesselSubType subType = VesselSubType.createFromDesc(vesselType);
 
-            CellReference startDateCell = new CellReference("L" + i);
-            CellReference endDateCell = new CellReference("M" + i);
-            CellReference signOffReasonCell = new CellReference("O" + i);
+                CellReference startDateCell = new CellReference("L" + i);
+                CellReference endDateCell = new CellReference("M" + i);
+                CellReference signOffReasonCell = new CellReference("O" + i);
 
-            Experience emp = new Experience();
-            emp.setEmployerName(sheet.getRow(empNameCell.getRow()).getCell(empNameCell.getCol()).getRichStringCellValue().getString());
-            /*vessel.setVesselName(sheet.getRow(vesselNameCell.getRow()).getCell(vesselNameCell.getCol()).getRichStringCellValue().getString());
-            vessel.setFlagCode(flagDao.getByCode(sheet.getRow(flagCell.getRow()).getCell(flagCell.getCol()).getRichStringCellValue().getString()).getCode());
-            vessel.setVesselSubType(VesselSubType.createFromDesc(sheet.getRow(vesselTypeCell.getRow()).getCell(vesselTypeCell.getCol()).getRichStringCellValue().getString()));*/
-            emp.setLastRank(Rank.createFromDesc(sheet.getRow(rankCell.getRow()).getCell(rankCell.getCol()).getRichStringCellValue().getString()));
-            emp.setVesselName(sheet.getRow(vesselNameCell.getRow()).getCell(vesselNameCell.getCol()).getRichStringCellValue().getString());
-            emp.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
-            emp.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
-            emp.setReasonForSingOff(Experience.ReasonForSingOff.createFromDesc(sheet.getRow(signOffReasonCell.getRow()).getCell(signOffReasonCell.getCol()).getRichStringCellValue().getString()));
-            employment.add(emp);
+                Experience emp = new Experience();
+                emp.setEmployerName(sheet.getRow(empNameCell.getRow()).getCell(empNameCell.getCol()).getRichStringCellValue().getString());
+                emp.setVesselName(sheet.getRow(vesselNameCell.getRow()).getCell(vesselNameCell.getCol()).getRichStringCellValue().getString());
+                emp.setFlagCode(flagCode);
+                emp.setVesselSubType(subType);
+                emp.setLastRank(Rank.createFromDesc(sheet.getRow(rankCell.getRow()).getCell(rankCell.getCol()).getRichStringCellValue().getString()));
+                emp.setStartDate(DateTimeUtil.convertToLocalDate(sheet.getRow(startDateCell.getRow()).getCell(startDateCell.getCol()).getDateCellValue()));
+                emp.setEndDate(DateTimeUtil.convertToLocalDate(sheet.getRow(endDateCell.getRow()).getCell(endDateCell.getCol()).getDateCellValue()));
+                String signOffReason = sheet.getRow(signOffReasonCell.getRow()).getCell(signOffReasonCell.getCol()).getRichStringCellValue().getString();
+                if (StringUtil.isNotEmpty(signOffReason)) {
+                    emp.setReasonForSingOff(Experience.ReasonForSingOff.createFromDesc(sheet.getRow(signOffReasonCell.getRow()).getCell(signOffReasonCell.getCol()).getRichStringCellValue().getString()));
+                }
+                employment.add(emp);
+
+              /*  ExperienceLetter cert = new ExperienceLetter();
+                cert.setDocType(DocumentType.);
+                cert.setStartDate(edu.getStartDate());
+                cert.setEndDate(edu.getEndDate());
+                cert.setDocType(dt);
+                crewDocsToPopulate.add(cert);*/
+            }
+
         }
         crew.setEmploymentHistory(employment);
     }
@@ -483,7 +508,7 @@ public class CrewExcelService {
         }
     }
 
-    private void populateNextOfKin(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
+    private void populateNextOfKin(Sheet sheet, Crew crew, List<CrewDocument> crewDocsToPopulate) {
         CellReference civilStatusCell = new CellReference("D55");
         CellReference nokNameCell = new CellReference("D56");
         CellReference nokAddressCell = new CellReference("D57");
@@ -491,12 +516,13 @@ public class CrewExcelService {
         CellReference nokPinCodeCell = new CellReference("Q58");
         CellReference nokContactCell = new CellReference("N59");
 
-        String civilStatus = sheet.getRow(civilStatusCell.getRow()).getCell(civilStatusCell.getCol()).getRichStringCellValue().getString();
+        crew.setMaritalStatus(sheet.getRow(civilStatusCell.getRow()).getCell(civilStatusCell.getCol()).getRichStringCellValue().getString());
         String nokAddress = sheet.getRow(nokAddressCell.getRow()).getCell(nokAddressCell.getCol()).getRichStringCellValue().getString();
         //String nokPinCode = sheet.getRow(nokPinCodeCell.getRow()).getCell(nokPinCodeCell.getCol()).getRichStringCellValue().getString();
         String nokContact = sheet.getRow(nokContactCell.getRow()).getCell(nokContactCell.getCol()).getRichStringCellValue().getString();
 
         //NoK list
+        List<NextOfKin> noks = new ArrayList<>();
         for (int i = 62; i <= 65; i++) {
             CellReference nameCell = new CellReference("C" + i);
             CellReference relationTypeCell = new CellReference("E" + i);
@@ -539,9 +565,11 @@ public class CrewExcelService {
                 nokPassport.setDateOfIssue(doi);
                 nokPassport.setPlaceOfIssue(placeOfIssue);
                 nok.setPassport(nokPassport);
-            }
 
+                noks.add(nok);
+            }
         }
+        crew.setNextOfKins(noks);
     }
 
     private void populateLicence(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {

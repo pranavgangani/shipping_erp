@@ -19,7 +19,7 @@ public enum CrewField {
     CONTACT_1("contact1"),
     CONTACT_2("contact2"),
     NEAREST_AIRPORT("nearestAirport"),
-    MARITAL_STATUS_ID("maritalStatusId"),
+    MARITAL_STATUS("maritalStatus"),
     EMAILID("emailId");
 
     private String fieldName;
