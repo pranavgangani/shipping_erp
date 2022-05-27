@@ -100,13 +100,13 @@ public class CrewExcelService {
 
 
             //Get Documents
-            List<CrewDocument> mandatoryDocList = documentDao.findAll();
+            //List<CrewDocument> mandatoryDocList = documentDao.findAll();
             //Passport & Visa
-            populatePassportVisa(sheet1, crew, mandatoryDocList, documents);
+            populatePassportVisa(sheet1, crew, documents);
             //CDC
-            populateCDC(sheet1, crew, mandatoryDocList, documents);
+            populateCDC(sheet1, crew, documents);
             //Licence
-            populateLicence(sheet1, crew, mandatoryDocList, documents);
+            populateLicence(sheet1, crew, documents);
             //NoK
             populateNextOfKin(sheet1, crew, documents);
             //Education & Apprentice
@@ -127,7 +127,7 @@ public class CrewExcelService {
         return crew;
     }
 
-    private void populateTraining(Sheet sheet, Crew crew,  List<CrewDocument> crewDocsToPopulate) {
+    private void populateTraining(Sheet sheet, Crew crew, List<CrewDocument> crewDocsToPopulate) {
 
         //10+2
         for (int i = 2; i <= 38; i++) {
@@ -197,7 +197,7 @@ public class CrewExcelService {
         crew.setHasNervousDisability(StringUtil.parseBoolean(sheet.getRow(nervousCell.getRow()).getCell(nervousCell.getCol()).getRichStringCellValue().getString()));
     }
 
-    private void populateEducationHistory(Sheet sheet, Crew crew,  List<CrewDocument> crewDocsToPopulate) {
+    private void populateEducationHistory(Sheet sheet, Crew crew, List<CrewDocument> crewDocsToPopulate) {
         List<Education> education = new ArrayList<>();
 
         //10+2
@@ -260,7 +260,7 @@ public class CrewExcelService {
         crew.setEducationHistory(education);
     }
 
-    private void populateEmploymentHistory(Sheet sheet, Crew crew,  List<CrewDocument> crewDocsToPopulate) {
+    private void populateEmploymentHistory(Sheet sheet, Crew crew, List<CrewDocument> crewDocsToPopulate) {
         List<Experience> employment = new LinkedList<>();
 
         for (int i = 4; i <= 48; i++) {
@@ -307,29 +307,33 @@ public class CrewExcelService {
         crew.setEmploymentHistory(employment);
     }
 
-    private void populatePassportVisa(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
+    private void populatePassportVisa(Sheet sheet, Crew crew, List<CrewDocument> crewDocsToPopulate) {
         for (int i = 34; i <= 37; i++) {
             CellReference docTypeCell = new CellReference("B" + i);
-            CellReference numCell = new CellReference("E" + i);
-            CellReference doICell = new CellReference("H" + i);
-            CellReference poICell = new CellReference("L" + i);
-            CellReference doECell = new CellReference("O" + i);
-            CellReference blankCell = new CellReference("R" + i);
-            CellReference ecnrCell = new CellReference("T" + i);
 
-            Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
-            Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate doi = doiVal != null ? DateTimeUtil.convertToLocalDate(doiVal) : null;
-            LocalDate doe = doeVal != null ? DateTimeUtil.convertToLocalDate(doeVal) : null;
             String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
-            String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
-            String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
+            if (StringUtil.isNotEmpty(docTypeStr)) {
+                CellReference numCell = new CellReference("E" + i);
+                String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
 
-            if (docTypeStr.equalsIgnoreCase("Passport")) {
-                DocumentType dt = docTypeDao.findByName("Indian Passport");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        Passport passport = (Passport) doc;
+                if (StringUtil.isNotEmpty(docNum)) {
+                    CellReference doICell = new CellReference("H" + i);
+                    CellReference poICell = new CellReference("L" + i);
+                    CellReference doECell = new CellReference("O" + i);
+                    CellReference blankCell = new CellReference("R" + i);
+                    CellReference ecnrCell = new CellReference("T" + i);
+
+                    Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
+                    Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
+                    LocalDate doi = doiVal != null ? DateTimeUtil.convertToLocalDate(doiVal) : null;
+                    LocalDate doe = doeVal != null ? DateTimeUtil.convertToLocalDate(doeVal) : null;
+                    String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
+
+                    if (docTypeStr.equalsIgnoreCase("Passport")) {
+                        DocumentType dt = docTypeDao.findByName("Indian Passport");
+                        Passport passport = new Passport();
+                        passport.setDocName(dt.getName());
+                        passport.setDocType(dt);
                         passport.setDateOfExpiry(doe);
                         passport.setDocNumber(docNum);
                         passport.setDateOfIssue(doi);
@@ -339,53 +343,40 @@ public class CrewExcelService {
                         passport.setBlankPages((int) sheet.getRow(blankCell.getRow()).getCell(blankCell.getCol()).getNumericCellValue());
                         crewDocsToPopulate.add(passport);
                         crew.setPassportNumber(docNum);
-                        break;
-                    }
-                }
-            } else if (docTypeStr.equalsIgnoreCase("US Visa C1/D")) {
-                DocumentType dt = docTypeDao.findByName("US C1/D");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        Visa visa = (Visa) doc;
+                    } else if (docTypeStr.equalsIgnoreCase("US Visa C1/D")) {
+                        DocumentType dt = docTypeDao.findByName("US C1/D");
+                        Visa visa = new Visa();
+                        visa.setDocType(dt);
+                        visa.setDocName(dt.getName());
                         visa.setDocNumber(docNum);
                         visa.setDateOfIssue(doi);
                         visa.setDateOfExpiry(doe);
                         visa.setPlaceOfIssue(placeOfIssue);
                         crewDocsToPopulate.add(visa);
-                        break;
-                    }
-                }
-            } else if (docTypeStr.equalsIgnoreCase("US Visa B1/B2")) {
-                DocumentType dt = docTypeDao.findByName("US B1/B2");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        Visa visa = (Visa) doc;
+                    } else if (docTypeStr.equalsIgnoreCase("US Visa B1/B2")) {
+                        DocumentType dt = docTypeDao.findByName("US B1/B2");
+                        Visa visa = new Visa();
                         visa.setDocNumber(docNum);
                         visa.setDateOfIssue(doi);
                         visa.setDateOfExpiry(doe);
                         visa.setPlaceOfIssue(placeOfIssue);
                         crewDocsToPopulate.add(visa);
-                        break;
-                    }
-                }
-            } else if (docTypeStr.equalsIgnoreCase("Australian MCV")) {
-                DocumentType dt = docTypeDao.findByName("Australian MCV");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        Visa visa = (Visa) doc;
+                    } else if (docTypeStr.equalsIgnoreCase("Australian MCV")) {
+                        DocumentType dt = docTypeDao.findByName("Australian MCV");
+                        Visa visa = new Visa();
                         visa.setDocNumber(docNum);
                         visa.setDateOfIssue(doi);
                         visa.setDateOfExpiry(doe);
                         visa.setPlaceOfIssue(placeOfIssue);
                         crewDocsToPopulate.add(visa);
-                        break;
                     }
                 }
             }
+
         }
     }
 
-    private void populateCDC(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
+    private void populateCDC(Sheet sheet, Crew crew, List<CrewDocument> crewDocsToPopulate) {
         //CDC
         for (int i = 40; i <= 45; i++) {
             CellReference docTypeCell = new CellReference("B" + i);
@@ -415,95 +406,71 @@ public class CrewExcelService {
 
             if (docTypeStr.equalsIgnoreCase("Indian")) {
                 DocumentType dt = docTypeDao.findByName("Indian CDC");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        NationalID cdc = (NationalID) doc;
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(String.valueOf(docNum));
-                        cdc.setDateOfIssue(doi);
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setPlaceOfIssue(placeOfIssue);
-                        cdc.setRemarks(remarks);
-                        crewDocsToPopulate.add(cdc);
-                        break;
-                    }
-                }
+                NationalID cdc = new NationalID();
+                cdc.setDateOfExpiry(doe);
+                cdc.setDocType(dt);
+                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDateOfIssue(doi);
+                cdc.setDateOfExpiry(doe);
+                cdc.setPlaceOfIssue(placeOfIssue);
+                cdc.setRemarks(remarks);
+                crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("Liberian")) {
                 DocumentType dt = docTypeDao.findByName("Liberian CDC");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        NationalID cdc = (NationalID) doc;
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(String.valueOf(docNum));
-                        cdc.setDateOfIssue(doi);
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setPlaceOfIssue(placeOfIssue);
-                        cdc.setRemarks(remarks);
-                        crewDocsToPopulate.add(cdc);
-                        break;
-                    }
-                }
+                NationalID cdc = new NationalID();
+                cdc.setDateOfExpiry(doe);
+                cdc.setDocType(dt);
+                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDateOfIssue(doi);
+                cdc.setDateOfExpiry(doe);
+                cdc.setPlaceOfIssue(placeOfIssue);
+                cdc.setRemarks(remarks);
+                crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("Panama")) {
                 DocumentType dt = docTypeDao.findByName("Panama CDC");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        NationalID cdc = (NationalID) doc;
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(String.valueOf(docNum));
-                        cdc.setDateOfIssue(doi);
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setPlaceOfIssue(placeOfIssue);
-                        cdc.setRemarks(remarks);
-                        crewDocsToPopulate.add(cdc);
-                        break;
-                    }
-                }
+                NationalID cdc = new NationalID();
+                cdc.setDocType(dt);
+                cdc.setDateOfExpiry(doe);
+                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDateOfIssue(doi);
+                cdc.setDateOfExpiry(doe);
+                cdc.setPlaceOfIssue(placeOfIssue);
+                cdc.setRemarks(remarks);
+                crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("Others")) {
                 DocumentType dt = docTypeDao.findByName("Other CDC");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        NationalID cdc = (NationalID) doc;
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(String.valueOf(docNum));
-                        cdc.setDateOfIssue(doi);
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setPlaceOfIssue(placeOfIssue);
-                        cdc.setRemarks(remarks);
-                        crewDocsToPopulate.add(cdc);
-                        break;
-                    }
-                }
+                NationalID cdc = new NationalID();
+                cdc.setDocType(dt);
+                cdc.setDateOfExpiry(doe);
+                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDateOfIssue(doi);
+                cdc.setDateOfExpiry(doe);
+                cdc.setPlaceOfIssue(placeOfIssue);
+                cdc.setRemarks(remarks);
+                crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("INDOS")) {
                 DocumentType dt = docTypeDao.findByName("INDOS");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        NationalID cdc = (NationalID) doc;
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setDocNumber(String.valueOf(docNum));
-                        cdc.setDateOfIssue(doi);
-                        cdc.setDateOfExpiry(doe);
-                        cdc.setPlaceOfIssue(placeOfIssue);
-                        cdc.setRemarks(remarks);
-                        crewDocsToPopulate.add(cdc);
-                        crew.setIndosNumber(String.valueOf(docNum));
-                        break;
-                    }
-                }
+                NationalID cdc = new NationalID();
+                cdc.setDocType(dt);
+                cdc.setDateOfExpiry(doe);
+                cdc.setDocNumber(String.valueOf(docNum));
+                cdc.setDateOfIssue(doi);
+                cdc.setDateOfExpiry(doe);
+                cdc.setPlaceOfIssue(placeOfIssue);
+                cdc.setRemarks(remarks);
+                crewDocsToPopulate.add(cdc);
+                crew.setIndosNumber(String.valueOf(docNum));
             } else if (docTypeStr.equalsIgnoreCase("Yellow Fever")) {
                 DocumentType dt = docTypeDao.findByName("Yellow Fever");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        Certificate cert = (Certificate) doc;
-                        cert.setDateOfExpiry(doe);
-                        cert.setDocNumber(String.valueOf(docNum));
-                        cert.setDateOfIssue(doi);
-                        cert.setDateOfExpiry(doe);
-                        cert.setPlaceOfIssue(placeOfIssue);
-                        cert.setRemarks(remarks);
-                        crewDocsToPopulate.add(cert);
-                        break;
-                    }
-                }
+                Certificate cert = new Certificate();
+                cert.setDocType(dt);
+                cert.setDateOfExpiry(doe);
+                cert.setDocNumber(String.valueOf(docNum));
+                cert.setDateOfIssue(doi);
+                cert.setDateOfExpiry(doe);
+                cert.setPlaceOfIssue(placeOfIssue);
+                cert.setRemarks(remarks);
+                crewDocsToPopulate.add(cert);
             }
         }
     }
@@ -572,7 +539,7 @@ public class CrewExcelService {
         crew.setNextOfKins(noks);
     }
 
-    private void populateLicence(Sheet sheet, Crew crew, List<CrewDocument> mandatoryDocList, List<CrewDocument> crewDocsToPopulate) {
+    private void populateLicence(Sheet sheet, Crew crew, List<CrewDocument> crewDocsToPopulate) {
 
         //License
         for (int i = 48; i <= 53; i++) {
@@ -595,94 +562,70 @@ public class CrewExcelService {
 
             if (docTypeStr.equalsIgnoreCase("Indian")) {
                 DocumentType dt = docTypeDao.findByName("Indian License");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        License lic = (License) doc;
-                        lic.setDateOfExpiry(doe);
-                        lic.setDocNumber(docNum);
-                        lic.setDateOfIssue(doi);
-                        lic.setDateOfExpiry(doe);
-                        lic.setPlaceOfIssue(placeOfIssue);
-                        lic.setGrade(grade);
-                        crewDocsToPopulate.add(lic);
-                        break;
-                    }
-                }
+                License lic = new License();
+                lic.setDocType(dt);
+                lic.setDateOfExpiry(doe);
+                lic.setDocNumber(docNum);
+                lic.setDateOfIssue(doi);
+                lic.setDateOfExpiry(doe);
+                lic.setPlaceOfIssue(placeOfIssue);
+                lic.setGrade(grade);
+                crewDocsToPopulate.add(lic);
             } else if (docTypeStr.equalsIgnoreCase("Liberian")) {
                 DocumentType dt = docTypeDao.findByName("Liberian License");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        License lic = (License) doc;
-                        lic.setDateOfExpiry(doe);
-                        lic.setDocNumber(docNum);
-                        lic.setDateOfIssue(doi);
-                        lic.setDateOfExpiry(doe);
-                        lic.setPlaceOfIssue(placeOfIssue);
-                        lic.setGrade(grade);
-                        crewDocsToPopulate.add(lic);
-                        break;
-                    }
-                }
+                License lic = new License();
+                lic.setDocType(dt);
+                lic.setDateOfExpiry(doe);
+                lic.setDocNumber(docNum);
+                lic.setDateOfIssue(doi);
+                lic.setDateOfExpiry(doe);
+                lic.setPlaceOfIssue(placeOfIssue);
+                lic.setGrade(grade);
+                crewDocsToPopulate.add(lic);
             } else if (docTypeStr.equalsIgnoreCase("Panama")) {
                 DocumentType dt = docTypeDao.findByName("Panama License");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        License lic = (License) doc;
-                        lic.setDateOfExpiry(doe);
-                        lic.setDocNumber(docNum);
-                        lic.setDateOfIssue(doi);
-                        lic.setDateOfExpiry(doe);
-                        lic.setPlaceOfIssue(placeOfIssue);
-                        lic.setGrade(grade);
-                        crewDocsToPopulate.add(lic);
-                        break;
-                    }
-                }
+                License lic = new License();
+                lic.setDocType(dt);
+                lic.setDateOfExpiry(doe);
+                lic.setDocNumber(docNum);
+                lic.setDateOfIssue(doi);
+                lic.setDateOfExpiry(doe);
+                lic.setPlaceOfIssue(placeOfIssue);
+                lic.setGrade(grade);
+                crewDocsToPopulate.add(lic);
             } else if (docTypeStr.equalsIgnoreCase("UK")) {
                 DocumentType dt = docTypeDao.findByName("UK License");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        License lic = (License) doc;
-                        lic.setDateOfExpiry(doe);
-                        lic.setDocNumber(docNum);
-                        lic.setDateOfIssue(doi);
-                        lic.setDateOfExpiry(doe);
-                        lic.setPlaceOfIssue(placeOfIssue);
-                        lic.setGrade(grade);
-                        crewDocsToPopulate.add(lic);
-                        break;
-                    }
-                }
+                License lic = new License();
+                lic.setDocType(dt);
+                lic.setDateOfExpiry(doe);
+                lic.setDocNumber(docNum);
+                lic.setDateOfIssue(doi);
+                lic.setDateOfExpiry(doe);
+                lic.setPlaceOfIssue(placeOfIssue);
+                lic.setGrade(grade);
+                crewDocsToPopulate.add(lic);
             } else if (docTypeStr.equalsIgnoreCase("Singapore")) {
                 DocumentType dt = docTypeDao.findByName("Singapore License");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        License lic = (License) doc;
-                        lic.setDateOfExpiry(doe);
-                        lic.setDocNumber(docNum);
-                        lic.setDateOfIssue(doi);
-                        lic.setDateOfExpiry(doe);
-                        lic.setPlaceOfIssue(placeOfIssue);
-                        lic.setGrade(grade);
-                        crewDocsToPopulate.add(lic);
-                        break;
-                    }
-                }
+                License lic = new License();
+                lic.setDocType(dt);
+                lic.setDateOfExpiry(doe);
+                lic.setDocNumber(docNum);
+                lic.setDateOfIssue(doi);
+                lic.setDateOfExpiry(doe);
+                lic.setPlaceOfIssue(placeOfIssue);
+                lic.setGrade(grade);
+                crewDocsToPopulate.add(lic);
             } else if (docTypeStr.equalsIgnoreCase("Others")) {
                 DocumentType dt = docTypeDao.findByName("Other License");
-                for (CrewDocument doc : mandatoryDocList) {
-                    if (doc.getDocName().equalsIgnoreCase(dt.getName()) && doc.getFlagCode().equalsIgnoreCase(dt.getFlagCode())) {
-                        License lic = (License) doc;
-                        lic.setDateOfExpiry(doe);
-                        lic.setDocNumber(docNum);
-                        lic.setDateOfIssue(doi);
-                        lic.setDateOfExpiry(doe);
-                        lic.setPlaceOfIssue(placeOfIssue);
-                        lic.setGrade(grade);
-                        crewDocsToPopulate.add(lic);
-                        break;
-                    }
-                }
+                License lic = new License();
+                lic.setDocType(dt);
+                lic.setDateOfExpiry(doe);
+                lic.setDocNumber(docNum);
+                lic.setDateOfIssue(doi);
+                lic.setDateOfExpiry(doe);
+                lic.setPlaceOfIssue(placeOfIssue);
+                lic.setGrade(grade);
+                crewDocsToPopulate.add(lic);
             }
         }
     }
