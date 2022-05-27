@@ -324,7 +324,6 @@ class CrewTest {
         // nok1.setDateOfBirth("12-Mar-1983");
         nok1.setRelationType(NextOfKin.RelationType.WIFE.getRelationTypeName());
         nok1.setAddress("Same as above");
-        nok1.setGender("female");
         nok1.setPerOfAmount(60);
 
         NextOfKin nok2 = new NextOfKin();
@@ -332,7 +331,6 @@ class CrewTest {
         //nok2.setDateOfBirth("12-Apr-1964");
         nok2.setRelationType(NextOfKin.RelationType.MOTHER.getRelationTypeName());
         nok2.setAddress("Same as above");
-        nok2.setGender("female");
         nok2.setPerOfAmount(40);
 
         //Below 18
@@ -341,14 +339,12 @@ class CrewTest {
         //nok3.setDateOfBirth("21-Oct-2012");
         nok3.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
         nok3.setAddress("Same as above");
-        nok3.setGender("female");
 
         NextOfKin nok4 = new NextOfKin();
         nok4.setNomineeName("Shamika Tiwari");
         // nok4.setDateOfBirth("16-Jun-2015");
         nok4.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
         nok4.setAddress("Same as above");
-        nok4.setGender("female");
 
         List<NextOfKin> nextOfKins = new LinkedList<>();
         nextOfKins.add(nok1);

@@ -3,12 +3,13 @@ package com.intuitbrains.model.crew;
 import com.intuitbrains.model.common.document.Passport;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class NextOfKin  {
 	private int nomineeId;
 	private String nomineeName;
 	private String relationType;
-	private String gender;
 	private String address;
 	private LocalDate dateOfBirth;
 	private Passport passport;
@@ -37,14 +38,6 @@ public class NextOfKin  {
 
 	public void setRelationType(String relationType) {
 		this.relationType = relationType;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
 	}
 
 	public String getAddress() {
@@ -109,6 +102,12 @@ public class NextOfKin  {
 		public String getRelationTypeName() {
 			return relationTypeName;
 		}
-		
+
+		public static void main(String[] args) {
+			Arrays.stream(RelationType.values()).forEach(v->System.out.println(v.getRelationTypeName()));
+		}
+		public static RelationType createFromDesc(String name) {
+			return ((Arrays.stream(values()).filter(o->o.getRelationTypeName().equalsIgnoreCase(name)).collect(Collectors.toList())).get(0));
+		}
 	}
 }

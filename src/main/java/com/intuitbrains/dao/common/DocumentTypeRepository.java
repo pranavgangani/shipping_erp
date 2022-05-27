@@ -9,4 +9,7 @@ public interface DocumentTypeRepository extends MongoRepository<DocumentType, Lo
     @Query("{ $or: [ { shortName : { $regex: ?0 } }, { name : { $regex: ?0 } } ]}")
     public DocumentType findByName(String name);
 
+    @Query("{ shortName : { $regex: ?0 } }")
+    public DocumentType getByShortName(String name);
+
 }

@@ -39,6 +39,6 @@ public class DurationType {
 	}
 
 	public static DurationType createFromId(int typeId) {
-		return ((DurationType) (getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
+		return ((getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
 	}
 }

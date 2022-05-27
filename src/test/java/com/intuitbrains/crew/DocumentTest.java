@@ -186,7 +186,7 @@ class DocumentTest {
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
-        type.setShortName("AFF(R)");
+        type.setShortName("AFFR");
         type.setName("Refresher Training For Advance Fire Fighting");
         docTypeDao.insert(type);
 

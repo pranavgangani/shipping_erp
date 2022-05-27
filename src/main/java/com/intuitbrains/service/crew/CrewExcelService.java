@@ -4,6 +4,7 @@ import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
+import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentType;
@@ -16,6 +17,7 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,10 +48,9 @@ public class CrewExcelService {
 
 
     private void readFromExcel(FileInputStream file, Crew crew) {
-        final String fileLocation = "";
         try {
             List<CrewDocument> documents = new ArrayList<>();
-            Workbook workbook = new HSSFWorkbook(file);
+            Workbook workbook = new XSSFWorkbook(file);
             //Next, let's retrieve the first sheet of the file and iterate through each row:
             Sheet sheet1 = workbook.getSheetAt(0);
             Sheet sheet2 = workbook.getSheetAt(1);
@@ -108,6 +109,8 @@ public class CrewExcelService {
             //Courses & Certificates
             populateCoursesAndCertificates(sheet2, crew);
             //Education & Apprentice
+            populateTraining(sheet2, crew);
+            //Education & Apprentice
             populateEducationHistory(sheet2, crew);
             //Medical History
             populateMedicalHistory(sheet2, crew);
@@ -121,6 +124,40 @@ public class CrewExcelService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void populateTraining(Sheet sheet, Crew crew) {
+        List<CrewDocument> trainingCerts = new ArrayList<>();
+
+        //10+2
+        for (int i = 2; i <= 38; i++) {
+            CellReference courseNameCell = new CellReference("A" + i);
+
+            String courseName = sheet.getRow(courseNameCell.getRow()).getCell(courseNameCell.getCol()).getRichStringCellValue().getString();
+            courseName = courseName.substring(courseName.lastIndexOf("(") + 1, courseName.lastIndexOf(")"));
+            DocumentType dt = docTypeDao.getByShortName(courseName);
+
+            if (dt != null) {
+                CellReference docNumberCell = new CellReference("D" + i);
+                CellReference doICell = new CellReference("F" + i);
+                CellReference doeCell = new CellReference("G" + i);
+                CellReference nameOfInstCell = new CellReference("H" + i);
+                CellReference durationDaysCell = new CellReference("I" + i);
+                CellReference placeOfInstCell = new CellReference("J" + i);
+
+                MerchantNavyCertificate cert = new MerchantNavyCertificate();
+                cert.setDocType(dt);
+                cert.setDocNumber(sheet.getRow(docNumberCell.getRow()).getCell(docNumberCell.getCol()).getRichStringCellValue().getString());
+                cert.setDateOfIssue(DateTimeUtil.convertToLocalDate(sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue()));
+                cert.setDateOfExpiry(DateTimeUtil.convertToLocalDate(sheet.getRow(doeCell.getRow()).getCell(doeCell.getCol()).getDateCellValue()));
+                cert.setInstituteName(sheet.getRow(nameOfInstCell.getRow()).getCell(nameOfInstCell.getCol()).getRichStringCellValue().getString());
+                cert.setDurationType(DurationType.DAYS);
+                cert.setValidity((int) sheet.getRow(durationDaysCell.getRow()).getCell(durationDaysCell.getCol()).getNumericCellValue());
+                cert.setInstituteAddress(sheet.getRow(placeOfInstCell.getRow()).getCell(placeOfInstCell.getCol()).getRichStringCellValue().getString());
+                trainingCerts.add(cert);
+            }
+        }
+        crew.setExistingDocuments(trainingCerts);
     }
 
     private void populateMedicalHistory(Sheet sheet, Crew crew) {
@@ -229,8 +266,8 @@ public class CrewExcelService {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate doi = doiVal!=null? DateTimeUtil.convertToLocalDate(doiVal) : null;
-            LocalDate doe = doeVal!=null? DateTimeUtil.convertToLocalDate(doeVal) : null;
+            LocalDate doi = doiVal != null ? DateTimeUtil.convertToLocalDate(doiVal) : null;
+            LocalDate doe = doeVal != null ? DateTimeUtil.convertToLocalDate(doeVal) : null;
             String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
             String docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getRichStringCellValue().getString();
@@ -307,8 +344,8 @@ public class CrewExcelService {
 
             Cell c = sheet.getRow(i).getCell(numCell.getCol());
             if (c != null || c.getCellType() != CellType.BLANK) {
-               System.out.println("Cell is not empty");
-            }else {
+                System.out.println("Cell is not empty");
+            } else {
                 System.out.println("Cell is empty");
             }
             double docNum = sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getNumericCellValue();
@@ -317,8 +354,8 @@ public class CrewExcelService {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate doi = doiVal!=null?DateTimeUtil.convertToLocalDate(doiVal):null;
-            LocalDate doe = doeVal!=null? DateTimeUtil.convertToLocalDate(doeVal):null;
+            LocalDate doi = doiVal != null ? DateTimeUtil.convertToLocalDate(doiVal) : null;
+            LocalDate doe = doeVal != null ? DateTimeUtil.convertToLocalDate(doeVal) : null;
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
 
             String remarks = sheet.getRow(remarksCell.getRow()).getCell(remarksCell.getCol()).getRichStringCellValue().getString();
@@ -428,15 +465,13 @@ public class CrewExcelService {
 
         String civilStatus = sheet.getRow(civilStatusCell.getRow()).getCell(civilStatusCell.getCol()).getRichStringCellValue().getString();
         String nokAddress = sheet.getRow(nokAddressCell.getRow()).getCell(nokAddressCell.getCol()).getRichStringCellValue().getString();
-        String nokPinCode = sheet.getRow(nokPinCodeCell.getRow()).getCell(nokPinCodeCell.getCol()).getRichStringCellValue().getString();
+        //String nokPinCode = sheet.getRow(nokPinCodeCell.getRow()).getCell(nokPinCodeCell.getCol()).getRichStringCellValue().getString();
         String nokContact = sheet.getRow(nokContactCell.getRow()).getCell(nokContactCell.getCol()).getRichStringCellValue().getString();
 
         //NoK list
         for (int i = 62; i <= 65; i++) {
-            CellReference docTypeCell = new CellReference("B" + i);
-            String docTypeStr = sheet.getRow(docTypeCell.getRow()).getCell(docTypeCell.getCol()).getRichStringCellValue().getString();
-            CellReference nameCell = new CellReference("B" + i);
-            CellReference genderCell = new CellReference("E" + i);
+            CellReference nameCell = new CellReference("C" + i);
+            CellReference relationTypeCell = new CellReference("E" + i);
             CellReference dobCell = new CellReference("F" + i);
             CellReference passportCell = new CellReference("H" + i);
             CellReference doICell = new CellReference("K" + i);
@@ -445,45 +480,39 @@ public class CrewExcelService {
             CellReference ecnrCell = new CellReference("Q" + i);
             CellReference hasUSVisaCell = new CellReference("S" + i);
 
-            Date dobVal = sheet.getRow(dobCell.getRow()).getCell(dobCell.getCol()).getDateCellValue();
-            Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
-            Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate dob = DateTimeUtil.convertToLocalDate(dobVal);
-            LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
-            LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
-            String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
             String name = sheet.getRow(nameCell.getRow()).getCell(nameCell.getCol()).getRichStringCellValue().getString();
-            String gender = sheet.getRow(genderCell.getRow()).getCell(genderCell.getCol()).getRichStringCellValue().getString();
-            String passportNum = sheet.getRow(passportCell.getRow()).getCell(passportCell.getCol()).getRichStringCellValue().getString();
-            boolean isECNR = StringUtil.parseBoolean(sheet.getRow(ecnrCell.getRow()).getCell(ecnrCell.getCol()).getRichStringCellValue().getString());
-            boolean hasUSVisa = StringUtil.parseBoolean(sheet.getRow(hasUSVisaCell.getRow()).getCell(hasUSVisaCell.getCol()).getRichStringCellValue().getString());
 
-            NextOfKin nok = new NextOfKin();
-            NextOfKin.RelationType relationType = null;
-            if (docTypeStr.equalsIgnoreCase("Wife")) {
-                relationType = NextOfKin.RelationType.WIFE;
-            } else if (docTypeStr.startsWith("Child")) {
-                if (gender.equalsIgnoreCase("M"))
-                    relationType = NextOfKin.RelationType.SON;
-                if (gender.equalsIgnoreCase("F"))
-                    relationType = NextOfKin.RelationType.DAUGHTER;
+            if (StringUtil.isNotEmpty(name)) {
+                Date dobVal = sheet.getRow(dobCell.getRow()).getCell(dobCell.getCol()).getDateCellValue();
+                Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
+                Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
+                String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
+                String passportNum = sheet.getRow(passportCell.getRow()).getCell(passportCell.getCol()).getRichStringCellValue().getString();
+                String relationTypeName = sheet.getRow(relationTypeCell.getRow()).getCell(relationTypeCell.getCol()).getRichStringCellValue().getString();
+                boolean isECNR = StringUtil.parseBoolean(sheet.getRow(ecnrCell.getRow()).getCell(ecnrCell.getCol()).getRichStringCellValue().getString());
+                boolean hasUSVisa = StringUtil.parseBoolean(sheet.getRow(hasUSVisaCell.getRow()).getCell(hasUSVisaCell.getCol()).getRichStringCellValue().getString());
+                LocalDate dob = DateTimeUtil.convertToLocalDate(dobVal);
+                LocalDate doi = DateTimeUtil.convertToLocalDate(doiVal);
+                LocalDate doe = DateTimeUtil.convertToLocalDate(doeVal);
+
+                NextOfKin nok = new NextOfKin();
+                nok.setRelationType(relationTypeName);
+                nok.setNomineeName(name);
+                nok.setDateOfBirth(dob);
+                nok.setAddress(nokAddress);
+                nok.setHasUSVisa(hasUSVisa);
+
+                Passport nokPassport = new Passport();
+                nokPassport.setDocNumber(passportNum);
+                nokPassport.setGivenName(name);
+                nokPassport.setRequiredECNR(isECNR);
+                nokPassport.setDateOfExpiry(doe);
+                nokPassport.setAddress(nokAddress);
+                nokPassport.setDateOfIssue(doi);
+                nokPassport.setPlaceOfIssue(placeOfIssue);
+                nok.setPassport(nokPassport);
             }
-            nok.setNomineeName(name);
-            nok.setDateOfBirth(dob);
-            nok.setRelationType(relationType.getRelationTypeName());
-            nok.setAddress(nokAddress);
-            nok.setGender(gender);
-            nok.setHasUSVisa(hasUSVisa);
 
-            Passport nokPassport = new Passport();
-            nokPassport.setDocNumber(passportNum);
-            nokPassport.setGivenName(name);
-            nokPassport.setRequiredECNR(isECNR);
-            nokPassport.setDateOfExpiry(doe);
-            nokPassport.setAddress(nokAddress);
-            nokPassport.setDateOfIssue(doi);
-            nokPassport.setPlaceOfIssue(placeOfIssue);
-            nok.setPassport(nokPassport);
         }
     }
 
@@ -502,8 +531,8 @@ public class CrewExcelService {
 
             Date doiVal = sheet.getRow(doICell.getRow()).getCell(doICell.getCol()).getDateCellValue();
             Date doeVal = sheet.getRow(doECell.getRow()).getCell(doECell.getCol()).getDateCellValue();
-            LocalDate doi = doiVal!=null? DateTimeUtil.convertToLocalDate(doiVal):null;
-            LocalDate doe = doeVal!=null?DateTimeUtil.convertToLocalDate(doeVal):null;
+            LocalDate doi = doiVal != null ? DateTimeUtil.convertToLocalDate(doiVal) : null;
+            LocalDate doe = doeVal != null ? DateTimeUtil.convertToLocalDate(doeVal) : null;
             String placeOfIssue = sheet.getRow(poICell.getRow()).getCell(poICell.getCol()).getRichStringCellValue().getString();
             String docNum = String.valueOf(sheet.getRow(numCell.getRow()).getCell(numCell.getCol()).getNumericCellValue());
             String grade = sheet.getRow(gradeCell.getRow()).getCell(gradeCell.getCol()).getRichStringCellValue().getString();
