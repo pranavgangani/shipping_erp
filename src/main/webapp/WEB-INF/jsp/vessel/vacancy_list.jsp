@@ -10,7 +10,7 @@
         <title>Vacancy List</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <%@ include file="../includes/header_includes.jsp" %>
-        <script src="../js/vessel/vessel_details.js"></script>
+        <script src="../js/vessel/vacancy_details.js"></script>
 
 </head>
 <body class="nav-fixed">
@@ -20,8 +20,6 @@
 		<div id="layoutSidenav_content">
 
 			<main>
-
-				<!-- Main page content-->
 				<div class="container-fluid px-4">
 					<div class="card mb-4">
 						<div class="card-header">Vacancy List
@@ -63,16 +61,16 @@
 										<td>${vacancy.vessel.vesselSubType.vesselType.desc} - ${vacancy.vessel.vesselSubType.desc}</td>
 										<td>${vacancy.vacancyAttributes.minGrossTonnage}</td>
 										<td>
-										<c:forEach items="${vacancy.vacancyAttributes.minRankList}" var="rank">
-										    ${rank.name}
-										</c:forEach>
+                                            <c:forEach items="${vacancy.vacancyAttributes.minRankList}" var="rank">
+                                                ${rank.name}
+                                            </c:forEach>
 										</td>
 										<td>${vacancy.openPositions}</td>
 										<td>${vacancy.enteredBy.empId}</td>
 										<td>
 										    <div class="badge bg-primary text-white rounded-pill">${vacancy.status.desc}</div></td>
 										<td>
-										<button onclick="VesselDetails.openSelectCrewModal(${vacancy.id})" class="btn btn-datatable btn-icon btn-transparent-dark">
+										<button onclick="VacancyDetails.openSelectCrewModal(${vacancy.id})" class="btn btn-datatable btn-icon btn-transparent-dark">
                                             <i data-feather="users"></i>
 
 										    <button
@@ -106,8 +104,7 @@
 
 				</div>
 
-	<div class="modal fade" id="newVacancyModal" tabindex="-1" role="dialog" aria-labelledby="newVacancyModalLabel" style="display: none;" aria-hidden="true">
-	    <form id="vacancy-fill-form" role="form" method="POST" action="/vessel/add_vacancy">
+	<div class="modal fade" id="newVacancyModal" tabindex="0" role="dialog" aria-labelledby="newVacancyModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -115,16 +112,18 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                <form id="vacancy-fill-form" role="form" method="POST" action="/vessel/add_vacancy">
                     <div class="col-md-8 mb-3">
                         <label class="small mb-3" for="vesselId">Select a Vessel</label>
                         <select class="form-select" id="vesselId" name="vesselId" aria-label="Default select vessel">
                             <option selected disabled>Select a Vessel:</option>
                             <c:forEach items="${vessels}" var="vessel">
-                                <option value="${vessel.id}">${vessel.vesselName} (${vessel.vesselSubType.desc})</option>
+                                <option value="${vessel.id}">${vessel.vesselOwner.ownerName} - ${vessel.vesselName} (${vessel.vesselSubType.desc})</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="col-md-8 mb-3">
+                       <label class="small mb-3" for="vesselId">Select a Vessel</label>
                         <select class="form-select" id="rankId" name="rankId" aria-label="Default select rank">
                             <option selected disabled>Select a Rank:</option>
                             <c:forEach var="optionGroup" items="${rankMap}">
@@ -144,15 +143,13 @@
                         <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
                         <button class="btn btn-primary" type="submit">Add</button>
                     </div>
+                    </form>
                  </div>
             </div>
         </div>
-        </form>
     </div>
 
     <div class="modal fade" id="selectCrewModal" tabindex="-1" role="dialog" aria-labelledby="selectCrewModalLabel" style="display: none;" aria-hidden="true">
-    	   <form id="vacancy-assign-form" role="form" method="POST" action="/vessel/fill_vacancy">
-    	   <input type="hidden" id="vacancyId" name="vacancyId" value="">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -160,6 +157,9 @@
                         <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                       <form id="vacancy-assign-form" role="form" method="POST" action="/vessel/fill_vacancy">
+                       <input type="hidden" id="vacancyId" name="vacancyId" value="">
+
                         <div class="col-md-8 mb-3">
                             <label class="small mb-3" for="statusText">Vacancy Status</label>
                             <label class="small mb-3" id="statusText"></label>
@@ -189,10 +189,10 @@
                             <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Close</button>
                             <button class="btn btn-primary" type="submit">Add Selected</button>
                         </div>
+                        </form>
                      </div>
                 </div>
             </div>
-            </form>
         </div>
 
 	<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
