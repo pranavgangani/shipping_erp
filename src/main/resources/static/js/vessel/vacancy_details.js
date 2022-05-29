@@ -1,7 +1,7 @@
 var VacancyDetails = {}
 
 $(document).ready(function() {
-    $('.form-select').select2();
+ //   $('.form-select').select2();
      //$("#birthDate").datepicker();
 /*
 

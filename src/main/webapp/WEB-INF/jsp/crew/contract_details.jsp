@@ -111,7 +111,7 @@
                                             </td>
                                             <td><h6 class="mb-1">Marital Status</h6></td>
                                             <td>
-                                                <div class="col-md-10 mb-3">${crew.maritalStatus.desc}</div>
+                                                <div class="col-md-10 mb-3">${crew.maritalStatus}</div>
                                             </td>
                                         </tr>
                                         <tr>

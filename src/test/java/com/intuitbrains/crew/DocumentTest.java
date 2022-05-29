@@ -112,7 +112,232 @@ class DocumentTest {
         documentDao.insert(trainingCert);
     }*/
 
+    @Test
+    void addMoreSTCWTrainingDocs() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RFPNW");
+        type.setName("Ratings Forming Part of a Navigational Watch");
+        docTypeDao.insert(type);
 
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RASD");
+        type.setName("Ratings as Able Seafarer Deck");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RFPWMUER");
+        type.setName("Ratings Forming Part of a Watch in a Manned Engine-room or designated to perform duties in a Periodically Unmanned Engine-room");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RASEMUER");
+        type.setName("Ratings as Able Seafarer Engine in a Manned Engine-room or designated to perform duties in a Periodically Unmanned Engine-room");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("GOCGMDSS");
+        type.setName("GOC for GMDSS");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("BTOCTCO");
+        type.setName("Basic Training for Oil and Chemical Tanker Cargo Operations");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("ATOTCO");
+        type.setName("Advance Training for Oil Tanker Cargo Operations");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("ATCTCO");
+        type.setName("Advance Training for Chemical Tanker Cargo Operations");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("BTLGTCO");
+        type.setName("Basic Training for Liquefied Gas Tanker Cargo Operations");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("ATLGTCO");
+        type.setName("Advanced Training for Liquefied Gas Tanker Cargo Operations");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("STPPDSPPS");
+        type.setName("Safety Training for Personnel Providing Direct Service to Passengers in Passenger Spaces");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PSCMT");
+        type.setName("Passenger Ship Crowd Management Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PSCMHBT");
+        type.setName("Passenger Ship Crisis Management and Human Behaviour Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PSCSHIT");
+        type.setName("Passenger Safety, Cargo Safety and Hull Integrity Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PSCRBOFRB");
+        type.setName("Proficiency in Survival Craft and Rescue Boats other than Fast Rescue Boats");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PFRB");
+        type.setName("Proficiency in Fast Rescue Boats");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("AFF");
+        type.setName("Advanced Fire Fighting");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("MFA");
+        type.setName("Medical First Aid");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("MCARE");
+        type.setName("Medical Care");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("SSO");
+        type.setName("Ship Security Officers");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("SATSDD");
+        type.setName("Security Awareness Training and Seafarers with Designated Duties");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RBT");
+        type.setName("Refresher on Basic Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RPSCRB");
+        type.setName("Refresher Training on PSCRB");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RPFRB");
+        type.setName("Refresher Training on PFRB");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("RAFF");
+        type.setName("Refresher on AFF");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PSCMT");
+        type.setName("Passenger Ship Crowd Management Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PSCMHBT");
+        type.setName("Passenger Ship Crisis Management and Human Behaviour Training");
+        docTypeDao.insert(type);
+
+        type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.TRAINING);
+        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setShortName("PSCSHIT");
+        type.setName("Passenger Safety, Cargo Safety and Hull Integrity Training");
+        docTypeDao.insert(type);
+    }
     @Test
     void add5BasicSTCWTrainingDocs() {
         DocumentType type = new DocumentType();

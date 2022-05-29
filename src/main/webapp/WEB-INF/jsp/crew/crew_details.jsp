@@ -10,7 +10,7 @@
         <title>${action} Crew</title>
     
         <%@ include file="../includes/header_includes.jsp" %>
-        <script src="../js/vessel/vessel_details.js"></script>
+        <script src="../js/crew/crew_details.js"></script>
     </head>
 
     <body class="nav-fixed">
