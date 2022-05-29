@@ -51,6 +51,10 @@
                                 <div class="nav-link-icon"><i data-feather="globe"></i></div>
                                 Travel Requests
                             </a>
+                            <a class="nav-link collapsed" href="/crew/contract_list"  aria-expanded="false">
+                                <div class="nav-link-icon"><i data-feather="clipboard"></i></div>
+                                Contracts
+                            </a>
                              <!-- Sidenav Heading (Custom)-->
                              <div class="sidenav-menu-heading">Management</div>
                             <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseCrew" aria-expanded="false" aria-controls="collapseCrew">

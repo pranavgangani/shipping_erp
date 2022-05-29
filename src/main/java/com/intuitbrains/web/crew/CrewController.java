@@ -215,7 +215,7 @@ public class CrewController {
                 System.out.println("No auditTrails");
             }
 
-        }else {
+        } else {
             mv = new ModelAndView("crew/doc_list");
             List<CrewDocument> existingDocuments = documentDao.findAll();
             mv.addObject("existingDocuments", existingDocuments);
@@ -224,6 +224,20 @@ public class CrewController {
         mv.addObject("action", "Edit");
 
 
+        return mv;
+    }
+
+    @GetMapping(value = "/contract_list")
+    public ModelAndView getContracts(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/contract_list");
+        List<CrewContract> list = null;
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            list = crewContractDao.findAll();
+        } else {
+            list = crewContractDao.findAll();
+        }
+        mv.addObject("list", list);
         return mv;
     }
 
