@@ -262,8 +262,8 @@ public class CrewController {
         LocalDate embarkDate = LocalDate.of(year, month, day);
 
         if (crewId > 0) {
-            Crew crew = crewService.getById(crewId);
-            generateContract(crew);
+            Crew crew = crewService.getObjectById(crewId);
+            generateContract(crew, embarkDate, embarkPort, monthlyWage);
             mv.addObject("crew", crew);
             mv.addObject("crewId", crewId);
         }
@@ -272,23 +272,24 @@ public class CrewController {
         return mv;
     }
 
-    private void generateContract(Crew crew) {
+    private void generateContract(Crew crew, LocalDate embarkDate, String embarkPort, Double monthlyWage) {
 
         //Get Vessel details on which the crew has been assigned
-        VesselVacancy vacancy = vesselVacancyDao.findVacancyByCrewId(crew.getId());
+        VesselVacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
 
         //Get Vessel details
-        Vessel vessel = vesselService.getById(crew.getAssignedVacancyId());
+        Vessel vessel = vesselService.getById(vacancy.getVessel().getId());
 
         CrewContract contract = new CrewContract();
         contract.setId(sequenceGenerator.generateSequence(CrewContract.SEQUENCE_NAME));
         contract.setRankId(crew.getRankId());
         contract.setCrewId(crew.getId());
-        contract.setVesselId(vacancy.getId());
+        contract.setVesselId(vessel.getId());
         contract.setPlaceOfContract("Mumbai");
-        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
+        contract.setEmbarkPort(embarkPort);
+        Flag flag = flagDao.getByCode("IN");
         contract.setPlaceOfContractFlag(flag);
-        contract.setMonthlyWage(new BigDecimal(15000));
+        contract.setMonthlyWage(new BigDecimal(monthlyWage));
         contract.setWageCurrency("USD");
         contract.setStatusId(CrewContract.Status.GENERATED.getId());
 

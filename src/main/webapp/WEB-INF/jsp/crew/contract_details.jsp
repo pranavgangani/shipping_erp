@@ -158,7 +158,7 @@
                                          <tr>
                                              <td><h6 class="mb-1">Begin Date</h6></td>
                                              <td>
-                                                 <div class="col-md-10 mb-3"><input type="text" id="beginDate" name="beginDate"></div>
+                                                 <div class="col-md-10 mb-3"><input type="text" id="embarkDate" name="embarkDate"></div>
                                              </td>
                                              <td><h6 class="mb-1">Port Embarkment</h6></td>
                                              <td>

@@ -25,7 +25,7 @@ public class CrewContract {
     private long vesselId;
 	private String contractName;
 	private LocalDate startDate, endDate;
-	private String placeOfContract;
+	private String embarkPort, placeOfContract;
     private Flag placeOfContractFlag;
 	
 	private List<CrewDocument> documents;
@@ -93,6 +93,14 @@ public class CrewContract {
 
     public void setPlaceOfContract(String placeOfContract) {
         this.placeOfContract = placeOfContract;
+    }
+
+    public String getEmbarkPort() {
+        return embarkPort;
+    }
+
+    public void setEmbarkPort(String embarkPort) {
+        this.embarkPort = embarkPort;
     }
 
     public List<CrewDocument> getDocuments() {
