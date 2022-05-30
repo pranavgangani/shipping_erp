@@ -17,6 +17,9 @@ package com.intuitbrains.web.crew;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -46,10 +49,17 @@ import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
 import com.intuitbrains.util.*;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -237,6 +247,7 @@ public class CrewController {
         } else {
             list = crewContractDao.findAll();
         }
+
         mv.addObject("list", list);
         return mv;
     }
@@ -262,6 +273,7 @@ public class CrewController {
     @PostMapping(value = "/generateContract")
     public ModelAndView generateContractFiles(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/crew_list");
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         double monthlyWage = Double.parseDouble(req.getParameter("wage"));
@@ -277,7 +289,7 @@ public class CrewController {
 
         if (crewId > 0) {
             Crew crew = crewService.getObjectById(crewId);
-            generateContract(crew, embarkDate, embarkPort, monthlyWage);
+            generateContract(crew, emp.getEmpId(), embarkDate, embarkPort, monthlyWage);
             mv.addObject("crew", crew);
             mv.addObject("crewId", crewId);
         }
@@ -286,26 +298,70 @@ public class CrewController {
         return mv;
     }
 
-    private void generateContract(Crew crew, LocalDate embarkDate, String embarkPort, Double monthlyWage) {
+    @GetMapping("/contract/download")
+    public ResponseEntity<Resource> downloadContract(HttpServletRequest req, Model model) throws Exception {
+        long contractId = ParamUtil.parseLong(req.getParameter("contractId"), -1);
+        //model.addAttribute("message", "hello");
+
+        CrewContract contract = crewContractDao.findById(contractId).get();
+        String fileName =  "result.docx";
+        FileOutputStream faos = new FileOutputStream(fileName);
+
+        final WordMerge wm = new WordMerge(faos);
+        contract.getDocuments().forEach(d->{
+            try {
+                InputStream input = new ByteArrayInputStream(d.getFile().getData());
+                wm.add(input);
+                input.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        wm.doMerge();
+        wm.close();
+
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=contract.docx");
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        Path path = Paths.get(fileName);
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
+        File file = new File(fileName);
+
+        return ResponseEntity.ok()
+                .headers(header)
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+
+    }
+
+    private void generateContract(Crew crew, String enteredBy, LocalDate embarkDate, String embarkPort, Double monthlyWage) {
 
         //Get Vessel details on which the crew has been assigned
         VesselVacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
 
         //Get Vessel details
-        Vessel vessel = vesselService.getById(vacancy.getVessel().getId());
+        Vessel vessel = vesselDao.findById(vacancy.getVessel().getId()).get();
 
         CrewContract contract = new CrewContract();
         contract.setId(sequenceGenerator.generateSequence(CrewContract.SEQUENCE_NAME));
-        contract.setRankId(crew.getRankId());
-        contract.setCrewId(crew.getId());
-        contract.setVesselId(vessel.getId());
+        contract.setRank(Rank.createFromId(crew.getRankId()));
+        contract.setCrew(crew);
+        contract.setVessel(vessel);
         contract.setPlaceOfContract("Mumbai");
+        contract.setStartDate(embarkDate);
         contract.setEmbarkPort(embarkPort);
         Flag flag = flagDao.getByCode("IN");
         contract.setPlaceOfContractFlag(flag);
         contract.setMonthlyWage(new BigDecimal(monthlyWage));
         contract.setWageCurrency("USD");
         contract.setStatusId(CrewContract.Status.GENERATED.getId());
+        contract.setEnteredBy(enteredBy);
+        contract.setEnteredDateTime(LocalDateTime.now());
 
         //Generate Contract Docs
         ContractDocumentGenerator wordDocument = new ContractDocumentGenerator(crew, vessel, contract);
@@ -650,4 +706,40 @@ public class CrewController {
         return mv;
     }*/
 
+
+    class WordMerge {
+
+        private final OutputStream result;
+        private final List<InputStream> inputs;
+        private XWPFDocument first;
+
+        public WordMerge(OutputStream result) {
+            this.result = result;
+            inputs = new ArrayList<>();
+        }
+
+        public void add(InputStream stream) throws Exception{
+            inputs.add(stream);
+            OPCPackage srcPackage = OPCPackage.open(stream);
+            XWPFDocument src1Document = new XWPFDocument(srcPackage);
+            if(inputs.size() == 1){
+                first = src1Document;
+            } else {
+                CTBody srcBody = src1Document.getDocument().getBody();
+                first.getDocument().addNewBody().set(srcBody);
+            }
+        }
+
+        public void doMerge() throws Exception{
+            first.write(result);
+        }
+
+        public void close() throws Exception{
+            result.flush();
+            result.close();
+            for (InputStream input : inputs) {
+                input.close();
+            }
+        }
+    }
 }

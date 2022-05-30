@@ -47,13 +47,13 @@
                                 <div class="nav-link-icon"><i data-feather="user"></i></div>
                                 Vessel Owners
                             </a>
+                           <a class="nav-link collapsed" href="/crew/contract_list"  aria-expanded="false">
+                                <div class="nav-link-icon"><i data-feather="clipboard"></i></div>
+                                Contracts
+                            </a>
                             <a class="nav-link collapsed" href="/crew/travel_request_list"  aria-expanded="false">
                                 <div class="nav-link-icon"><i data-feather="globe"></i></div>
                                 Travel Requests
-                            </a>
-                            <a class="nav-link collapsed" href="/crew/contract_list"  aria-expanded="false">
-                                <div class="nav-link-icon"><i data-feather="clipboard"></i></div>
-                                Contracts
                             </a>
                              <!-- Sidenav Heading (Custom)-->
                              <div class="sidenav-menu-heading">Management</div>

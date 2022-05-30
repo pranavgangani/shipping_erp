@@ -2,13 +2,17 @@ package com.intuitbrains.model.crew.contract;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
+import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.ContractRule;
+import com.intuitbrains.model.crew.Rank;
+import com.intuitbrains.model.vessel.Vessel;
 import org.springframework.data.annotation.Id;
 
 import org.springframework.data.annotation.Transient;
@@ -20,9 +24,9 @@ public class CrewContract {
 
 	@Id
 	private long id;
-    private long crewId;
-    private int rankId;
-    private long vesselId;
+    private Crew crew;
+    private Rank rank;
+    private Vessel vessel;
 	private String contractName;
 	private LocalDate startDate, endDate;
 	private String embarkPort, placeOfContract;
@@ -37,7 +41,8 @@ public class CrewContract {
     private List<TravelAndAccomodation> travelAndAccomodations;
 
 	//Audit
-	private LocalDate generatedLocalDateTime;
+    private String enteredBy;
+    private LocalDateTime enteredDateTime;
 
     public long getId() {
         return id;
@@ -47,20 +52,28 @@ public class CrewContract {
         this.id = id;
     }
 
-    public long getCrewId() {
-        return crewId;
+    public Crew getCrew() {
+        return crew;
     }
 
-    public void setCrewId(long crewId) {
-        this.crewId = crewId;
+    public void setCrew(Crew crew) {
+        this.crew = crew;
     }
 
-    public long getVesselId() {
-        return vesselId;
+    public Rank getRank() {
+        return rank;
     }
 
-    public void setVesselId(long vesselId) {
-        this.vesselId = vesselId;
+    public void setRank(Rank rank) {
+        this.rank = rank;
+    }
+
+    public void setVessel(Vessel vessel) {
+        this.vessel = vessel;
+    }
+
+    public Vessel getVessel() {
+        return vessel;
     }
 
     public String getContractName() {
@@ -135,12 +148,20 @@ public class CrewContract {
         this.wageCurrency = wageCurrency;
     }
 
-    public LocalDate getGeneratedLocalDateTime() {
-        return generatedLocalDateTime;
+    public String getEnteredBy() {
+        return enteredBy;
     }
 
-    public void setGeneratedLocalDateTime(LocalDate generatedLocalDateTime) {
-        this.generatedLocalDateTime = generatedLocalDateTime;
+    public void setEnteredBy(String enteredBy) {
+        this.enteredBy = enteredBy;
+    }
+
+    public LocalDateTime getEnteredDateTime() {
+        return enteredDateTime;
+    }
+
+    public void setEnteredDateTime(LocalDateTime enteredDateTime) {
+        this.enteredDateTime = enteredDateTime;
     }
 
     public Flag getPlaceOfContractFlag() {
@@ -158,15 +179,6 @@ public class CrewContract {
     public void setStatusId(int statusId) {
         this.statusId = statusId;
     }
-
-    public int getRankId() {
-        return rankId;
-    }
-
-    public void setRankId(int rankId) {
-        this.rankId = rankId;
-    }
-
     public List<TravelAndAccomodation> getTravelAndAccomodations() {
         return travelAndAccomodations;
     }
@@ -215,9 +227,9 @@ public class CrewContract {
     public String toString() {
         return "CrewContract{" +
                 "id=" + id +
-                ", crewId=" + crewId +
-                ", rankId=" + rankId +
-                ", vesselId=" + vesselId +
+                ", crewId=" + crew +
+                ", rankId=" + rank.getName() +
+                ", vesselId=" + vessel.getVesselName() +
                 ", placeOfContract='" + placeOfContract + '\'' +
                 ", wageCurrency=" + wageCurrency +
                 ", statusId=" + statusId +

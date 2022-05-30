@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +26,7 @@
 				<!-- Main page content-->
 				<div class="container-fluid px-4">
 
-				<div class="card mb-4">
+				<!--<div class="card mb-4">
                     <div class="card-header">Filter</div>
                     <div class="card-body">
                         <table>
@@ -43,7 +44,7 @@
                             </tr>
                         </table>
                     </div>
-                </div>
+                </div>-->
 
 
 					<div class="card mb-4">
@@ -56,13 +57,13 @@
 							<table id="datatablesSimple">
 								<thead>
 									<tr>
+									    <th>#</th>
 										<th>Name</th>
                                         <th>Rank</th>
-                                        <th>Gender</th>
-                                        <th>Age</th>
-                                        <th>Passport#</th>
-                                        <th>INDOS#</th>
-                                        <th>Manning Office</th>
+                                        <th>Vessel</th>
+                                        <th>Vessel Type</th>
+                                        <th>Embark Date</th>
+                                        <th>Embark Place</th>
                                         <th>Wage</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -70,13 +71,13 @@
 								</thead>
 								<tfoot>
 									<tr>
-										<th>Name</th>
+										<th>#</th>
+                                        <th>Name</th>
                                         <th>Rank</th>
-                                        <th>Gender</th>
-                                        <th>Age</th>
-                                        <th>Passport#</th>
-                                        <th>INDOS#</th>
-                                        <th>Manning Office</th>
+                                        <th>Vessel</th>
+                                        <th>Vessel Type</th>
+                                        <th>Embark Date</th>
+                                        <th>Embark Place</th>
                                         <th>Wage</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -86,17 +87,16 @@
 								
 								<c:forEach items="${list}" var="contract">
 								    <tr>
-										<td>${crew.fullName}</td>
-										<td>${crew.rank.name}</td>
-										<td>${crew.gender}</td>
-										<td>${crew.age}</td>
-										<td>${crew.passportNumber}</td>
-										<td>${crew.indosNumber}</td>
-										<td>${crew.manningOffice}</td>
-										<td>${crew.currentContract.wageCurrency} ${crew.currentContract.monthlyWage}</td>
-										<td>${crew.status.desc}</td>
+								        <td>${contract.id}</td>
+										<td>${contract.crew.fullName}</td>
+										<td>${contract.rank.name}</td>
+										<td>${contract.vessel.vesselOwner.ownerName} - ${contract.vessel.vesselName}</td>
+										<td>${contract.vessel.vesselSubType.desc}</td>
+										<td>${contract.startDate.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</td>
+										<td>${contract.embarkPort}</td>
+										<td>${contract.wageCurrency} ${crew.monthlyWage}</td>
+										<td>${contract.statusId}</td>
 										<td>
-										    <!--<div class="badge bg-primary text-white rounded-pill">Full-time</div></td>-->
 										    <button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
 													id="dropdownMenuButton" type="button"
@@ -105,50 +105,29 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="/crew/add_certifications?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="user"></i>
-														</div> Add Certifications
-													</a>
-													<a class="dropdown-item" href="/crew/add_medicals?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Add Medical Tests
-													</a>													
-													<a class="dropdown-item" href="/crew/add_licenses?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Add Licenses
-													</a>
-													<a class="dropdown-item" href="/crew/document_list?crewId=${crew.id}">
-														<div class="dropdown-item-icon">
-															<i data-feather="settings"></i>
-														</div> Add Documents
-													</a>													
-													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/crew/modify?crewId=${crew.id}">
+													<a class="dropdown-item" href="/contract/modify?contractId=${contract.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
 													</a>
-													<c:if test="${crew.statusId == 4}">
+													<!--<c:if test="${contract.statusId == 2}">
                                                         <a class="dropdown-item" href="/crew/generateContract?crewId=${crew.id}">
                                                             <div class="dropdown-item-icon">
                                                                 <i data-feather="briefcase"></i>
                                                             </div> Generate Contract
                                                         </a>
-                                                    </c:if>
+                                                    </c:if>-->
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/crew/vacancy_list?crewId=${crew.id}">
+													<a class="dropdown-item" href="/crew/contract/download?contractId=${contract.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
-														</div> Sign-On/Sign-Off
+														</div> Download Contract
 													</a>
 												</div>
 												<button
 												class="btn btn-datatable btn-icon btn-transparent-dark">
 												<i data-feather="trash-2"></i>
-											</button>
+											    </button>
 										</td>
 									</tr>
 								</c:forEach>
