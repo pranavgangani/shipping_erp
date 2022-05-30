@@ -57,7 +57,7 @@
 
 								<c:forEach items="${list}" var="vacancy">
 								    <tr>
-										<td>${vacancy.vessel.vesselName}</td>
+										<td>${vessel.vesselOwner.ownerName} ${vacancy.vessel.vesselName}</td>
 										<td>${vacancy.vessel.vesselSubType.vesselType.desc} - ${vacancy.vessel.vesselSubType.desc}</td>
 										<td>${vacancy.vacancyAttributes.minGrossTonnage}</td>
 										<td>

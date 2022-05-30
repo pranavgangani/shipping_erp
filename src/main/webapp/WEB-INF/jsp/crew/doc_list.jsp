@@ -35,7 +35,7 @@
 									<tr>
 									    <th>Given Name</th>
 										<th>Doc Name</th>
-                                        <th>Country</th>
+                                        <th>Doc Type</th>
                                         <th>Doc Number</th>
                                         <th>Issue Date</th>
                                         <th>Expiry Date</th>
@@ -47,7 +47,7 @@
 									<tr>
 									    <th>Given Name</th>
 										<th>Doc Name</th>
-                                        <th>Country</th>
+                                        <th>Doc Type</th>
                                         <th>Doc Number</th>
                                         <th>Issue Date</th>
                                         <th>Expiry Date</th>
@@ -61,15 +61,13 @@
 								    <tr>
 								        <td>${doc.givenName}</td>
 										<td>${doc.docType.name}</td>
+										<td>${doc.docType.documentPool}</td>
 										<td>${doc.flagCode}</td>
 										<td>${doc.docNumber}</td>
 										<td>${doc.dateOfIssue}</td>
 										<td>${doc.dateOfExpiry}</td>
 										<td>${doc.placeOfIssue}</td>
 										<td>
-										<button onclick="VesselDetails.openSelectCrewModal(${vacancy.id})" class="btn btn-datatable btn-icon btn-transparent-dark">
-                                            <i data-feather="users"></i>
-
 										    <button
 													class="btn btn-datatable btn-icon btn-transparent-dark me-2"
 													id="dropdownMenuButton" type="button"

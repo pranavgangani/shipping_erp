@@ -8,15 +8,15 @@
 						<div class="page-header-icon">
 							<i data-feather="user-plus"></i>
 						</div>
-						Add New Crew
+						Crew Details
 					</h1>
 				</div>
-				<div class="col-12 col-xl-auto mb-3">
+				<!--<div class="col-12 col-xl-auto mb-3">
 					<a class="btn btn-sm btn-light text-primary"
 						href="/crew/list"> <i class="me-1"
 						data-feather="arrow-left"></i> Go to Crew List
 					</a>
-				</div>
+				</div>-->
 			</div>
 		</div>
 	</div>

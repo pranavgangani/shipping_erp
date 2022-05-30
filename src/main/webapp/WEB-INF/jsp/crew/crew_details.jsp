@@ -37,8 +37,8 @@
                             <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
                             <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
                             <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
-                            <a class="nav-link" href="/crew/nominee?crewId=${crewId}">Nominee</a>
-                            <a class="nav-link" href="/crew/documents?crewId=${crewId}">Other Documents</a>
+                            <a class="nav-link" href="/crew/nok?crewId=${crewId}">Next of Kin</a>
+                            <a class="nav-link" href="/crew/documents?crewId=${crewId}">Documents</a>
                             <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
@@ -147,8 +147,8 @@
 		                                                <td><div class="col-md-8 mb-3">
 			                                                <select class="form-select" id="maritalStatus" name="maritalStatus" aria-label="Default select example">
 																<option selected disabled>Marital Status:</option>
-																<option <c:if test="${crew.maritalStatusId=='single'}">selected</c:if> value="single">Single</option>
-																<option <c:if test="${crew.maritalStatusId=='married'}">selected</c:if> value="married">Married</option>
+																<option <c:if test="${crew.maritalStatus=='Single'}">selected</c:if> value="single">Single</option>
+																<option <c:if test="${crew.maritalStatus=='Married'}">selected</c:if> value="married">Married</option>
 															</select>
 															</div>
 		                                                </td>
@@ -213,8 +213,8 @@
 		                                                <td><div class="col-md-8 mb-3">
 			                                                <select class="form-select" id="gender" name="gender" aria-label="Default select example">
 																<option selected disabled>Gender:</option>
-																<option <c:if test="${crew.gender=='male'}">selected</c:if> value="male">Male</option>
-																<option <c:if test="${crew.gender=='female'}">selected</c:if> value="female">Female</option>
+																<option <c:if test="${crew.gender=='Male'}">selected</c:if> value="Male">Male</option>
+																<option <c:if test="${crew.gender=='Female'}">selected</c:if> value="Female">Female</option>
 															</select>
 															</div>
 		                                                </td>

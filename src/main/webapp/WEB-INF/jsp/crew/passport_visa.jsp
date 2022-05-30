@@ -31,15 +31,15 @@
                     <div class="container-fluid px-4">
                         <!-- Account page navigation-->
                         <nav class="nav nav-borders">
-                            <a class="nav-link" href="/crew/modify?crewId=${crewId}">Profile</a>
-                            <a class="nav-link" href="/crew/experience?crewId=${crewId}">Employment</a>
-                            <a class="nav-link" href="/crew/education?crewId=${crewId}">Education</a>
-                            <a class="nav-link active ms-0" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
-                            <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
-                            <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
-                            <a class="nav-link" href="/crew/nominee?crewId=${crewId}">Nominee</a>
-                            <a class="nav-link" href="/crew/documents?crewId=${crewId}">Other Documents</a>
-                            <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
+                           <a class="nav-link" href="/crew/modify?crewId=${crewId}">Profile</a>
+                           <a class="nav-link" href="/crew/experience?crewId=${crewId}">Employment</a>
+                           <a class="nav-link" href="/crew/education?crewId=${crewId}">Education</a>
+                           <a class="nav-link active ms-0" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
+                           <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
+                           <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
+                           <a class="nav-link" href="/crew/nok?crewId=${crewId}">Next of Kin</a>
+                           <a class="nav-link" href="/crew/documents?crewId=${crewId}">Documents</a>
+                           <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
@@ -71,7 +71,7 @@
                                     <div class="card-header">Actions</div>
                                     <div class="card-body">
                                     <c:choose>
-                                        <c:when test="${action == 'modify'}"><button class="btn btn-primary" type="submit">Save</button></c:when>
+                                        <c:when test="${crewId > 0}"><button class="btn btn-primary" type="submit">Save</button></c:when>
                                         <c:otherwise><button class="btn btn-primary" type="submit">Add</button></c:otherwise>
                                     </c:choose>
                                     </div>
@@ -188,7 +188,7 @@
                                                         <tr>
                                                             <td><label class="small mb-3">Given Name in ${vs.docType.documentPool.name}</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="givenName" id="givenName" type="text" placeholder="Enter Vessel Name" value="${vs.givenName}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="givenName" id="givenName" type="text" placeholder="Given Name" value="${vs.givenName}" /></div>
                                                             </td>
                                                         </tr>
                                                         <tr>

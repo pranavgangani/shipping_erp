@@ -119,6 +119,7 @@ public class CrewService {
 
         for(CrewDocument doc : docsToUpload) {
             doc.setCrewId(crew.getId());
+            doc.setGivenName(crew.getDefaultGivenName());
             doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
         }
         documentDao.insert(docsToUpload);

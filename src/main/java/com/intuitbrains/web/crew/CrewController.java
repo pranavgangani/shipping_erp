@@ -197,12 +197,14 @@ public class CrewController {
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
 
-            List<CrewDocument> existingDocuments = documentDao.findAll();
+            List<CrewDocument> existingDocuments = documentDao.getDocsByCrewId(crewId);
 
             if (ListUtil.isNotEmpty(existingDocuments)) {
                 existingDocuments.forEach(doc -> {
-                    doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
-                    System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
+                    if (doc.getFile() != null) {
+                        doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
+                        System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
+                    }
                 });
                 mv.addObject("existingDocuments", existingDocuments);
             }
@@ -234,21 +236,6 @@ public class CrewController {
         mv.addObject("action", "Edit");
 
 
-        return mv;
-    }
-
-    @GetMapping(value = "/contract_list")
-    public ModelAndView getContracts(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/contract_list");
-        List<CrewContract> list = null;
-        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-        if (crewId > 0) {
-            list = crewContractDao.findAll();
-        } else {
-            list = crewContractDao.findAll();
-        }
-
-        mv.addObject("list", list);
         return mv;
     }
 
@@ -304,11 +291,12 @@ public class CrewController {
         //model.addAttribute("message", "hello");
 
         CrewContract contract = crewContractDao.findById(contractId).get();
-        String fileName =  "result.docx";
-        FileOutputStream faos = new FileOutputStream(fileName);
+        String fileName = "Contract_" + contract.getId() + "_" + contract.getCrew().getFullName().replaceAll(" ", "_") + ".docx";
 
+        FileOutputStream faos = new FileOutputStream(fileName);
+        //Combine all contract pages
         final WordMerge wm = new WordMerge(faos);
-        contract.getDocuments().forEach(d->{
+        contract.getDocuments().forEach(d -> {
             try {
                 InputStream input = new ByteArrayInputStream(d.getFile().getData());
                 wm.add(input);
@@ -321,7 +309,7 @@ public class CrewController {
         wm.close();
 
         HttpHeaders header = new HttpHeaders();
-        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=contract.docx");
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
         header.add("Cache-Control", "no-cache, no-store, must-revalidate");
         header.add("Pragma", "no-cache");
         header.add("Expires", "0");
@@ -377,23 +365,24 @@ public class CrewController {
 
     }
 
-    @GetMapping(value = "/contracts")
-    public ModelAndView contractList(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/contracts");
-        List<VesselVacancy> list = vesselVacancyDao.findAll();
 
+    @GetMapping(value = "/contracts")
+    public ModelAndView getContracts(HttpServletRequest req, Model model) {
+        ModelAndView mv = null;
+        List<CrewContract> list = null;
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
-            Crew crew = crewService.getById(crewId);
-            mv.addObject("crew", crew);
+            mv = new ModelAndView("crew/contracts");
+            list = crewContractDao.findByCrewId(crewId);
+        } else {
+            mv = new ModelAndView("crew/contract_list");
+            list = crewContractDao.findAll();
         }
 
-        mv.addObject("action", "Edit");
         mv.addObject("list", list);
-
-
         return mv;
     }
+
 
     @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ModelAndView addCrew(HttpServletRequest req, @RequestParam("fName") String fName, @RequestParam("mName") String mName,
@@ -529,45 +518,76 @@ public class CrewController {
         return mv;
     }
 
-    @PostMapping(value = "/add_employment")
-    public ModelAndView addEmployment(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("crew/employment_list");
-        String empName = StringUtil.trim(req.getParameter("empName"));
+    @GetMapping(value = "/nok")
+    public ModelAndView nok(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/nok");
         long crewId = Long.parseLong(req.getParameter("crewId"));
+        List<NextOfKin> list = crewService.getNextOfKins(crewId);
+        mv.addObject("crewId", crewId);
+        mv.addObject("list", list);
         return mv;
     }
 
-    @GetMapping(value = "/add_education")
-    public ModelAndView addEducation(Model model) {
-        ModelAndView mv = new ModelAndView("crew/add_education");
+    @GetMapping(value = "/medical")
+    public ModelAndView medical(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/medical");
+        long crewId = Long.parseLong(req.getParameter("crewId"));
+        List<NextOfKin> list = crewService.getNextOfKins(crewId);
+        mv.addObject("crewId", crewId);
+        mv.addObject("list", list);
         return mv;
     }
 
-
-    @GetMapping(value = "/add_medical")
-    public ModelAndView addMedical(Model model) {
-        ModelAndView mv = new ModelAndView("crew/add_medical");
+    @GetMapping(value = "/bank")
+    public ModelAndView bank(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/bank");
+        long crewId = Long.parseLong(req.getParameter("crewId"));
+        List<Bank> list = crewService.getBanks(crewId);
+        mv.addObject("crewId", crewId);
+        mv.addObject("list", list);
         return mv;
     }
 
-    @GetMapping(value = "/add_bank_account")
-    public ModelAndView addBankAccount(Model model) {
-        ModelAndView mv = new ModelAndView("crew/add_bank_account");
-        return mv;
-    }
+    /*
+        @PostMapping(value = "/add_employment")
+        public ModelAndView addEmployment(HttpServletRequest req) {
+            ModelAndView mv = new ModelAndView("crew/employment_list");
+            String empName = StringUtil.trim(req.getParameter("empName"));
+            long crewId = Long.parseLong(req.getParameter("crewId"));
+            return mv;
+        }
 
-    @GetMapping(value = "/add_nominee")
-    public ModelAndView addNominee(Model model) {
-        ModelAndView mv = new ModelAndView("crew/add_nominee");
-        return mv;
-    }
+        @GetMapping(value = "/add_education")
+        public ModelAndView addEducation(Model model) {
+            ModelAndView mv = new ModelAndView("crew/add_education");
+            return mv;
+        }
 
-    @GetMapping(value = "/add_other_docs")
-    public ModelAndView addOtherDocs(Model model) {
-        ModelAndView mv = new ModelAndView("crew/add_other_docs");
-        return mv;
-    }
 
+        @GetMapping(value = "/add_medical")
+        public ModelAndView addMedical(Model model) {
+            ModelAndView mv = new ModelAndView("crew/add_medical");
+            return mv;
+        }
+
+        @GetMapping(value = "/add_bank_account")
+        public ModelAndView addBankAccount(Model model) {
+            ModelAndView mv = new ModelAndView("crew/add_bank_account");
+            return mv;
+        }
+
+        @GetMapping(value = "/add_nominee")
+        public ModelAndView addNominee(Model model) {
+            ModelAndView mv = new ModelAndView("crew/add_nominee");
+            return mv;
+        }
+
+        @GetMapping(value = "/add_other_docs")
+        public ModelAndView addOtherDocs(Model model) {
+            ModelAndView mv = new ModelAndView("crew/add_other_docs");
+            return mv;
+        }
+    */
     @GetMapping("/photos/{id}")
     public String getPhoto(@PathVariable long id, Model model) {
         CrewPhoto photo = photoDao.findById(id).get();
@@ -718,11 +738,11 @@ public class CrewController {
             inputs = new ArrayList<>();
         }
 
-        public void add(InputStream stream) throws Exception{
+        public void add(InputStream stream) throws Exception {
             inputs.add(stream);
             OPCPackage srcPackage = OPCPackage.open(stream);
             XWPFDocument src1Document = new XWPFDocument(srcPackage);
-            if(inputs.size() == 1){
+            if (inputs.size() == 1) {
                 first = src1Document;
             } else {
                 CTBody srcBody = src1Document.getDocument().getBody();
@@ -730,11 +750,11 @@ public class CrewController {
             }
         }
 
-        public void doMerge() throws Exception{
+        public void doMerge() throws Exception {
             first.write(result);
         }
 
-        public void close() throws Exception{
+        public void close() throws Exception {
             result.flush();
             result.close();
             for (InputStream input : inputs) {

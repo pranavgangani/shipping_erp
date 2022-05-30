@@ -24,7 +24,7 @@
             <div id="layoutSidenav_content">
                 <main>
                 <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/${action}">
-                <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
+                <input type="hidden" id="crewId" name="crewId" value="${crewId}">
                 <%@ include file="add_crew_header.jsp" %>
 
                     <!-- Main page content-->
@@ -37,8 +37,8 @@
                             <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
                             <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
                             <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
-                            <a class="nav-link" href="/crew/nominee?crewId=${crewId}">Nominee</a>
-                            <a class="nav-link" href="/crew/documents?crewId=${crewId}">Other Documents</a>
+                            <a class="nav-link" href="/crew/nok?crewId=${crewId}">Next of Kin</a>
+                            <a class="nav-link" href="/crew/documents?crewId=${crewId}">Documents</a>
                             <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
                         </nav>
                         <hr class="mt-0 mb-4" />
@@ -71,7 +71,7 @@
                                     <div class="card-header">Actions</div>
                                     <div class="card-body">
                                     <c:choose>
-                                        <c:when test="${action == 'modify'}"><button class="btn btn-primary" type="submit">Save</button></c:when>
+                                        <c:when test="${crewId > 0}"><button class="btn btn-primary" type="submit">Save</button></c:when>
                                         <c:otherwise><button class="btn btn-primary" type="submit">Add</button></c:otherwise>
                                     </c:choose>
                                     </div>

@@ -21,7 +21,10 @@ public class RankCategory {
 	@Id
 	private int id;	
 	private String name;
-	
+
+	public RankCategory() {
+	}
+
 	public RankCategory(int id, String name) {
 		super();
 		this.id = id;

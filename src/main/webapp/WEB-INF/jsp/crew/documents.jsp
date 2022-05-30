@@ -39,8 +39,8 @@
                                             <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
                                             <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
                                             <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
-                                            <a class="nav-link" href="/crew/nominee?crewId=${crewId}">Nominee</a>
-                                            <a class="nav-link active ms-0" href="/crew/documents?crewId=${crewId}">Other Documents</a>
+                                            <a class="nav-link" href="/crew/nok?crewId=${crewId}">Next of Kin</a>
+                                            <a class="nav-link active ms-0" href="/crew/documents?crewId=${crewId}">Documents</a>
                                             <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
                                         </nav>
                                         <hr class="mt-0 mb-4" />

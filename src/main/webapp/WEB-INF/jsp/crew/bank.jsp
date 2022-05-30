@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>${action} Crew - Education</title>
+        <title>${action} Crew - Medical</title>
 
         <%@ include file="../includes/header_includes.jsp" %>
         <script src="../js/crew/crew_details.js"></script>
@@ -33,10 +33,10 @@
                         <nav class="nav nav-borders">
                              <a class="nav-link" href="/crew/modify?crewId=${crewId}">Profile</a>
                             <a class="nav-link" href="/crew/experience?crewId=${crewId}">Employment</a>
-                            <a class="nav-link active ms-0" href="/crew/education?crewId=${crewId}">Education</a>
+                            <a class="nav-link" href="/crew/education?crewId=${crewId}">Education</a>
                             <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
                             <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
-                            <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
+                            <a class="nav-link active ms-0" href="/crew/bank?crewId=${crewId}">Bank Account</a>
                             <a class="nav-link" href="/crew/nok?crewId=${crewId}">Next of Kin</a>
                             <a class="nav-link" href="/crew/documents?crewId=${crewId}">Documents</a>
                             <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>

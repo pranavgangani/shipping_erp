@@ -47,7 +47,7 @@
                                 <div class="nav-link-icon"><i data-feather="user"></i></div>
                                 Vessel Owners
                             </a>
-                           <a class="nav-link collapsed" href="/crew/contract_list"  aria-expanded="false">
+                           <a class="nav-link collapsed" href="/crew/contracts"  aria-expanded="false">
                                 <div class="nav-link-icon"><i data-feather="clipboard"></i></div>
                                 Contracts
                             </a>
