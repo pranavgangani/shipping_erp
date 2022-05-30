@@ -197,16 +197,16 @@ public class CrewController {
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
 
-            List<CrewDocument> existingDocuments = documentDao.getDocsByCrewId(crewId);
+            List<CrewDocument> list = documentDao.getDocsByCrewId(crewId);
 
-            if (ListUtil.isNotEmpty(existingDocuments)) {
-                existingDocuments.forEach(doc -> {
+            if (ListUtil.isNotEmpty(list)) {
+                list.forEach(doc -> {
                     if (doc.getFile() != null) {
                         doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
                         System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
                     }
                 });
-                mv.addObject("existingDocuments", existingDocuments);
+                mv.addObject("list", list);
             }
             CrewPhoto photo = null;
 
@@ -234,8 +234,7 @@ public class CrewController {
         }
 
         mv.addObject("action", "Edit");
-
-
+        mv.addObject("crewId", crewId);
         return mv;
     }
 
@@ -378,8 +377,8 @@ public class CrewController {
             mv = new ModelAndView("crew/contract_list");
             list = crewContractDao.findAll();
         }
-
         mv.addObject("list", list);
+        mv.addObject("crewId", crewId);
         return mv;
     }
 

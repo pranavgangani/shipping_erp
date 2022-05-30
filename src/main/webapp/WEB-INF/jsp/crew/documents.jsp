@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -71,88 +72,39 @@
                                                         <div class="table-responsive table-billing-history">
                 		                                    <table class="table mb-0">
                 		                                        <thead>
-                		                                            <tr>
-                		                                                <th class="border-gray-200" scope="col">Mandatory Docs</th>
-                		                                                <th class="border-gray-200" scope="col">Upload</th>
-                		                                            </tr>
-                		                                        </thead>
+                                                                    <tr>
+                                                                        <th class="border-gray-200" scope="col">Document</th>
+                                                                        <th class="border-gray-200" scope="col">Number</th>
+                                                                        <th class="border-gray-200" scope="col">Issue Date</th>
+                                                                        <th class="border-gray-200" scope="col">Expiry Date</th>
+                                                                        <th class="border-gray-200" scope="col">Upload</th>
+                                                                        <th class="border-gray-200" scope="col">Maker</th>
+                                                                        <th class="border-gray-200" scope="col">Reviewer</th>
+                                                                        <th class="border-gray-200" scope="col">Audit</th>
+                                                                    </tr>
+                                                                </thead>
                 		                                        <tbody>
                 		                                            <c:forEach items="${list}" var="doc">
                 		                                            <tr>
-                		                                                <td><label class="small mb-3">${doc.docName}</label>
-                		                                                    <table class="table mb-0">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th class="border-gray-200" scope="col">Versions</th>
-                                                                                            <th class="border-gray-200" scope="col">Maker</th>
-                                                                                            <th class="border-gray-200" scope="col">Reviewer</th>
-                                                                                            <th class="border-gray-200" scope="col">Audit</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                    <c:forEach items="${existingDocuments}" var="exDoc">
-                                                                                            <c:if test="${doc.id == exDoc.id}">
-
-                                                                                            <tr>
-
-                                                                                            <td>
-                                                                                            <c:if test="${exDoc.fileTitle!=null}">
-
-                                                                                            <a href="#" id="pop">
-                                                                                                <img style="width:0px; height:0px;" id="imageresource" src="data:image/jpeg;base64,${exDoc.fileTitle}">
-                                                                                               <i data-feather="eye"></i>
-                                                                                            </a>
-
-                                                                                                <!-- Creates the bootstrap modal where the image will appear -->
-                                                                                                <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                                                  <div class="modal-dialog">
-                                                                                                    <div class="modal-content">
-                                                                                                      <div class="modal-header">
-                                                                                                      <h5 class="modal-title" id="fileUploaderModalTitle">${exDoc.docName}</h5>
-                                                                                                      <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                                  </div>
-                                                                                                  <div class="modal-body">
-                                                                                                      </div>
-                                                                                                      <div class="modal-body">
-                                                                                                       <img src="" id="imagepreview" style="width: 100%;" >
-                                                                                                      </div>
-                                                                                                      <div class="modal-footer">
-                                                                                                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                                                      </div>
-                                                                                                    </div>
-                                                                                                  </div>
-                                                                                                </div>
-                                                                                                 </c:if>
-                                                                                             </td>
-
-                                                                 <td><label class="small mb-3" for="makerBy" data-bs-toggle="tooltip" data-bs-placement="top" title="${exDoc.fieldStatus.makerDateTime}">${exDoc.fieldStatus.makerBy}</label>
-                            		                                                </td>
-                            		                                                <td>
-                            			                                                <div class="form-check mb-3">
-                            	                                                    		<input class="form-check-input" id="checkFirstName" type="checkbox" />
-                            	                                                		</div>
-                                                                            		</td>
-                            		                                                <td>
-                            		                                                	 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
-                            		                                               		 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
-                            		                                                <!-- <span class="badge bg-success">Paid</span> -->
-                            														</td>
-                                                                                                    </tr>
-
-                                                                                             </c:if>
-
-                                                                                    </c:forEach>
-
-                                                                                    </tbody>
-                                                                                 </table>
-
-                		                                                </td>
-                		                                                <td>
-
-                			                                              <button class="btn btn-primary" type="button" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docTypeId}');">Upload</button>
-
-                		                                                </td>
-                		                                            </tr>
+                		                                                <td><label class="small mb-3">${doc.docType.name}</label></td>
+                		                                                <td><label class="small mb-3">${doc.docNumber}</label></td>
+                		                                                <td><label class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>
+                		                                                <td><label class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>
+                                                                        <td><label class="small mb-3" for="makerBy" data-bs-toggle="tooltip" data-bs-placement="top" title="${exDoc.fieldStatus.makerDateTime}">${exDoc.fieldStatus.makerBy}</label></td>
+                                                                        <td>
+                                                                         <button class="btn btn-primary" type="button" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docType.id}');">Upload</button>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-check mb-3">
+                                                                                <input class="form-check-input" id="checkFirstName" type="checkbox" />
+                                                                            </div>
+                                                                        </td>
+                                                                            <td>
+                                                                                 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                                                 <div class="page-header-icon"><i data-feather="user-plus"></i></div>
+                                                                            <!-- <span class="badge bg-success">Paid</span> -->
+                                                                            </td>
+                                                                      </tr>
                 		                                            </c:forEach>
                 		                                        </tbody>
                 		                                    </table>
