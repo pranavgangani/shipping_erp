@@ -210,20 +210,39 @@ public class ContractDocumentGenerator {
             XWPFDocument document = new XWPFDocument();
 
             // Creating Table
+            XWPFTable nameTable = document.createTable();
+            XWPFTableRow nameRow = nameTable.getRow(0); // First row
+            // Columns
+            nameRow.getCell(0).setText("Name");
+            nameRow.addNewTableCell().setText("Pranav Gangani");
+
+            nameRow.addNewTableCell().setText("Rank");
+            nameRow.addNewTableCell().setText("Capitain");
+            nameRow = nameTable.createRow(); // Second Row
+
+            nameRow.getCell(0).setText("1.");
+            nameRow.getCell(1).setText("Irfan");
+            nameRow.getCell(2).setText("irfan@gmail.com");
+
+            // Creating Table
             XWPFTable tab = document.createTable();
             XWPFTableRow row = tab.getRow(0); // First row
             // Columns
             row.getCell(0).setText("Sl. No.");
-            row.addNewTableCell().setText("Name");
-            row.addNewTableCell().setText("Email");
+            row.addNewTableCell().setText("Topics");
+            row.addNewTableCell().setText("Y/N");
             row = tab.createRow(); // Second Row
             row.getCell(0).setText("1.");
-            row.getCell(1).setText("Irfan");
-            row.getCell(2).setText("irfan@gmail.com");
-            row = tab.createRow(); // Third Row
+            row.getCell(1).setText("Company Vision and Mission/Values");
+
+            row = tab.createRow();
             row.getCell(0).setText("2.");
-            row.getCell(1).setText("Mohan");
-            row.getCell(2).setText("mohan@gmail.com");
+            row.getCell(1).setText("Dug & Alcohol Policy");
+
+            row = tab.createRow();
+            row.getCell(0).setText("2.");
+            row.getCell(1).setText("Dug & Alcohol Policy");
+
             document.write(out);
 
             // Save file to contract documents

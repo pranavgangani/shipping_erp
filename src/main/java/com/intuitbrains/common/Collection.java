@@ -30,6 +30,7 @@ public class Collection {
 	//Contract
 	public final static String CREW_CONTRACT = "CrewContract";
 	public final static String TRAVEL_AND_ACCOMODATION = "TravelAndAccomodation";
+	public final static String CONTRACT_RULE = "ContractRule";
 
 	//Audit
 	public final static String CREW_FIELD_AUDIT = "CrewFieldAudit";

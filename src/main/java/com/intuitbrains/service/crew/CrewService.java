@@ -128,12 +128,15 @@ public class CrewService {
     }
 
     public Crew updateCrew(Crew crew) {
+        addToAudit(crew);
+
         crew.setUpdatedDateTime(LocalDateTime.now());
+        crew.setUpdatedBy(crew.getEnteredBy());
         crewDao.save(crew);
 
         //Audit
         AuditTrail audit = new AuditTrail();
-        audit.setAction(StandardWebParameter.ADD);
+        audit.setAction(StandardWebParameter.MODIFY);
         audit.setActionBy(crew.getUpdatedBy());
         audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.CREW);

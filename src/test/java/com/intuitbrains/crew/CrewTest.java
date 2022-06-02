@@ -534,9 +534,9 @@ class CrewTest {
 
         CrewContract contract = new CrewContract();
         contract.setId(sequenceGenerator.generateSequence(CrewContract.SEQUENCE_NAME));
-        contract.setRankId(Rank.CAPTAIN.getId());
-        contract.setCrewId(crew.getId());
-        contract.setVesselId(vacancy.getId());
+        contract.setRank(Rank.CAPTAIN);
+        contract.setCrew(crew);
+        contract.setVessel(vacancy.getVessel());
         contract.setPlaceOfContract("Mumbai");
         Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
         contract.setPlaceOfContractFlag(flag);

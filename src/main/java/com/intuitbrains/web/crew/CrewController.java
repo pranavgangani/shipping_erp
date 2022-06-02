@@ -49,9 +49,14 @@ import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
 import com.intuitbrains.util.*;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.BsonBinarySubType;
+import org.bson.conversions.Bson;
 import org.bson.types.Binary;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +74,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -101,6 +107,8 @@ public class CrewController {
     private CrewContractRepository crewContractDao;
     @Autowired
     private VesselService vesselService;
+    @Autowired
+    private MongoDatabase db;
 
     @GetMapping(value = "/list")
     public ModelAndView crewList(HttpServletRequest req, Model model) {
@@ -164,8 +172,90 @@ public class CrewController {
     }
 
 
-    @PostMapping(value = "/save")
-    public ModelAndView saveCrew(HttpServletRequest req) {
+
+    @PostMapping(value = "/modify", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView updateCrew(MultipartHttpServletRequest req,
+                                   Model model) {
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        String maker = emp.getEmpId();
+        ModelAndView mv = new ModelAndView("/crew/employment_list");
+        MultipartFile image = req.getFile("image");
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+
+        Iterator<String> iter = req.getParameterNames().asIterator();
+        Bson updates = Updates.addToSet("genres", "Frequently Discussed");
+        while (iter.hasNext()) {
+            String param = iter.next();
+            if (param.contains("crew_")) {
+
+            }
+        }
+
+       /* Bson updates = Updates.combine(
+                Updates.addToSet("genres", "Frequently Discussed"),
+                Updates.addToSet("genres", "Frequently Discussed"),
+                Updates.addToSet("genres", "Frequently Discussed"),
+                Updates.addToSet("genres", "Frequently Discussed"),
+                Updates.currentTimestamp("lastUpdated"));
+*/
+        Bson filter = Filters.eq("_id", crewId);
+        db.getCollection(Collection.CREW, Crew.class).updateMany(filter, updates);
+
+/*
+        //Add New Crew
+        Crew crew = new Crew();
+        crew.setFirstName(fName);
+        crew.setLastName(lName);
+        crew.setMiddleName(mName);
+        crew.setEmailId(emailId);
+        crew.setContact1(contact1);
+        crew.setContact2(contact2);
+        crew.setNearestAirport(nearestAirport);
+        crew.setMaritalStatus(maritalStatus);
+        crew.setPermAddress(homeAddress);
+        crew.setNationality(nationality);
+        crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
+        String[] dobStr = dob.split("/");
+        int month = ParamUtil.parseInt(dobStr[0], -1);
+        int day = ParamUtil.parseInt(dobStr[1], -1);
+        int year = ParamUtil.parseInt(dobStr[2], -1);
+        crew.setDob(LocalDate.of(year, month, day));
+        crew.setRank(Rank.createFromId(rankId));
+        crew.setGender(gender);
+        crew.setDistinguishMark(distinguishMark);
+        crew.setManningOffice(manningOffice);
+
+        crew.setEnteredBy(emp.getEmpId());
+        crewService.updateCrew(crew);
+        System.out.println("Updated crewId ---> " + crewId);
+        mv.addObject("crewId", crewId);*/
+
+        try {
+            //Add Crew Photo
+            CrewPhoto photo = new CrewPhoto(crewId, "Photo");
+            photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
+            photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+            photo = photoDao.insert(photo);
+            long photoId = photo.getId();
+            System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
+            photo = photoDao.findById(photoId).get();
+
+            //Save PhotoId to Crew
+            //crew.setPhotoId(photoId);
+            //crewService.updateCrew(crew);
+            mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+//		return "redirect:/photos/" + id;
+
+        return mv;
+    }
+
+    /*@PostMapping(value = "/modify")
+    public ModelAndView updateCrew(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("/crew/crew_details");
 
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
@@ -185,7 +275,7 @@ public class CrewController {
         mv.addObject("rankMap", Rank.getByGroup());
         return mv;
     }
-
+*/
 
     @GetMapping(value = "/documents")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
@@ -317,6 +407,35 @@ public class CrewController {
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
         File file = new File(fileName);
+
+        return ResponseEntity.ok()
+                .headers(header)
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+
+    }
+
+    @GetMapping("/document/download")
+    public ResponseEntity<Resource> downloadDowcument(HttpServletRequest req, Model model) throws Exception {
+        long documentId = ParamUtil.parseLong(req.getParameter("documentId"), -1);
+        //model.addAttribute("message", "hello");
+
+        CrewDocument doc = documentDao.findById(documentId).get();
+        //String fileName = doc.getDocType().getDocumentPool().getName() + "_"+doc.getId() + ".docx";
+
+
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + doc.getFileTitle());
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        File file = new File(doc.getFileTitle());
+        FileUtils.writeByteArrayToFile(file, doc.getFile().getData());
+
+        //Path path = Paths.get(fileName);
+        ByteArrayResource resource = new ByteArrayResource(doc.getFile().getData());
 
         return ResponseEntity.ok()
                 .headers(header)
@@ -641,13 +760,10 @@ public class CrewController {
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
         System.out.println("docId = " + docId);
 
-        List<CrewDocument> documents = crew.getExistingDocuments();
-        if (documents == null) {
-            documents = new LinkedList<>();
-        }
+
         CrewDocument docToUpload = documentDao.findById(docId).get();
-        docToUpload.setFileTitle(file.getOriginalFilename());
         try {
+            docToUpload.setFileTitle(file.getOriginalFilename());
             docToUpload.setFile(new Binary(BsonBinarySubType.BINARY, file.getBytes()));
             docToUpload.setFieldStatus(new FieldStatus(emp.getEmpId(), LocalDateTime.now(), null, null));
 
@@ -665,10 +781,10 @@ public class CrewController {
             e.printStackTrace();
         }
 
-        // documents.add(docToUpload);
+         documentDao.save(docToUpload);
 
-        crew.setExistingDocuments(documents);
-        crewService.updateCrew(crew);
+        //crew.setExistingDocuments(documents);
+        //crewService.updateCrew(crew);
 
         return "redirect:/";
     }

@@ -86,14 +86,20 @@
                 		                                        <tbody>
                 		                                            <c:forEach items="${list}" var="doc">
                 		                                            <tr>
-                		                                                <td><label class="small mb-3">${doc.docType.name}</label></td>
+                		                                                <td><label class="small mb-3">${doc.docType.name}</label>
+                                                                            <c:if test="${doc.file!=null}">
+                                                                                <a class="dropdown-item" href="/crew/document/download?documentId=${doc.id}">
+                                                                                    <div class="page-header-icon"><i data-feather="file"></i></div>
+                                                                                </a>
+                                                                            </c:if>
+                		                                                </td>
                 		                                                <td><label class="small mb-3">${doc.docNumber}</label></td>
                 		                                                <td><label class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>
                 		                                                <td><label class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>
-                                                                        <td><label class="small mb-3" for="makerBy" data-bs-toggle="tooltip" data-bs-placement="top" title="${exDoc.fieldStatus.makerDateTime}">${exDoc.fieldStatus.makerBy}</label></td>
                                                                         <td>
-                                                                         <button class="btn btn-primary" type="button" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docType.id}');">Upload</button>
-                                                                        </td>
+                                                                             <button class="btn btn-primary" type="button" onclick="CrewDocument.openFileUploadModal('${doc.id}','${doc.docName}','${doc.docType.id}');">Upload</button>
+                                                                            </td>
+                                                                        <td><label class="small mb-3" for="makerBy" data-bs-toggle="tooltip" data-bs-placement="top" title="${exDoc.fieldStatus.makerDateTime}">${exDoc.fieldStatus.makerBy}</label></td>
                                                                         <td>
                                                                             <div class="form-check mb-3">
                                                                                 <input class="form-check-input" id="checkFirstName" type="checkbox" />
