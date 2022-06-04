@@ -216,10 +216,10 @@ public class VesselVacancyController {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
         //String crewIdsParam = req.getParameter("crewIds");
-        Iterator<String> iter = req.getParameterNames().asIterator();
+        Enumeration<String> stringEnumeration = req.getParameterNames();
         List<Long> crewIds = new ArrayList<>();
-        while (iter.hasNext()) {
-            String param = iter.next();
+        while (stringEnumeration.hasMoreElements()) {
+            String param = stringEnumeration.nextElement();
             if (param.contains("crew_")) {
                 boolean isChecked = req.getParameter(param).equals("on");
                 if(isChecked) {

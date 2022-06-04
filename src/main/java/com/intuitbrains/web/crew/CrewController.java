@@ -182,10 +182,10 @@ public class CrewController {
         MultipartFile image = req.getFile("image");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
 
-        Iterator<String> iter = req.getParameterNames().asIterator();
+        Enumeration<String> stringEnumeration = req.getParameterNames();
         Bson updates = Updates.addToSet("genres", "Frequently Discussed");
-        while (iter.hasNext()) {
-            String param = iter.next();
+        while (stringEnumeration.hasMoreElements()) {
+            String param = stringEnumeration.nextElement();
             if (param.contains("crew_")) {
 
             }
