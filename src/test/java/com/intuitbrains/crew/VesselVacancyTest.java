@@ -106,19 +106,21 @@ class VesselVacancyTest {
         crews.forEach(c->{
             List<Experience> employmentList = c.getEmploymentHistory();
             final List<Integer> rankExp = new ArrayList<>();
-            employmentList.forEach(emp -> rankExp.add(emp.getLastRank().getId()));
-            final List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);
-            if(ListUtil.isNotEmpty(vacancies)) {
-                System.out.println("Got ["+vacancies.size()+"]  vacancies for "+c.getFullName() + " | CrewId:"+c.getId());
-                vacancies.forEach(v->{
-                    System.out.print("VacancyID::"+v.getId() + " for Post [");
-                    v.getVacancyAttributes().getMinRankList().forEach(r->{
-                        System.out.println(r.getName());
+            if(ListUtil.isNotEmpty(employmentList)) {
+                employmentList.forEach(emp -> rankExp.add(emp.getLastRank().getId()));
+                final List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);
+                if(ListUtil.isNotEmpty(vacancies)) {
+                    System.out.println("Got ["+vacancies.size()+"]  vacancies for "+c.getFullName() + " | CrewId:"+c.getId());
+                    vacancies.forEach(v->{
+                        System.out.print("VacancyID::"+v.getId() + " for Post [");
+                        v.getVacancyAttributes().getMinRankList().forEach(r->{
+                            System.out.println(r.getName());
+                        });
+                        System.out.print("]");
+                        System.out.println();
                     });
-                    System.out.print("]");
-                    System.out.println();
-                });
-                System.out.println("------------------------");
+                    System.out.println("------------------------");
+                }
             }
         });
     }

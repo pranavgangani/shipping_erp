@@ -1,8 +1,10 @@
 package com.intuitbrains.service.common;
 
+import com.intuitbrains.dao.crew.ContractRuleRepository;
 import com.intuitbrains.model.common.document.CheckList;
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.common.document.Declaration;
+import com.intuitbrains.model.crew.ContractRule;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.model.crew.contract.CrewContract;
@@ -12,12 +14,15 @@ import com.intuitbrains.util.ListUtil;
 import org.apache.poi.xwpf.usermodel.*;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class ContractDocumentGenerator {
     public static String logo = "logo-leaf.png";
@@ -27,6 +32,8 @@ public class ContractDocumentGenerator {
     private Vessel vessel;
     private CrewContract contract;
     private List<CrewDocument> contractDocuments;
+    @Autowired
+    private ContractRuleRepository contractRuleDao;
 
     public ContractDocumentGenerator(Crew crew, Vessel vessel, CrewContract contract) {
         this.crew = crew;
@@ -39,17 +46,23 @@ public class ContractDocumentGenerator {
     }
 
     public void generate() throws Exception {
+        List<ContractRule> rules = contractRuleDao.findAll();
+        Map<ContractRule.RuleType, ContractRule> ruleMap = new HashMap<>();
+        for(ContractRule rule : rules) {
+            ruleMap.put(rule.getRuleType(), rule);
+        }
+
         generateContrat();
         generateCheckList();// Can capture from <CrewDocuments>
-        generateSeafarerBriefing();
-        generateDocsHandedOver();
-        generateAlcoholDrugsDeclaration();
-        generateDeclarationAgainstUseOfObjectionableMaterials();
-        generateNextKinDeclaration(); // Can capture values from <NextOfKin>
-        generateSignOnDeclaration();
-        generateSignOnHealthDeclaration();
-        generateSignOnPerformanceGoals();
-        generateTravelHistorySelfDeclaration();
+        generateSeafarerBriefing(ruleMap.get(ContractRule.RuleType.BRIEFING));
+        generateDocsHandedOver(ruleMap.get(ContractRule.RuleType.DOCS_HANDED_OVER));
+        generateAlcoholDrugsDeclaration(ruleMap.get(ContractRule.RuleType.DRUG_ALCOHOL_DECLARATION));
+        generateDeclarationAgainstUseOfObjectionableMaterials(ruleMap.get(ContractRule.RuleType.OBJ_MATERIAL_DECLARATION));
+        generateNextKinDeclaration(ruleMap.get(ContractRule.RuleType.NOK_DECLARATION)); // Can capture values from <NextOfKin>
+        generateSignOnDeclaration(ruleMap.get(ContractRule.RuleType.SIGNON_DECLARATION));
+        generateSignOnHealthDeclaration(ruleMap.get(ContractRule.RuleType.SIGNON_HEALTH_DECLARATION));
+        generateSignOnPerformanceGoals(ruleMap.get(ContractRule.RuleType.SINGON_PERF_GOALS));
+        generateTravelHistorySelfDeclaration(ruleMap.get(ContractRule.RuleType.TRAVEL_HISTORY));
         contract.setDocuments(contractDocuments);
     }
 
@@ -204,7 +217,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateSeafarerBriefing() {
+    private void generateSeafarerBriefing(ContractRule rule) {
         final String fileName = "3_Seafarer_Briefing.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();
@@ -226,23 +239,10 @@ public class ContractDocumentGenerator {
 
             // Creating Table
             XWPFTable tab = document.createTable();
-            XWPFTableRow row = tab.getRow(0); // First row
-            // Columns
-            row.getCell(0).setText("Sl. No.");
-            row.addNewTableCell().setText("Topics");
-            row.addNewTableCell().setText("Y/N");
-            row = tab.createRow(); // Second Row
-            row.getCell(0).setText("1.");
-            row.getCell(1).setText("Company Vision and Mission/Values");
-
-            row = tab.createRow();
-            row.getCell(0).setText("2.");
-            row.getCell(1).setText("Dug & Alcohol Policy");
-
-            row = tab.createRow();
-            row.getCell(0).setText("2.");
-            row.getCell(1).setText("Dug & Alcohol Policy");
-
+            rule.getRuleBody().forEach(r->{
+                XWPFTableRow row = tab.createRow();
+                row.getCell(0).setText(r);
+            });
             document.write(out);
 
             // Save file to contract documents
@@ -256,7 +256,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateDocsHandedOver() {
+    private void generateDocsHandedOver(ContractRule rule) {
         final String fileName = "4_Docs_Handed_Over.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();
@@ -289,7 +289,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateAlcoholDrugsDeclaration() {
+    private void generateAlcoholDrugsDeclaration(ContractRule rule) {
         final String fileName = "5_Alcohol_Drugs_Declaration.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();
@@ -323,7 +323,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateDeclarationAgainstUseOfObjectionableMaterials() {
+    private void generateDeclarationAgainstUseOfObjectionableMaterials(ContractRule rule) {
         final String fileName = "6_Declaration_Against_Use_of_Objectionable_Materials.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();
@@ -356,7 +356,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateNextKinDeclaration() {
+    private void generateNextKinDeclaration(ContractRule rule) {
 
         List<NextOfKin> noks = crew.getNextOfKins();
 
@@ -402,7 +402,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateSignOnDeclaration() {
+    private void generateSignOnDeclaration(ContractRule rule) {
         final String fileName = "8_Sign_On_Declaration.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();
@@ -435,7 +435,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateSignOnHealthDeclaration() {
+    private void generateSignOnHealthDeclaration(ContractRule rule) {
         final String fileName = "9_Sign_On_Health_Declaration.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();
@@ -468,7 +468,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateSignOnPerformanceGoals() {
+    private void generateSignOnPerformanceGoals(ContractRule rule) {
         final String fileName = "10_Sign_On_Performance_Goals.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();
@@ -501,7 +501,7 @@ public class ContractDocumentGenerator {
         }
     }
 
-    private void generateTravelHistorySelfDeclaration() {
+    private void generateTravelHistorySelfDeclaration(ContractRule rule) {
         final String fileName = "11_Travel_History_Self_Declaration.docx";
         try (FileOutputStream out = new FileOutputStream(fileName)) {
             XWPFDocument document = new XWPFDocument();

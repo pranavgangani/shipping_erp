@@ -23,7 +23,7 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                <form id="crew-details-form" role="form" action="#">
+                <form id="exampleForm" role="form" action="#">
                 <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
                 <%@ include file="add_crew_header.jsp" %>
                     
