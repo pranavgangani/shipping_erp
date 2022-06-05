@@ -173,13 +173,13 @@ public class CrewController {
 
 
 
-    @PostMapping(value = "/update.ajax", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView updateCrew(MultipartHttpServletRequest req,
+    @PostMapping(value = "/update.ajax")
+    public ModelAndView updateCrew(HttpServletRequest req,
                                    Model model) {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         String maker = emp.getEmpId();
         ModelAndView mv = new ModelAndView("/crew/employment_list");
-        MultipartFile image = req.getFile("image");
+       // MultipartFile image = req.getFile("image");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
 
         Enumeration<String> stringEnumeration = req.getParameterNames();
@@ -234,8 +234,8 @@ public class CrewController {
             //Add Crew Photo
             CrewPhoto photo = new CrewPhoto(crewId, "Photo");
             photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
-            photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-            photo = photoDao.insert(photo);
+           // photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+           // photo = photoDao.insert(photo);
             long photoId = photo.getId();
             System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
             photo = photoDao.findById(photoId).get();
@@ -245,7 +245,7 @@ public class CrewController {
             //crewService.updateCrew(crew);
             mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

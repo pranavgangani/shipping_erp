@@ -24,6 +24,7 @@
             <div id="layoutSidenav_content">
                 <main>
                 <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
+                <input type="hidden" id="contextPath" value="<%=request.getContextPath()%>">
                 <%@ include file="add_crew_header.jsp" %>
                     
                     <!-- Main page content-->

@@ -36,9 +36,8 @@ Crew_Details.update = function ()  {
                 method: 'POST',
                 data: {
                     // Parameters to be sent with the request
-                    modifiedFields: aa,
-                    subscriptionId: subscriptionId,
-                    shareRegistry: jQuery('#shareRegistry').val()
+                    modifiedFields: json,
+                    crewId: jQuery('#crewId').val()
                 },
                 type: "POST",
                 cache: false, // Stop IE from caching ajax results!
@@ -48,9 +47,9 @@ Crew_Details.update = function ()  {
                 },
                 error: function (data) {
                     if (typeof data.responseText != 'undefined') {
-                        Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data.responseText);
+                       // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data.responseText);
                     } else {
-                        Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data);
+                       // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data);
                     }
 
                     return null;
