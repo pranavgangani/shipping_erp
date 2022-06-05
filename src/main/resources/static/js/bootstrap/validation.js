@@ -8,19 +8,19 @@ Bootstrap_Validation.setupDirtyFlagEventHandlers = function (dirtyClassName) {
     // On change event. When something is changed, add/remove .isDirty class.
     jQuery('.' + dirtyClassName).on('input propertychange change keyup paste', function() {
         var jQueryObject = jQuery(this);
-        //console.log("originalValue = "+jQueryObject.data('originalValue'));
+        console.log("originalValue = "+jQueryObject.prop('defaultValue'));
         if ( jQueryObject.hasClass('select2-container') ) {
             return; // Ignore select2
         }
 
         if ( jQueryObject.is(':checkbox') || jQueryObject.is(':radio')) {
-            if ( jQueryObject.data('originalValue') == jQueryObject.is(':checked') ) {
+            if ( jQuery(this).prop('defaultValue') == jQueryObject.is(':checked') ) {
                 jQueryObject.removeClass('isDirty');
             } else {
                 jQueryObject.addClass('isDirty');
             }
         } else {
-            if ( jQueryObject.data('originalValue') == jQueryObject.val() ) {
+            if ( jQueryObject.prop('defaultValue') == jQueryObject.val() ) {
                 jQueryObject.removeClass('isDirty');
             } else {
                 jQueryObject.addClass('isDirty');
@@ -38,7 +38,7 @@ Bootstrap_Validation.setupDirtyFlagEventHandlers = function (dirtyClassName) {
         if (jQueryObject.hasClass('select2-container')) {
             return; // Ignore select2
         }
-        if (jQueryObject.data('originalValue') == jQueryObject.val()) {
+        if (jQueryObject.prop('defaultValue') == jQueryObject.val()) {
             jQueryObject.removeClass('isDirty');
         } else {
             jQueryObject.addClass('isDirty');
@@ -64,10 +64,10 @@ Bootstrap_Validation.initializeOriginalValues = function (dirtyClassName) {
             }
 
             if ( jQueryObject.is(':checkbox')  || jQueryObject.is(':radio')) {
-                jQueryObject.data('originalValue', jQueryObject.is(':checked')); // Set true/false of checkbox status
+                jQueryObject.prop('defaultValue', jQueryObject.is(':checked')); // Set true/false of checkbox status
             } else {
                 //console.log("jQueryObject.id=" + jQueryObject.attr("id") + " | "+jQueryObject.val());
-                jQueryObject.data('originalValue', jQueryObject.val()); // Set original value
+                jQueryObject.prop('defaultValue', jQueryObject.val()); // Set original value
             }
         }
     );
@@ -103,11 +103,11 @@ Bootstrap_Validation.confirmBeforePageChange = function () {
 Bootstrap_Validation.isDirty = function() {
     var dirtyFields = jQuery('.isDirty');
 
-    /*jQuery(dirtyFields).each(function () {
+  jQuery(dirtyFields).each(function () {
         console.log(this);
         console.log(jQuery(this));
 
-    });*/
+    });
 
     if ( dirtyFields.length > 0 ) {
         return true;

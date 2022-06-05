@@ -173,7 +173,7 @@ public class CrewController {
 
 
 
-    @PostMapping(value = "/modify", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/update.ajax", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ModelAndView updateCrew(MultipartHttpServletRequest req,
                                    Model model) {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");

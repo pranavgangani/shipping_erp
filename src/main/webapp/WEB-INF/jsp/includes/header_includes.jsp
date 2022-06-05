@@ -5,8 +5,7 @@
 <link href="../css/select2.min.css" rel="stylesheet" />
 <script src="../js/select2.min.js"></script>
 <script src="../js/jquery.dirty.js"></script>
-<script src="../js/bootstrap/validation"></script>
-<script src="../js/bootstrap/fomr_validation"></script>
+<script src="../js/bootstrap/validation.js"></script>
 
 /*
 <link rel="icon" type="image/x-icon" href="../assets/img/favicon.png" />

@@ -23,7 +23,6 @@
             
             <div id="layoutSidenav_content">
                 <main>
-                <form id="exampleForm" role="form" action="#">
                 <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
                 <%@ include file="add_crew_header.jsp" %>
                     
@@ -71,8 +70,8 @@
                                     <div class="card-header">Actions</div>
                                     <div class="card-body">
                                     <c:choose>
-                                        <c:when test="${action == 'modify'}"><button class="btn btn-primary" type="submit">Save</button></c:when>
-                                        <c:otherwise><button class="btn btn-primary" type="submit">Add</button></c:otherwise>
+                                        <c:when test="${action == 'modify'}"><a href="javascript:void(0);" onclick="Crew_Details.update();"><button class="btn btn-primary" type="submit">Save</button></a></c:when>
+                                        <c:otherwise><a href="javascript:void(0);" onclick="Crew_Details.add();"><button class="btn btn-primary" type="submit">Add</button></a></c:otherwise>
                                     </c:choose>
                                     </div>
                                 </div>
@@ -96,7 +95,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3">Name</label></td>
 		                                                <td>
-			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="firstName" id="firstName" type="text" placeholder="Enter first name" value="${crew.firstName}" /></div>
+			                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control dirtycheck" name="firstName" id="firstName" type="text" placeholder="Enter first name" value="${crew.firstName}" /></div>
 		                                                </td>
 		                                                <td><label class="small mb-3" for="firstName">${crew.fieldStatus.firstName.makerBy}</label></td>
 		                                                <td>
@@ -113,7 +112,7 @@
 		                                           <tr>
                                                        <td><label class="small mb-3">Middle Name</label></td>
                                                         <td>
-                                                            <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="middleName" id="middleName" type="text" placeholder="Enter middle name" value="${crew.middleName}" /></div>
+                                                            <div class="col-md-10 mb-3"><input class="small mb-2 form-control dirtycheck" name="middleName" id="middleName" type="text" placeholder="Enter middle name" value="${crew.middleName}" /></div>
                                                         </td>
                                                         <td><label class="small mb-3" for="middleName">${crew.fieldStatus.middleName.makerBy}</label></td>
                                                         <td>
@@ -129,7 +128,7 @@
                                                     <tr>
                                                         <td><label class="small mb-3">Last Name</label></td>
                                                             <td>
-                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control" name="lastName" id="lastName" type="text" placeholder="Enter last name" value="${crew.lastName}" /></div>
+                                                                <div class="col-md-10 mb-3"><input class="small mb-2 form-control dirtycheck" name="lastName" id="lastName" type="text" placeholder="Enter last name" value="${crew.lastName}" /></div>
                                                             </td>
                                                             <td><label class="small mb-3" for="lastName">${crew.fieldStatus.lastName.makerBy}</label></td>
                                                             <td>
@@ -165,13 +164,13 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="nationality">Nationality</label></td>
 		                                                <td>
-                                                            <select class="form-select" aria-label="Default select example" id="nationalityFlagCode" name="nationalityFlagCode">
+                                                            <select class="form-select dirtycheck" aria-label="Default select example" id="nationalityFlagCode" name="nationalityFlagCode">
                                                                 <option selected disabled>Select Nationality Flag:</option>
                                                                 <c:forEach items="${flags}" var="flag">
                                                                         <option value="${flag.code}">${flag.name}</option>
                                                                 </c:forEach>
                                                             </select>
-		                                                <input class="form-control" name="nationality" type="text" placeholder="Enter Nationality" value="${crew.nationality}" />
+		                                                <input class="form-control dirtycheck" name="nationality" type="text" placeholder="Enter Nationality" value="${crew.nationality}" />
 		                                                </td>
 		                                                <td>${crew.fieldStatus.nationality.makerBy}</td>
 		                                                <td>
@@ -186,7 +185,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="rankId">Rank</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-			                                                <select class="form-select" id="rankId" name="rankId" aria-label="Default select example">
+			                                                <select class="form-select dirtycheck" id="rankId" name="rankId" aria-label="Default select example">
 																<option selected disabled>Select a Rank:</option>
 																<c:forEach var="optionGroup" items="${rankMap}">
 															       <optgroup label="${optionGroup.key}">
@@ -211,7 +210,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="gender">Gender</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-			                                                <select class="form-select" id="gender" name="gender" aria-label="Default select example">
+			                                                <select class="form-select dirtycheck" id="gender" name="gender" aria-label="Default select example">
 																<option selected disabled>Gender:</option>
 																<option <c:if test="${crew.gender=='Male'}">selected</c:if> value="Male">Male</option>
 																<option <c:if test="${crew.gender=='Female'}">selected</c:if> value="Female">Female</option>
@@ -231,7 +230,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="manningOffice">Manning Office</label></td>
 		                                                <td><div class="col-md-8 mb-3">
-		                                                    <input class="form-control" id="manningOffice" name="manningOffice" type="text" placeholder="Enter Manning Office" value="${crew.manningOffice}" />
+		                                                    <input class="form-control dirtycheck" id="manningOffice" name="manningOffice" type="text" placeholder="Enter Manning Office" value="${crew.manningOffice}" />
 															</div>
 		                                                </td>
 		                                                <td>${crew.fieldStatus.manningOffice.makerBy}</td>
@@ -247,7 +246,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="distinguishingMark">Distinguishing Mark</label></td>
 		                                                <td>
-															<textarea name="distinguishingMark" id="distinguishingMark" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.distinguishMark}</textarea>
+															<textarea name="distinguishingMark" id="distinguishingMark" class="lh-base form-control dirtycheck" placeholder="" rows="3" cols="3">${crew.distinguishMark}</textarea>
 		                                                </td>
 		                                                <td>${crew.fieldStatus.distinguishingMark.makerBy}</td>
 		                                                <td>
@@ -262,7 +261,7 @@
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="permAddress">Paremanent Address</label></td>
 		                                                <td>
-															<textarea name="permAddress" id="permAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.permAddress}</textarea>
+															<textarea name="permAddress" id="permAddress" class="lh-base form-control dirtycheck" placeholder="" rows="3" cols="3">${crew.permAddress}</textarea>
 		                                                </td>
 		                                                <td>${crew.fieldStatus.permAddress.makerBy}</td>
 		                                                <td>
@@ -277,7 +276,7 @@
 		                                            <tr>
                                                         <td><label class="small mb-3" for="presentAddress">Present Address</label></td>
                                                         <td>
-                                                            <textarea name="presentAddress" id="presentAddress" class="lh-base form-control" placeholder="" rows="3" cols="3">${crew.presentAddress}</textarea>
+                                                            <textarea name="presentAddress" id="presentAddress" class="lh-base form-control dirtycheck" placeholder="" rows="3" cols="3">${crew.presentAddress}</textarea>
                                                         </td>
                                                         <td>${crew.fieldStatus.presentAddress.makerBy}</td>
                                                         <td>
@@ -291,7 +290,7 @@
                                                     </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="nearestAirport">Nearest Airport</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="nearestAirport" name="nearestAirport" type="text" placeholder="Enter Nearest Airport" value="${crew.nearestAirport}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control dirtycheck" id="nearestAirport" name="nearestAirport" type="text" placeholder="Enter Nearest Airport" value="${crew.nearestAirport}" /></div></td>
 		                                                <td>${crew.fieldStatus.nearestAirport.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -304,7 +303,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="emailId">EmailID</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="emailId" name="emailId" type="text" placeholder="Enter Email ID" value="${crew.emailId}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control dirtycheck" id="emailId" name="emailId" type="text" placeholder="Enter Email ID" value="${crew.emailId}" /></div></td>
 		                                                <td>${crew.fieldStatus.emailId.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -317,7 +316,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="contact_1">Contact#1</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="contact_1" name="contact_1" type="text" placeholder="Enter Contact Number#1" value="${crew.contact1}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control dirtycheck" id="contact_1" name="contact_1" type="text" placeholder="Enter Contact Number#1" value="${crew.contact1}" /></div></td>
 		                                                <td>${crew.fieldStatus.contact1.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -330,7 +329,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="contact_2">Contact#2</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="contact_2" name="contact_2" type="text" placeholder="Enter Contact Number#2" value="${crew.contact2}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control dirtycheck" id="contact_2" name="contact_2" type="text" placeholder="Enter Contact Number#2" value="${crew.contact2}" /></div></td>
 		                                                <td>${crew.fieldStatus.contact2.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -343,7 +342,7 @@
 		                                            </tr>
 		                                            <tr>
 		                                                <td><label class="small mb-3" for="dob">Date of Birth</label></td>
-		                                                <td><div class="col-md-10 mb-3"><input class="form-control" id="birthDate" name="birthDate" type="text" placeholder="Enter DOB" value="${crew.dob}" /></div></td>
+		                                                <td><div class="col-md-10 mb-3"><input class="form-control dirtycheck" id="birthDate" name="birthDate" type="text" placeholder="Enter DOB" value="${crew.dob}" /></div></td>
 		                                                <td>${crew.fieldStatus.dob.makerBy}</td>
 		                                                <td>
 			                                                <div class="form-check mb-3">
@@ -385,7 +384,7 @@
                             
                         </div>
                     
-                    </form>
+
                 </main>
                 
                 <%@ include file="../includes/copyright.jsp" %>

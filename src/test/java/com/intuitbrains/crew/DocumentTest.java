@@ -768,7 +768,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.PASSPORT);
         type.setName("Indian Passport");
-        type.setShortName("INDPP");
+         type.setShortName("INDPP");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
 

@@ -70,6 +70,23 @@ class EmployeeTest {
         }
       */
     }
+    @Test
+    void addEmployeeJames() {
+        Employee user = new Employee();
+        user.setEmailId("james@saar.com");
+        user.setPassword("123");
+        user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
+        user.setFirstName("James");
+        user.setMiddleName("");
+        user.setLastName("Willis");
+        user.setGender("male");
+        user.setEmpId(generateEmployeeId());
+        Set set = new HashSet();
+        //set.add(roleDao.findByRole("USER"));
+        set.add(roleDao.findByRole("ADMIN"));
+        user.setRoles(set);
+        employeeDao.insert(user);
+    }
 
     @Test
     void addEmployee() {
@@ -103,7 +120,7 @@ class EmployeeTest {
         user.setRoles(set);
         employeeDao.insert(user);
 
-        user = new Employee();
+        /*user = new Employee();
         user.setEmailId("vmore@saar.com");
         user.setPassword("vmore");
         user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
@@ -116,7 +133,7 @@ class EmployeeTest {
         //set.add(roleDao.findByRole("USER"));
         set.add(roleDao.findByRole("ADMIN"));
         user.setRoles(set);
-        employeeDao.insert(user);
+        employeeDao.insert(user);*/
 
     }
 
