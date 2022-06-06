@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 //@EnableConfigurationProperties
 @ComponentScan("com.intuitbrains.main")
 @EnableMongoRepositories(basePackages = "com.intuitbrains.dao.*")
-@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class, org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration.class})
 @ComponentScan(basePackages =
         "com.intuitbrains.web.*,"
                 + "com.intuitbrains.service.*, com.intuitbrains.main.*")

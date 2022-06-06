@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.Gson;
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
@@ -181,15 +182,9 @@ public class CrewController {
         ModelAndView mv = new ModelAndView("/crew/employment_list");
        // MultipartFile image = req.getFile("image");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-
-        Enumeration<String> stringEnumeration = req.getParameterNames();
-        Bson updates = Updates.addToSet("genres", "Frequently Discussed");
-        while (stringEnumeration.hasMoreElements()) {
-            String param = stringEnumeration.nextElement();
-            if (param.contains("crew_")) {
-
-            }
-        }
+        String modifiedFields = req.getParameter("modifiedFields");
+        Gson gson = new Gson();
+        //Crew modifiedCrew = gson.fromJson(modifiedFields, Crew.class);
 
        /* Bson updates = Updates.combine(
                 Updates.addToSet("genres", "Frequently Discussed"),
@@ -199,7 +194,7 @@ public class CrewController {
                 Updates.currentTimestamp("lastUpdated"));
 */
         Bson filter = Filters.eq("_id", crewId);
-        db.getCollection(Collection.CREW, Crew.class).updateMany(filter, updates);
+        //db.getCollection(Collection.CREW, Crew.class).updateMany(filter, updates);
 
 /*
         //Add New Crew
