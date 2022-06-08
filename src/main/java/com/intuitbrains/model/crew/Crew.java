@@ -8,16 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.intuitbrains.common.*;
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-
-import com.intuitbrains.common.AuditTrail;
-import com.intuitbrains.common.Collection;
-import com.intuitbrains.common.Comment;
-import com.intuitbrains.common.Person;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
 public class Crew extends Person {
@@ -33,12 +29,11 @@ public class Crew extends Person {
 
     private String passportNumber, indosNumber;
     private String distinguishMark;
-    private int rankId;
     private Rank rank;
     private double height, weight;
     private String manningOffice;
     private long photoId;
-    private ObjectId nationalityFlagId;
+    private Flag nationalityFlag;
     private String placeOfBirth;
     private LocalDate dob, passportExpirationDate, indosExpirationDate, availableFromDate;
     private int age;
@@ -86,14 +81,6 @@ public class Crew extends Person {
 
     public void setFileNum(String fileNum) {
         this.fileNum = fileNum;
-    }
-
-    public int getRankId() {
-        return rankId;
-    }
-
-    public void setRankId(int rankId) {
-        this.rankId = rankId;
     }
 
     public String getFullName() {
@@ -207,7 +194,7 @@ public class Crew extends Person {
     }
 
     public Rank getRank() {
-        return Rank.createFromId(getRankId());
+        return rank;
     }
 
     public void setRank(Rank rank) {
@@ -283,13 +270,13 @@ public class Crew extends Person {
         this.manningOffice = manningOffice;
     }
 
-    public ObjectId getNationalityFlagId() {
-        return nationalityFlagId;
+    public Flag getNationalityFlag() {
+        return nationalityFlag;
     }
 
     @ACrew(name = CrewField.NATIONALITY_ID)
-    public void setNationalityFlagId(ObjectId nationalityFlagId) {
-        this.nationalityFlagId = nationalityFlagId;
+    public void setNationalityFlag(Flag nationalityFlagId) {
+        this.nationalityFlag = nationalityFlag;
     }
 
     public String getPlaceOfBirth() {

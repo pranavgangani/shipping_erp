@@ -56,16 +56,17 @@ public class CrewService {
     private AuditTrailRepository auditTrailDao;
     @Autowired
     private MongoDatabase db;
-    private static Bson projections = Projections.include("firstName", "middleName", "lastName", "rankId", "dob", "gender", "statusId", "passportNumber", "indosNumber",
-            "Distinguishing Mark", "photoId", "nationalityFlagId", "nationality", "permAddress", "presentAddress", "fieldStatus");
+    private static Bson projections = Projections.include("firstName", "middleName", "lastName", "rank", "height", "weight", "manningOffice", "dob", "gender", "statusId", "passportNumber", "indosNumber",
+            "distinguishMark", "photoId", "nationalityFlagId", "nationality", "nearestAirport", "maritalStatus", "fileNum", "permAddress", "contact1","contact2", "presentAddress", "fieldStatus");
 
     public List<Crew> getList() {
-        MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
+        /*MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
         Bson projection = fields(projections);
         List<Crew> crewList = new LinkedList<>();
         Bson filter = Filters.empty();
         collection.find(filter).projection(projection).into(crewList);
-        return crewList;
+        return crewList;*/
+        return crewDao.findAll();
     }
 
     public List<Crew> getFilteredList(Crew filterCrew) {
@@ -80,7 +81,7 @@ public class CrewService {
     public Crew getById(long crewId) {
         MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
         Bson filter = eq("_id", crewId);
-        return collection.find(filter).projection(projections).first();
+        return collection.find(filter).first();
     }
 
     public Crew getObjectById(long crewId) {
@@ -97,7 +98,7 @@ public class CrewService {
         String id = String.valueOf(crew.getId());
         String zeros = "0000";
         zeros.substring((zeros.length() - (zeros.length() - id.length())), zeros.length() - 1);
-        crew.setFileNum("F"+zeros+id);
+        crew.setFileNum("F" + zeros + id);
         crewDao.insert(crew);
 
         //Audit
@@ -120,7 +121,7 @@ public class CrewService {
         crew.setExistingDocuments(null);//Don't store in Crew object
         this.addCrew(crew);
 
-        for(CrewDocument doc : docsToUpload) {
+        for (CrewDocument doc : docsToUpload) {
             doc.setCrewId(crew.getId());
             doc.setGivenName(crew.getDefaultGivenName());
             doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
@@ -143,7 +144,7 @@ public class CrewService {
         audit.setActionBy(crew.getUpdatedBy());
         audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.CREW);
-        audit.setText("Updated Crew - <b>" + (crew.getFullName()) + "</b> updated!");
+        audit.setText("Updated Crew - <b>" + (crew.getFullName()) + "</b> by " + employeeDao.findByEmpId(crew.getEnteredBy()).getFullName());
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         audit.setUniqueId(crew.getId());
         auditTrailDao.insert(audit);
@@ -281,7 +282,6 @@ public class CrewService {
         }
         modifiedCrew.setFieldStatus(fs);
     }
-
 
 
 }

@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.springframework.data.annotation.Id;
 
 public class Rank {
-    @Id
     private int id;
     private String name;
     private RankCategory rankCategory;
@@ -21,13 +20,6 @@ public class Rank {
 
     public static List<Rank> getList() {
         return new ArrayList<>(Arrays.asList(CAPTAIN, CHIEF_OFFICER, SECOND_OFFICER, THIRD_OFFICER, DECK_CADET,
-                BOSUN, AB_SEAMAN, OS_SEAMAN, TRAINEE_SEAMAN, DECK_FITTER,
-                CHIEF_ENGINEER, SECOND_ENGINEER, THIRD_ENGINEER, FOURTH_ENGINEER, FIFTH_ENGINEER, JR_ENGINEER, ETO,
-                MOTORMAN, WIPER, OILER, ENGINE_FITTER, CHIEF_COOK, SECOND_COOK, MESSMAN_COOK, TRAINEEE_MESSMAN));
-    }
-
-    public static List<Rank> getAllList() {
-        return new ArrayList<>(Arrays.asList(ALL, CAPTAIN, CHIEF_OFFICER, SECOND_OFFICER, THIRD_OFFICER, DECK_CADET,
                 BOSUN, AB_SEAMAN, OS_SEAMAN, TRAINEE_SEAMAN, DECK_FITTER,
                 CHIEF_ENGINEER, SECOND_ENGINEER, THIRD_ENGINEER, FOURTH_ENGINEER, FIFTH_ENGINEER, JR_ENGINEER, ETO,
                 MOTORMAN, WIPER, OILER, ENGINE_FITTER, CHIEF_COOK, SECOND_COOK, MESSMAN_COOK, TRAINEEE_MESSMAN));
@@ -46,7 +38,7 @@ public class Rank {
         return new ArrayList<>(Arrays.asList(CHIEF_COOK, SECOND_COOK, MESSMAN_COOK, TRAINEEE_MESSMAN));
     }
 
-    public static final Rank ALL = new Rank(RankCategory.ALL, RankSubCategory.OFFICER, 0, "All");
+    //public static final Rank ALL = new Rank(RankCategory.ALL, RankSubCategory.OFFICER, 0, "All");
     public static final Rank CAPTAIN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 1, "Captain/Master");
     public static final Rank CHIEF_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 2, "Chief Officer");
     public static final Rank SECOND_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 3, "Second Officer");
@@ -142,14 +134,6 @@ public class Rank {
             return false;
         return true;
     }
-
-
-    @Override
-    public String toString() {
-        return "Rank [id=" + id + ", name=" + name + ", rankCategory=" + rankCategory.getName() + ", rankSubCategory="
-                + rankSubCategory.getName() + "]";
-    }
-
 
     public static Rank createFromId(int typeId) {
         return ((getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));

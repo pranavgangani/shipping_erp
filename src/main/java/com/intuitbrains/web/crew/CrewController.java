@@ -139,7 +139,7 @@ public class CrewController {
         }
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
-            Crew crew = crewService.getById(crewId);
+            Crew crew = crewService.getObjectById(crewId);
             crew.setStatus(Crew.Status.createFromId(crew.getStatusId()));
 
             mv.addObject("crew", crew);
@@ -212,7 +212,7 @@ public class CrewController {
         crew.setHeight(Double.parseDouble(height));
         crew.setWeight(Double.parseDouble(weight));
         crew.setPresentAddress(presentAddress);
-        crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
+        crew.setNationalityFlag(flagDao.getByCode(nationalityFlagCode));
         /*String[] dobStr = dob.split("/");
         int month = ParamUtil.parseInt(dobStr[0], -1);
         int day = ParamUtil.parseInt(dobStr[1], -1);
@@ -522,7 +522,7 @@ public class CrewController {
 
         CrewContract contract = new CrewContract();
         contract.setId(sequenceGenerator.generateSequence(CrewContract.SEQUENCE_NAME));
-        contract.setRank(Rank.createFromId(crew.getRankId()));
+        contract.setRank(crew.getRank());
         contract.setCrew(crew);
         contract.setVessel(vessel);
         contract.setPlaceOfContract("Mumbai");

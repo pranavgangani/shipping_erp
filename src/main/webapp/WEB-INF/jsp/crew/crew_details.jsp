@@ -127,9 +127,9 @@
                                         <select class="form-select dirtycheck"
                                                 aria-label="Default select example" id="nationalityFlagCode"
                                                 name="nationalityFlagCode">
-                                            <option selected disabled>Select Nationality Flag:</option>
+                                            <option selected disabled>Select Nationality:</option>
                                             <c:forEach items="${flags}" var="flag">
-                                                <option value="${flag.code}">${flag.name}</option>
+                                                <option <c:if test="${crew.nationalityFlag.code==flag.code}">selected</c:if> value="${flag.code}">${flag.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -390,8 +390,6 @@
 
 <%@ include file="../includes/bottom_includes.jsp" %>
 
-</body>
-
 <script>
 
     var input = document.querySelector("#file-input");
@@ -414,4 +412,6 @@
     }
 
 </script>
+</body>
+
 </html>

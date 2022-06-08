@@ -88,8 +88,8 @@ class CrewTest {
         crew.setDob(dob);
         crew.setGender("male");
         crew.setMaritalStatus(Crew.MaritalStatus.MARRIED.getDesc());
-        crew.setRankId(Rank.CHIEF_ENGINEER.getId());
-        crew.setNationalityFlagId(flag.getId());
+        crew.setRank(Rank.CHIEF_ENGINEER);
+        crew.setNationalityFlag(flag);
         //crew.setNationality("Indian");
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setPresentAddress(crew.getPermAddress());
@@ -151,7 +151,7 @@ class CrewTest {
         crew.setGender("male");
         crew.setRank(Rank.JR_ENGINEER);
         crew.setDistinguishMark("Some mark on head");
-        crew.setNationalityFlagId(flag.getId());
+        crew.setNationalityFlag(flag);
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setPresentAddress(crew.getPermAddress());
         crew.setEmailId("pranavgangani@gmail.com");
@@ -187,11 +187,21 @@ class CrewTest {
 
     @Test
     void updateRank() {
-        Crew crew = crewService.getById(1);
-        crew.setRankId(Rank.CAPTAIN.getId());
-        crewDao.save(crew);
+        Crew crew = crewService.getObjectById(4);
+        Bson updates = Updates.set("rank", Rank.CAPTAIN);
+        Bson filter = Filters.eq("_id", 4);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
+    }
+
+    @Test
+    void updateNationality() {
+        Flag flag = flagDao.getByCode("IN");
+        Bson updates = Updates.set("nationalityFlag", flag);
+        Bson filter = Filters.eq("_id", 4);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
 
     }
+
 
     @Test
     void updateDOB() {
@@ -216,7 +226,7 @@ class CrewTest {
     void updateFlag() {
         Crew crew = crewDao.findById(26l).get();
         Flag flag = flagDao.getByCode("IN");
-        crew.setNationalityFlagId(flag.getId());
+        crew.setNationalityFlag(flag);
         crewDao.save(crew);
     }
 
@@ -538,8 +548,6 @@ class CrewTest {
         contract.setCrew(crew);
         contract.setVessel(vacancy.getVessel());
         contract.setPlaceOfContract("Mumbai");
-        Flag flag = flagDao.findById(crew.getNationalityFlagId()).get();
-        contract.setPlaceOfContractFlag(flag);
         contract.setMonthlyWage(new BigDecimal(15000));
         contract.setWageCurrency("USD");
         contract.setStatusId(CrewContract.Status.GENERATED.getId());

@@ -87,6 +87,23 @@ class EmployeeTest {
         user.setRoles(set);
         employeeDao.insert(user);
     }
+    @Test
+    void addEmployeeRaju() {
+        Employee user = new Employee();
+        user.setEmailId("raju@saar.com");
+        user.setPassword("123");
+        user.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
+        user.setFirstName("Raju");
+        user.setMiddleName("");
+        user.setLastName("Mathew");
+        user.setGender("male");
+        user.setEmpId(generateEmployeeId());
+        Set set = new HashSet();
+        //set.add(roleDao.findByRole("USER"));
+        set.add(roleDao.findByRole("ADMIN"));
+        user.setRoles(set);
+        employeeDao.insert(user);
+    }
 
     @Test
     void addEmployee() {
