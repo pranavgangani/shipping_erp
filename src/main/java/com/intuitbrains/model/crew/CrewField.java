@@ -13,7 +13,7 @@ public enum CrewField {
     MANNING_OFFICE("manningOffice"),
     PLACE_OF_BIRTH("placeOfBirth"),
     NATIONALITY_ID("nationalityId"), 
-    NATIONALITY("Nationality"), 
+    //NATIONALITY("Nationality"),
     PERMANENT_ADDRRESS("permanentAddress"),
     PRESENT_ADDRRESS("presentAddress"),
     CONTACT_1("contact1"),

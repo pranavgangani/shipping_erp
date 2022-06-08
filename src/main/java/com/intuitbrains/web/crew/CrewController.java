@@ -141,7 +141,10 @@ public class CrewController {
     @GetMapping(value = "/modify")
     public ModelAndView modifyCrew(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("/crew/crew_details");
-
+        String menu = StringUtil.trim(req.getParameter("menu"));
+        if(menu==null){
+            menu = "overview";
+        }
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewService.getById(crewId);
@@ -163,8 +166,8 @@ public class CrewController {
             } catch (NoSuchElementException e) {
 
             }
-
         }
+        mv.addObject("menu", menu);
         mv.addObject("crewId", crewId);
         mv.addObject("flags", flagDao.findAll());
         mv.addObject("action", StandardWebParameter.MODIFY);
@@ -505,7 +508,6 @@ public class CrewController {
                                 @RequestParam("homeAddress") String homeAddress,
                                 @RequestParam("nearestAirport") String nearestAirport,
                                 @RequestParam("emailId") String emailId,
-                                @RequestParam("nationality") String nationality,
                                 @RequestParam("nationalityFlagCode") String nationalityFlagCode,
                                 @RequestParam("contact_1") String contact1,
                                 @RequestParam("contact_2") String contact2,
@@ -529,7 +531,6 @@ public class CrewController {
         crew.setNearestAirport(nearestAirport);
         crew.setMaritalStatus(maritalStatus);
         crew.setPermAddress(homeAddress);
-        crew.setNationality(nationality);
         crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
         String[] dobStr = dob.split("/");
         int month = ParamUtil.parseInt(dobStr[0], -1);

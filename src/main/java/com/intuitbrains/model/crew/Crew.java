@@ -37,7 +37,6 @@ public class Crew extends Person {
     private String manningOffice;
     private long photoId;
     private ObjectId nationalityFlagId;
-    private String nationality;
     private String placeOfBirth;
     private LocalDate dob, passportExpirationDate, indosExpirationDate;
     private int age;
@@ -281,15 +280,6 @@ public class Crew extends Person {
     @ACrew(name = CrewField.NATIONALITY_ID)
     public void setNationalityFlagId(ObjectId nationalityFlagId) {
         this.nationalityFlagId = nationalityFlagId;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    @ACrew(name = CrewField.NATIONALITY)
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
     }
 
     public String getPlaceOfBirth() {

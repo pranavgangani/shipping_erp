@@ -89,7 +89,7 @@ public class CrewExcelService {
             crew.setFirstName(sheet1.getRow(fNameCell.getRow()).getCell(fNameCell.getCol()).getRichStringCellValue().getString());
             crew.setMiddleName(sheet1.getRow(mNameCell.getRow()).getCell(mNameCell.getCol()).getRichStringCellValue().getString());
             crew.setLastName(sheet1.getRow(lNameCell.getRow()).getCell(lNameCell.getCol()).getRichStringCellValue().getString());
-            crew.setNationality(sheet1.getRow(nationalityCell.getRow()).getCell(nationalityCell.getCol()).getRichStringCellValue().getString());
+            //crew.setNationality(sheet1.getRow(nationalityCell.getRow()).getCell(nationalityCell.getCol()).getRichStringCellValue().getString());
             Date dob = sheet1.getRow(dateOfBirthCell.getRow()).getCell(dateOfBirthCell.getCol()).getDateCellValue();
             crew.setDob(DateTimeUtil.convertToLocalDate(dob));
 
