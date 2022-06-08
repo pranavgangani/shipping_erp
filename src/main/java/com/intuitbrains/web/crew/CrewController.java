@@ -166,6 +166,8 @@ public class CrewController {
             } catch (NoSuchElementException e) {
 
             }
+            List<CrewDocument> documents = documentDao.getPassportVisaCDC(crewId);
+            mv.addObject("documents", documents);
         }
         mv.addObject("menu", menu);
         mv.addObject("crewId", crewId);

@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +30,7 @@
             <%@ include file="add_crew_header.jsp" %>
             <!-- Main page content-->
             <div class="container-fluid px-4">
-				<%@ include file="add_crew_menu.jsp" %>
+                <%@ include file="add_crew_menu.jsp" %>
                 <!-- Account page navigation-->
                 <%--<nav class="nav nav-borders">
                     <a class="nav-link active ms-0" href="/crew/modify?crewId=${crewId}">Profile</a>
@@ -68,7 +69,6 @@
 
                             </div>
                         </div>
-                        <!-- Delete account card-->
                         <div class="card mb-4">
                             <div class="card-header">Actions</div>
                             <div class="card-body">
@@ -84,96 +84,105 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-10">
-                        <!-- Change password card-->
+                    <div class="col-lg-6">
                         <div class="card mb-4">
+                            <div class="card-header">Personal</div>
                             <div class="card-body">
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="firstName">First name</label>
-                                            <input class="form-control dirtycheck" id="firstName" type="text" placeholder="Enter first name" value="${crew.firstName}" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="middleName">Middle name</label>
-                                            <input class="form-control dirtycheck" id="middleName" type="text" placeholder="Enter middle name" value="${crew.middleName}" />
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="lastName">Last name</label>
-                                            <input class="form-control dirtycheck" id="lastName" type="text" placeholder="Enter last name" value="${crew.lastName}" />
-                                        </div>
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="firstName">First name</label>
+                                        <input class="form-control dirtycheck" id="firstName" type="text"
+                                               placeholder="Enter first name" value="${crew.firstName}"/>
                                     </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="maritalStatus">Marital Status</label>
-                                            <select class="form-select" id="maritalStatus" name="maritalStatus"
-                                                    aria-label="Default select example">
-                                                <option selected disabled>Marital Status:</option>
-                                                <option <c:if test="${crew.maritalStatus=='Single'}">selected</c:if> value="single">Single</option>
-                                                <option <c:if test="${crew.maritalStatus=='Married'}">selected</c:if> value="married">Married</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="nationality">Nationality</label>
-                                            <select class="form-select dirtycheck"
-                                                    aria-label="Default select example" id="nationality"
-                                                    name="nationalityFlagCode">
-                                                <option selected disabled>Select Nationality Flag:</option>
-                                                <c:forEach items="${flags}" var="flag">
-                                                    <option value="${flag.code}">${flag.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="rankId">Rank</label>
-                                            <select class="form-select dirtycheck" id="rankId" name="rankId"
-                                                    aria-label="Default select example">
-                                                <option selected disabled>Select a Rank:</option>
-                                                <c:forEach var="optionGroup" items="${rankMap}">
-                                                    <optgroup label="${optionGroup.key}">
-                                                        <c:forEach var="option" items="${optionGroup.value}">
-                                                            <option
-                                                                    <c:if test="${crew.rank.id==option.id}">selected</c:if>
-                                                                    value="${option.id}">${option.name}
-                                                                (${option.rankSubCategory.name})
-                                                            </option>
-                                                        </c:forEach>
-                                                    </optgroup>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="middleName">Middle name</label>
+                                        <input class="form-control dirtycheck" id="middleName" type="text"
+                                               placeholder="Enter middle name" value="${crew.middleName}"/>
                                     </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="lastName">Last name</label>
+                                        <input class="form-control dirtycheck" id="lastName" type="text"
+                                               placeholder="Enter last name" value="${crew.lastName}"/>
+                                    </div>
+                                </div>
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="maritalStatus">Marital Status</label>
+                                        <select class="form-select" id="maritalStatus" name="maritalStatus"
+                                                aria-label="Default select example">
+                                            <option selected disabled>Marital Status:</option>
+                                            <option
+                                                    <c:if test="${crew.maritalStatus=='Single'}">selected</c:if>
+                                                    value="single">Single
+                                            </option>
+                                            <option
+                                                    <c:if test="${crew.maritalStatus=='Married'}">selected</c:if>
+                                                    value="married">Married
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="nationality">Nationality</label>
+                                        <select class="form-select dirtycheck"
+                                                aria-label="Default select example" id="nationality"
+                                                name="nationalityFlagCode">
+                                            <option selected disabled>Select Nationality Flag:</option>
+                                            <c:forEach items="${flags}" var="flag">
+                                                <option value="${flag.code}">${flag.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="rankId">Rank</label>
+                                        <select class="form-select dirtycheck" id="rankId" name="rankId"
+                                                aria-label="Default select example">
+                                            <option selected disabled>Select a Rank:</option>
+                                            <c:forEach var="optionGroup" items="${rankMap}">
+                                                <optgroup label="${optionGroup.key}">
+                                                    <c:forEach var="option" items="${optionGroup.value}">
+                                                        <option
+                                                                <c:if test="${crew.rank.id==option.id}">selected</c:if>
+                                                                value="${option.id}">${option.name}
+                                                            (${option.rankSubCategory.name})
+                                                        </option>
+                                                    </c:forEach>
+                                                </optgroup>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
 
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="gender">Gender</label>
-                                            <select class="form-select dirtycheck" id="gender" name="gender"
-                                                    aria-label="Default select example">
-                                                <option selected disabled>Gender:</option>
-                                                <option
-                                                        <c:if test="${crew.gender=='Male'}">selected</c:if>
-                                                        value="Male">Male
-                                                </option>
-                                                <option
-                                                        <c:if test="${crew.gender=='Female'}">selected</c:if>
-                                                        value="Female">Female
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="distinguishingMark">Distinguishing Mark</label>
-                                            <textarea name="distinguishingMark" id="distinguishingMark"
-                                                      class="lh-base form-control dirtycheck" placeholder=""
-                                                      rows="3" cols="3">${crew.distinguishMark}</textarea>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="small mb-1" for="lastName">Nearest Airport</label>
-                                            <input class="form-control dirtycheck"
-                                                   id="nearestAirport"
-                                                   name="nearestAirport" type="text"
-                                                   placeholder="Enter Nearest Airport"
-                                                   value="${crew.nearestAirport}"/>
-                                        </div>
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="gender">Gender</label>
+                                        <select class="form-select dirtycheck" id="gender" name="gender"
+                                                aria-label="Default select example">
+                                            <option selected disabled>Gender:</option>
+                                            <option
+                                                    <c:if test="${crew.gender=='Male'}">selected</c:if>
+                                                    value="Male">Male
+                                            </option>
+                                            <option
+                                                    <c:if test="${crew.gender=='Female'}">selected</c:if>
+                                                    value="Female">Female
+                                            </option>
+                                        </select>
                                     </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="distinguishingMark">Distinguishing Mark</label>
+                                        <textarea name="distinguishingMark" id="distinguishingMark"
+                                                  class="lh-base form-control dirtycheck" placeholder=""
+                                                  rows="3" cols="3">${crew.distinguishMark}</textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="lastName">Nearest Airport</label>
+                                        <input class="form-control dirtycheck"
+                                               id="nearestAirport"
+                                               name="nearestAirport" type="text"
+                                               placeholder="Enter Nearest Airport"
+                                               value="${crew.nearestAirport}"/>
+                                    </div>
+                                </div>
 
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-4">
@@ -216,17 +225,49 @@
                                                value="${crew.contact2}"/>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="small mb-1" for="emailId">Date of Birth</label>
+                                        <label class="small mb-1" for="dob">Date of Birth</label>
+                                        <div class="input-group input-group-joined border-1">
+                                            <span class="input-group-text"><i class="text-primary"
+                                                                              data-feather="calendar"></i></span>
+                                            <input name="birthDate" class="form-control dirtycheck"
+                                                   id="dobSingleDate"
+                                                   placeholder="Select date" value="${crew.dob}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="height">Height</label>
                                         <input class="form-control dirtycheck"
-                                               id="birthDate" name="birthDate"
-                                               type="text" placeholder="Enter DOB"
-                                               value="${crew.dob}"/>
+                                               id="height" name="height"
+                                               type="text"
+                                               placeholder="Enter Height in cms"
+                                               value="${crew.height}"/>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="weight">Weight</label>
+                                        <input class="form-control dirtycheck"
+                                               id="weight" name="weight"
+                                               type="text"
+                                               placeholder="Enter Weight in kgs"
+                                               value="${crew.weight}"/>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="availableFromDate">Available From Date</label>
+                                        <div class="input-group input-group-joined border-1">
+                                        <span class="input-group-text"><i class="text-primary"
+                                                                          data-feather="calendar"></i></span>
+                                            <input name="availableFromDate" class="form-control dirtycheck"
+                                                   id="availableFromDateSingleDate"
+                                                   placeholder="Select date" value="${crew.availableFromDate}"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <c:if test="${action == 'modify'}">
-                        <div class="card mb-4">
+                        <div class="card mb-6">
                             <div class="card-header">Audit Trail</div>
                             <div class="card-body">
                                 <div class="timeline timeline-xs">
@@ -246,7 +287,66 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-lg-4">
+                        <div class="card mb-4">
+                            <div class="card-header">Documents</div>
+                            <div class="card-body">
+                                <div class="table-responsive table-billing-history">
+                                    <table class="table mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-gray-200" scope="col">Document</th>
+                                            <th class="border-gray-200" scope="col">Number</th>
+                                            <th class="border-gray-200" scope="col">Issue Date</th>
+                                            <th class="border-gray-200" scope="col">Expiry Date</th>
+                                            <th class="border-gray-200" scope="col">File</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${documents}" var="doc">
+                                            <tr>
+                                                <td><label class="small mb-3">${doc.docType.name}</label>
+                                                    <c:if test="${doc.file!=null}">
+                                                        <a class="dropdown-item"
+                                                           href="/crew/document/download?documentId=${doc.id}">
+                                                            <div class="page-header-icon"><i data-feather="file"></i>
+                                                            </div>
+                                                        </a>
+                                                    </c:if>
+                                                </td>
+                                                <td><label class="small mb-3">${doc.docNumber}</label></td>
+                                                <td><label
+                                                        class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
+                                                </td>
+                                                <td><label
+                                                        class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
+                                                </td>
+                                                <td>
+                                                    <i data-feather="file"></i>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <%--
+                                                <div class="card mb-4">
+                                                    <div class="card-header">Actions</div>
+                                                    <div class="card-body">
+                                                        <c:choose>
+                                                            <c:when test="${action == 'modify'}"><a href="javascript:void(0);"
+                                                                                                    onclick="Crew_Details.update();">
+                                                                <button class="btn btn-primary" type="submit">Save</button>
+                                                            </a></c:when>
+                                                            <c:otherwise><a href="javascript:void(0);" onclick="Crew_Details.add();">
+                                                                <button class="btn btn-primary" type="submit">Add</button>
+                                                            </a></c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>--%>
+                    </div>
                 </div>
 
             </div>

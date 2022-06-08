@@ -34,11 +34,12 @@ public class Crew extends Person {
     private String distinguishMark;
     private int rankId;
     private Rank rank;
+    private double height, weight;
     private String manningOffice;
     private long photoId;
     private ObjectId nationalityFlagId;
     private String placeOfBirth;
-    private LocalDate dob, passportExpirationDate, indosExpirationDate;
+    private LocalDate dob, passportExpirationDate, indosExpirationDate, availableFromDate;
     private int age;
     private Contract currentContract;
     private long assignedVacancyId;
@@ -425,6 +426,33 @@ public class Crew extends Person {
 
     public void setMandatoryDocuments(List<CrewDocument> mandatoryDocuments) {
         this.mandatoryDocuments = mandatoryDocuments;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    @ACrew(name = CrewField.HEIGHT)
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    @ACrew(name = CrewField.WEIGHT)
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public LocalDate getAvailableFromDate() {
+        return availableFromDate;
+    }
+
+    @ACrew(name = CrewField.AVAILABILITY_DATE)
+    public void setAvailableFromDate(LocalDate availableFromDate) {
+        this.availableFromDate = availableFromDate;
     }
 
     public int getAge() {
