@@ -90,7 +90,7 @@ class CrewTest {
         crew.setMaritalStatus(Crew.MaritalStatus.MARRIED.getDesc());
         crew.setRankId(Rank.CHIEF_ENGINEER.getId());
         crew.setNationalityFlagId(flag.getId());
-        crew.setNationality("Indian");
+        //crew.setNationality("Indian");
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setPresentAddress(crew.getPermAddress());
         crew.setDistinguishMark("Some mark on head");

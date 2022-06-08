@@ -12,7 +12,9 @@
 					</h1>
 				</div>
 				<div class="col-12 col-xl-auto mb-3">
-
+					<c:if test="${crew!=null}">
+						${crew.firstName} ${crew.middleName} ${crew.lastName} (${crew.fileNum})
+					</c:if>
 				</div>
 			</div>
 		</div>

@@ -129,25 +129,18 @@ public class CrewController {
         return mv;
     }
 
-    @GetMapping(value = "/add")
-    public ModelAndView addCrew(Model model) {
-        ModelAndView mv = new ModelAndView("crew/crew_details");
-        mv.addObject("action", StandardWebParameter.ADD);
-        mv.addObject("rankMap", Rank.getByGroup());
-        mv.addObject("flags", flagDao.findAll());
-        return mv;
-    }
-
-    @GetMapping(value = "/modify")
+    @GetMapping(value = "/details")
     public ModelAndView modifyCrew(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("/crew/crew_details");
+        String action = StringUtil.trim(req.getParameter("action"));
         String menu = StringUtil.trim(req.getParameter("menu"));
-        if(menu==null){
+        if (menu == null) {
             menu = "overview";
         }
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewService.getById(crewId);
+            crew.setStatus(Crew.Status.createFromId(crew.getStatusId()));
 
             mv.addObject("crew", crew);
             List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
@@ -169,15 +162,112 @@ public class CrewController {
             List<CrewDocument> documents = documentDao.getPassportVisaCDC(crewId);
             mv.addObject("documents", documents);
         }
+        mv.addObject("statuses", Crew.Status.getList());
         mv.addObject("menu", menu);
         mv.addObject("crewId", crewId);
         mv.addObject("flags", flagDao.findAll());
-        mv.addObject("action", StandardWebParameter.MODIFY);
+        mv.addObject("action", action);
         mv.addObject("rankMap", Rank.getByGroup());
         return mv;
     }
 
 
+    @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView addCrew(HttpServletRequest req, @RequestParam("firstName") String fName, @RequestParam("middleName") String mName,
+                                @RequestParam("lastName") String lName, @RequestParam("rankId") int rankId,
+                                @RequestParam("gender") String gender, @RequestParam("distinguishingMark") String distinguishMark,
+                                @RequestParam("maritalStatus") String maritalStatus,
+                                @RequestParam("permAddress") String permAddress,
+                                @RequestParam("presentAddress") String presentAddress,
+                                @RequestParam("nearestAirport") String nearestAirport,
+                                @RequestParam("manningOffice") String manningOffice,
+                                @RequestParam("emailId") String emailId,
+                                @RequestParam("nationalityFlagCode") String nationalityFlagCode,
+                                @RequestParam("contact_1") String contact1,
+                                @RequestParam("contact_2") String contact2,
+                                @RequestParam("birthDate") String dob,
+                                @RequestParam("height") String height,
+                                @RequestParam("weight") String weight,
+                                @RequestParam("passportNumber") String passportNumber,
+                                @RequestParam("availableFromDate") String availableFromDate,
+                                @RequestParam("image") MultipartFile image,
+                                Model model) {
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        String maker = emp.getEmpId();
+        ModelAndView mv = new ModelAndView("/crew/employment_list");
+        System.out.println("add_crew: " + fName);
+        System.out.println("image: " + image);
+
+        //Add New Crew
+        Crew crew = new Crew();
+        crew.setFirstName(fName);
+        crew.setLastName(lName);
+        crew.setMiddleName(mName);
+        crew.setEmailId(emailId);
+        crew.setContact1(contact1);
+        crew.setContact2(contact2);
+        crew.setNearestAirport(nearestAirport);
+        crew.setMaritalStatus(maritalStatus);
+        crew.setPermAddress(permAddress);
+        crew.setHeight(Double.parseDouble(height));
+        crew.setWeight(Double.parseDouble(weight));
+        crew.setPresentAddress(presentAddress);
+        crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
+        /*String[] dobStr = dob.split("/");
+        int month = ParamUtil.parseInt(dobStr[0], -1);
+        int day = ParamUtil.parseInt(dobStr[1], -1);
+        int year = ParamUtil.parseInt(dobStr[2], -1);
+        crew.setDob(LocalDate.of(year, month, day));*/
+        crew.setRank(Rank.createFromId(rankId));
+        crew.setPassportNumber(passportNumber);
+        crew.setGender(gender);
+        crew.setDistinguishMark(distinguishMark);
+        crew.setManningOffice(manningOffice);
+
+        /*CrewFieldStatus fs = crew.getFieldStatus();
+        fs.setGender(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setPermAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setPresentAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setNearestAirport(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setNationality(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setContact1(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
+        crew.setFieldStatus(fs);
+*/
+        crew.setEnteredBy(emp.getEmpId());
+        crewService.addCrew(crew);
+        long crewId = crew.getId();
+        System.out.println("New crewId ---> " + crewId);
+        mv.addObject("crewId", crewId);
+
+        try {
+            //Add Crew Photo
+            CrewPhoto photo = new CrewPhoto(crewId, fName + " " + mName + " " + lName);
+            photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
+            photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+            photo = photoDao.insert(photo);
+            long photoId = photo.getId();
+            System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
+            photo = photoDao.findById(photoId).get();
+
+            //Save PhotoId to Crew
+            crew.setPhotoId(photoId);
+            crewService.updateCrew(crew);
+            mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+//		return "redirect:/photos/" + id;
+
+        return mv;
+    }
 
     @PostMapping(value = "/update.ajax")
     public ModelAndView updateCrew(HttpServletRequest req,
@@ -185,7 +275,7 @@ public class CrewController {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         String maker = emp.getEmpId();
         ModelAndView mv = new ModelAndView("/crew/employment_list");
-       // MultipartFile image = req.getFile("image");
+        // MultipartFile image = req.getFile("image");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         String modifiedFields = req.getParameter("modifiedFields");
         Gson gson = new Gson();
@@ -234,8 +324,8 @@ public class CrewController {
             //Add Crew Photo
             CrewPhoto photo = new CrewPhoto(crewId, "Photo");
             photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
-           // photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-           // photo = photoDao.insert(photo);
+            // photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
+            // photo = photoDao.insert(photo);
             long photoId = photo.getId();
             System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
             photo = photoDao.findById(photoId).get();
@@ -253,29 +343,6 @@ public class CrewController {
 
         return mv;
     }
-
-    /*@PostMapping(value = "/modify")
-    public ModelAndView updateCrew(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("/crew/crew_details");
-
-        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
-        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-        if (crewId > 0) {
-            Enumeration enumer = req.getParameterNames();
-            Iterator iter = enumer.asIterator();
-            while (iter.hasNext()) {
-                String paramName = (String) iter.next();
-                System.out.println(paramName + " : " + req.getParameter(paramName));
-            }
-            //Crew crew = crewDao.findById(crewId).get();
-
-
-        }
-        mv.addObject("action", StandardWebParameter.MODIFY);
-        mv.addObject("rankMap", Rank.getByGroup());
-        return mv;
-    }
-*/
 
     @GetMapping(value = "/documents")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
@@ -501,94 +568,6 @@ public class CrewController {
         return mv;
     }
 
-
-    @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView addCrew(HttpServletRequest req, @RequestParam("fName") String fName, @RequestParam("mName") String mName,
-                                @RequestParam("lName") String lName, @RequestParam("rankId") int rankId,
-                                @RequestParam("gender") String gender, @RequestParam("distinguishingMark") String distinguishMark,
-                                @RequestParam("maritalStatus") String maritalStatus,
-                                @RequestParam("homeAddress") String homeAddress,
-                                @RequestParam("nearestAirport") String nearestAirport,
-                                @RequestParam("emailId") String emailId,
-                                @RequestParam("nationalityFlagCode") String nationalityFlagCode,
-                                @RequestParam("contact_1") String contact1,
-                                @RequestParam("contact_2") String contact2,
-                                @RequestParam("birthDate") String dob,
-                                @RequestParam("manningOffice") String manningOffice, @RequestParam("image") MultipartFile image,
-                                Model model) {
-        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
-        String maker = emp.getEmpId();
-        ModelAndView mv = new ModelAndView("/crew/employment_list");
-        System.out.println("add_crew: " + fName);
-        System.out.println("image: " + image);
-
-        //Add New Crew
-        Crew crew = new Crew();
-        crew.setFirstName(fName);
-        crew.setLastName(lName);
-        crew.setMiddleName(mName);
-        crew.setEmailId(emailId);
-        crew.setContact1(contact1);
-        crew.setContact2(contact2);
-        crew.setNearestAirport(nearestAirport);
-        crew.setMaritalStatus(maritalStatus);
-        crew.setPermAddress(homeAddress);
-        crew.setNationalityFlagId(flagDao.getByCode(nationalityFlagCode).getId());
-        String[] dobStr = dob.split("/");
-        int month = ParamUtil.parseInt(dobStr[0], -1);
-        int day = ParamUtil.parseInt(dobStr[1], -1);
-        int year = ParamUtil.parseInt(dobStr[2], -1);
-        crew.setDob(LocalDate.of(year, month, day));
-        crew.setRank(Rank.createFromId(rankId));
-        crew.setGender(gender);
-        crew.setDistinguishMark(distinguishMark);
-        crew.setManningOffice(manningOffice);
-
-        CrewFieldStatus fs = crew.getFieldStatus();
-        fs.setGender(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setDistinguishingMark(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setManningOffice(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setEmailId(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setPermAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setPresentAddress(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setNearestAirport(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setRank(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setDob(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setNationality(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setContact1(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        fs.setContact2(new FieldStatus(maker, LocalDateTime.now(), null, null));
-        crew.setFieldStatus(fs);
-
-        crew.setEnteredBy(emp.getEmpId());
-        crewService.addCrew(crew);
-        long crewId = crew.getId();
-        System.out.println("New crewId ---> " + crewId);
-        mv.addObject("crewId", crewId);
-
-        try {
-            //Add Crew Photo
-            CrewPhoto photo = new CrewPhoto(crewId, fName + " " + mName + " " + lName);
-            photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
-            photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-            photo = photoDao.insert(photo);
-            long photoId = photo.getId();
-            System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
-            photo = photoDao.findById(photoId).get();
-
-            //Save PhotoId to Crew
-            crew.setPhotoId(photoId);
-            crewService.updateCrew(crew);
-            mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-//		return "redirect:/photos/" + id;
-
-        return mv;
-    }
-
     @GetMapping(value = "/experience")
     public ModelAndView employment(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/experience");
@@ -779,7 +758,7 @@ public class CrewController {
             e.printStackTrace();
         }
 
-         documentDao.save(docToUpload);
+        documentDao.save(docToUpload);
 
         //crew.setExistingDocuments(documents);
         //crewService.updateCrew(crew);

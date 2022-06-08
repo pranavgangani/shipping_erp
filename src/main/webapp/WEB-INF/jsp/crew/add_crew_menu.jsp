@@ -1,6 +1,6 @@
 <nav class="nav nav-borders">
     <div class="dropdown">
-        <a href="/crew/modify?menu=overview&crewId=${crewId}">
+        <a href="/crew/details?menu=overview&action=modify&crewId=${crewId}">
             <button class="btn <c:choose><c:when test="${menu == 'overview'}">btn-primary</c:when><c:otherwise>btn-light</c:otherwise></c:choose>" type="button">Overview</button>
         </a>
     </div>

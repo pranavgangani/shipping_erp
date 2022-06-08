@@ -25,7 +25,7 @@
                 <main>
                 <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/${action}">
                 <input type="hidden" id="crewId" name="crewId" value="${crewId}">
-                <%@ include file="add_crew_header.jsp" %>
+                <%@ include file="crew_header.jsp" %>
 
                     <!-- Main page content-->
                     <div class="container-fluid px-4">

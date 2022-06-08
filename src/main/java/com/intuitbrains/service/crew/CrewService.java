@@ -91,10 +91,13 @@ public class CrewService {
         crew.setEnteredDateTime(LocalDateTime.now());
         crew.setStatusId(Crew.Status.NEW_RECRUIT.getId());
 
-        addToAudit(crew);
+        //addToAudit(crew);
 
         crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
-
+        String id = String.valueOf(crew.getId());
+        String zeros = "0000";
+        zeros.substring((zeros.length() - (zeros.length() - id.length())), zeros.length() - 1);
+        crew.setFileNum("F"+zeros+id);
         crewDao.insert(crew);
 
         //Audit

@@ -60,6 +60,24 @@ Crew_Details.update = function ()  {
 
 }
 
+Crew_Details.add = function ()  {
+    /*var formValidation = jQuery('#crew-form').data('formValidation');
+    var form = jQuery('#crew-form');
+    formValidation.validateContainer(form);*/
+
+    var isModified = Bootstrap_Validation.isDirty();
+    if(!isModified) {
+        //Bootstrap_Util.openToastAlert("warning", "<i class='fa fa-info'></i>Warning", "No modified values to save.", 2000);
+        //alert("No modified values to save.", 2000);
+    } else {
+        var isValid = Bootstrap_Validation.isValid();
+        if (isValid) {
+            jQuery( "#crew-details-form" ).submit();
+        }
+    }
+
+}
+
 Crew_Details.getModifiedFields = function (modifiedFields) {
     // Get dirty fields
     var dirtyFields = jQuery('.isDirty');

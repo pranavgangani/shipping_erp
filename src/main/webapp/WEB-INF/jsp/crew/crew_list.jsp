@@ -126,7 +126,7 @@
 														</div> Add Documents
 													</a>													
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/crew/modify?crewId=${crew.id}">
+													<a class="dropdown-item" href="/crew/details?action=modify&crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
@@ -193,7 +193,7 @@
                                                         </div>
                                                         <div class="card-footer bg-transparent px-5 py-4">
                                                             <div class="small text-center">
-                                                             <form role="form" method="GET" action="/crew/add">
+                                                             <form role="form" method="GET" action="/crew/details?action=add">
                                                                 <button class="btn btn-primary" type="submit">Add Manually</button>
                                                             </form>
                                                             </div>

@@ -24,10 +24,11 @@
 
     <div id="layoutSidenav_content">
         <main>
+            <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/add">
             <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
             <input type="hidden" id="contextPath" value="<%=request.getContextPath()%>">
             <input type="hidden" id="menu" value="${menu}">
-            <%@ include file="add_crew_header.jsp" %>
+            <%@ include file="crew_header.jsp" %>
             <!-- Main page content-->
             <div class="container-fluid px-4">
                 <%@ include file="add_crew_menu.jsp" %>
@@ -91,17 +92,17 @@
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-4">
                                         <label class="small mb-1" for="firstName">First name</label>
-                                        <input class="form-control dirtycheck" id="firstName" type="text"
+                                        <input class="form-control dirtycheck" id="firstName" name="firstName" type="text"
                                                placeholder="Enter first name" value="${crew.firstName}"/>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="small mb-1" for="middleName">Middle name</label>
-                                        <input class="form-control dirtycheck" id="middleName" type="text"
+                                        <input class="form-control dirtycheck" id="middleName" name="middleName" type="text"
                                                placeholder="Enter middle name" value="${crew.middleName}"/>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="small mb-1" for="lastName">Last name</label>
-                                        <input class="form-control dirtycheck" id="lastName" type="text"
+                                        <input class="form-control dirtycheck" id="lastName" name="lastName" type="text"
                                                placeholder="Enter last name" value="${crew.lastName}"/>
                                     </div>
                                 </div>
@@ -122,9 +123,9 @@
                                         </select>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="small mb-1" for="nationality">Nationality</label>
+                                        <label class="small mb-1" for="nationalityFlagCode">Nationality</label>
                                         <select class="form-select dirtycheck"
-                                                aria-label="Default select example" id="nationality"
+                                                aria-label="Default select example" id="nationalityFlagCode"
                                                 name="nationalityFlagCode">
                                             <option selected disabled>Select Nationality Flag:</option>
                                             <c:forEach items="${flags}" var="flag">
@@ -238,7 +239,7 @@
 
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-4">
-                                        <label class="small mb-1" for="height">Height</label>
+                                        <label class="small mb-1" for="height">Height (cms)</label>
                                         <input class="form-control dirtycheck"
                                                id="height" name="height"
                                                type="text"
@@ -246,7 +247,7 @@
                                                value="${crew.height}"/>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="small mb-1" for="weight">Weight</label>
+                                        <label class="small mb-1" for="weight">Weight (kgs)</label>
                                         <input class="form-control dirtycheck"
                                                id="weight" name="weight"
                                                type="text"
@@ -262,6 +263,30 @@
                                                    id="availableFromDateSingleDate"
                                                    placeholder="Select date" value="${crew.availableFromDate}"/>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="firstName">Status</label>
+                                        <select class="form-select" id="statusId" name="statusId"
+                                                aria-label="Default select example">
+                                            <option selected disabled>Status:</option>
+                                            <c:forEach items="${statuses}" var="status">
+                                                <option
+                                                        <c:if test="${crew.status.id==status.id}">selected</c:if>
+                                                        value="${status.id}">${status.desc}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="manningOffice">Manning Office</label>
+                                        <input class="form-control dirtycheck" name="manningOffice" id="manningOffice" type="text"
+                                               value="${crew.manningOffice}"/>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small mb-1" for="passportNumber">Passport Number</label>
+                                        <input class="form-control dirtycheck" name="passportNumber" id="passportNumber" type="text"
+                                               placeholder="Enter Passport Number" value="${crew.passportNumber}"/>
                                     </div>
                                 </div>
                             </div>
@@ -287,71 +312,75 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="card mb-4">
-                            <div class="card-header">Documents</div>
-                            <div class="card-body">
-                                <div class="table-responsive table-billing-history">
-                                    <table class="table mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th class="border-gray-200" scope="col">Document</th>
-                                            <th class="border-gray-200" scope="col">Number</th>
-                                            <th class="border-gray-200" scope="col">Issue Date</th>
-                                            <th class="border-gray-200" scope="col">Expiry Date</th>
-                                            <th class="border-gray-200" scope="col">File</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach items="${documents}" var="doc">
+
+                    <c:if test="${documents!=null}">
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-header">Documents</div>
+                                <div class="card-body">
+                                    <div class="table-responsive table-billing-history">
+                                        <table class="table mb-0">
+                                            <thead>
                                             <tr>
-                                                <td><label class="small mb-3">${doc.docType.name}</label>
-                                                    <c:if test="${doc.file!=null}">
-                                                        <a class="dropdown-item"
-                                                           href="/crew/document/download?documentId=${doc.id}">
-                                                            <div class="page-header-icon"><i data-feather="file"></i>
-                                                            </div>
-                                                        </a>
-                                                    </c:if>
-                                                </td>
-                                                <td><label class="small mb-3">${doc.docNumber}</label></td>
-                                                <td><label
-                                                        class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
-                                                </td>
-                                                <td><label
-                                                        class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
-                                                </td>
-                                                <td>
-                                                    <i data-feather="file"></i>
-                                                </td>
+                                                <th class="border-gray-200" scope="col">Document</th>
+                                                <th class="border-gray-200" scope="col">Number</th>
+                                                <th class="border-gray-200" scope="col">Issue Date</th>
+                                                <th class="border-gray-200" scope="col">Expiry Date</th>
+                                                <th class="border-gray-200" scope="col">File</th>
                                             </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach items="${documents}" var="doc">
+                                                <tr>
+                                                    <td><label class="small mb-3">${doc.docType.name}</label>
+                                                        <c:if test="${doc.file!=null}">
+                                                            <a class="dropdown-item"
+                                                               href="/crew/document/download?documentId=${doc.id}">
+                                                                <div class="page-header-icon"><i
+                                                                        data-feather="file"></i>
+                                                                </div>
+                                                            </a>
+                                                        </c:if>
+                                                    </td>
+                                                    <td><label class="small mb-3">${doc.docNumber}</label></td>
+                                                    <td><label
+                                                            class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
+                                                    </td>
+                                                    <td><label
+                                                            class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
+                                                    </td>
+                                                    <td>
+                                                        <i data-feather="file"></i>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+                                <%--
+                                                        <div class="card mb-4">
+                                                            <div class="card-header">Actions</div>
+                                                            <div class="card-body">
+                                                                <c:choose>
+                                                                    <c:when test="${action == 'modify'}"><a href="javascript:void(0);"
+                                                                                                            onclick="Crew_Details.update();">
+                                                                        <button class="btn btn-primary" type="submit">Save</button>
+                                                                    </a></c:when>
+                                                                    <c:otherwise><a href="javascript:void(0);" onclick="Crew_Details.add();">
+                                                                        <button class="btn btn-primary" type="submit">Add</button>
+                                                                    </a></c:otherwise>
+                                                                </c:choose>
+                                                            </div>
+                                                        </div>--%>
                         </div>
-                        <%--
-                                                <div class="card mb-4">
-                                                    <div class="card-header">Actions</div>
-                                                    <div class="card-body">
-                                                        <c:choose>
-                                                            <c:when test="${action == 'modify'}"><a href="javascript:void(0);"
-                                                                                                    onclick="Crew_Details.update();">
-                                                                <button class="btn btn-primary" type="submit">Save</button>
-                                                            </a></c:when>
-                                                            <c:otherwise><a href="javascript:void(0);" onclick="Crew_Details.add();">
-                                                                <button class="btn btn-primary" type="submit">Add</button>
-                                                            </a></c:otherwise>
-                                                        </c:choose>
-                                                    </div>
-                                                </div>--%>
-                    </div>
+                    </c:if>
                 </div>
 
             </div>
 
-
+                </form>
         </main>
 
         <%@ include file="../includes/copyright.jsp" %>

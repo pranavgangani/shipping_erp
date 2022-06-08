@@ -26,6 +26,7 @@ public class Crew extends Person {
 
     @Id
     private long id;
+    private String fileNum;
     protected String firstName, middleName, lastName;
     protected String gender;
     protected String userName, password, emailId;
@@ -78,6 +79,14 @@ public class Crew extends Person {
 
     private int statusId;
     private Status status;
+
+    public String getFileNum() {
+        return fileNum;
+    }
+
+    public void setFileNum(String fileNum) {
+        this.fileNum = fileNum;
+    }
 
     public int getRankId() {
         return rankId;
@@ -620,7 +629,8 @@ public class Crew extends Person {
         ASSIGNED(4, "Assigned"),
         SIGNED_ON(5, "Signed-On"),
         SIGNED_OFF(6, "Signed-Off"),
-        INJURED(7, "Injured");
+        INJURED(7, "Injured"),
+        INACTIVE(8, "Inactive/Left");
 
         private int id;
         private String desc;
