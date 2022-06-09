@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
@@ -50,9 +53,11 @@ import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
 import com.intuitbrains.util.*;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -63,6 +68,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -110,6 +119,8 @@ public class CrewController {
     private VesselService vesselService;
     @Autowired
     private MongoDatabase db;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @GetMapping(value = "/list")
     public ModelAndView crewList(HttpServletRequest req, Model model) {
@@ -262,47 +273,23 @@ public class CrewController {
     }
 
     @PostMapping(value = "/update.ajax", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView updateCrew(MultipartHttpServletRequest req,
-                                   Model model) {
+    public ModelAndView updateCrew(MultipartHttpServletRequest req) {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         String maker = emp.getEmpId();
         ModelAndView mv = new ModelAndView("/crew/employment_list");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-        String modifiedFields = req.getParameter("modifiedFields");
-        Gson gson = new Gson();
-        //Crew modifiedCrew = gson.fromJson(modifiedFields, Crew.class);
+        String json = req.getParameter("modifiedFields");
+        JsonObject jsonObject = new Gson().fromJson(json, JsonObject.class);
 
-       /* Bson updates = Updates.combine(
-                Updates.addToSet("genres", "Frequently Discussed"),
-                Updates.addToSet("genres", "Frequently Discussed"),
-                Updates.addToSet("genres", "Frequently Discussed"),
-                Updates.addToSet("genres", "Frequently Discussed"),
-                Updates.currentTimestamp("lastUpdated"));
-*/
-        Bson filter = Filters.eq("_id", crewId);
-        //db.getCollection(Collection.CREW, Crew.class).updateMany(filter, updates);
+        BasicDBObject searchQuery = new BasicDBObject("_id", crewId);
+        BasicDBObject updateFields = new BasicDBObject();
+        jsonObject.entrySet().forEach(e -> {
+            updateFields.append(e.getKey(), e.getValue().getAsString());
+        });
+        BasicDBObject setQuery = new BasicDBObject();
+        setQuery.append("$set", updateFields);
+        UpdateResult updateResult = db.getCollection(Collection.CREW, Crew.class).updateMany(searchQuery, setQuery);
 
-
-        try {
-            MultipartFile image = req.getFile("image");
-            //Add Crew Photo
-            CrewPhoto photo = new CrewPhoto(crewId, "Photo");
-            photo.setId(sequenceGenerator.generateSequence(CrewPhoto.SEQUENCE_NAME));
-            photo.setImage(new Binary(BsonBinarySubType.BINARY, image.getBytes()));
-            photo = photoDao.insert(photo);
-            long photoId = photo.getId();
-            System.out.println("CrewId ---> " + crewId + " Photo ID: " + photoId);
-            photo = photoDao.findById(photoId).get();
-
-            //Save PhotoId to Crew
-            db.getCollection(Collection.CREW, Crew.class).updateOne(Filters.all("_id", crewId), Updates.set("photoId", photoId));
-
-            mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 //		return "redirect:/photos/" + id;
 
         return mv;

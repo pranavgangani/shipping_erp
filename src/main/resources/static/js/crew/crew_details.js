@@ -123,11 +123,11 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
         var value;
         var originalValue;
 
-        var fieldStatuses;
+        /*var fieldStatuses;
         var fieldStatusName;
-        var fieldStatusObject;
+        var fieldStatusObject;*/
 
-        if (jQueryObject.hasClass('fieldChecker') || jQueryObject.hasClass('fieldApprover')) {
+        /*if (jQueryObject.hasClass('fieldChecker') || jQueryObject.hasClass('fieldApprover')) {
             // for fieldStatus elements, use data attributes to create appropriate object
             name = jQueryObject.data("id"); // Get id from data attribute instead (because there will be multiple objects with the same id)
             fieldStatusName = jQueryObject.data('field');
@@ -165,7 +165,7 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
                 // Set Values
                 fieldStatusObject[name] = value;
             }
-        } else {
+        } else {*/
             // Get id and value
             name = jQueryObject.attr("id");
             value = jQueryObject.val();
@@ -175,7 +175,7 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
             modifiedFields[name] = value;
 
             // Check if fieldStatuses exists
-            fieldStatuses = modifiedFields['fieldStatuses'];
+           /* fieldStatuses = modifiedFields['fieldStatuses'];
 
             if (typeof fieldStatuses == 'undefined') {
                 // Create new fieldStatuses
@@ -183,10 +183,10 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
 
                 // Add to arrays
                 modifiedFields['fieldStatuses'] = fieldStatuses;
-            }
+            }*/
 
             // Check if fieldStatusName exists in fieldStatuses
-            fieldStatusObject = fieldStatuses[name];
+            /*fieldStatusObject = fieldStatuses[name];
 
             if (typeof fieldStatusObject == 'undefined') {
                 // Create new object
@@ -200,7 +200,7 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
             } else {
                 // Set Values
                 fieldStatusObject['maker'] = jQuery('#employeeId').val();
-            }
-        }
+            }*/
+       // }
     });
 };
