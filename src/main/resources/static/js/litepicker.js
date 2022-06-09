@@ -12,14 +12,14 @@
 
 window.addEventListener('DOMContentLoaded', event => {
 
-    const dobSingleDate = document.getElementById('dobSingleDate');
+    const dobSingleDate = document.getElementById('dob');
     if (dobSingleDate) {
         new Litepicker({
             element: dobSingleDate,
             format: 'MMM DD, YYYY'
         });
     }
-    const availableFromDateSingleDate = document.getElementById('availableFromDateSingleDate');
+    const availableFromDateSingleDate = document.getElementById('availableFromDate');
     if (availableFromDateSingleDate) {
         new Litepicker({
             element: availableFromDateSingleDate,

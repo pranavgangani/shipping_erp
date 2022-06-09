@@ -7,7 +7,7 @@
 <script src="../js/select2.min.js"></script>
 <script src="../js/jquery.dirty.js"></script>
 <script src="../js/bootstrap/validation.js"></script>
-
+<script src="../js/bootstrap/boostrap_util.js"></script>
 
 /*
 <link rel="icon" type="image/x-icon" href="../assets/img/favicon.png" />

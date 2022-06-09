@@ -23,14 +23,11 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
@@ -42,13 +39,11 @@ import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.model.common.document.Passport;
 import com.intuitbrains.model.common.document.Visa;
 import com.intuitbrains.model.crew.CrewDocument;
-import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.CrewContract;
 import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselVacancy;
-import com.intuitbrains.model.vessel.VesselVacancyAttributes;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
@@ -57,7 +52,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -69,9 +63,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -89,7 +80,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intuitbrains.dao.crew.PhotoRepository;
-import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 
 @RestController
@@ -273,10 +263,9 @@ public class CrewController {
     }
 
     @PostMapping(value = "/update.ajax", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ModelAndView updateCrew(MultipartHttpServletRequest req) {
+    public String updateCrew(MultipartHttpServletRequest req, Model model) {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         String maker = emp.getEmpId();
-        ModelAndView mv = new ModelAndView("/crew/employment_list");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         String json = req.getParameter("modifiedFields");
         JsonObject jsonObject = new Gson().fromJson(json, JsonObject.class);
@@ -284,15 +273,30 @@ public class CrewController {
         BasicDBObject searchQuery = new BasicDBObject("_id", crewId);
         BasicDBObject updateFields = new BasicDBObject();
         jsonObject.entrySet().forEach(e -> {
-            updateFields.append(e.getKey(), e.getValue().getAsString());
+            if (e.getKey().equals("dob") || e.getKey().equals("availableFromDate")) {
+                updateFields.append(e.getKey(), LocalDate.parse(e.getValue().getAsString()));
+            } else {
+                updateFields.append(e.getKey(), e.getValue().getAsString());
+            }
+
         });
         BasicDBObject setQuery = new BasicDBObject();
         setQuery.append("$set", updateFields);
-        UpdateResult updateResult = db.getCollection(Collection.CREW, Crew.class).updateMany(searchQuery, setQuery);
+        db.getCollection(Collection.CREW, Crew.class).updateMany(searchQuery, setQuery);
 
-//		return "redirect:/photos/" + id;
+        //Audit
+       /* AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.ADD);
+        audit.setActionBy(emp.getEmpId());
+        audit.setActionLocalDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.CREW);
+        audit.setText("New Document - <b>" + (docToUpload.getDocName()) + "</b> added!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(crew.getId());
+        auditTrailDao.insert(audit);*/
 
-        return mv;
+        model.addAttribute("message", "success");
+        return model.toString();
     }
 
     @GetMapping(value = "/documents")

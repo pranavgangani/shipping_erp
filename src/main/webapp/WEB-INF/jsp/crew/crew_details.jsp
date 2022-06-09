@@ -112,11 +112,11 @@
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-4">
                                         <label class="small mb-1" for="maritalStatus">Marital Status</label>
-                                        <select class="form-select" id="maritalStatus" name="maritalStatus"
+                                        <select class="form-select dirtycheck" id="maritalStatus" name="maritalStatus"
                                                 aria-label="Default select example">
                                             <option selected disabled>Marital Status:</option>
                                             <option
-                                                    <c:if test="${crew.maritalStatus=='ingle'}">selected</c:if>
+                                                    <c:if test="${crew.maritalStatus=='single'}">selected</c:if>
                                                     value="single">Single
                                             </option>
                                             <option
@@ -213,17 +213,17 @@
 
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-4">
-                                        <label class="small mb-1" for="permAddress">Contact#1</label>
+                                        <label class="small mb-1" for="contact1">Contact#1</label>
                                         <input class="form-control dirtycheck"
-                                               id="contact_1" name="contact_1"
+                                               id="contact1" name="contact1"
                                                type="text"
                                                placeholder="Enter Contact Number#1"
                                                value="${crew.contact1}"/>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="small mb-1" for="presentAddress">Contact#2</label>
+                                        <label class="small mb-1" for="contact2">Contact#2</label>
                                         <input class="form-control dirtycheck"
-                                               id="contact_2" name="contact_2"
+                                               id="contact2" name="contact2"
                                                type="text"
                                                placeholder="Enter Contact Number#2"
                                                value="${crew.contact2}"/>
@@ -233,8 +233,8 @@
                                         <div class="input-group input-group-joined border-1">
                                             <span class="input-group-text"><i class="text-primary"
                                                                               data-feather="calendar"></i></span>
-                                            <input name="birthDate" class="form-control dirtycheck"
-                                                   id="dobSingleDate"
+                                            <input name="dob" class="form-control dirtycheck"
+                                                   id="dob"
                                                    placeholder="Select date" value="${crew.dob}"/>
                                         </div>
                                     </div>
@@ -263,7 +263,7 @@
                                         <span class="input-group-text"><i class="text-primary"
                                                                           data-feather="calendar"></i></span>
                                             <input name="availableFromDate" class="form-control dirtycheck"
-                                                   id="availableFromDateSingleDate"
+                                                   id="availableFromDate"
                                                    placeholder="Select date" value="${crew.availableFromDate}"/>
                                         </div>
                                     </div>
