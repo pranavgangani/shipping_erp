@@ -10,8 +10,8 @@
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownPersonal">
             <a class="dropdown-item" href="/crew/personal?menu=personal&action=modify&crewId=${crewId}">Personal</a>
-            <a class="dropdown-item" href="/crew/personal?menu=personal&action=modify&crewId=${crewId}">Address</a>
-            <a class="dropdown-item" href="/crew/personal?menu=personal&action=modify&crewId=${crewId}">NOK</a>
+            <a class="dropdown-item" href="/crew/address?menu=personal&action=modify&crewId=${crewId}">Address</a>
+            <a class="dropdown-item" href="/crew/nok?menu=personal&sMenu=nok&action=modify&crewId=${crewId}">NOK</a>
             <%--<a class="dropdown-item" href="#!">Working Gear</a>--%>
             <a class="dropdown-item" href="/crew/bank?menu=personal&action=modify&crewId=${crewId}">Bank Account</a>
             <%--<a class="dropdown-item" href="#!">Status</a>--%>

@@ -328,7 +328,7 @@ class CrewTest {
     @Test
     void updateNextOfKinDetails() {
         Crew crew = new Crew();
-        crew.setId(1);
+        crew.setId(4);
         NextOfKin nok1 = new NextOfKin();
         nok1.setNomineeName("Vrushali Rohan Tiwari");
         // nok1.setDateOfBirth("12-Mar-1983");
@@ -364,7 +364,7 @@ class CrewTest {
         crew.setNextOfKins(nextOfKins);
 
         Bson updates = Updates.set("nextOfKins", nextOfKins);
-        Bson filter = Filters.eq("_id", 1);
+        Bson filter = Filters.eq("_id", 4);
         db.getCollection(Collection.CREW, Crew.class).updateOne(filter, updates);
     }
 

@@ -19,6 +19,13 @@ window.addEventListener('DOMContentLoaded', event => {
             format: 'MMM DD, YYYY'
         });
     }
+    const dateOfBirth = document.getElementById('dateOfBirth');
+    if (dateOfBirth) {
+        new Litepicker({
+            element: dateOfBirth,
+            format: 'MMM DD, YYYY'
+        });
+    }
     const availableFromDateSingleDate = document.getElementById('availableFromDate');
     if (availableFromDateSingleDate) {
         new Litepicker({

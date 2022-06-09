@@ -3,7 +3,9 @@ package com.intuitbrains.model.crew;
 import com.intuitbrains.model.common.document.Passport;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class NextOfKin  {
@@ -108,6 +110,9 @@ public class NextOfKin  {
 		}
 		public static RelationType createFromDesc(String name) {
 			return ((Arrays.stream(values()).filter(o->o.getRelationTypeName().equalsIgnoreCase(name)).collect(Collectors.toList())).get(0));
+		}
+		public static List<RelationType> getList() {
+			return new ArrayList<>(Arrays.asList(values()));
 		}
 	}
 }

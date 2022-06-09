@@ -616,9 +616,12 @@ public class CrewController {
     public ModelAndView nok(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/nok");
         long crewId = Long.parseLong(req.getParameter("crewId"));
+        Crew crew = crewService.getObjectById(crewId);
         List<NextOfKin> list = crewService.getNextOfKins(crewId);
+        mv.addObject("crew", crew);
         mv.addObject("crewId", crewId);
         mv.addObject("list", list);
+        mv.addObject("relationTypes", NextOfKin.RelationType.getList());
         return mv;
     }
 

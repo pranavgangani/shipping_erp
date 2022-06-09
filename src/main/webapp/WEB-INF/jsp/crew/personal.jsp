@@ -34,18 +34,6 @@
                 <!-- Main page content-->
                 <div class="container-fluid px-4">
                     <%@ include file="add_crew_menu.jsp" %>
-                    <!-- Account page navigation-->
-                    <%--<nav class="nav nav-borders">
-                        <a class="nav-link active ms-0" href="/crew/modify?crewId=${crewId}">Profile</a>
-                        <a class="nav-link" href="/crew/experience?crewId=${crewId}">Employment</a>
-                        <a class="nav-link" href="/crew/education?crewId=${crewId}">Education</a>
-                        <a class="nav-link" href="/crew/passport_visa?crewId=${crewId}">Passport/Visa</a>
-                        <a class="nav-link" href="/crew/medical?crewId=${crewId}">Medical</a>
-                        <a class="nav-link" href="/crew/bank?crewId=${crewId}">Bank Account</a>
-                        <a class="nav-link" href="/crew/nok?crewId=${crewId}">Next of Kin</a>
-                        <a class="nav-link" href="/crew/documents?crewId=${crewId}">Documents</a>
-                        <a class="nav-link" href="/crew/contracts?crewId=${crewId}">Contracts</a>
-                    </nav>--%>
                     <hr class="mt-0 mb-4"/>
                     <div class="row">
                         <div class="col-lg-2">
