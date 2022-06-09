@@ -130,14 +130,56 @@ public class CrewController {
         return mv;
     }
 
-    @GetMapping(value = "/details")
-    public ModelAndView view(HttpServletRequest req) {
-        ModelAndView mv = new ModelAndView("/crew/crew_details");
+    @GetMapping(value = "/personal")
+    public ModelAndView personal(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/crew/personal");
         String action = StringUtil.trim(req.getParameter("action"));
         String menu = StringUtil.trim(req.getParameter("menu"));
         if (menu == null) {
-            menu = "overview";
+            menu = "personal";
         }
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            Crew crew = crewService.getObjectById(crewId);
+            crew.setStatus(Crew.Status.createFromId(crew.getStatusId()));
+
+            mv.addObject("crew", crew);
+            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
+            if (ListUtil.isNotEmpty(auditTrails)) {
+                System.out.println("auditTrails = " + auditTrails.size());
+                mv.addObject("auditTrails", auditTrails);
+            } else {
+                System.out.println("No auditTrails");
+            }
+            CrewPhoto photo = null;
+
+            try {
+                photo = photoDao.findById(crew.getPhotoId()).get();
+                //mv.addObject("title", photo.getTitle());
+                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
+            } catch (NoSuchElementException e) {
+
+            }
+        }
+        mv.addObject("statuses", Crew.Status.getList());
+        mv.addObject("menu", menu);
+        mv.addObject("crewId", crewId);
+        List<Flag> flags = flagDao.findAll();
+        flags.parallelStream().forEach(f -> {
+            f.setId(null);
+            f.setImage(null);
+            f.setUnicode(null);
+            f.setEmoji(null);
+        });
+        mv.addObject("flags", flags);
+        mv.addObject("action", action);
+        mv.addObject("rankMap", Rank.getByGroup());
+        return mv;
+    }
+
+    @GetMapping(value = "/overview")
+    public ModelAndView view(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/crew/overview");
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             Crew crew = crewService.getObjectById(crewId);
@@ -164,7 +206,7 @@ public class CrewController {
             mv.addObject("documents", documents);
         }
         mv.addObject("statuses", Crew.Status.getList());
-        mv.addObject("menu", menu);
+        mv.addObject("menu", "overview");
         mv.addObject("crewId", crewId);
         List<Flag> flags = flagDao.findAll();
         flags.parallelStream().forEach(f -> {
@@ -174,11 +216,9 @@ public class CrewController {
             f.setEmoji(null);
         });
         mv.addObject("flags", flags);
-        mv.addObject("action", action);
         mv.addObject("rankMap", Rank.getByGroup());
         return mv;
     }
-
 
     @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ModelAndView addCrew(HttpServletRequest req, @RequestParam("firstName") String fName, @RequestParam("middleName") String mName,

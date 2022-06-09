@@ -86,7 +86,7 @@
 								
 								<c:forEach items="${list}" var="crew">
 								    <tr>
-										<td>${crew.fullName}</td>
+										<td><a href="/crew/overview?crewId=${crew.id}">${crew.fullName}</a></td>
 										<td>${crew.rank.name}</td>
 										<td>${crew.gender}</td>
 										<td>${crew.age}</td>
@@ -126,7 +126,7 @@
 														</div> Add Documents
 													</a>													
 													<div class="dropdown-divider"></div>
-													<a class="dropdown-item" href="/crew/details?action=modify&crewId=${crew.id}">
+													<a class="dropdown-item" href="/crew/personal?action=modify&crewId=${crew.id}">
 														<div class="dropdown-item-icon">
 															<i data-feather="log-out"></i>
 														</div> Edit
@@ -193,7 +193,7 @@
                                                         </div>
                                                         <div class="card-footer bg-transparent px-5 py-4">
                                                             <div class="small text-center">
-                                                             <form role="form" method="GET" action="/crew/details?action=add">
+                                                             <form role="form" method="GET" action="/crew/personal?action=add">
                                                                 <button class="btn btn-primary" type="submit">Add Manually</button>
                                                             </form>
                                                             </div>

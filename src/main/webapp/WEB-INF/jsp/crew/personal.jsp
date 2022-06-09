@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Crew :: <c:choose><c:when test="${action=='add'}">Add</c:when><c:otherwise>${crew.fileNum}</c:otherwise></c:choose></title>
+    <title>Crew Personal :: <c:choose><c:when test="${action=='add'}">Add</c:when><c:otherwise>${crew.fileNum}</c:otherwise></c:choose></title>
 
     <%@ include file="../includes/header_includes.jsp" %>
     <script src="../js/crew/crew_details.js"></script>
@@ -88,7 +88,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-10">
                         <div class="card mb-4">
                             <div class="card-header">Personal</div>
                             <div class="card-body">
@@ -190,7 +190,7 @@
 
                                 <div class="row gx-3 mb-3">
                                     <div class="col-md-4">
-                                        <label class="small mb-1" for="permAddress">Parmanent Address</label>
+                                        <label class="small mb-1" for="permAddress">Permanent Address</label>
                                         <textarea name="permAddress" id="permAddress"
                                                   class="lh-base form-control dirtycheck" placeholder=""
                                                   rows="3" cols="3">${crew.permAddress}</textarea>
@@ -315,70 +315,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <c:if test="${documents!=null}">
-                        <div class="col-lg-4">
-                            <div class="card mb-4">
-                                <div class="card-header">Documents</div>
-                                <div class="card-body">
-                                    <div class="table-responsive table-billing-history">
-                                        <table class="table mb-0">
-                                            <thead>
-                                            <tr>
-                                                <th class="border-gray-200" scope="col">Document</th>
-                                                <th class="border-gray-200" scope="col">Number</th>
-                                                <th class="border-gray-200" scope="col">Issue Date</th>
-                                                <th class="border-gray-200" scope="col">Expiry Date</th>
-                                                <th class="border-gray-200" scope="col">File</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach items="${documents}" var="doc">
-                                                <tr>
-                                                    <td><label class="small mb-3">${doc.docType.name}</label>
-                                                        <c:if test="${doc.file!=null}">
-                                                            <a class="dropdown-item"
-                                                               href="/crew/document/download?documentId=${doc.id}">
-                                                                <div class="page-header-icon"><i
-                                                                        data-feather="file"></i>
-                                                                </div>
-                                                            </a>
-                                                        </c:if>
-                                                    </td>
-                                                    <td><label class="small mb-3">${doc.docNumber}</label></td>
-                                                    <td><label
-                                                            class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
-                                                    </td>
-                                                    <td><label
-                                                            class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label>
-                                                    </td>
-                                                    <td>
-                                                        <i data-feather="file"></i>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                                <%--
-                                                        <div class="card mb-4">
-                                                            <div class="card-header">Actions</div>
-                                                            <div class="card-body">
-                                                                <c:choose>
-                                                                    <c:when test="${action == 'modify'}"><a href="javascript:void(0);"
-                                                                                                            onclick="Crew_Details.update();">
-                                                                        <button class="btn btn-primary" type="submit">Save</button>
-                                                                    </a></c:when>
-                                                                    <c:otherwise><a href="javascript:void(0);" onclick="Crew_Details.add();">
-                                                                        <button class="btn btn-primary" type="submit">Add</button>
-                                                                    </a></c:otherwise>
-                                                                </c:choose>
-                                                            </div>
-                                                        </div>--%>
-                        </div>
-                    </c:if>
                 </div>
 
             </div>

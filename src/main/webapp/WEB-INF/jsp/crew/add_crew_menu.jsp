@@ -1,6 +1,6 @@
 <nav class="nav nav-borders">
     <div class="dropdown">
-        <a href="/crew/details?menu=overview&action=modify&crewId=${crewId}">
+        <a href="/crew/overview?menu=overview&action=modify&crewId=${crewId}">
             <button class="btn <c:choose><c:when test="${menu == 'overview'}">btn-primary</c:when><c:otherwise>btn-light</c:otherwise></c:choose>" type="button">Overview</button>
         </a>
     </div>
@@ -9,13 +9,13 @@
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Personal
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownPersonal">
-            <a class="dropdown-item" href="#!">Personal</a>
-            <a class="dropdown-item" href="#!">Address</a>
-            <a class="dropdown-item" href="#!">NOK</a>
-            <a class="dropdown-item" href="#!">Working Gear</a>
-            <a class="dropdown-item" href="/crew/bank?menu=personal&sMenu=bank&crewId=${crewId}">Bank Account</a>
-            <a class="dropdown-item" href="#!">Status</a>
-            <a class="dropdown-item" href="#!">Insurance</a>
+            <a class="dropdown-item" href="/crew/personal?menu=personal&action=modify&crewId=${crewId}">Personal</a>
+            <a class="dropdown-item" href="/crew/personal?menu=personal&action=modify&crewId=${crewId}">Address</a>
+            <a class="dropdown-item" href="/crew/personal?menu=personal&action=modify&crewId=${crewId}">NOK</a>
+            <%--<a class="dropdown-item" href="#!">Working Gear</a>--%>
+            <a class="dropdown-item" href="/crew/bank?menu=personal&action=modify&crewId=${crewId}">Bank Account</a>
+            <%--<a class="dropdown-item" href="#!">Status</a>--%>
+            <a class="dropdown-item" href="/crew/insurance?menu=personal&action=modify&crewId=${crewId}">Insurance</a>
         </div>
     </div>
     <div class="dropdown">

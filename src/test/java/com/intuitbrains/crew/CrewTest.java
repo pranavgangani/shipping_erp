@@ -93,7 +93,7 @@ class CrewTest {
         //crew.setNationality("Indian");
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setPresentAddress(crew.getPermAddress());
-        crew.setDistinguishMark("Some mark on head");
+        crew.setDistinguishingMark("Some mark on head");
 
         crew.setEmailId("pgangani@gmail.com");
         crew.setPassportNumber("SLJALJLJ");
@@ -150,7 +150,7 @@ class CrewTest {
         crew.setDob(dob);
         crew.setGender("male");
         crew.setRank(Rank.JR_ENGINEER);
-        crew.setDistinguishMark("Some mark on head");
+        crew.setDistinguishingMark("Some mark on head");
         crew.setNationalityFlag(flag);
         crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
         crew.setPresentAddress(crew.getPermAddress());
