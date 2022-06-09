@@ -3,7 +3,6 @@ var Bootstrap_Util = {};
 
 
 Bootstrap_Util.showPleaseWait = function () {
-
     if (document.querySelector("#pleaseWaitDialog") == null) {
         var modalLoading = '<div class="modal" tabindex="-1" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false" role="dialog">\
             <div class="modal-dialog">\
@@ -23,7 +22,6 @@ Bootstrap_Util.showPleaseWait = function () {
         </div>';
         jQuery(document.body).append(modalLoading);
     }
-
     jQuery("#pleaseWaitDialog").modal("show");
 };
 

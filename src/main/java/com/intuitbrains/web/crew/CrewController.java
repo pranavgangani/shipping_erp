@@ -229,7 +229,7 @@ public class CrewController {
         crew.setRank(Rank.createFromId(rankId));
         crew.setPassportNumber(passportNumber);
         crew.setGender(gender);
-        crew.setDistinguishMark(distinguishMark);
+        crew.setDistinguishingMark(distinguishMark);
         crew.setManningOffice(manningOffice);
 
         crew.setEnteredBy(emp.getEmpId());

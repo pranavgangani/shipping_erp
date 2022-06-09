@@ -11,6 +11,7 @@ public enum CrewField {
     INDOS_NUM("indosNumber"),
     INDOS_EXPIRY_DATE("indosExpirationDate"),
     MANNING_OFFICE("manningOffice"),
+    DISTIN_MARK("distinguishingMark"),
     PLACE_OF_BIRTH("placeOfBirth"),
     NATIONALITY_ID("nationalityId"), 
     //NATIONALITY("Nationality"),

@@ -1,7 +1,7 @@
 var Crew_Details = {};
 
 jQuery(document).ready(function () {
-   // jQuery('.form-select').select2();
+    // jQuery('.form-select').select2();
     jQuery("#birthDate").datepicker();
 
     // Setup dirty flag checks
@@ -51,16 +51,18 @@ Crew_Details.update = function () {
     /*var formValidation = jQuery('#crew-form').data('formValidation');
     var form = jQuery('#crew-form');
     formValidation.validateContainer(form);*/
+
     var isModified = Bootstrap_Validation.isDirty();
+
     if (!isModified) {
         //Bootstrap_Util.openToastAlert("warning", "<i class='fa fa-info'></i>Warning", "No modified values to save.", 2000);
-       alert("No modified values to save.", 2000);
+        alert("No modified values to save.", 2000);
     } else {
         var isValid = Bootstrap_Validation.isValid();
         if (isValid) {
             Bootstrap_Util.showPleaseWait();
-            var modifiedFields = {};
 
+            var modifiedFields = {};
             // Populate modifiedFields
             Crew_Details.getModifiedFields(modifiedFields);
 
@@ -171,43 +173,44 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
                 fieldStatusObject[name] = value;
             }
         } else {*/
-            // Get id and value
-            name = jQueryObject.attr("id");
-            value = jQueryObject.val();
-            originalValue = jQueryObject.data('originalValue');
+        // Get id and value
+        name = jQueryObject.attr("id");
+        value = jQueryObject.val();
+        originalValue = jQueryObject.data('originalValue');
+
+        // Add to arrays
+        modifiedFields[name] = value;
+
+        // Check if fieldStatuses exists
+        /* fieldStatuses = modifiedFields['fieldStatuses'];
+
+         if (typeof fieldStatuses == 'undefined') {
+             // Create new fieldStatuses
+             fieldStatuses = {};
+
+             // Add to arrays
+             modifiedFields['fieldStatuses'] = fieldStatuses;
+         }*/
+
+        // Check if fieldStatusName exists in fieldStatuses
+        /*fieldStatusObject = fieldStatuses[name];
+
+        if (typeof fieldStatusObject == 'undefined') {
+            // Create new object
+            fieldStatusObject = {};
+            var autoUser = jQuery('#' + name + 'AutoMaker').val();
+            // Set Values
+            fieldStatusObject['maker'] = typeof autoUser !== 'undefined' ? autoUser : jQuery('#employeeId').val();
 
             // Add to arrays
-            modifiedFields[name] = value;
-
-            // Check if fieldStatuses exists
-           /* fieldStatuses = modifiedFields['fieldStatuses'];
-
-            if (typeof fieldStatuses == 'undefined') {
-                // Create new fieldStatuses
-                fieldStatuses = {};
-
-                // Add to arrays
-                modifiedFields['fieldStatuses'] = fieldStatuses;
-            }*/
-
-            // Check if fieldStatusName exists in fieldStatuses
-            /*fieldStatusObject = fieldStatuses[name];
-
-            if (typeof fieldStatusObject == 'undefined') {
-                // Create new object
-                fieldStatusObject = {};
-                var autoUser = jQuery('#' + name + 'AutoMaker').val();
-                // Set Values
-                fieldStatusObject['maker'] = typeof autoUser !== 'undefined' ? autoUser : jQuery('#employeeId').val();
-
-                // Add to arrays
-                fieldStatuses[name] = fieldStatusObject;
-            } else {
-                // Set Values
-                fieldStatusObject['maker'] = jQuery('#employeeId').val();
-            }*/
-       // }
+            fieldStatuses[name] = fieldStatusObject;
+        } else {
+            // Set Values
+            fieldStatusObject['maker'] = jQuery('#employeeId').val();
+        }*/
+        // }
     });
 
 };
+
 

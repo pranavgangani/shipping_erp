@@ -103,11 +103,11 @@ Bootstrap_Validation.confirmBeforePageChange = function () {
 Bootstrap_Validation.isDirty = function() {
     var dirtyFields = jQuery('.isDirty');
 
-  jQuery(dirtyFields).each(function () {
+ /* jQuery(dirtyFields).each(function () {
         console.log(this);
         console.log(jQuery(this));
 
-    });
+    });*/
 
     if ( dirtyFields.length > 0 ) {
         return true;

@@ -28,7 +28,7 @@ public class Crew extends Person {
     protected String userName, password, emailId;
 
     private String passportNumber, indosNumber;
-    private String distinguishMark;
+    private String distinguishingMark;
     private Rank rank;
     private double height, weight;
     private String manningOffice;
@@ -253,12 +253,13 @@ public class Crew extends Person {
         this.indosNumber = indosNumber;
     }
 
-    public String getDistinguishMark() {
-        return distinguishMark;
+    public String getDistinguishingMark() {
+        return distinguishingMark;
     }
 
-    public void setDistinguishMark(String distinguishMark) {
-        this.distinguishMark = distinguishMark;
+    @ACrew(name = CrewField.DISTIN_MARK)
+    public void setDistinguishingMark(String distinguishingMark) {
+        this.distinguishingMark = distinguishingMark;
     }
 
     public String getManningOffice() {

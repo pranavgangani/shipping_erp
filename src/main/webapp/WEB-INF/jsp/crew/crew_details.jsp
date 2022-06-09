@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>${action} Crew</title>
+    <title>Crew :: <c:choose><c:when test="${action=='add'}">Add</c:when><c:otherwise>${crew.fileNum}</c:otherwise></c:choose></title>
 
     <%@ include file="../includes/header_includes.jsp" %>
     <script src="../js/crew/crew_details.js"></script>
@@ -176,7 +176,7 @@
                                         <label class="small mb-1" for="distinguishingMark">Distinguishing Mark</label>
                                         <textarea name="distinguishingMark" id="distinguishingMark"
                                                   class="lh-base form-control dirtycheck" placeholder=""
-                                                  rows="3" cols="3">${crew.distinguishMark}</textarea>
+                                                  rows="3" cols="3">${crew.distinguishingMark}</textarea>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="small mb-1" for="lastName">Nearest Airport</label>
@@ -392,6 +392,7 @@
 </div>
 
 <%@ include file="../includes/bottom_includes.jsp" %>
+</body>
 
 <script>
 
@@ -415,6 +416,4 @@
     }
 
 </script>
-</body>
-
 </html>
