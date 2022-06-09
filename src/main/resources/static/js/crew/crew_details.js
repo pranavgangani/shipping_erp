@@ -3,18 +3,21 @@ var Crew_Details = {};
 jQuery(document).ready(function () {
     // jQuery('.form-select').select2();
     jQuery("#birthDate").datepicker();
+    var action = jQuery("#action").val();
 
     // Setup dirty flag checks
     Bootstrap_Validation.initializeOriginalValues('dirtycheck');
     Bootstrap_Validation.setupDirtyFlagEventHandlers('dirtycheck');
     Bootstrap_Validation.confirmBeforePageChange();
 
-    const fileInput = document.querySelector("#file-input");
+    if (action === 'modify') {
+        const fileInput = document.querySelector("#file-input");
 
-    fileInput.addEventListener("change", event => {
-        const files = event.target.files;
-        Crew_Details.uploadPhoto(files[0]);
-    });
+        fileInput.addEventListener("change", event => {
+            const files = event.target.files;
+            Crew_Details.uploadPhoto(files[0]);
+        });
+    }
 
 });
 

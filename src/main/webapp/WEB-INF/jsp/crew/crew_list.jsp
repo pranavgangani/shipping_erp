@@ -193,7 +193,7 @@
                                                         </div>
                                                         <div class="card-footer bg-transparent px-5 py-4">
                                                             <div class="small text-center">
-                                                             <form role="form" method="GET" action="/crew/personal?action=add">
+                                                             <form role="form" method="GET" action="/crew/personal?menu=personal&action=add">
                                                                 <button class="btn btn-primary" type="submit">Add Manually</button>
                                                             </form>
                                                             </div>

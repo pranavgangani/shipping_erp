@@ -160,6 +160,10 @@ public class CrewController {
             } catch (NoSuchElementException e) {
 
             }
+        } else {
+            if (action == null) {
+                action = StandardWebParameter.ADD;
+            }
         }
         mv.addObject("statuses", Crew.Status.getList());
         mv.addObject("menu", menu);
@@ -231,9 +235,9 @@ public class CrewController {
                                 @RequestParam("manningOffice") String manningOffice,
                                 @RequestParam("emailId") String emailId,
                                 @RequestParam("nationalityFlagCode") String nationalityFlagCode,
-                                @RequestParam("contact_1") String contact1,
-                                @RequestParam("contact_2") String contact2,
-                                @RequestParam("birthDate") String dob,
+                                @RequestParam("contact1") String contact1,
+                                @RequestParam("contact2") String contact2,
+                                @RequestParam("dob") String dob,
                                 @RequestParam("height") String height,
                                 @RequestParam("weight") String weight,
                                 @RequestParam("passportNumber") String passportNumber,
@@ -242,7 +246,7 @@ public class CrewController {
                                 Model model) {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
         String maker = emp.getEmpId();
-        ModelAndView mv = new ModelAndView("/crew/employment_list");
+        ModelAndView mv = new ModelAndView("/crew/experience");
         System.out.println("add_crew: " + fName);
         System.out.println("image: " + image);
 
