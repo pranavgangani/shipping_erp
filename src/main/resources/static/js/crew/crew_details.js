@@ -1,24 +1,58 @@
 var Crew_Details = {};
 
-jQuery(document).ready(function() {
-    jQuery('.form-select').select2();
+jQuery(document).ready(function () {
+   // jQuery('.form-select').select2();
     jQuery("#birthDate").datepicker();
 
-  // Setup dirty flag checks
+    // Setup dirty flag checks
     Bootstrap_Validation.initializeOriginalValues('dirtycheck');
     Bootstrap_Validation.setupDirtyFlagEventHandlers('dirtycheck');
     Bootstrap_Validation.confirmBeforePageChange();
 
+    const fileInput = document.querySelector("#file-input");
+
+    fileInput.addEventListener("change", event => {
+        const files = event.target.files;
+        Crew_Details.uploadPhoto(files[0]);
+    });
 
 });
 
-Crew_Details.update = function ()  {
+Crew_Details.uploadPhoto = function (file) {
+
+    var data = new FormData();
+    data.set("image", file);
+    data.append("crewId", jQuery('#crewId').val());
+
+    var ajaxCall = jQuery.ajax({
+        url: jQuery('#contextPath').val() + "/crew/photos/upload.ajax",
+        method: 'POST',
+        data: data,
+        type: "POST",
+        cache: false, // Stop IE from caching ajax results!
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            return data;
+        },
+        error: function (data) {
+            if (typeof data.responseText != 'undefined') {
+                // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data.responseText);
+            } else {
+                // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data);
+            }
+
+            return null;
+        }
+    });
+};
+
+Crew_Details.update = function () {
     /*var formValidation = jQuery('#crew-form').data('formValidation');
     var form = jQuery('#crew-form');
     formValidation.validateContainer(form);*/
-
     var isModified = Bootstrap_Validation.isDirty();
-    if(!isModified) {
+    if (!isModified && data == '') {
         //Bootstrap_Util.openToastAlert("warning", "<i class='fa fa-info'></i>Warning", "No modified values to save.", 2000);
         //alert("No modified values to save.", 2000);
     } else {
@@ -30,26 +64,26 @@ Crew_Details.update = function ()  {
             Crew_Details.getModifiedFields(modifiedFields);
 
             var json = JSON.stringify(modifiedFields);
+            var data = new FormData();
+            data.append("modifiedFields", json);
+            data.append("crewId", jQuery('#crewId').val());
 
             var ajaxCall = jQuery.ajax({
                 url: jQuery('#contextPath').val() + "/crew/update.ajax",
                 method: 'POST',
-                data: {
-                    // Parameters to be sent with the request
-                    modifiedFields: json,
-                    crewId: jQuery('#crewId').val()
-                },
+                data: data,
                 type: "POST",
                 cache: false, // Stop IE from caching ajax results!
-                async: true,
+                processData: false,
+                contentType: false,
                 success: function (data) {
                     return data;
                 },
                 error: function (data) {
                     if (typeof data.responseText != 'undefined') {
-                       // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data.responseText);
+                        // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data.responseText);
                     } else {
-                       // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data);
+                        // Bootstrap_Util.openToastAlert("error", "<i class='fa fa-remove'></i>Error", "Add Subscription Error. " + data);
                     }
 
                     return null;
@@ -60,19 +94,19 @@ Crew_Details.update = function ()  {
 
 }
 
-Crew_Details.add = function ()  {
+Crew_Details.add = function () {
     /*var formValidation = jQuery('#crew-form').data('formValidation');
     var form = jQuery('#crew-form');
     formValidation.validateContainer(form);*/
 
     var isModified = Bootstrap_Validation.isDirty();
-    if(!isModified) {
+    if (!isModified) {
         //Bootstrap_Util.openToastAlert("warning", "<i class='fa fa-info'></i>Warning", "No modified values to save.", 2000);
         //alert("No modified values to save.", 2000);
     } else {
         var isValid = Bootstrap_Validation.isValid();
         if (isValid) {
-            jQuery( "#crew-details-form" ).submit();
+            jQuery("#crew-details-form").submit();
         }
     }
 
@@ -93,11 +127,11 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
         var fieldStatusName;
         var fieldStatusObject;
 
-        if ( jQueryObject.hasClass('fieldChecker') || jQueryObject.hasClass('fieldApprover') ) {
+        if (jQueryObject.hasClass('fieldChecker') || jQueryObject.hasClass('fieldApprover')) {
             // for fieldStatus elements, use data attributes to create appropriate object
             name = jQueryObject.data("id"); // Get id from data attribute instead (because there will be multiple objects with the same id)
             fieldStatusName = jQueryObject.data('field');
-            if ( jQueryObject.is(':checked') ) {
+            if (jQueryObject.is(':checked')) {
                 value = jQuery('#employeeId').val();
             } else {
                 value = '';
@@ -127,8 +161,7 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
 
                 // Add to arrays
                 fieldStatuses[fieldStatusName] = fieldStatusObject;
-            }
-            else {
+            } else {
                 // Set Values
                 fieldStatusObject[name] = value;
             }
@@ -158,14 +191,13 @@ Crew_Details.getModifiedFields = function (modifiedFields) {
             if (typeof fieldStatusObject == 'undefined') {
                 // Create new object
                 fieldStatusObject = {};
-                var autoUser = jQuery('#'+name+'AutoMaker').val();
+                var autoUser = jQuery('#' + name + 'AutoMaker').val();
                 // Set Values
                 fieldStatusObject['maker'] = typeof autoUser !== 'undefined' ? autoUser : jQuery('#employeeId').val();
 
                 // Add to arrays
                 fieldStatuses[name] = fieldStatusObject;
-            }
-            else {
+            } else {
                 // Set Values
                 fieldStatusObject['maker'] = jQuery('#employeeId').val();
             }

@@ -13,7 +13,12 @@
 				</div>
 				<div class="col-12 col-xl-auto mb-3">
 					<c:if test="${crew!=null}">
-						${crew.firstName} ${crew.middleName} ${crew.lastName} (${crew.fileNum})
+						<h1 class="page-header-title">
+							<div class="page-header-icon">
+								<i data-feather="filter"></i>
+							</div>
+								${crew.firstName} ${crew.middleName} ${crew.lastName} (${crew.fileNum})
+						</h1>
 					</c:if>
 				</div>
 			</div>

@@ -24,7 +24,9 @@
 
     <div id="layoutSidenav_content">
         <main>
-            <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/add">
+                <c:if test="${action == 'add'}">
+                    <form id="crew-details-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/add">
+                </c:if>
             <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
             <input type="hidden" id="contextPath" value="<%=request.getContextPath()%>">
             <input type="hidden" id="menu" value="${menu}">
@@ -53,12 +55,13 @@
                                 <!-- Profile picture help block-->
                                 <c:choose>
                                     <c:when test="${crew.photoId>0}">
-                                        <img class="img-account-profile rounded-circle mb-2" alt="img"
+                                        <img class="img-account-profile rounded mb-2" alt="img"
                                              src="data:image/jpeg;base64,${image}" alt="" id='preview'/>
+                                        <input type='file' id='file-input' hidden name="image">
                                     </c:when>
                                     <c:otherwise>
                                         <input type='file' id='file-input' hidden name="image">
-                                        <img class="img-account-profile rounded-circle mb-2"
+                                        <img class="img-account-profile rounded mb-2"
                                              src="../assets/img/illustrations/profiles/profile-2.png"
                                              alt="" id='preview'/>
                                         <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB
@@ -113,11 +116,11 @@
                                                 aria-label="Default select example">
                                             <option selected disabled>Marital Status:</option>
                                             <option
-                                                    <c:if test="${crew.maritalStatus=='Single'}">selected</c:if>
+                                                    <c:if test="${crew.maritalStatus=='ingle'}">selected</c:if>
                                                     value="single">Single
                                             </option>
                                             <option
-                                                    <c:if test="${crew.maritalStatus=='Married'}">selected</c:if>
+                                                    <c:if test="${crew.maritalStatus=='married'}">selected</c:if>
                                                     value="married">Married
                                             </option>
                                         </select>
