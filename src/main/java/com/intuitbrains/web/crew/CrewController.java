@@ -383,6 +383,7 @@ public class CrewController {
         }
         mv.addObject("action", StandardWebParameter.MODIFY);
         mv.addObject("crewId", crewId);
+        mv.addObject("menu", menu);
         return mv;
     }
 
