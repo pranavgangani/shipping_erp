@@ -495,7 +495,7 @@ class CrewTest {
                 pp.setGivenName("Tiwari Rohan Pradeep");
                 pp.setRequiredECNR(false);
                 pp.setBlankPages(10);
-                pp.setFlagCode("IN");
+               // pp.setFlagCode("IN");
                 pp.setDateOfIssue(LocalDate.of(2020, 2, 20));
                 pp.setDateOfExpiry(LocalDate.of(2040, 2, 20));
                 pp.setPlaceOfIssue("Mumbai, India");
@@ -506,7 +506,7 @@ class CrewTest {
                 visa.setCrewId(1);
                 visa.setDocNumber("5678890");
                 visa.setGivenName("Tiwari Rohan Pradeep");
-                visa.setFlagCode("US");
+                //visa.setFlagCode("US");
                 visa.setDateOfIssue(LocalDate.of(2018, 2, 20));
                 visa.setDateOfExpiry(LocalDate.of(2028, 2, 20));
                 visa.setPlaceOfIssue("NY, USA");
