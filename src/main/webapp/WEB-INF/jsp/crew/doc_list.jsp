@@ -63,7 +63,7 @@
 								        <td>${doc.givenName}</td>
 										<td>${doc.docType.name}</td>
 										<td>${doc.docType.documentPool}</td>
-										<td>${doc.flagCode}</td>
+										<td>${doc.flag.name}</td>
 										<td>${doc.docNumber}</td>
 										<td>${doc.dateOfIssue}</td>
 										<td>${doc.dateOfExpiry}</td>

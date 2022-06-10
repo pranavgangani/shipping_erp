@@ -37,9 +37,11 @@ import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewContractRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
+import com.intuitbrains.model.common.document.License;
 import com.intuitbrains.model.common.document.Passport;
 import com.intuitbrains.model.common.document.Visa;
 import com.intuitbrains.model.common.document.category.DocumentPool;
+import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
@@ -96,6 +98,8 @@ public class CrewController {
     private SequenceGeneratorService sequenceGenerator;
     @Autowired
     private CrewDocumentRepository documentDao;
+    @Autowired
+    private DocumentTypeRepository docTypeDao;
     @Autowired
     private AuditTrailRepository auditTrailDao;
     @Autowired
@@ -370,7 +374,7 @@ public class CrewController {
                 });
                 mv.addObject("list", list);
             }
-            mv.addObject("documentPools", DocumentPool.getList());
+            mv.addObject("docTypes", docTypeDao.findAll());
             mv.addObject("flags", getFlags());
         } else {
             mv = new ModelAndView("crew/doc_list");
@@ -379,6 +383,120 @@ public class CrewController {
         }
         mv.addObject("action", StandardWebParameter.MODIFY);
         mv.addObject("crewId", crewId);
+        return mv;
+    }
+
+    @PostMapping(value = "/document/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ModelAndView addDocument(HttpServletRequest req, Model model) {
+        ModelAndView mv = null;
+        String menu = StringUtil.trim(req.getParameter("menu"));
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            mv = new ModelAndView("redirect:/crew/documents?menu=documents&sMenu=documents&crewId="+crewId);
+            Crew crew = crewService.getById(crewId);
+            mv.addObject("crew", crew);
+            Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+            String maker = emp.getEmpId();
+            long docTypeId = ParamUtil.parseInt(req.getParameter("docTypeId"), -1);
+            String nationalityFlagCode = req.getParameter("nationalityFlagCode");
+            String docTypeName = req.getParameter("docTypeName");
+            String docTypeDesc = req.getParameter("docTypeDesc");
+            String docNumber = req.getParameter("docNumber");
+            String givenName = req.getParameter("givenName");
+            String issueDate = req.getParameter("issueDate");
+            String placeOfIssue = req.getParameter("placeOfIssue");
+            String expiryDate = req.getParameter("expiryDate");
+
+            List<CrewDocument> list = documentDao.getDocsByCrewId(crewId);
+
+            if (ListUtil.isNotEmpty(list)) {
+                list.forEach(doc -> {
+                    if (doc.getFile() != null) {
+                        doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
+                        System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
+                    }
+                });
+                mv.addObject("list", list);
+            }
+
+            DocumentType dt = docTypeDao.findById(docTypeId).get();
+            if (dt.getDocumentPool().getName().equals(DocumentPool.PASSPORT.getName())) {
+                Passport doc = new Passport();
+                doc.setCrewId(crewId);
+                doc.setGivenName(givenName);
+                doc.setDocName(docTypeName);
+                doc.setDocDesc(docTypeDesc);
+                doc.setDocType(dt);
+                doc.setDocNumber(docNumber);
+                doc.setPlaceOfIssue(placeOfIssue);
+                Flag flag = flagDao.getByCode(nationalityFlagCode);
+                doc.setFlag(flag);
+                doc.setDateOfIssue(LocalDate.now());
+                doc.setDateOfExpiry(LocalDate.now());
+                doc.setEnteredBy(maker);
+                doc.setEnteredDateTime(LocalDateTime.now());
+                doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+                documentDao.insert(doc);
+            } else if (dt.getDocumentPool().getName().equals(DocumentPool.VISA.getName())) {
+                Visa doc = new Visa();
+                doc.setCrewId(crewId);
+                doc.setGivenName(givenName);
+                doc.setDocName(docTypeName);
+                doc.setDocDesc(docTypeDesc);
+                doc.setDocType(dt);
+                doc.setDocNumber(docNumber);
+                doc.setPlaceOfIssue(placeOfIssue);
+                Flag flag = flagDao.getByCode(nationalityFlagCode);
+                doc.setFlag(flag);
+                doc.setDateOfIssue(LocalDate.now());
+                doc.setDateOfExpiry(LocalDate.now());
+                doc.setEnteredBy(maker);
+                doc.setEnteredDateTime(LocalDateTime.now());
+                doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+                documentDao.insert(doc);
+            } else if (dt.getDocumentPool().getName().equals(DocumentPool.LICENSE.getName())) {
+                License doc = new License();
+                doc.setCrewId(crewId);
+                doc.setGivenName(givenName);
+                doc.setDocName(docTypeName);
+                doc.setDocDesc(docTypeDesc);
+                doc.setDocType(dt);
+                doc.setDocNumber(docNumber);
+                doc.setPlaceOfIssue(placeOfIssue);
+                Flag flag = flagDao.getByCode(nationalityFlagCode);
+                doc.setFlag(flag);
+                doc.setDateOfIssue(LocalDate.now());
+                doc.setDateOfExpiry(LocalDate.now());
+                doc.setEnteredBy(maker);
+                doc.setEnteredDateTime(LocalDateTime.now());
+                doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+                documentDao.insert(doc);
+            } else if (dt.getDocumentPool().getName().equals(DocumentPool.CERTIFICATE.getName())) {
+                License doc = new License();
+                doc.setCrewId(crewId);
+                doc.setGivenName(givenName);
+                doc.setDocName(docTypeName);
+                doc.setDocDesc(docTypeDesc);
+                doc.setDocType(dt);
+                doc.setDocNumber(docNumber);
+                doc.setPlaceOfIssue(placeOfIssue);
+                Flag flag = flagDao.getByCode(nationalityFlagCode);
+                doc.setFlag(flag);
+                doc.setDateOfIssue(LocalDate.now());
+                doc.setDateOfExpiry(LocalDate.now());
+                doc.setEnteredBy(maker);
+                doc.setEnteredDateTime(LocalDateTime.now());
+                doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+                documentDao.insert(doc);
+            }
+
+            mv.addObject("documentPools", DocumentPool.getList());
+            mv.addObject("flags", getFlags());
+            mv.addObject("action", StandardWebParameter.ADD);
+            mv.addObject("crewId", crewId);
+            mv.addObject("menu", menu);
+        }
+
         return mv;
     }
 

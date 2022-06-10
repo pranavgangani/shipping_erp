@@ -58,7 +58,7 @@
                                             <th class="border-gray-200" scope="col">Upload</th>
                                             <th class="border-gray-200" scope="col">Maker</th>
                                             <th class="border-gray-200" scope="col">Reviewer</th>
-                                            <th class="border-gray-200" scope="col">Audit</th>
+                                            <%--<th class="border-gray-200" scope="col">Audit</th>--%>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -97,11 +97,11 @@
                                                                type="checkbox"/>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <%--<td>
                                                     <div class="page-header-icon"><i data-feather="user-plus"></i></div>
                                                     <div class="page-header-icon"><i data-feather="user-plus"></i></div>
                                                     <!-- <span class="badge bg-success">Paid</span> -->
-                                                </td>
+                                                </td>--%>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
@@ -133,18 +133,19 @@
             <div class="modal-body">
                 <div class="container-xl px-4">
                     <div class="row justify-content-center">
-                        <form>
+                        <form id="crew-document-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/document/add?menu=documents">
+                            <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
                             <div class="row gx-3 mb-3">
-                                <label class="small mb-3" for="documentPool">Select a Pool</label>
-                                <select class="form-select" aria-label="Default select example" id="documentPool" name="documentPool">
-                                    <option selected disabled>Select Pool:</option>
-                                    <c:forEach items="${documentPools}" var="docPool">
-                                        <option value="${docPool.name}">${docPool.name}</option>
+                                <label class="small mb-3" for="docTypeId">Select a Document Type</label>
+                                <select class="form-select" aria-label="Default select example" id="docTypeId" name="docTypeId">
+                                    <option selected disabled>Select Type:</option>
+                                    <c:forEach items="${docTypes}" var="docType">
+                                        <option value="${docType.id}">${docType.name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="row gx-3 mb-3">
-                                <label class="small mb-3" for="documentPool">Select a Flag</label>
+                                <label class="small mb-3" for="nationalityFlagCode">Select a Flag</label>
                                 <select class="form-select" aria-label="Default select example" id="nationalityFlagCode" name="nationalityFlagCode">
                                     <option selected disabled>Select Nationality Flag:</option>
                                     <c:forEach items="${flags}" var="flag">
@@ -153,107 +154,41 @@
                                 </select>
                             </div>
                             <div class="row gx-3 mb-3">
-                                <label class="small mb-1" for="docTypeName">Document Type</label>
-                                <input class="form-control" name="docTypeName" type="text" placeholder="Enter Doc Type Name" value="" />
-
+                                <label class="small mb-1" for="docTypeName">Document Name</label>
+                                <input class="form-control" id="docTypeName" name="docTypeName" type="text" placeholder="Enter Doc Type Name" />
                             </div>
                             <div class="row gx-3 mb-3">
-                                <label class="small mb-1" for="docTypeDesc">Document Type Description</label>
-                                <textarea class="form-control" name="docTypeDesc" type="text" placeholder="Enter Doc Type Description" value="" />
+                                <label class="small mb-1" for="docNumber">Document Number</label>
+                                <input class="form-control" id="docNumber" name="docNumber" type="text" placeholder="Enter Doc Type Name" />
                             </div>
-                            <!-- Form Group (username)-->
                             <div class="mb-3">
-                                <label class="small mb-1" for="inputUsername">Given Name (how it appears on the document
-                                    )</label>
-                                <input class="form-control" id="inputUsername" type="text"
-                                       placeholder="Enter your username" value="username"/>
+                                <label class="small mb-1" for="givenName">Given Name (how it appears on the document)</label>
+                                <input class="form-control" name="givenName" id="givenName" type="text" placeholder="Enter your username" />
                             </div>
-                            <!-- Form Row-->
-                            <div class="row gx-3 mb-3">
-                                <!-- Form Group (first name)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputFirstName">First name</label>
-                                    <input class="form-control" id="inputFirstName" type="text"
-                                           placeholder="Enter your first name" value="Valerie"/>
-                                </div>
-                                <!-- Form Group (last name)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputLastName">Last name</label>
-                                    <input class="form-control" id="inputLastName" type="text"
-                                           placeholder="Enter your last name" value="Luna"/>
-                                </div>
-                            </div>
-                            <!-- Form Row        -->
-                            <div class="row gx-3 mb-3">
-                                <!-- Form Group (organization name)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputOrgName">Organization name</label>
-                                    <input class="form-control" id="inputOrgName" type="text"
-                                           placeholder="Enter your organization name" value="Start Bootstrap"/>
-                                </div>
-                                <!-- Form Group (location)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputLocation">Location</label>
-                                    <input class="form-control" id="inputLocation" type="text"
-                                           placeholder="Enter your location" value="San Francisco, CA"/>
-                                </div>
-                            </div>
-                            <!-- Form Group (email address)-->
                             <div class="mb-3">
-                                <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                <input class="form-control" id="inputEmailAddress" type="email"
-                                       placeholder="Enter your email address" value="name@example.com"/>
-                            </div>
-                            <!-- Form Row-->
-                            <div class="row gx-3 mb-3">
-                                <!-- Form Group (phone number)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputPhone">Phone number</label>
-                                    <input class="form-control" id="inputPhone" type="tel"
-                                           placeholder="Enter your phone number" value="555-123-4567"/>
+                                <label class="small mb-1" for="issueDate">Issue Date</label>
+                                <div class="input-group input-group-joined border-1">
+                                            <span class="input-group-text"><i class="text-primary"
+                                                                              data-feather="calendar"></i></span>
+                                    <input name="issueDate" class="form-control dirtycheck"
+                                           id="issueDate" placeholder="Select a date"/>
                                 </div>
-                                <!-- Form Group (birthday)-->
-                                <div class="col-md-6">
-                                    <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                    <input class="form-control" id="inputBirthday" type="text" name="birthday"
-                                           placeholder="Enter your birthday" value="06/10/1988"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="small mb-1" for="placeOfIssue">Issue Place</label>
+                                <input class="form-control" name="placeOfIssue" id="placeOfIssue" type="text" placeholder="Enter Place of Issue" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="small mb-1" for="expiryDate">Expiry Date</label>
+                                <div class="input-group input-group-joined border-1">
+                                            <span class="input-group-text"><i class="text-primary"
+                                                                              data-feather="calendar"></i></span>
+                                    <input name="expiryDate" class="form-control dirtycheck"
+                                           id="expiryDate" placeholder="Select a date"/>
                                 </div>
                             </div>
 
-                            <div class="row gx-3 mb-3">
-                                <h1>Upload any File</h1>
-                                <SECTION>
-                                    <DIV id="dropzone">
-                                        <%--<FORM class="dropzone" class="dropzone" id="my-great-dropzone" action="/crew/addDoc">--%>
-                                            <input type="hidden" name="crewId" value="${crew.id}">
-                                            <input type="hidden" id="docId" name="docId">
-                                            <DIV class="dz-message">
-                                                Drop files here or click to upload.
-                                            </DIV>
-                                        <%--</FORM>--%>
-                                    </DIV>
-                                </SECTION>
-
-                                <br/>
-                                <hr size="3" noshade color="#F00000">
-
-                                <div style="font-size: 0.8em;">
-                                </div>
-                                <DIV id="preview-template" style="display: none;">
-                                    <div class="dz-preview dz-file-preview">
-                                        <div class="dz-details">
-                                            <div class="dz-filename"><span data-dz-name></span></div>
-                                            <div class="dz-size" data-dz-size></div>
-                                            <img data-dz-thumbnail/>
-                                        </div>
-                                        <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-                                        <div class="dz-success-mark"><span>✔</span></div>
-                                        <div class="dz-error-mark"><span>✘</span></div>
-                                        <div class="dz-error-message"><span data-dz-errormessage></span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" type="button">Add Document</button>
+                            <button class="btn btn-primary" type="submit">Add Document</button>
                         </form>
                     </div>
                 </div>

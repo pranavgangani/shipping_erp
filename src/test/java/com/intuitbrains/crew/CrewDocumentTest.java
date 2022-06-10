@@ -86,4 +86,15 @@ class CrewDocumentTest {
 
         });
     }
+
+    @Test
+    void addDoc() {
+        CrewDocument doc = new CrewDocument();
+        doc.setCrewId(4);
+        //doc.setGivenName(doc.getDefaultGivenName());
+        doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+        documentDao.insert(doc);
+    }
+
+
 }

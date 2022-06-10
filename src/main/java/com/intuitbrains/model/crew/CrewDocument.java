@@ -2,6 +2,7 @@ package com.intuitbrains.model.crew;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Comment;
+import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.FieldStatus;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.category.DocumentType;
@@ -9,6 +10,7 @@ import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +25,7 @@ public class CrewDocument {
 
     protected long crewId;
     private DocumentType docType;
-    private String flagCode;
+    private Flag flag;
     private Binary file;
 
     public CrewDocument() {
@@ -45,6 +47,9 @@ public class CrewDocument {
 
     //Required when storing against Crew
     private List<Comment> comments;
+
+    private String enteredBy, updatedBy;
+    private LocalDateTime enteredDateTime, updatedDateTime;
 
     //Physical File
     private String fileTitle;
@@ -73,12 +78,12 @@ public class CrewDocument {
         this._type = _type;
     }
 
-    public String getFlagCode() {
-        return flagCode;
+    public Flag getFlag() {
+        return flag;
     }
 
-    public void setFlagCode(String flagCode) {
-        this.flagCode = flagCode;
+    public void setFlag(Flag flag) {
+        this.flag = flag;
     }
 
     public String getDocName() {
@@ -224,6 +229,38 @@ public class CrewDocument {
 
     public boolean isFileUploaded() {
         return this.getFile() != null;
+    }
+
+    public String getEnteredBy() {
+        return enteredBy;
+    }
+
+    public void setEnteredBy(String enteredBy) {
+        this.enteredBy = enteredBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDateTime getEnteredDateTime() {
+        return enteredDateTime;
+    }
+
+    public void setEnteredDateTime(LocalDateTime enteredDateTime) {
+        this.enteredDateTime = enteredDateTime;
+    }
+
+    public LocalDateTime getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
+    public void setUpdatedDateTime(LocalDateTime updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
     }
 
     @Override
