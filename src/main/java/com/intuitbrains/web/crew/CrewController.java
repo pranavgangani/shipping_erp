@@ -40,6 +40,7 @@ import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.model.common.document.License;
 import com.intuitbrains.model.common.document.Passport;
 import com.intuitbrains.model.common.document.Visa;
+import com.intuitbrains.model.common.document.category.DocumentCategory;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.CrewDocument;
@@ -357,20 +358,52 @@ public class CrewController {
     public ModelAndView documentList(HttpServletRequest req, Model model) {
         ModelAndView mv = null;
         String menu = StringUtil.trim(req.getParameter("menu"));
+        final String type = StringUtil.trim(req.getParameter("type")) != null ? req.getParameter("type") : "";
+
+        Set<DocumentCategory> filterDocCatSet = new HashSet<>();
+        Set<DocumentPool> filterDocPoolSet = new HashSet<>();
+
+        DocumentCategory category = DocumentCategory.createFromName(type);
+        if (category != null) {
+            filterDocCatSet.add(category);
+        } else if (type.equalsIgnoreCase("license")) {
+            filterDocPoolSet.add(DocumentPool.LICENSE);
+        } else if (type.equalsIgnoreCase("courses")) {
+            filterDocCatSet.add(DocumentCategory.EDUCATION);
+            filterDocCatSet.add(DocumentCategory.TRAINING);
+            filterDocPoolSet.add(DocumentPool.CERTIFICATE);
+        } else if (type.equalsIgnoreCase("courses")) {
+            filterDocPoolSet.add(DocumentPool.AWARD);
+        }
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             mv = new ModelAndView("crew/documents");
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
 
-            List<CrewDocument> list = documentDao.getDocsByCrewId(crewId);
+            List<CrewDocument> allCrewFiles = documentDao.getDocsByCrewId(crewId);
+            List<CrewDocument> list = new ArrayList<>();
 
-            if (ListUtil.isNotEmpty(list)) {
-                list.forEach(doc -> {
+            if (ListUtil.isNotEmpty(allCrewFiles)) {
+                allCrewFiles.forEach(doc -> {
                     if (doc.getFile() != null) {
                         doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
-                        System.out.println(doc.getDocName() + " - " + doc.getFileTitle());
                     }
+                    if (type.equals("")) {
+                        list.add(doc);
+                    } else {
+                        if (filterDocPoolSet.size() > 0 && filterDocPoolSet.contains(doc.getDocType().getDocumentPool())) {
+                            if (filterDocCatSet.size() > 0 && filterDocCatSet.contains(doc.getDocType().getDocumentCategory())) {
+                                list.add(doc);
+                            } else {
+                                list.add(doc);
+                            }
+                        } else if (filterDocCatSet.size() > 0 && filterDocCatSet.contains(doc.getDocType().getDocumentCategory())) {
+                            list.add(doc);
+                        }
+                    }
+
+
                 });
                 mv.addObject("list", list);
             }
@@ -393,7 +426,7 @@ public class CrewController {
         String menu = StringUtil.trim(req.getParameter("menu"));
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
-            mv = new ModelAndView("redirect:/crew/documents?menu=documents&sMenu=documents&crewId="+crewId);
+            mv = new ModelAndView("redirect:/crew/documents?menu=documents&sMenu=documents&crewId=" + crewId);
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
             Employee emp = (Employee) req.getSession().getAttribute("currentUser");

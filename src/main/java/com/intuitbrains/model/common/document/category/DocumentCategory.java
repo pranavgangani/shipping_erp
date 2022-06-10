@@ -16,7 +16,7 @@ public class DocumentCategory {
     public final static DocumentCategory INFORMATION = new DocumentCategory(6, "Information");
     public final static DocumentCategory EMPLOYMENT = new DocumentCategory(7, "Employment");
     public final static DocumentCategory LEGAL = new DocumentCategory(8, "Legal");
-	public final static DocumentCategory IDENTIFICATION = new DocumentCategory(9, "Identification");
+    public final static DocumentCategory IDENTIFICATION = new DocumentCategory(9, "Identification");
     public final static DocumentCategory MISC = new DocumentCategory(0, "Miscellaneous");
 
     @Id
@@ -78,6 +78,15 @@ public class DocumentCategory {
     }
 
     public static DocumentCategory createFromId(int typeId) {
-        return ((DocumentCategory) (getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
+        return ((getList().stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0));
+    }
+
+    public static DocumentCategory createFromName(String name) {
+        for (DocumentCategory cat : getList()) {
+            if (cat.getName().equalsIgnoreCase(name)) {
+                return cat;
+            }
+        }
+        return null;
     }
 }

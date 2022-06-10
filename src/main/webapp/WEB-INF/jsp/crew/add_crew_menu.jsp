@@ -24,15 +24,15 @@
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownDocuments">
             <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=documents&crewId=${crewId}">Documents</a>
-            <a class="dropdown-item" href="/crew/travel?menu=documents&sMenu=documents&crewId=${crewId}">Travel</a>
-            <a class="dropdown-item" href="/crew/license?menu=documents&sMenu=documents&crewId=${crewId}">License</a>
-            <a class="dropdown-item" href="/crew/medical?menu=documents&sMenu=documents&crewId=${crewId}">Medical</a>
-            <a class="dropdown-item" href="/crew/courses?menu=documents&sMenu=documents&crewId=${crewId}">Courses</a>
-            <a class="dropdown-item" href="/crew/cbt?menu=documents&sMenu=documents&crewId=${crewId}">CBT & EPSS</a>
-            <a class="dropdown-item" href="/crew/epss?menu=documents&sMenu=documents&crewId=${crewId}">EPSS</a>
-            <a class="dropdown-item" href="/crew/academic?menu=documents&sMenu=documents&crewId=${crewId}">Academic</a>
-            <a class="dropdown-item" href="/crew/award?menu=documents&sMenu=documents&crewId=${crewId}">Award</a>
-            <a class="dropdown-item" href="/crew/other?menu=documents&sMenu=documents&crewId=${crewId}">Other</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=travel&type=travel&crewId=${crewId}">Travel</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=license&type=license&crewId=${crewId}">License</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=medical&type=medical&crewId=${crewId}">Medical</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=course&type=course&crewId=${crewId}">Courses</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=cbt&type=cbt&crewId=${crewId}">CBT & EPSS</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=epss&type=epss&crewId=${crewId}">EPSS</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=academics&type=education&crewId=${crewId}">Academic</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=award&type=award&crewId=${crewId}">Award</a>
+            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=other&type=other&crewId=${crewId}">Other</a>
         </div>
     </div>
     <div class="dropdown">

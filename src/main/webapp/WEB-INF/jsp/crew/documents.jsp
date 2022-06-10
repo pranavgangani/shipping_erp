@@ -147,7 +147,7 @@
                             <div class="row gx-3 mb-3">
                                 <label class="small mb-3" for="nationalityFlagCode">Select a Flag</label>
                                 <select class="form-select" aria-label="Default select example" id="nationalityFlagCode" name="nationalityFlagCode">
-                                    <option selected disabled>Select Nationality Flag:</option>
+                                    <option selected disabled>Select Flag:</option>
                                     <c:forEach items="${flags}" var="flag">
                                         <option value="${flag.code}">${flag.name}</option>
                                     </c:forEach>

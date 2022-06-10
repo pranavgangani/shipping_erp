@@ -34,6 +34,8 @@ public enum DocumentPool {
     SLIP(26, "Slip"),
     REPORT(27, "Report"),
     TAX_ID(28, "Tax ID"),
+    CBT_EPSS(29, "CBT/EPSS"),
+    AWARD(30, "Award"),
     OTHER(0, "Other");
 
     private int id;
