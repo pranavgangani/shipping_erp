@@ -368,11 +368,9 @@ public class CrewController {
             filterDocCatSet.add(category);
         } else if (type.equalsIgnoreCase("license")) {
             filterDocPoolSet.add(DocumentPool.LICENSE);
-        } else if (type.equalsIgnoreCase("courses")) {
-            filterDocCatSet.add(DocumentCategory.EDUCATION);
+        } else if (type.equalsIgnoreCase("course")) {
             filterDocCatSet.add(DocumentCategory.TRAINING);
-            filterDocPoolSet.add(DocumentPool.CERTIFICATE);
-        } else if (type.equalsIgnoreCase("courses")) {
+        } else if (type.equalsIgnoreCase("award")) {
             filterDocPoolSet.add(DocumentPool.AWARD);
         }
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
