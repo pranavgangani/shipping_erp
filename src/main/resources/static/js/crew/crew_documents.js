@@ -1,19 +1,18 @@
 var CrewDocument = {}
 
-$(document).ready(function() {
-    $('.form-select').select2();
+jQuery(document).ready(function() {
+   // jQuery('.form-select').select2();
 
-
-    $("#pop").on("click", function() {
+    jQuery("#pop").on("click", function() {
     console.log("-----------------");
-       $('#imagepreview').attr('src', $('#imageresource').attr('src')); // here asign the image to the modal when the user click the enlarge link
-       $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+       jQuery('#imagepreview').attr('src', jQuery('#imageresource').attr('src')); // here assign the image to the modal when the user click the enlarge link
+       jQuery('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
     });
 });
 
 CrewDocument.openFileUploadModal = function(docId, docName, docTypeId) {
     var modal = "#fileUploaderModal";
-    $("#docId").val(docId);
-    $(modal).modal('show');
-    $("#fileUploaderModalTitle").text(docName);
+    jQuery("#docId").val(docId);
+    jQuery(modal).modal('show');
+    jQuery("#fileUploaderModalTitle").text(docName);
 }

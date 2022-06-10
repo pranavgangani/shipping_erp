@@ -104,11 +104,14 @@
                                             </div>
                                         </div>
                                         <div class="row gx-3 mb-3">
-                                            <div class="col-md-12">
+                                            <div class="col-md-8">
                                                 <label class="small mb-1" for="address">Address</label>
                                                 <textarea name="address" id="address"
                                                           class="lh-base form-control dirtycheck" placeholder=""
                                                           rows="3" cols="3">${nok.address}</textarea>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Update</button>
                                             </div>
                                         </div>
                                     </div>

@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,6 +39,7 @@ import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.model.common.document.Passport;
 import com.intuitbrains.model.common.document.Visa;
+import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
@@ -62,6 +64,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -81,6 +84,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.intuitbrains.dao.crew.PhotoRepository;
 import com.intuitbrains.service.common.SequenceGeneratorService;
+
+import static java.util.Comparator.comparing;
 
 @RestController
 @RequestMapping(value = "/crew")
@@ -145,9 +150,9 @@ public class CrewController {
 
             mv.addObject("crew", crew);
             List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crewId);
+
             if (ListUtil.isNotEmpty(auditTrails)) {
-                System.out.println("auditTrails = " + auditTrails.size());
-                mv.addObject("auditTrails", auditTrails);
+                mv.addObject("auditTrails", auditTrails.stream().sorted(comparing(AuditTrail::getActionLocalDateTime).reversed()).collect(Collectors.toList()));
             } else {
                 System.out.println("No auditTrails");
             }
@@ -168,14 +173,8 @@ public class CrewController {
         mv.addObject("statuses", Crew.Status.getList());
         mv.addObject("menu", menu);
         mv.addObject("crewId", crewId);
-        List<Flag> flags = flagDao.findAll();
-        flags.parallelStream().forEach(f -> {
-            f.setId(null);
-            f.setImage(null);
-            f.setUnicode(null);
-            f.setEmoji(null);
-        });
-        mv.addObject("flags", flags);
+
+        mv.addObject("flags", getFlags());
         mv.addObject("action", action);
         mv.addObject("rankMap", Rank.getByGroup());
         return mv;
@@ -212,14 +211,7 @@ public class CrewController {
         mv.addObject("statuses", Crew.Status.getList());
         mv.addObject("menu", "overview");
         mv.addObject("crewId", crewId);
-        List<Flag> flags = flagDao.findAll();
-        flags.parallelStream().forEach(f -> {
-            f.setId(null);
-            f.setImage(null);
-            f.setUnicode(null);
-            f.setEmoji(null);
-        });
-        mv.addObject("flags", flags);
+        mv.addObject("flags", getFlags());
         mv.addObject("rankMap", Rank.getByGroup());
         return mv;
     }
@@ -343,10 +335,24 @@ public class CrewController {
         return model.toString();
     }
 
+
+    @GetMapping(value = "/nok")
+    public ModelAndView nok(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/nok");
+        long crewId = Long.parseLong(req.getParameter("crewId"));
+        Crew crew = crewService.getObjectById(crewId);
+        List<NextOfKin> list = crewService.getNextOfKins(crewId);
+        mv.addObject("crew", crew);
+        mv.addObject("crewId", crewId);
+        mv.addObject("list", list);
+        mv.addObject("relationTypes", NextOfKin.RelationType.getList());
+        return mv;
+    }
+
     @GetMapping(value = "/documents")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
         ModelAndView mv = null;
-
+        String menu = StringUtil.trim(req.getParameter("menu"));
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             mv = new ModelAndView("crew/documents");
@@ -364,32 +370,14 @@ public class CrewController {
                 });
                 mv.addObject("list", list);
             }
-            CrewPhoto photo = null;
-
-            try {
-                photo = photoDao.findById(crew.getPhotoId()).get();
-                //mv.addObject("title", photo.getTitle());
-                mv.addObject("image", Base64.getEncoder().encodeToString(photo.getImage().getData()));
-            } catch (NoSuchElementException e) {
-
-            }
-
-
-            List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.CREW, crew.getId());
-            if (ListUtil.isNotEmpty(auditTrails)) {
-                System.out.println("auditTrails = " + auditTrails.size());
-                mv.addObject("auditTrails", auditTrails);
-            } else {
-                System.out.println("No auditTrails");
-            }
-
+            mv.addObject("documentPools", DocumentPool.getList());
+            mv.addObject("flags", getFlags());
         } else {
             mv = new ModelAndView("crew/doc_list");
             List<CrewDocument> existingDocuments = documentDao.findAll();
             mv.addObject("existingDocuments", existingDocuments);
         }
-
-        mv.addObject("action", "Edit");
+        mv.addObject("action", StandardWebParameter.MODIFY);
         mv.addObject("crewId", crewId);
         return mv;
     }
@@ -612,18 +600,6 @@ public class CrewController {
         return mv;
     }
 
-    @GetMapping(value = "/nok")
-    public ModelAndView nok(HttpServletRequest req, Model model) {
-        ModelAndView mv = new ModelAndView("crew/nok");
-        long crewId = Long.parseLong(req.getParameter("crewId"));
-        Crew crew = crewService.getObjectById(crewId);
-        List<NextOfKin> list = crewService.getNextOfKins(crewId);
-        mv.addObject("crew", crew);
-        mv.addObject("crewId", crewId);
-        mv.addObject("list", list);
-        mv.addObject("relationTypes", NextOfKin.RelationType.getList());
-        return mv;
-    }
 
     @GetMapping(value = "/medical")
     public ModelAndView medical(HttpServletRequest req, Model model) {
@@ -875,5 +851,16 @@ public class CrewController {
                 input.close();
             }
         }
+    }
+
+    private List<Flag> getFlags() {
+        List<Flag> flags = flagDao.findAll();
+        flags.parallelStream().forEach(f -> {
+            f.setId(null);
+            f.setImage(null);
+            f.setUnicode(null);
+            f.setEmoji(null);
+        });
+        return flags;
     }
 }

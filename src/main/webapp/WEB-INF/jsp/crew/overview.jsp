@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -219,7 +220,7 @@
                                                 </thead>
                                                 <tbody>
                                                 <c:choose>
-                                                    <c:when test="${documents!=null}">
+                                                    <c:when test="${fn:length(documents)>0}">
                                                         <c:forEach items="${documents}" var="doc">
                                                             <tr>
                                                                 <td><label class="small mb-3">${doc.docType.name}</label>

@@ -19,7 +19,9 @@ import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.dao.common.AuditTrailRepository;
 import com.intuitbrains.model.company.Employee;
+import com.intuitbrains.model.crew.Crew;
 import com.intuitbrains.service.company.CustomUserDetailsService;
+import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.util.ListUtil;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -57,6 +59,8 @@ public class AuthController {
     private CustomUserDetailsService userService;
     @Autowired
     private AuditTrailRepository auditTrailDao;
+    @Autowired
+    private CrewService crewService;
 
     @GetMapping(value = "/dashboard")
     public ModelAndView dashboard(HttpServletRequest request) {
@@ -68,11 +72,21 @@ public class AuthController {
         List<AuditTrail> auditTrails = auditTrailDao.findAll(Sort.by(Sort.Direction.DESC, "actionLocalDateTime")).stream().limit(7).collect(Collectors.toList());
 
         if (ListUtil.isNotEmpty(auditTrails)) {
-            System.out.println("auditTrails = " + auditTrails.size());
+            //System.out.println("auditTrails = " + auditTrails.size());
             mv.addObject("auditTrails", auditTrails);
         }
         session.setAttribute("currentUser", user);
         session.setAttribute("fullName", user.getFullName());
+
+        List<Crew> list = crewService.getList();
+        mv.addObject("list", list);
+
+        //Get Count of documents expiring in next 6 months
+        //Get Count of pending review crews
+        //Get Count of new recruits added
+        //Get Count of ready for sign-off
+        //Get Count of ready for sign-on
+
         //modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
         mv.setViewName("dashboard");
         return mv;

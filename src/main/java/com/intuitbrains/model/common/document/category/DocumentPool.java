@@ -59,5 +59,9 @@ public enum DocumentPool {
     public static DocumentPool createFromId(long typeId) {
         return (new ArrayList<>(Arrays.asList(values())).stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0);
     }
+
+    public static List<DocumentPool> getCoreDocPool(){
+        return new ArrayList<>(Arrays.asList(PASSPORT, VISA, LICENSE));
+    }
 }
 
