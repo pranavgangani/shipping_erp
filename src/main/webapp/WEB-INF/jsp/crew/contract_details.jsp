@@ -101,7 +101,7 @@
                                             </td>
                                             <td><h6 class="mb-1">Nationality</h6></td>
                                             <td>
-                                                <div class="col-md-10 mb-3">${crew.nationality}</div>
+                                                <div class="col-md-10 mb-3">${crew.nationalityFlag.name}</div>
                                             </td>
                                         </tr>
                                         <tr>
