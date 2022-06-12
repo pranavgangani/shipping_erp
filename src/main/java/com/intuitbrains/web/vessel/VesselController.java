@@ -23,7 +23,9 @@ import java.time.LocalDateTime;
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
+import com.intuitbrains.common.Port;
 import com.intuitbrains.dao.common.AuditTrailRepository;
+import com.intuitbrains.dao.common.PortRepository;
 import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.vessel.*;
@@ -71,6 +73,8 @@ public class VesselController {
     @Autowired
     private FlagRepository flagDao;
     @Autowired
+    private PortRepository portDao;
+    @Autowired
     private EmployeeRepository employeeDao;
     @Autowired
     private AuditTrailRepository auditTrailDao;
@@ -108,8 +112,10 @@ public class VesselController {
         String vesselName = req.getParameter("vesselName");
         String imo = req.getParameter("imo");
         String mmsi = req.getParameter("mmsi");
+        String port = req.getParameter("homePort");
         String flag = req.getParameter("flag");
         Flag flagObj = flagDao.getByCode(flag);
+        Port portObj = portDao.getByCode(port);
         String callSign = req.getParameter("callSign");
         int vesselSubTypeId = ParamUtil.parseInt(req.getParameter("vesselSubTypeId"), -1);
         int length = ParamUtil.parseInt(req.getParameter("length"), -1);
@@ -127,9 +133,8 @@ public class VesselController {
         vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
         vessel.setImo(imo);
         vessel.setMmsi(mmsi);
-        vessel.setHomePort(flag);
         vessel.setFlag(flagObj);
-        //vessel.setVesselType(VesselType.createFromId(vesselTypeId));
+        vessel.setHomePort(portObj);
         vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
         vessel.setLength(length);
         vessel.setBeam(beam);
@@ -198,6 +203,9 @@ public class VesselController {
         String imo = req.getParameter("imo");
         String mmsi = req.getParameter("mmsi");
         String flag = req.getParameter("flag");
+        String homePort = req.getParameter("homePort");
+        Flag flagObj = flagDao.getByCode(flag);
+        Port portObj = portDao.getByCode(homePort);
         String callSign = req.getParameter("callSign");
         int vesselSubTypeId = ParamUtil.parseInt(req.getParameter("vesselSubTypeId"), -1);
         int length = ParamUtil.parseInt(req.getParameter("length"), -1);
@@ -215,7 +223,7 @@ public class VesselController {
         vessel.setVesselOwner(vesselOwnerDao.findById(vesselOwnerId).get());
         vessel.setImo(imo);
         vessel.setMmsi(mmsi);
-        vessel.setHomePort(flag);
+        vessel.setHomePort(portObj);
         vessel.setVesselSubType(VesselSubType.createFromId(vesselSubTypeId));
         vessel.setLength(length);
         vessel.setBeam(beam);
@@ -262,7 +270,27 @@ public class VesselController {
         return mv;
     }
 
-    @GetMapping(value = "/vessel_details")
+    @GetMapping(value = "/overview")
+    public ModelAndView overview(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView("/vessel/overview");
+        long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+        if (vesselId > 0) {
+            Vessel vessel = vesselDao.findById(vesselId).get();
+
+            try {
+                Journey activeJourney = vesselDao.getActiveJourney();
+                mv.addObject("activeJourney", activeJourney);
+            } catch (Exception e) {
+                mv.addObject("activeJourney", new Journey());
+            }
+            mv.addObject("vessel", vessel);
+
+        }
+        mv.addObject("menu", "overview");
+        return mv;
+    }
+
+    @GetMapping(value = "/details")
     public ModelAndView viewDetailsPage(HttpServletRequest req) {
         ModelAndView mv = new ModelAndView("/vessel/vessel_details");
         Employee user = (Employee) req.getSession().getAttribute("currentUser");
@@ -272,15 +300,15 @@ public class VesselController {
 
         if (vesselId > 0) {
             Vessel vessel = vesselDao.findById(vesselId).get();
-            VesselFieldStatus fs = vessel.getFieldStatus();
+            //VesselFieldStatus fs = vessel.getFieldStatus();
 
             //Audit Trails
             List<AuditTrail> auditTrails = auditTrailDao.getAudit(Collection.VESSEL, vesselId);
             if (ListUtil.isNotEmpty(auditTrails)) {
-                System.out.println("auditTrails = " + auditTrails.size());
+                // System.out.println("auditTrails = " + auditTrails.size());
                 mv.addObject("auditTrails", auditTrails);
             } else {
-                System.out.println("No auditTrails");
+                // System.out.println("No auditTrails");
             }
             //Photo
             VesselPhoto photo = null;
@@ -296,6 +324,7 @@ public class VesselController {
         }
         mv.addObject("vesselOwnerId", vesselOwnerId);
         mv.addObject("flags", flagDao.findAll());
+        mv.addObject("flags", flagDao.findAll());
         mv.addObject("vesselTypes", VesselType.getList());
         mv.addObject("vesselSubTypeMap", VesselSubType.getByGroup());
         mv.addObject("vesselOwners", vesselOwnerDao.findAll());
@@ -303,4 +332,30 @@ public class VesselController {
         return mv;
     }
 
+    @GetMapping(value = "/journeys")
+    public ModelAndView details(HttpServletRequest req) {
+        ModelAndView mv = new ModelAndView();
+        long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+        String action = req.getParameter("action");
+        if (action.equals(StandardWebParameter.LIST)) {
+
+        } else if (action.equals(StandardWebParameter.VIEW)) {
+            Vessel vessel = vesselDao.findById(vesselId).get();
+            mv.addObject("vessel", vessel);
+        }
+        List<Employee> vesselManagers = employeeDao.findByRole("VESSEL_MANAGER");
+        List<Employee> technicalSups = employeeDao.findByRole("TECHNICAL_SUP");
+
+        List<Port> ports = portDao.findAll();
+        ports.forEach(p->{
+            p.setId(null);
+        });
+        mv.addObject("ports", ports);
+
+        mv.addObject("vesselManagers", vesselManagers);
+        mv.addObject("technicalSups", technicalSups);
+        mv.addObject("action", action);
+        mv.addObject("menu", "Details");
+        return mv;
+    }
 }

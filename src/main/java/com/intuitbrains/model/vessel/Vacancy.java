@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Transient;
 import java.time.LocalDateTime;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.VESSEL_VACANCY)
-public class VesselVacancy {
+public class Vacancy {
     @Transient
     public static final String SEQUENCE_NAME = Collection.VESSEL_VACANCY;
 
@@ -126,8 +126,7 @@ public class VesselVacancy {
 
     public enum Status {
 		OPEN(1, "Open"),
-		PENDING_DOCS(2, "Pending Docs"),
-		CLOSED(3, "Closed");
+		CLOSED(0, "Closed");
 
 		private int id;
 		private String desc;
@@ -145,7 +144,7 @@ public class VesselVacancy {
 			return desc;
 		}
 
-        public static VesselVacancy.Status createFromId(int typeId) {
+        public static Vacancy.Status createFromId(int typeId) {
             for (int i = 0; i < values().length; i++) {
                 if (values()[i].getId() == typeId) {
                     return values()[i];

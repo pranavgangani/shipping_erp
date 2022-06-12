@@ -35,7 +35,7 @@
                 <%@ include file="crew_header.jsp" %>
                 <!-- Main page content-->
                 <div class="container-fluid px-4">
-                    <%@ include file="add_crew_menu.jsp" %>
+                    <%@ include file="crew_menu.jsp" %>
                     <hr class="mt-0 mb-2"/>
                     <div class="row">
                         <div class="col-lg-2 mb-2">

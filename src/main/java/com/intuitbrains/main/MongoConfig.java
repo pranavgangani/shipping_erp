@@ -32,8 +32,8 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        //final ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/admin");
-        final ConnectionString connectionString = new ConnectionString("mongodb+srv://pranavgangani:"+ URLEncoder.encodeParam("D@!zy1985", "UTF-8")+"@cluster0.gfa1v.mongodb.net/?retryWrites=true&w=majority");
+        final ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/admin");
+        //final ConnectionString connectionString = new ConnectionString("mongodb+srv://pranavgangani:"+ URLEncoder.encodeParam("D@!zy1985", "UTF-8")+"@cluster0.gfa1v.mongodb.net/?retryWrites=true&w=majority");
 
         // create codec registry for POJOs
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());

@@ -97,7 +97,7 @@
                                     </a>
                                     <div class="collapse" id="appsCollapseKnowledgeBase" data-bs-parent="#accordionSidenavVesselMenu">
                                         <nav class="sidenav-menu-nested nav">
-                                        	<a class="nav-link" href="/vessel/vessel_details">Vessel</a>
+                                        	<a class="nav-link" href="/vessel/overview">Vessel</a>
                                             <a class="nav-link" href="/vessel/vessel_owner_details">Vessel Owner</a>
                                         </nav>
                                     </div>

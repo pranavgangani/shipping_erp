@@ -14,9 +14,14 @@ public class Collection {
 	public final static String VESSEL_PHOTO = "VesselPhoto";
 	public final static String VESSEL_OWNER_PHOTO = "VesselOwnerPhoto";
 	public final static String VESSEL_VACANCY = "VesselVacancy";
+
+	public final static String JOURNEY = "VesselJourney";
+
+	public final static String COMMUNICATION = "VesselCommunication";
 	
 	//Common
 	public final static String FLAG = "Flag";
+	public final static String PORT = "SeaPort";
 
 	//Document
 	//public final static String MANDATORY_CREW_DOCUMENT = "MandatoryCrewDocument";

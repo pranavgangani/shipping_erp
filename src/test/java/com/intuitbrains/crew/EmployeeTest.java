@@ -46,7 +46,7 @@ class EmployeeTest {
             newUserRole.setRoleDesc("Regular user");
             roleDao.insert(newUserRole);
         }
-/*
+
         Role rectruiter = roleDao.findByRole("RECRUITER");
         if (rectruiter == null) {
             Role newUserRole = new Role();
@@ -58,17 +58,25 @@ class EmployeeTest {
         if (vesselMgr == null) {
             Role newUserRole = new Role();
             newUserRole.setRole("VESSEL_MANAGER");
-            newUserRole.setRoleDesc("Manages Vessel Data");
+            newUserRole.setRoleDesc("A crew manager directs and supervises the crew members' daily activities to ensure project completion or optimal service. Although a crew manager's duties vary depending on their industry or company of employment, their responsibilities usually include setting priorities and guidelines, managing employee schedules, recruiting and training new crew members, and solving issues and concerns when any arise. They also conduct regular assessments, review documents, and oversee supply inventories.\n\n" +
+                    "Here are examples of responsibilities from real crew manager resumes representing typical tasks they are likely to perform in their roles.\n" +
+                    "-Leverage exceptional communication, problem-solving and task-planning skills to achieve client's overall vision for events.\n" +
+                    "-Facilitate inter-departmental communication to effectively provide customer support.");
             roleDao.save(newUserRole);
         }
-        Role docMgr = roleDao.findByRole("DOCUMENT_MANAGER");
+        Role docMgr = roleDao.findByRole("TECHNICAL_SUP");
         if (docMgr == null) {
             Role newUserRole = new Role();
-            newUserRole.setRole("DOCUMENT_MANAGER");
-            newUserRole.setRoleDesc("Manages Vessel & Crew Documents");
+            newUserRole.setRole("TECHNICAL_SUP");
+            newUserRole.setRoleDesc(
+                    "-Manage the maintenance and operations of a bauxite unloading and alumina loading facility.\n" +
+                    "-Present reports every morning to the COC personnel, pilots, and exercise evaluation officers as part of the morning brief.\n" +
+                    "-Design and engineer lifeboats on LNG terminal by ensuring easy access, launching and recovery to ensure safety during emergency situations.\n" +
+                    "-Monitor major maintenance perform on berth.\n" +
+                    "-Perform minor maintenace duties as necesary to ensure berth functions maintain its realibility.");
             roleDao.save(newUserRole);
         }
-      */
+
     }
     @Test
     void addEmployeeJames() {

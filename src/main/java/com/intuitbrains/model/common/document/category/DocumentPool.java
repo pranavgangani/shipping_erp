@@ -7,7 +7,18 @@ import java.util.stream.Collectors;
 
 public enum DocumentPool {
     PASSPORT(1, "Passport"),
-    VISA(2, "Visa"),
+
+    COC(2, "COC"),
+
+    CDC(3, "CDC"),
+
+    COE(3, "COE"),
+    COP(3, "COP"),
+    SIRB(3, "SIRB"),
+    INDOS(3, "INDOS"),
+    STCW(4, "STCW"),
+    YELLOW_FEVER(11, "YELFVR"),
+    VISA(5, "Visa"),
     OKTB(3, "OKTB (Ok-To-Board"),
     TICKET(4, "Ticket"),
     RECEIPT(5, "Receipt"),
@@ -34,6 +45,9 @@ public enum DocumentPool {
     SLIP(26, "Slip"),
     REPORT(27, "Report"),
     TAX_ID(28, "Tax ID"),
+
+    PAN(28, "PAN"),
+    AADHAR(28, "AADHAR"),
     CBT_EPSS(29, "CBT/EPSS"),
     AWARD(30, "Award"),
     OTHER(0, "Other");
@@ -54,7 +68,7 @@ public enum DocumentPool {
         return name;
     }
 
-    public static List<DocumentPool> getList(){
+    public static List<DocumentPool> getList() {
         return new ArrayList<>(Arrays.asList(values()));
     }
 
@@ -62,7 +76,7 @@ public enum DocumentPool {
         return (new ArrayList<>(Arrays.asList(values())).stream().filter(o -> o.getId() == typeId).collect(Collectors.toList())).get(0);
     }
 
-    public static List<DocumentPool> getCoreDocPool(){
+    public static List<DocumentPool> getCoreDocPool() {
         return new ArrayList<>(Arrays.asList(PASSPORT, VISA, LICENSE));
     }
 }

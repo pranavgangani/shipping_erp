@@ -319,25 +319,25 @@
                                         </div>
                                         </c:if>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
-                            
+
                         </div>
-                            
+
                         </div>
-                    
+
                     </form>
                 </main>
-                
+
                 <%@ include file="../includes/copyright.jsp" %>
-                
+
             </div>
         </div>
-        
+
         <%@ include file="../includes/bottom_includes.jsp" %>
-        
+
     </body>
-    
+
 <script>
 
 var input = document.querySelector("#file-input");
@@ -358,5 +358,5 @@ function preview() {
   };
 }
 
-</script>    
+</script>
 </html>

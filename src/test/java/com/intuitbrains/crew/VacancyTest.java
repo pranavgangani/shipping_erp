@@ -22,14 +22,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = CrewManagementApplication.class)
 @AutoConfigureMockMvc
-class VesselVacancyTest {
+class VacancyTest {
     @Autowired
     private VesselRepository vesselDao;
     @Autowired
@@ -75,7 +74,7 @@ class VesselVacancyTest {
 		query.addCriteria(Criteria.where("name").regex("^A"));
 		List<User> users = mongoTemplate.find(query,User.class);*/
 
-        List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRank((int) Rank.CHIEF_OFFICER.getId());
+        List<Vacancy> vacancies = vesselVacancyDao.findVacanciesByRank((int) Rank.CHIEF_OFFICER.getId());
         vacancies.forEach(v -> {
             Vessel vessel = vesselDao.findById(v.getId()).get();
             VesselVacancyAttributes att = v.getVacancyAttributes();
@@ -108,7 +107,7 @@ class VesselVacancyTest {
             final List<Integer> rankExp = new ArrayList<>();
             if(ListUtil.isNotEmpty(employmentList)) {
                 employmentList.forEach(emp -> rankExp.add(emp.getLastRank().getId()));
-                final List<VesselVacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);
+                final List<Vacancy> vacancies = vesselVacancyDao.findVacanciesByRanks(rankExp);
                 if(ListUtil.isNotEmpty(vacancies)) {
                     System.out.println("Got ["+vacancies.size()+"]  vacancies for "+c.getFullName() + " | CrewId:"+c.getId());
                     vacancies.forEach(v->{
@@ -129,9 +128,9 @@ class VesselVacancyTest {
     @Test
     void assignCrewToVessel() {
         Crew crew = crewDao.findById(26l).get();
-        VesselVacancy vacancy = vesselVacancyDao.findById(21l).get();
+        Vacancy vacancy = vesselVacancyDao.findById(21l).get();
         //vacancy.setFilledByCrewId(crew.getId());
-        vacancy.setStatusId(VesselVacancy.Status.PENDING_DOCS.getId());
+        vacancy.setStatusId(Vacancy.Status.PENDING_DOCS.getId());
         vesselVacancyDao.save(vacancy);
 
         crew.setStatusId(Crew.Status.PENDING_DOCS.getId());

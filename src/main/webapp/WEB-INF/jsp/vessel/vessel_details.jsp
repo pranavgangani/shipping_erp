@@ -1,19 +1,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Add Vessel</title>
-    
-        <%@ include file="../includes/header_includes.jsp" %>
-        <script src="../js/vessel/vessel_details.js"></script>
-    </head>
-    <body class="nav-fixed">
-    <%@ include file="../includes/top_nav_bar.jsp" %>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Crew Personal :: <c:choose><c:when
+            test="${action=='add'}">Add</c:when><c:otherwise>${crew.fileNum}</c:otherwise></c:choose></title>
+
+    <%@ include file="../includes/header_includes.jsp" %>
+    <script src="../js/vessel/vessel_details.js"></script>
+</head>
+
+<body class="nav-fixed">
+<%@ include file="../includes/top_nav_bar.jsp" %>
        
        
         <div id="layoutSidenav">
@@ -33,15 +37,11 @@
 
                 <input type="hidden" name="vesselId" value="${vessel.id}"/>
 
-                <%@ include file="add_vessel_header.jsp" %>
+                <%@ include file="vessel_header.jsp" %>
                     
                     <!-- Main page content-->
                     <div class="container-fluid px-4">
-                        <!-- Account page navigation-->
-                        <nav class="nav nav-borders">
-                            <a class="nav-link active ms-0">Profile</a>
-                            <a class="nav-link" href="/vessel/document_list">Documents</a>
-                        </nav>
+                        <%@ include file="vessel_menu.jsp" %>
                         <hr class="mt-0 mb-4" />
                         <div class="row">
                             <div class="col-xl-2">
@@ -156,10 +156,10 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="small mb-1" for="length">Home-Port</label>
-                                                    <select class="form-select" aria-label="Select a Home-Port" name="homeportId">
+                                                    <select class="form-select" aria-label="Select a Home-Port" name="homeport">
 														<option selected disabled>Select a Home-Port</option>
-														<c:forEach items="${flags}" var="flag">
-															<option value="${flag.code}">${flag.name}</option>
+														<c:forEach items="${ports}" var="port">
+															<option value="${port.refcode}">${port.name}, ${port.country} (${port.refcode})</option>
 														</c:forEach>
 													</select>
                                                 </div>

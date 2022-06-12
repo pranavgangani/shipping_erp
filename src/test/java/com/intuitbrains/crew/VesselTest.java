@@ -60,5 +60,26 @@ class VesselTest {
         vesselDao.insert(vessel);
     }
 
+   /* @Test
+    void addVesselJourney() {
+        Vessel vesselOwner = vesselDao.findById(2l).get();
+        Flag flag = flagDao.getByCode("IN");
+        Vessel vessel = new Vessel();
+        vessel.setVesselOwner(vesselOwner);
+        vessel.setId(sequenceGenerator.generateSequence(Vessel.SEQUENCE_NAME));
+        vessel.setVesselName("Some Indian Vessel");
+        vessel.setBeam(100);
+        vessel.setLength(101);
+        vessel.setDraught(103);
+        vessel.setYearOfBuilt(2001);
+        vessel.setFlag(flag);
+        vessel.setCapacity(10);
+        vessel.setCallSign("AHS12A");
+        vessel.setGrossTonnage(5100);
+        vessel.setActive(true);
+        vessel.setMmsi("JA8081MA");
+        vessel.setVesselSubType(VesselSubType.BULK_CARRIER);
+        vesselDao.insert(vessel);
+    }*/
 
 }

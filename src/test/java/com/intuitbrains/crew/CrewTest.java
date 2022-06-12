@@ -18,7 +18,7 @@ import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.*;
 import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselSubType;
-import com.intuitbrains.model.vessel.VesselVacancy;
+import com.intuitbrains.model.vessel.Vacancy;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.service.crew.CrewService;
@@ -536,7 +536,7 @@ class CrewTest {
         Crew crew = crewDao.findById(26l).get();
 
         //Get Vessel details on which the crew has been assigned
-        VesselVacancy vacancy = vesselVacancyDao.findVacancyByCrewId(crew.getId());
+        Vacancy vacancy = vesselVacancyDao.findVacancyByCrewId(crew.getId());
 
         //Get Vessel details
         Vessel vessel = vesselService.getById(vacancy.getVessel().getId());

@@ -775,7 +775,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.CDC);
         type.setName("Indian CDC");
         type.setShortName("INDCDC");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
@@ -785,7 +785,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.CDC);
         type.setName("Liberian CDC");
         type.setShortName("LIBCDC");
         type.setFlagCode(flagDao.getByCode("LR").getCode());
@@ -795,7 +795,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.CDC);
         type.setName("Panama CDC");
         type.setShortName("PANCDC");
         type.setFlagCode(flagDao.getByCode("PA").getCode());
@@ -805,7 +805,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.CDC);
         type.setShortName("OTHCDC");
         type.setName("Other CDC");
         //type.setFlagCode(flagDao.getByCode("PA").getCode());
@@ -816,7 +816,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.COE);
         type.setShortName("CoE");
         type.setName("Certificate of Endorsement");
         type.setDesc("Requirements for a Flag State Endorsement by the Palau International Ship Registry (PISR) in accordance with the provisions of the International Convention on Standards of Training, Certification and Watch-keeping for Seafarers, (STCW) 1978 as amended.");
@@ -825,7 +825,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.COC);
         type.setShortName("CoC");
         type.setName("Certificate of Competency");
         type.setDesc("Each candidate for an officer certificate who qualifies under the provisions of STCW and successfully completes the appropriate examination will be issued a Certificate of Competency. This certificate states that the officer has been found duly qualified in accordance with the provisions of STCW and in the format prescribed by STCW for those officers qualified to receive STCW certificates.");
@@ -834,7 +834,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.COP);
         type.setShortName("CoP");
         type.setName("Certificate of Proficiency");
         type.setDesc("This certificate states that the officer or the Rating has been found duly qualified in accordance with the provisions of STCW and in the format prescribed by STCW for those qualified to receive STCW certificates.");
@@ -843,7 +843,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.NATIONAL_ID);
+        type.setDocumentPool(DocumentPool.SIRB);
         type.setShortName("SIRB");
         type.setName("Seafarer Identification Record Book");
         docTypeDao.insert(type);
@@ -851,7 +851,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.INDOS);
         type.setShortName("INDOS");
         type.setName("Indian National Database Of Seafarers");
         type.setDesc("INDoS is a computerised national database of Indian seafarers for use by statutory authorities such as Flag State, Port State, Immigration & Employers etc., to prevent the fraudulent issue of certificates.");
@@ -879,7 +879,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.TAX_ID);
+        type.setDocumentPool(DocumentPool.PAN);
         type.setShortName("PAN");
         type.setName("Pan Card");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
@@ -888,7 +888,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.IDENTIFICATION);
-        type.setDocumentPool(DocumentPool.NATIONAL_ID);
+        type.setDocumentPool(DocumentPool.AADHAR);
         type.setShortName("Aadhar");
         type.setName("Aadhar Card");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
@@ -897,7 +897,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.MEDICAL);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.YELLOW_FEVER);
         type.setShortName("YELFVR");
         type.setName("Yellow Fever");
         type.setFlagCode(flagDao.getByCode("IN").getCode());

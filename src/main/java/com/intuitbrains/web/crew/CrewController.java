@@ -48,7 +48,7 @@ import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.CrewContract;
 import com.intuitbrains.model.vessel.Vessel;
-import com.intuitbrains.model.vessel.VesselVacancy;
+import com.intuitbrains.model.vessel.Vacancy;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
@@ -61,13 +61,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.BsonBinarySubType;
-import org.bson.conversions.Bson;
 import org.bson.types.Binary;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -145,6 +143,7 @@ public class CrewController {
         ModelAndView mv = new ModelAndView("/crew/personal");
         String action = StringUtil.trim(req.getParameter("action"));
         String menu = StringUtil.trim(req.getParameter("menu"));
+        String sMenu = StringUtil.trim(req.getParameter("sMenu"));
         if (menu == null) {
             menu = "personal";
         }
@@ -177,6 +176,7 @@ public class CrewController {
         }
         mv.addObject("statuses", Crew.Status.getList());
         mv.addObject("menu", menu);
+        mv.addObject("sMenu", sMenu);
         mv.addObject("crewId", crewId);
 
         mv.addObject("flags", getFlags());
@@ -262,11 +262,8 @@ public class CrewController {
         crew.setWeight(Double.parseDouble(weight));
         crew.setPresentAddress(presentAddress);
         crew.setNationalityFlag(flagDao.getByCode(nationalityFlagCode));
-        /*String[] dobStr = dob.split("/");
-        int month = ParamUtil.parseInt(dobStr[0], -1);
-        int day = ParamUtil.parseInt(dobStr[1], -1);
-        int year = ParamUtil.parseInt(dobStr[2], -1);
-        crew.setDob(LocalDate.of(year, month, day));*/
+        crew.setDob(DateTimeUtil.convertToDate(dob));
+        crew.setAvailableFromDate(DateTimeUtil.convertToDate(availableFromDate));
         crew.setRank(Rank.createFromId(rankId));
         crew.setPassportNumber(passportNumber);
         crew.setGender(gender);
@@ -358,6 +355,7 @@ public class CrewController {
     public ModelAndView documentList(HttpServletRequest req, Model model) {
         ModelAndView mv = null;
         String menu = StringUtil.trim(req.getParameter("menu"));
+        String sMenu = StringUtil.trim(req.getParameter("sMenu"));
         final String type = StringUtil.trim(req.getParameter("type")) != null ? req.getParameter("type") : "";
 
         Set<DocumentCategory> filterDocCatSet = new HashSet<>();
@@ -415,6 +413,7 @@ public class CrewController {
         mv.addObject("action", StandardWebParameter.MODIFY);
         mv.addObject("crewId", crewId);
         mv.addObject("menu", menu);
+        mv.addObject("sMenu", sMenu);
         return mv;
     }
 
@@ -540,7 +539,7 @@ public class CrewController {
         if (crewId > 0) {
             Crew crew = crewService.getObjectById(crewId);
 
-            VesselVacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
+            Vacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
             mv.addObject("crew", crew);
             mv.addObject("vessel", vacancy.getVessel());
             mv.addObject("crewId", crewId);
@@ -652,7 +651,7 @@ public class CrewController {
     private void generateContract(Crew crew, String enteredBy, LocalDate embarkDate, String embarkPort, Double monthlyWage) {
 
         //Get Vessel details on which the crew has been assigned
-        VesselVacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
+        Vacancy vacancy = vesselVacancyDao.findById(crew.getAssignedVacancyId()).get();
 
         //Get Vessel details
         Vessel vessel = vesselDao.findById(vacancy.getVessel().getId()).get();

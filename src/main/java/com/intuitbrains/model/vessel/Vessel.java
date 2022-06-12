@@ -1,8 +1,9 @@
 package com.intuitbrains.model.vessel;
 
-import org.bson.types.ObjectId;
+import com.intuitbrains.model.company.Employee;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import com.intuitbrains.common.Port;
 
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.common.Flag;
@@ -22,7 +23,6 @@ public class Vessel {
 	private VesselSubType vesselSubType;
 	private VesselOwner vesselOwner;
 	private long photoId;
-
 	private String vesselName, vesselDesc;
 	private int capacity;
 	private int yearOfBuilt;
@@ -30,20 +30,52 @@ public class Vessel {
 	private double grossTonnage;
 	private long length, beam, draught;
 	private String imo, mmsi, callSign;
-	private String homePort;
+	private Port homePort;
 	private Flag flag;
 	private VesselStatus vesselStatus;
 	private boolean isActive;
-
+	private List<Vacancy> vacancies;
 	private String enteredBy;
 	private LocalDateTime enteredLocalDateTime;
 	private String reviewedBy;
 	private LocalDateTime reviewedLocalDateTime;
-
-	private List<VesselVacancy> vacancies;
 	private List<VesselManager> vesselManagers;
 	private VesselFieldStatus fieldStatus;
-	
+	private List<Journey> journeys;
+	private Employee fleetManager, technicalSup;
+	private Communication communication;
+	public List<Journey> getJourneys() {
+		return journeys;
+	}
+
+	public Employee getFleetManager() {
+		return fleetManager;
+	}
+
+	public Communication getCommunication() {
+		return communication;
+	}
+
+	public void setCommunication(Communication communication) {
+		this.communication = communication;
+	}
+
+	public void setFleetManager(Employee fleetManager) {
+		this.fleetManager = fleetManager;
+	}
+
+	public Employee getTechnicalSup() {
+		return technicalSup;
+	}
+
+	public void setTechnicalSup(Employee technicalSup) {
+		this.technicalSup = technicalSup;
+	}
+
+	public void setJourneys(List<Journey> journeys) {
+		this.journeys = journeys;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -55,15 +87,6 @@ public class Vessel {
 	 * public VesselType getVesselType() { return vesselType; } public void
 	 * setVesselType(VesselType vesselType) { this.vesselType = vesselType; }
 	 */
-
-	public List<VesselVacancy> getVacancies() {
-		return vacancies;
-	}
-
-	public void setVacancies(List<VesselVacancy> vacancies) {
-		this.vacancies = vacancies;
-	}
-
 	public String getVesselName() {
 		return vesselName;
 	}
@@ -126,10 +149,10 @@ public class Vessel {
 	public void setCallSign(String callSign) {
 		this.callSign = callSign;
 	}
-	public String getHomePort() {
+	public Port getHomePort() {
 		return homePort;
 	}
-	public void setHomePort(String homePort) {
+	public void setHomePort(Port homePort) {
 		this.homePort = homePort;
 	}
 	public Flag getFlag() {
@@ -226,6 +249,15 @@ public class Vessel {
 	public void setFieldStatus(VesselFieldStatus fieldStatus) {
 		this.fieldStatus = fieldStatus;
 	}
+
+	public List<Vacancy> getVacancies() {
+		return vacancies;
+	}
+
+	public void setVacancies(List<Vacancy> vacancies) {
+		this.vacancies = vacancies;
+	}
+
 
 	@Override
 	public int hashCode() {

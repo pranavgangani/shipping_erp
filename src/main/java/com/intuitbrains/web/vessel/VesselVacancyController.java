@@ -16,14 +16,11 @@
 package com.intuitbrains.web.vessel;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.intuitbrains.common.AuditTrail;
 import com.intuitbrains.common.Collection;
 import com.intuitbrains.dao.common.AuditTrailRepository;
 import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.dao.company.EmployeeRepository;
-import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.vessel.*;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.Crew;
@@ -33,29 +30,21 @@ import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.service.company.EmployeeService;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
-import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.ParamUtil;
 import com.intuitbrains.util.StandardWebParameter;
 import com.intuitbrains.util.StringUtil;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 @RequestMapping(value = "/vessel")
@@ -93,7 +82,7 @@ public class VesselVacancyController {
 
         } else if (StandardWebParameter.MODIFY.equalsIgnoreCase(action)) {
             long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
-            VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
+            Vacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
             mv.addObject("vacancy", vacancy);
         }
         mv.addObject("vessels", vesselDao.findAll());
@@ -105,13 +94,13 @@ public class VesselVacancyController {
     public ModelAndView getVacancyList(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("vessel/vacancy_list");
         long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
-        List<VesselVacancy> list = null;
+        List<Vacancy> list = null;
         if (vesselId > 0) {
             list = vesselVacancyDao.findVacanciesByVessel(vesselId);
         } else {
             list = vesselVacancyDao.findAll();
         }
-        list.parallelStream().forEach(v -> v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId())));
+        list.parallelStream().forEach(v -> v.setStatus(Vacancy.Status.createFromId(v.getStatusId())));
         mv.addObject("vessels", vesselDao.findAll());
         mv.addObject("rankMap", Rank.getByGroup());
         mv.addObject("list", list);
@@ -129,8 +118,8 @@ public class VesselVacancyController {
         Vessel vessel = vesselDao.findById(vesselId).get();
         emp = employeeService.getById(emp.getEmpId());
 
-        VesselVacancy vacancy = new VesselVacancy();
-        vacancy.setId(sequenceGenerator.generateSequence(VesselVacancy.SEQUENCE_NAME));
+        Vacancy vacancy = new Vacancy();
+        vacancy.setId(sequenceGenerator.generateSequence(Vacancy.SEQUENCE_NAME));
         vacancy.setVessel(vessel);
         vacancy.setOpenPositions(openPositions);
 
@@ -148,7 +137,7 @@ public class VesselVacancyController {
         //Min Gross Tonn
         attr.setMinGrossTonnage(3000);
         vacancy.setVacancyAttributes(attr);
-        vacancy.setStatusId(VesselVacancy.Status.OPEN.getId());
+        vacancy.setStatusId(Vacancy.Status.OPEN.getId());
         vacancy.setEnteredBy(emp);
         vacancy.setEnteredLocalDateTime(LocalDateTime.now());
         vesselVacancyDao.insert(vacancy);
@@ -176,7 +165,7 @@ public class VesselVacancyController {
         long vacancyId = ParamUtil.parseLong(req.getParameter("vacancyId"), -1);
         if (vacancyId > 0) {
             List<Crew> crewList = crewService.getReadyToSignOffCrew();
-            VesselVacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
+            Vacancy vacancy = vesselVacancyDao.findById(vacancyId).get();
             model.addAttribute("vacancy", vacancy);
             model.addAttribute("crewList", crewList);
 
@@ -197,7 +186,7 @@ public class VesselVacancyController {
                 obj.put("crew", crewArr);
 
                 JSONObject vacancyObj = new JSONObject();
-                vacancyObj.put("status", VesselVacancy.Status.createFromId(vacancy.getStatusId()).getDesc());
+                vacancyObj.put("status", Vacancy.Status.createFromId(vacancy.getStatusId()).getDesc());
                 //vacancyObj.put("status", vacancy.getVacancyAttributes().getMinRankList().forEach(r->r.getName()));
                 vacancyObj.put("openPositions", vacancy.getOpenPositions());
                 obj.put("vacancy", vacancyObj);
@@ -238,7 +227,7 @@ public class VesselVacancyController {
         ModelAndView mv = new ModelAndView("vessel/vacancy_list");
 
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
-        List<VesselVacancy> vacancies = new ArrayList<>();
+        List<Vacancy> vacancies = new ArrayList<>();
         if (crewId > 0) {
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
@@ -268,7 +257,7 @@ public class VesselVacancyController {
             }
             v.setVessel(vessel);
 
-            v.setStatus(VesselVacancy.Status.createFromId(v.getStatusId()));
+            v.setStatus(Vacancy.Status.createFromId(v.getStatusId()));
             System.out.print(" ]");
             System.out.println();
         });

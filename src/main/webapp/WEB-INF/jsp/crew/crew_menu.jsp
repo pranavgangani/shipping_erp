@@ -9,13 +9,13 @@
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Personal
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownPersonal">
-            <a class="dropdown-item" href="/crew/personal?menu=personal&action=modify&crewId=${crewId}">Personal</a>
-            <a class="dropdown-item" href="/crew/address?menu=personal&action=modify&crewId=${crewId}">Address</a>
-            <a class="dropdown-item" href="/crew/nok?menu=personal&sMenu=nok&action=modify&crewId=${crewId}">NOK</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'personal'}">active</c:if>" href="/crew/personal?menu=personal&sMenu=personal&action=modify&crewId=${crewId}">Personal</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'address'}">active</c:if>" href="/crew/address?menu=personal&sMenu=address&action=modify&crewId=${crewId}">Address</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'nok'}">active</c:if>" href="/crew/nok?menu=personal&sMenu=nok&action=modify&crewId=${crewId}">NOK</a>
             <%--<a class="dropdown-item" href="#!">Working Gear</a>--%>
-            <a class="dropdown-item" href="/crew/bank?menu=personal&action=modify&crewId=${crewId}">Bank Account</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'bank'}">active</c:if>" href="/crew/bank?menu=personal&sMenu=bank&action=modify&crewId=${crewId}">Bank Account</a>
             <%--<a class="dropdown-item" href="#!">Status</a>--%>
-            <a class="dropdown-item" href="/crew/insurance?menu=personal&action=modify&crewId=${crewId}">Insurance</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'insurance'}">active</c:if>" href="/crew/insurance?menu=personal&sMenu=insurance&action=modify&crewId=${crewId}">Insurance</a>
         </div>
     </div>
     <div class="dropdown">
@@ -23,16 +23,15 @@
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Documents
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownDocuments">
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=documents&crewId=${crewId}">Documents</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=travel&type=travel&crewId=${crewId}">Travel</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=license&type=license&crewId=${crewId}">License</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=medical&type=medical&crewId=${crewId}">Medical</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=course&type=course&crewId=${crewId}">Courses</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=cbt&type=cbt&crewId=${crewId}">CBT & EPSS</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=epss&type=epss&crewId=${crewId}">EPSS</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=academics&type=education&crewId=${crewId}">Academic</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=award&type=award&crewId=${crewId}">Award</a>
-            <a class="dropdown-item" href="/crew/documents?menu=documents&sMenu=other&type=other&crewId=${crewId}">Other</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'documents'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=documents&crewId=${crewId}">Documents</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'travel'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=travel&type=travel&crewId=${crewId}">Travel</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'license'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=license&type=license&crewId=${crewId}">License</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'medical'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=medical&type=medical&crewId=${crewId}">Medical</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'course'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=course&type=course&crewId=${crewId}">Courses</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'cbt'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=cbt&type=cbt&crewId=${crewId}">CBT & EPSS</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'academics'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=academics&type=education&crewId=${crewId}">Academic</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'award'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=award&type=award&crewId=${crewId}">Award</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'other'}">active</c:if>" href="/crew/documents?menu=documents&sMenu=other&type=other&crewId=${crewId}">Other</a>
         </div>
     </div>
     <div class="dropdown">
@@ -44,11 +43,11 @@
             <a class="dropdown-item" href="#!">Superintendent Evaluation</a>
             <a class="dropdown-item" href="#!">Briefing</a>
             <a class="dropdown-item" href="#!">Assessment</a>
-            <a class="dropdown-item" href="#!">Reference</a>
+            <%--<a class="dropdown-item" href="#!">Reference</a>
             <a class="dropdown-item" href="#!">Promotion Summary</a>
             <a class="dropdown-item" href="#!">Events</a>
             <a class="dropdown-item" href="#!">About us By</a>
-            <a class="dropdown-item" href="#!">Feedback</a>
+            <a class="dropdown-item" href="#!">Feedback</a>--%>
         </div>
     </div>
     <div class="dropdown">
@@ -69,8 +68,8 @@
             <a class="dropdown-item" href="#!">Medical</a>
             <a class="dropdown-item" href="#!">Activity Log</a>
             <a class="dropdown-item" href="#!">Travel History</a>
-            <a class="dropdown-item" href="#!">Proposal History</a>
-            <a class="dropdown-item" href="#!">Letter of Intent History</a>
+<%--            <a class="dropdown-item" href="#!">Proposal History</a>
+            <a class="dropdown-item" href="#!">Letter of Intent History</a>--%>
             <a class="dropdown-item" href="#!">Assessment History</a>
             <a class="dropdown-item" href="#!">Waiver History</a>
             <a class="dropdown-item" href="#!">De-Briefing History</a>
@@ -110,7 +109,7 @@
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownRemarks">
             <a class="dropdown-item" href="#!">General</a>
-            <a class="dropdown-item" href="#!">Action Item</a>
+            <%--<a class="dropdown-item" href="#!">Action Item</a>--%>
             <a class="dropdown-item" href="#!">Owner</a>
         </div>
     </div>

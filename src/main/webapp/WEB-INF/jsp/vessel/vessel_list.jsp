@@ -61,7 +61,7 @@
 								
 								<c:forEach items="${list}" var="vessel">
 								    <tr>
-										<td>${vessel.vesselName}</td>
+										<td><a href="/vessel/overview?vesselId=${vessel.id}">${vessel.vesselName}</a></td>
 										<td>${vessel.vesselSubType.desc} (${vessel.vesselSubType.vesselType.desc})</td>
 										<td>${vessel.vesselOwner.ownerName}</td>
 										<td>${vessel.capacity}</td>
@@ -81,10 +81,10 @@
 													<i data-feather="more-vertical"></i>
 												</button>
 											<div class="dropdown-menu">
-													<a class="dropdown-item" href="/vessel/document_list?action=add">
+													<a class="dropdown-item" href="/vessel/journey?action=list">
 														<div class="dropdown-item-icon">
 															<i data-feather="user"></i>
-														</div> Add Documents
+														</div> Add Journey
 													</a>
 													<div class="dropdown-divider"></div>
 													<a class="dropdown-item" href="/vessel/edit?vesselId=${vessel.id}">

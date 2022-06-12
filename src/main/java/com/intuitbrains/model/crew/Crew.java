@@ -181,6 +181,7 @@ public class Crew extends Person {
 
     //Audit
     private List<Comment> comments;
+    private List<Comment> vesselOwnerComments;
     private List<AuditTrail> auditTails;
 
     private CrewFieldStatus fieldStatus;
@@ -398,6 +399,14 @@ public class Crew extends Person {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Comment> getVesselOwnerComments() {
+        return vesselOwnerComments;
+    }
+
+    public void setVesselOwnerComments(List<Comment> vesselOwnerComments) {
+        this.vesselOwnerComments = vesselOwnerComments;
     }
 
     public List<AuditTrail> getAuditTails() {
