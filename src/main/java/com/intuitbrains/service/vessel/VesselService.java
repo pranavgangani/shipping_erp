@@ -54,14 +54,13 @@ public class VesselService {
     private AuditTrailRepository auditTrailDao;
     @Autowired
     private MongoDatabase db;
-    private static Bson projections = Projections.include("_id","vesselSubType", "vesselType", "vesselName", "enteredBy", "enteredLocalDateTime");
+    private static Bson projections = Projections.include("_id", "vesselSubType", "vesselOwner.ownerName", "vesselType", "vesselName", "enteredBy", "enteredLocalDateTime");
 
     public Vessel getById(long vesselId) {
         MongoCollection<Vessel> collection = db.getCollection(Collection.VESSEL, Vessel.class);
         Bson filter = eq("_id", vesselId);
         return collection.find(filter).projection(projections).first();
     }
-
 
 
 }

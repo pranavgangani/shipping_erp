@@ -366,72 +366,70 @@ public class CrewController {
         String menu = StringUtil.trim(req.getParameter("menu"));
         String sMenu = StringUtil.trim(req.getParameter("sMenu"));
         List<CrewDocument> list = documentDao.getOfferLetters(crewId);
+        final List<OfferLetter> offerLetters = new ArrayList<>();
+        list.forEach(d -> {
+            if (d instanceof OfferLetter) {
+                offerLetters.add((OfferLetter) d);
+            }
+        });
+
         mv.addObject("crew", crew);
         mv.addObject("crewId", crewId);
-        mv.addObject("list", list);
+        mv.addObject("list", offerLetters);
         mv.addObject("menu", menu);
         mv.addObject("sMenu", sMenu);
         mv.addObject("sMenu", sMenu);
+        mv.addObject("vessels", vesselDao.findAll());
+        mv.addObject("rankMap", Rank.getByGroup());
+        mv.addObject("durationTypes", DurationType.getList());
 
         List<DocumentType> docTypes = docTypeDao.findAll();
         DocumentType offerLetterDT = docTypes.stream().filter(d -> d.getDocumentPool().equals(DocumentPool.OFFER_LETTER)).collect(Collectors.toList()).get(0);
         mv.addObject("offerLetterDT", offerLetterDT);
         return mv;
     }
-    @PostMapping(value = "/document/add")
+
+    @PostMapping(value = "/offer/add")
     public ModelAndView addOfferLetter(HttpServletRequest req, Model model) {
         ModelAndView mv = null;
         String menu = StringUtil.trim(req.getParameter("menu"));
+        String sMenu = StringUtil.trim(req.getParameter("sMenu"));
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
-            mv = new ModelAndView("redirect:/crew/offer?menu=hist&sMenu=offer&crewId=" + crewId);
-            Crew crew = crewService.getById(crewId);
-            mv.addObject("crew", crew);
+            mv = new ModelAndView("redirect:/crew/offer?menu=" + menu + "&sMenu=" + sMenu + "&crewId=" + crewId);
             Employee emp = (Employee) req.getSession().getAttribute("currentUser");
             long docTypeId = ParamUtil.parseInt(req.getParameter("docTypeId"), -1);
-            String vesselName = req.getParameter("vesselName");
+            long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
+            Vessel vessel = vesselService.getById(vesselId);
             Rank agreedRank = Rank.createFromId(ParamUtil.parseInt(req.getParameter("rankId"), -1));
             double agreedWages = ParamUtil.parseDouble(req.getParameter("agreedWages"), 0);
-            DurationType durationType = DurationType.createFromId(ParamUtil.parseInt(req.getParameter("contractDurationType"), -1));
-            int durationValue = ParamUtil.parseInt(req.getParameter("contractDurationType"), 0);
+            DurationType durationType = DurationType.createFromId(ParamUtil.parseInt(req.getParameter("durationTypeId"), -1));
+            int durationValue = ParamUtil.parseInt(req.getParameter("durationValue"), 0);
             Duration contractDuration = new Duration(durationType, durationValue);
-            LocalDate dateOfIssue = DateTimeUtil.convertToDate(req.getParameter("dateOfIssue"));
-
-            List<CrewDocument> offerLetters = documentDao.getOfferLetters(crewId);
-
-            if (ListUtil.isNotEmpty(offerLetters)) {
-                offerLetters.forEach(doc -> {
-                    if (doc.getFile() != null) {
-                        doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
-                    }
-                });
-                mv.addObject("list", offerLetters);
-            }
+            //LocalDate dateOfIssue = DateTimeUtil.convertToDate(req.getParameter("dateOfIssue"));
 
             DocumentType dt = docTypeDao.findById(docTypeId).get();
             if (dt.getDocumentPool().getName().equals(DocumentPool.OFFER_LETTER.getName())) {
                 OfferLetter doc = new OfferLetter();
                 doc.setCrewId(crewId);
-                doc.setContractPeriod(contractDuration);
                 doc.setDocType(dt);
+                doc.setVesselName(vessel.getVesselOwner().getOwnerName() + " " + vessel.getVesselName());
                 doc.setAgreedRank(agreedRank);
-                doc.setDateOfIssue(dateOfIssue);
-                doc.setDateOfExpiry(DateTimeUtil.calculateExpiryDate(contractDuration, dateOfIssue));
+                doc.setAgreedWages(agreedWages);
+                //doc.setDateOfIssue(dateOfIssue);
+                doc.setContractPeriod(contractDuration);
+                //doc.setDateOfExpiry(DateTimeUtil.calculateExpiryDate(contractDuration, dateOfIssue));
                 doc.setEnteredBy(emp);
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
                 documentDao.insert(doc);
             }
 
-            mv.addObject("documentPools", DocumentPool.getList());
-            mv.addObject("flags", getFlags());
-            mv.addObject("action", StandardWebParameter.ADD);
-            mv.addObject("crewId", crewId);
-            mv.addObject("menu", menu);
         }
 
         return mv;
     }
+
     @GetMapping(value = "/documents")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
         ModelAndView mv = null;
@@ -855,7 +853,7 @@ public class CrewController {
     }
 
     @PostMapping(value = "/bank/add")
-    public ModelAndView addBank(HttpServletRequest req,  @RequestParam("crewId") long crewId,
+    public ModelAndView addBank(HttpServletRequest req, @RequestParam("crewId") long crewId,
                                 @RequestParam("inputBankName") String bankName,
                                 @RequestParam("inputAccountNumber") String accountNumber,
                                 @RequestParam("inputSWIFT") String swift, @RequestParam("inputIFSC") String ifsc,
@@ -891,7 +889,7 @@ public class CrewController {
         BasicDBObject searchQuery = new BasicDBObject("_id", crewId);
         BasicDBObject updateFields = new BasicDBObject();
         jsonObject.entrySet().forEach(e -> {
-           updateFields.append(e.getKey(), e.getValue().getAsString());
+            updateFields.append(e.getKey(), e.getValue().getAsString());
         });
         BasicDBObject setQuery = new BasicDBObject();
         setQuery.append("$set", updateFields);

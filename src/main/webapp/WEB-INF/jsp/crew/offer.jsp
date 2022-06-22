@@ -65,7 +65,7 @@
                                                 <td><label class="small mb-3">${doc.agreedWages}</label></td>
                                                 <%--<td><label class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>
                                                 <td><label class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>--%>
-                                                <td><label class="small mb-3">${doc.contractPeriod.durationType.typeName.duration} ${doc.contractPeriod.durationType.typeName}</label></td>
+                                                <td><label class="small mb-3">${doc.contractPeriod.duration} ${doc.contractPeriod.durationType.typeName}</label></td>
                                                 <td>
                                                     <c:if test="${doc.file!=null}">
                                                         <a class="dropdown-item"
@@ -103,67 +103,53 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add New Document</h5>
+                <h5 class="modal-title">Add New Offer Letter</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="container-xl px-4">
                     <div class="row justify-content-center">
-                        <form id="crew-document-form" role="form" method="POST" enctype="multipart/form-data" action="/crew/document/add?menu=documents">
-                            <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
+                        <form role="form" method="POST" enctype="multipart/form-data" action="/crew/offer/add">
+                            <input type="hidden" name="menu" value="${menu}">
+                            <input type="hidden" name="sMenu" value="${sMenu}">
+                            <input type="hidden" name="crewId" value="${crewId}">
+                            <input type="hidden" name="docTypeId" value="${offerLetterDT.id}">
                             <div class="row gx-3 mb-3">
-                                +<label class="small mb-3" for="docTypeId">Select a Document Type</label>
-                                <select class="form-select" aria-label="Default select example" id="docTypeId" name="docTypeId">
-                                    <option selected disabled>Select Type:</option>
-                                    <c:forEach items="${docTypes}" var="docType">
-                                        <option value="${docType.id}">${docType.name}</option>
+                                <label class="small mb-3" for="vesselId">Select a Vessel</label>
+                                <select class="form-select" aria-label="Default select example" id="vesselId" name="vesselId">
+                                    <option selected disabled>Select a Vessel:</option>
+                                    <c:forEach items="${vessels}" var="vessel">
+                                        <option value="${vessel.id}">${vessel.vesselOwner.ownerName} - ${vessel.vesselName}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="row gx-3 mb-3">
-                                <label class="small mb-3" for="nationalityFlagCode">Select a Flag</label>
-                                <select class="form-select" aria-label="Default select example" id="nationalityFlagCode" name="nationalityFlagCode">
-                                    <option selected disabled>Select Flag:</option>
-                                    <c:forEach items="${flags}" var="flag">
-                                        <option value="${flag.code}">${flag.name}</option>
+                                <label class="small mb-1" for="rankId">Rank Name</label>
+                                <select class="form-select" id="rankId" name="rankId" aria-label="Default select rank">
+                                    <option selected disabled>Select a Rank:</option>
+                                    <c:forEach var="optionGroup" items="${rankMap}">
+                                        <optgroup label="${optionGroup.key}">
+                                            <c:forEach var="option" items="${optionGroup.value}">
+                                                <option value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>
+                                            </c:forEach>
+                                        </optgroup>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="row gx-3 mb-3">
-                                <label class="small mb-1" for="docTypeName">Document Name</label>
-                                <input class="form-control" id="docTypeName" name="docTypeName" type="text" placeholder="Enter Doc Type Name" />
-                            </div>
-                            <div class="row gx-3 mb-3">
-                                <label class="small mb-1" for="docNumber">Document Number</label>
-                                <input class="form-control" id="docNumber" name="docNumber" type="text" placeholder="Enter Doc Type Name" />
+                                <label class="small mb-1" for="agreedWages">Wages</label>
+                                <input class="form-control" id="agreedWages" name="agreedWages" type="text" placeholder="Enter Wage" />
                             </div>
                             <div class="mb-3">
-                                <label class="small mb-1" for="givenName">Given Name (how it appears on the document)</label>
-                                <input class="form-control" name="givenName" id="givenName" type="text" placeholder="Enter your username" />
+                                <label class="small mb-1" for="durationTypeId">Duration</label>
+                                <select class="form-select" aria-label="Default select example" id="durationTypeId" name="durationTypeId">
+                                    <option selected disabled>Select a Duration:</option>
+                                    <c:forEach items="${durationTypes}" var="durationType">
+                                        <option value="${durationType.id}">${durationType.typeName}</option>
+                                    </c:forEach>
+                                </select>
+                                <input class="form-control" name="durationValue" id="durationValue" type="text" placeholder="Enter Duration Value" />
                             </div>
-                            <div class="mb-3">
-                                <label class="small mb-1" for="issueDate">Issue Date</label>
-                                <div class="input-group input-group-joined border-1">
-                                            <span class="input-group-text"><i class="text-primary"
-                                                                              data-feather="calendar"></i></span>
-                                    <input name="issueDate" class="form-control dirtycheck"
-                                           id="issueDate" placeholder="Select a date"/>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="small mb-1" for="placeOfIssue">Issue Place</label>
-                                <input class="form-control" name="placeOfIssue" id="placeOfIssue" type="text" placeholder="Enter Place of Issue" />
-                            </div>
-                            <div class="mb-3">
-                                <label class="small mb-1" for="expiryDate">Expiry Date</label>
-                                <div class="input-group input-group-joined border-1">
-                                            <span class="input-group-text"><i class="text-primary"
-                                                                              data-feather="calendar"></i></span>
-                                    <input name="expiryDate" class="form-control dirtycheck"
-                                           id="expiryDate" placeholder="Select a date"/>
-                                </div>
-                            </div>
-
                             <button class="btn btn-primary" type="submit">Add Offer Letter</button>
                         </form>
                     </div>
