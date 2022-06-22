@@ -338,6 +338,7 @@ class DocumentTest {
         type.setName("Passenger Safety, Cargo Safety and Hull Integrity Training");
         docTypeDao.insert(type);
     }
+
     @Test
     void add5BasicSTCWTrainingDocs() {
         DocumentType type = new DocumentType();
@@ -391,7 +392,7 @@ class DocumentTest {
         type.setName("Radar Observer Course");
         docTypeDao.insert(type);
 
-         type = new DocumentType();
+        type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
         type.setDocumentPool(DocumentPool.CERTIFICATE);
@@ -768,7 +769,7 @@ class DocumentTest {
         type.setDocumentCategory(DocumentCategory.TRAVEL);
         type.setDocumentPool(DocumentPool.PASSPORT);
         type.setName("Indian Passport");
-         type.setShortName("INDPP");
+        type.setShortName("INDPP");
         type.setFlagCode(flagDao.getByCode("IN").getCode());
         docTypeDao.insert(type);
 
@@ -987,12 +988,22 @@ class DocumentTest {
 
     @Test
     void getALlDocTypes() {
-        docTypeDao.findAll().forEach(dt->System.out.println(dt.getName() + " ("+dt.getShortName()+")"));
+        docTypeDao.findAll().forEach(dt -> System.out.println(dt.getName() + " (" + dt.getShortName() + ")"));
     }
 
     @Test
     void getFlags() {
-        flagDao.findAll().forEach(f->System.out.println(f.getName() + " ("+f.getCode()+")"));
+        flagDao.findAll().forEach(f -> System.out.println(f.getName() + " (" + f.getCode() + ")"));
     }
 
+    @Test
+    void addOfferLetter() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+        type.setDocumentPool(DocumentPool.OFFER_LETTER);
+        type.setShortName("OFFER");
+        type.setName(DocumentPool.OFFER_LETTER.getName());
+        docTypeDao.insert(type);
+    }
 }

@@ -59,28 +59,34 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>File No.</th>
                                 <th>Rank</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Passport#</th>
-                                <th>INDOS#</th>
-                                <th>Manning Office</th>
-                                <th>Wage</th>
+                                <th>Nationality</th>
+                                <th>Last Vessel</th>
+                                <th>Present Vessel</th>
+                                <th>Next Vessel</th>
+                                <th>Sign Off</th>
+                                <th>DOA</th>
                                 <th>Status</th>
+                                <th>ManningOffice</th>
+                                <th>Exp.(m)</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Name</th>
+                                <th>File No.</th>
                                 <th>Rank</th>
-                                <th>Gender</th>
-                                <th>Age</th>
-                                <th>Passport#</th>
-                                <th>INDOS#</th>
-                                <th>Manning Office</th>
-                                <th>Wage</th>
+                                <th>Nationality</th>
+                                <th>Last Vessel</th>
+                                <th>Present Vessel</th>
+                                <th>Next Vessel</th>
+                                <th>Sign Off</th>
+                                <th>DOA</th>
                                 <th>Status</th>
+                                <th>ManningOffice</th>
+                                <th>Exp.(m)</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
@@ -88,15 +94,18 @@
 
                             <c:forEach items="${list}" var="crew">
                                 <tr>
-                                    <td><a href="/crew/overview?crewId=${crew.id}">${crew.fullName}</a></td>
-                                    <td>${crew.rank.name}</td>
-                                    <td>${crew.gender}</td>
-                                    <td>${crew.age}</td>
-                                    <td>${crew.passportNumber}</td>
-                                    <td>${crew.indosNumber}</td>
-                                    <td>${crew.manningOffice}</td>
-                                    <td>${crew.currentContract.wageCurrency} ${crew.currentContract.monthlyWage}</td>
+                                    <td>${crew.fullName}</td>
+                                    <td><a href="/crew/overview?crewId=${crew.id}">${crew.fileNum}</a></td>
+                                    <td>${crew.rank.shortName}</td>
+                                    <td>${crew.nationalityFlag.name}</td>
+                                    <td>${crew.lastVessel.vesselName}</td>
+                                    <td>${crew.currentVessel.vesselName}</td>
+                                    <td>${crew.nextVessel.vesselName}</td>
+                                    <td>${crew.signOffDate}</td>
+                                    <td>${crew.dateOfAppointment}</td>
                                     <td>${crew.status.desc}</td>
+                                    <td>${crew.manningOffice}</td>
+                                    <td>${crew.totalExp}</td>
                                     <td>
                                         <!--<div class="badge bg-primary text-white rounded-pill">Full-time</div></td>-->
                                         <button
@@ -107,7 +116,7 @@
                                             <i data-feather="more-vertical"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="/crew/add_certifications?crewId=${crew.id}">
+                                            <%--<a class="dropdown-item" href="/crew/add_certifications?crewId=${crew.id}">
                                                 <div class="dropdown-item-icon">
                                                     <i data-feather="user"></i>
                                                 </div>
@@ -130,7 +139,7 @@
                                                     <i data-feather="settings"></i>
                                                 </div>
                                                 Add Documents
-                                            </a>
+                                            </a>--%>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item"
                                                href="/crew/personal?action=modify&crewId=${crew.id}">
@@ -148,13 +157,13 @@
                                                     Generate Contract
                                                 </a>
                                             </c:if>
-                                            <div class="dropdown-divider"></div>
+                                            <%--<div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="/crew/vacancy_list?crewId=${crew.id}">
                                                 <div class="dropdown-item-icon">
                                                     <i data-feather="log-out"></i>
                                                 </div>
                                                 Sign-On/Sign-Off
-                                            </a>
+                                            </a>--%>
                                         </div>
                                         <button
                                                 class="btn btn-datatable btn-icon btn-transparent-dark">

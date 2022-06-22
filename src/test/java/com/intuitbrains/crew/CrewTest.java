@@ -23,6 +23,8 @@ import com.intuitbrains.service.common.ContractDocumentGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
+import com.intuitbrains.util.DateTimeUtil;
+import com.intuitbrains.util.ListUtil;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -495,7 +498,7 @@ class CrewTest {
                 pp.setGivenName("Tiwari Rohan Pradeep");
                 pp.setRequiredECNR(false);
                 pp.setBlankPages(10);
-               // pp.setFlagCode("IN");
+                // pp.setFlagCode("IN");
                 pp.setDateOfIssue(LocalDate.of(2020, 2, 20));
                 pp.setDateOfExpiry(LocalDate.of(2040, 2, 20));
                 pp.setPlaceOfIssue("Mumbai, India");
@@ -585,6 +588,32 @@ class CrewTest {
 
         crewContractDao.save(contract);
 
+    }
+
+    @Test
+    void calculateExp() {
+        Crew crew = new Crew();
+        List<Experience> exps = new ArrayList<>();
+        Experience exp = new Experience();
+        exp.setStartDate(LocalDate.of(2008, 1, 1));
+        exp.setEndDate(LocalDate.of(2008, 5, 31));
+        exps.add(exp);
+
+        exp = new Experience();
+        exp.setStartDate(LocalDate.of(2010, 1, 1));
+        exp.setEndDate(LocalDate.of(2012, 5, 31));
+        exps.add(exp);
+
+        crew.setEmploymentHistory(exps);
+        long expInMonths = 0;
+        if (ListUtil.isNotEmpty(crew.getEmploymentHistory())) {
+            for (Experience e : crew.getEmploymentHistory()) {
+                LocalDate startDate = e.getStartDate();
+                LocalDate endDate = e.getEndDate();
+                expInMonths += DateTimeUtil.differenceInMonths(startDate, endDate);
+            }
+        }
+        Logger.getGlobal().info("expInMonths = "+expInMonths);
     }
 
 }

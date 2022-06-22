@@ -59,12 +59,12 @@
         </div>
     </div>
     <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle" id="dropdownHistory" type="button"
+        <button class="btn dropdown-toggle <c:choose><c:when test="${menu == 'hist'}">btn-primary</c:when><c:otherwise>btn-light</c:otherwise></c:choose>" id="dropdownHistory" type="button"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">History
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownHistory">
-            <a class="dropdown-item" href="#!">Offer Letter</a>
-            <a class="dropdown-item" href="#!">App. Letter</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'offer'}">active</c:if>" href="/crew/offer?menu=hist&sMenu=offer&crewId=${crewId}">Offer Letter</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'appt'}">active</c:if>" href="/crew/appoint?menu=hist&sMenu=appt&crewId=${crewId}">App. Letter</a>
             <a class="dropdown-item" href="#!">Medical</a>
             <a class="dropdown-item" href="#!">Activity Log</a>
             <a class="dropdown-item" href="#!">Travel History</a>
@@ -76,15 +76,15 @@
         </div>
     </div>
     <div class="dropdown">
-        <button class="btn btn-light dropdown-toggle" id="dropdownExperience" type="button"
+        <button class="btn dropdown-toggle <c:choose><c:when test="${menu == 'exp'}">btn-primary</c:when><c:otherwise>btn-light</c:otherwise></c:choose>" id="dropdownExperience" type="button"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Experience
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownExperience">
-            <a class="dropdown-item" href="#!">Sea Service Company</a>
-            <a class="dropdown-item" href="#!">Sea Service Other</a>
-            <a class="dropdown-item" href="#!">Sea Service combined</a>
-            <a class="dropdown-item" href="#!">Work experience</a>
-            <a class="dropdown-item" href="#!">Summary</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'company'}">active</c:if>" href="/crew/experience?menu=exp&sMenu=company&crewId=${crewId}">Sea Service Company</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'other'}">active</c:if>" href="/crew/experience?menu=exp&sMenu=other&crewId=${crewId}">Sea Service Other</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'combined'}">active</c:if>" href="/crew/experience?menu=exp&sMenu=combined&crewId=${crewId}">Sea Service combined</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'workExp'}">active</c:if>" href="/crew/experience?menu=exp&sMenu=workExp&crewId=${crewId}">Work experience</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'summary'}">active</c:if>" href="/crew/experience?menu=exp&sMenu=summary&crewId=${crewId}">Summary</a>
         </div>
     </div>
     <div class="dropdown">

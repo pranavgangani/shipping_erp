@@ -1,17 +1,16 @@
 package com.intuitbrains.model.crew;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.data.annotation.Id;
 
 public class Rank {
     private int id;
+    private int groupId;
     private String name;
+    private String shortName;
+    private boolean isSupr;
     private RankCategory rankCategory;
     private RankSubCategory rankSubCategory;
 
@@ -19,62 +18,59 @@ public class Rank {
     }
 
     public static List<Rank> getList() {
-        return new ArrayList<>(Arrays.asList(CAPTAIN, CHIEF_OFFICER, SECOND_OFFICER, THIRD_OFFICER, DECK_CADET,
-                BOSUN, AB_SEAMAN, OS_SEAMAN, TRAINEE_SEAMAN, DECK_FITTER,
-                CHIEF_ENGINEER, SECOND_ENGINEER, THIRD_ENGINEER, FOURTH_ENGINEER, FIFTH_ENGINEER, JR_ENGINEER, ETO,
-                MOTORMAN, WIPER, OILER, ENGINE_FITTER, CHIEF_COOK, SECOND_COOK, MESSMAN_COOK, TRAINEEE_MESSMAN));
-    }
-
-    public static List<Rank> getDeckDeptList() {
-        return new ArrayList<>(Arrays.asList(CAPTAIN, CHIEF_OFFICER, SECOND_OFFICER, THIRD_OFFICER, DECK_CADET,
-                BOSUN, AB_SEAMAN, OS_SEAMAN, TRAINEE_SEAMAN, DECK_FITTER));
-    }
-
-    public static List<Rank> getEngineDeptList() {
-        return new ArrayList<>(Arrays.asList(CHIEF_ENGINEER, SECOND_ENGINEER, THIRD_ENGINEER, FOURTH_ENGINEER, FIFTH_ENGINEER, JR_ENGINEER, ETO, MOTORMAN, WIPER, OILER, ENGINE_FITTER));
-    }
-
-    public static List<Rank> getGalleyDeptList() {
-        return new ArrayList<>(Arrays.asList(CHIEF_COOK, SECOND_COOK, MESSMAN_COOK, TRAINEEE_MESSMAN));
+        return new ArrayList<>(Arrays.asList(CAPTAIN, CHIEF_OFFICER_SUPR,CHIEF_OFFICER, SECOND_OFFICER_SUPR,SECOND_OFFICER, THIRD_OFFICER, DECK_CADET,
+                CHIEF_OFFICER_SUPR, AB_SEAMAN, OS_SEAMAN, TRAINEE_SEAMAN, DECK_FITTER,
+                CHIEF_ENGINEER, SECOND_ENGINEER, THIRD_ENGINEER, FOURTH_ENGINEER, FIFTH_ENGINEER, JR_ENGINEER, ETO,EO,TREO,
+                MOTORMAN, WIPER, SECOND_OFFICER_SUPR, SECOND_ENGINEER_SUPR, CHIEF_COOK, SECOND_COOK, MESSMAN_COOK, THIRD_ENGINEER_SUPR));
     }
 
     //public static final Rank ALL = new Rank(RankCategory.ALL, RankSubCategory.OFFICER, 0, "All");
-    public static final Rank CAPTAIN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 1, "Captain/Master");
-    public static final Rank CHIEF_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 2, "Chief Officer");
-    public static final Rank SECOND_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 3, "Second Officer");
-    public static final Rank THIRD_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 4, "Third Officer");
-    public static final Rank DECK_CADET = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 5, "Deck Cadet (Trainee Officer)");
+    public static final Rank CAPTAIN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 1, 1, "Captain/Master", "MSTR", false);
+    public static final Rank CHIEF_OFFICER_SUPR = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 2, 2, "Chief Officer(Supr)", "CO WITH SUPR", true);
+    public static final Rank CHIEF_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 3, 2, "Chief Officer", "CO", false);
 
-    public static final Rank BOSUN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 6, "Bosun");
-    public static final Rank AB_SEAMAN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 7, "AB (Able Seaman)");
-    public static final Rank OS_SEAMAN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 8, "OS (Ordinary Seaman)");
-    public static final Rank TRAINEE_SEAMAN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 9, "Trainee Seaman");
-    public static final Rank DECK_FITTER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 10, "Deck Fitter");
+    public static final Rank SECOND_OFFICER_SUPR = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 4, 3, "Second Officer(Supr)", "2O WITH SUPR", true);
+    public static final Rank SECOND_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 5, 3, "Second Officer", "2O", false);
+    public static final Rank THIRD_OFFICER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 6, 4, "Third Officer", "3O", false);
+    public static final Rank DECK_CADET = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.OFFICER, 7, 5, "Cadet", "CDT", false);
+    public static final Rank CHIEF_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 8, 6, "Chief Engineer", "CE", false);
+    public static final Rank SECOND_ENGINEER_SUPR = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 9, 7, "Second Engineer(Supr)", "2E WITH SUPR", true);
+    public static final Rank SECOND_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 10, 7, "Second Engineer", "2E", false);
+    public static final Rank THIRD_ENGINEER_SUPR = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 11, 8, "Third Engineer(Supr)", "3E WITH SPR", true);
+    public static final Rank THIRD_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 12, 8, "Third Engineer", "3E", false);
+    public static final Rank FOURTH_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 13, 9, "Fourth Engineer", "4E", false);
+    public static final Rank FIFTH_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 14, 10, "Fifth Engineer", "5E", false);
+    public static final Rank JR_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 15, 11, "Junior Engineer", "JE", false);
+    public static final Rank EO = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 16, 12, "Electrical Officer", "EO", false);
 
-    public static final Rank CHIEF_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 11, "Chief Engineer");
-    public static final Rank SECOND_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 12, "Second Engineer");
-    public static final Rank THIRD_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 13, "Third Engineer");
-    public static final Rank FOURTH_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 14, "Fourth Engineer");
-    public static final Rank FIFTH_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 15, "Fifth Engineer");
-    public static final Rank JR_ENGINEER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 16, "Junior Engineer/Engine Cadet");
-    public static final Rank ETO = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 17, "ETO (Electrical Officer)");
-
-    public static final Rank MOTORMAN = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 18, "Motorman");
-    public static final Rank WIPER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 19, "Wiper");
-    public static final Rank OILER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 20, "Oiler");
-    public static final Rank ENGINE_FITTER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 21, "Engine Fitter");
-
-    public static final Rank CHIEF_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 22, "Chief Cook");
-    public static final Rank SECOND_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 23, "Second Cook");
-    public static final Rank MESSMAN_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 24, "Messman");
-    public static final Rank TRAINEEE_MESSMAN = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 25, "Trainee Messman");
+    public static final Rank ETO = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 17, 13, "Electrical Technical Officer", "ETO", false);
+    public static final Rank TREO = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.ENGINEER, 18, 14, "Trainee Electrical Officer", "TR EO", false);
+    //public static final Rank BOSUN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 6, "Bosun");
+    public static final Rank AB_SEAMAN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 19, 15, "Able Seaman", "AB", false);
+    public static final Rank OS_SEAMAN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 20, 16, "Ordinary Seaman", "OS", false);
+    public static final Rank TRAINEE_SEAMAN = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 21, 17, "Trainee Seaman", "TR OS", false);
+    public static final Rank DECK_FITTER = new Rank(RankCategory.DECK_DEPARTMENT, RankSubCategory.RATING, 22, 18, "Fitter", "FTR", false);
 
 
-    public Rank(RankCategory rankCategory, RankSubCategory rankSubCategory, int id, String name) {
+    public static final Rank MOTORMAN = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 23, 19, "Motorman", "MM", false);
+    public static final Rank WIPER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 24, 20, "Wiper", "WPR", false);
+    //public static final Rank OILER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 20, "Oiler");
+//    public static final Rank ENGINE_FITTER = new Rank(RankCategory.ENGINE_DEPARTMENT, RankSubCategory.RATING, 21, "Engine Fitter");
+
+    public static final Rank CHIEF_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 25, 21, "Chief Cook", "CCK", false);
+    public static final Rank SECOND_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 26, 22, "General Steward", "GS", false);
+    public static final Rank MESSMAN_COOK = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 27, 23, "Welder", "WLDR", false);
+    //public static final Rank TRAINEEE_MESSMAN = new Rank(RankCategory.GALLEY_DEPARTMENT, RankSubCategory.OTHER, 25, "Trainee Messman");
+
+
+    public Rank(RankCategory rankCategory, RankSubCategory rankSubCategory, int id, int groupId, String name, String shortName, boolean isSupr) {
         this.rankCategory = rankCategory;
         this.rankSubCategory = rankSubCategory;
         this.id = id;
+        this.groupId = groupId;
         this.name = name;
+        this.shortName = shortName;
+        this.isSupr = isSupr;
     }
 
 
@@ -94,45 +90,29 @@ public class Rank {
         return rankSubCategory;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((rankCategory == null) ? 0 : rankCategory.hashCode());
-        result = prime * result + ((rankSubCategory == null) ? 0 : rankSubCategory.hashCode());
-        return result;
+    public int getGroupId() {
+        return groupId;
     }
 
+    public String getShortName() {
+        return shortName;
+    }
+
+    public boolean isSupr() {
+        return isSupr;
+    }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Rank other = (Rank) obj;
-        if (id != other.id)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (rankCategory == null) {
-            if (other.rankCategory != null)
-                return false;
-        } else if (!rankCategory.equals(other.rankCategory))
-            return false;
-        if (rankSubCategory == null) {
-            if (other.rankSubCategory != null)
-                return false;
-        } else if (!rankSubCategory.equals(other.rankSubCategory))
-            return false;
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rank rank = (Rank) o;
+        return id == rank.id && groupId == rank.groupId && name.equals(rank.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, groupId, name);
     }
 
     public static Rank createFromId(int typeId) {
@@ -181,7 +161,7 @@ public class Rank {
     }
 
     public static void main(String[] args) {
-        getList().forEach(r-> System.out.println(r.getName()));
+        getList().forEach(r -> System.out.println(r.getName()));
 
     }
 }

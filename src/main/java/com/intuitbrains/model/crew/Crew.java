@@ -2,6 +2,7 @@ package com.intuitbrains.model.crew;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,9 @@ import java.util.stream.Collectors;
 import com.intuitbrains.common.*;
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
+import com.intuitbrains.model.vessel.Vessel;
+import com.intuitbrains.util.DateTimeUtil;
+import com.intuitbrains.util.ListUtil;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -38,6 +42,9 @@ public class Crew extends Person {
     private LocalDate dob, passportExpirationDate, indosExpirationDate, availableFromDate;
     private int age;
     private Contract currentContract;
+    protected Vessel lastVessel, currentVessel, nextVessel;
+    protected LocalDate signOffDate, dateOfAppointment;
+    protected Period totalExp;
     private long assignedVacancyId;
     private LocalDateTime assignedVacancyDateTime;
     private String assignedVacancyBy;
@@ -62,6 +69,7 @@ public class Crew extends Person {
 
     //Medical
     private List<IllnessAndInjury> illnessInjury;
+
     private boolean isSignedOffForMedicalReasons, isSufferingFromDiseaseThatEndangersLife, isDrugAlcoholAddict,
             hasMalaria, hasEpilepsy, hasDiabetes, hasNervousDisability;
 
@@ -69,7 +77,7 @@ public class Crew extends Person {
     private List<NextOfKin> nextOfKins;
     private List<Bank> banks;
 
-    private String enteredBy, updatedBy;
+    private String interviewedBy, enteredBy, updatedBy;
     private LocalDateTime enteredDateTime, updatedDateTime;
 
     private int statusId;
@@ -461,6 +469,58 @@ public class Crew extends Person {
         this.availableFromDate = availableFromDate;
     }
 
+    public Vessel getLastVessel() {
+        return lastVessel;
+    }
+
+    public void setLastVessel(Vessel lastVessel) {
+        this.lastVessel = lastVessel;
+    }
+
+    public Vessel getCurrentVessel() {
+        return currentVessel;
+    }
+
+    public void setCurrentVessel(Vessel currentVessel) {
+        this.currentVessel = currentVessel;
+    }
+
+    public Vessel getNextVessel() {
+        return nextVessel;
+    }
+
+    public void setNextVessel(Vessel nextVessel) {
+        this.nextVessel = nextVessel;
+    }
+
+    public LocalDate getSignOffDate() {
+        return signOffDate;
+    }
+
+    public void setSignOffDate(LocalDate signOffDate) {
+        this.signOffDate = signOffDate;
+    }
+
+    public LocalDate getDateOfAppointment() {
+        return dateOfAppointment;
+    }
+
+    public void setDateOfAppointment(LocalDate dateOfAppointment) {
+        this.dateOfAppointment = dateOfAppointment;
+    }
+
+    public int getTotalExp() {
+        int months = 0;
+        if (ListUtil.isNotEmpty(this.getEmploymentHistory())) {
+            for (Experience exp : this.getEmploymentHistory()) {
+                LocalDate startDate = exp.getStartDate();
+                LocalDate endDate = exp.getEndDate();
+                months += (int)DateTimeUtil.differenceInMonths(startDate, endDate);
+            }
+        }
+        return months;
+    }
+
     public int getAge() {
         if (getDob() != null) {
             return (int) ChronoUnit.YEARS.between(getDob(), LocalDate.now());
@@ -505,6 +565,14 @@ public class Crew extends Person {
 
     public void setEnteredBy(String enteredBy) {
         this.enteredBy = enteredBy;
+    }
+
+    public String getInterviewedBy() {
+        return interviewedBy;
+    }
+
+    public void setInterviewedBy(String interviewedBy) {
+        this.interviewedBy = interviewedBy;
     }
 
     public void setAssignedVacancyDateTime(LocalDateTime assignedVacancyDateTime) {

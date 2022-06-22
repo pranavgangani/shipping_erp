@@ -13,6 +13,8 @@ import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import com.intuitbrains.service.common.SequenceGeneratorService;
+import com.intuitbrains.util.DateTimeUtil;
+import com.intuitbrains.util.ListUtil;
 import com.intuitbrains.util.StandardWebParameter;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -57,7 +59,7 @@ public class CrewService {
     @Autowired
     private MongoDatabase db;
     private static Bson projections = Projections.include("firstName", "middleName", "lastName", "rank", "height", "weight", "manningOffice", "dob", "gender", "statusId", "passportNumber", "indosNumber",
-            "distinguishMark", "photoId", "nationalityFlagId", "nationality", "nearestAirport", "maritalStatus", "fileNum", "permAddress", "contact1","contact2", "presentAddress", "fieldStatus");
+            "distinguishMark", "photoId", "nationalityFlagId", "nationality", "nearestAirport", "maritalStatus", "fileNum", "permAddress", "contact1", "contact2", "presentAddress", "fieldStatus");
 
     public List<Crew> getList() {
         /*MongoCollection<Crew> collection = db.getCollection(Collection.CREW, Crew.class);
@@ -96,9 +98,9 @@ public class CrewService {
 
         crew.setId(sequenceGenerator.generateSequence(Crew.SEQUENCE_NAME));
         String id = String.valueOf(crew.getId());
-        String zeros = "0000";
+        String zeros = "000";
         zeros.substring((zeros.length() - (zeros.length() - id.length())), zeros.length() - 1);
-        crew.setFileNum("F" + zeros + id);
+        crew.setFileNum("SAAR-PD/" + zeros + id);
         crewDao.insert(crew);
 
         //Audit
@@ -112,6 +114,20 @@ public class CrewService {
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         auditTrailDao.insert(audit);
         return crew;
+    }
+
+    public void addBank(long crewId, Bank bank) {
+        List<Bank> banks = this.getBanks(crewId);
+        if (ListUtil.isEmpty(banks)) {
+            banks = new ArrayList<>();
+            banks.add(bank);
+        } else {
+            banks.forEach(b -> b.setPrimary(false));
+            banks.add(bank);
+        }
+        Bson filter = Filters.all("_id", crewId);
+        db.getCollection(Collection.CREW, Crew.class).updateMany(filter, Updates.set("banks", banks));
+
     }
 
     public Crew uploadCrewData(String uploadByEmpId, FileInputStream file) throws IOException {

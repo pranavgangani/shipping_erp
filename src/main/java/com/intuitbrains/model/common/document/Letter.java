@@ -1,4 +1,6 @@
 package com.intuitbrains.model.common.document;
 
-public class Letter {
+import com.intuitbrains.model.crew.CrewDocument;
+
+public class Letter extends CrewDocument {
 }

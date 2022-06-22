@@ -125,7 +125,7 @@ class ExcelReadTest {
     @Test
     public void generateExcelTemplateForNewRecruit() {
         //some data
-        String[] deckDeptRanks = Rank.getDeckDeptList().stream().map(Rank::getName).collect(Collectors.toList()).toArray(new String[Rank.getDeckDeptList().size()]);
+       /* String[] deckDeptRanks = Rank.getDeckDeptList().stream().map(Rank::getName).collect(Collectors.toList()).toArray(new String[Rank.getDeckDeptList().size()]);
         String[] engineDeptRanks = Rank.getEngineDeptList().stream().map(Rank::getName).collect(Collectors.toList()).toArray(new String[Rank.getEngineDeptList().size()]);
         String[] galleyDeptRanks = Rank.getGalleyDeptList().stream().map(Rank::getName).collect(Collectors.toList()).toArray(new String[Rank.getGalleyDeptList().size()]);
 
@@ -162,7 +162,7 @@ class ExcelReadTest {
             wb.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }

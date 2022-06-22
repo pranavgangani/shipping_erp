@@ -50,7 +50,9 @@ public enum DocumentPool {
     AADHAR(28, "AADHAR"),
     CBT_EPSS(29, "CBT/EPSS"),
     AWARD(30, "Award"),
+    OFFER_LETTER(31, "Offer Letter"),
     OTHER(0, "Other");
+
 
     private int id;
     private String name;

@@ -37,7 +37,10 @@ import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewContractRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
+import com.intuitbrains.model.common.Duration;
+import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.License;
+import com.intuitbrains.model.common.document.OfferLetter;
 import com.intuitbrains.model.common.document.Passport;
 import com.intuitbrains.model.common.document.Visa;
 import com.intuitbrains.model.common.document.category.DocumentCategory;
@@ -312,7 +315,7 @@ public class CrewController {
         BasicDBObject updateFields = new BasicDBObject();
         jsonObject.entrySet().forEach(e -> {
             if (e.getKey().equals("dob") || e.getKey().equals("availableFromDate")) {
-                updateFields.append(e.getKey(), LocalDate.parse(e.getValue().getAsString()));
+                updateFields.append(e.getKey(), DateTimeUtil.convertToDate(e.getValue().getAsString()));
             } else {
                 updateFields.append(e.getKey(), e.getValue().getAsString());
             }
@@ -343,14 +346,92 @@ public class CrewController {
         ModelAndView mv = new ModelAndView("crew/nok");
         long crewId = Long.parseLong(req.getParameter("crewId"));
         Crew crew = crewService.getObjectById(crewId);
+        String menu = StringUtil.trim(req.getParameter("menu"));
+        String sMenu = StringUtil.trim(req.getParameter("sMenu"));
         List<NextOfKin> list = crewService.getNextOfKins(crewId);
         mv.addObject("crew", crew);
         mv.addObject("crewId", crewId);
         mv.addObject("list", list);
+        mv.addObject("menu", menu);
+        mv.addObject("sMenu", sMenu);
         mv.addObject("relationTypes", NextOfKin.RelationType.getList());
         return mv;
     }
 
+    @GetMapping(value = "/offer")
+    public ModelAndView offerLetters(HttpServletRequest req, Model model) {
+        ModelAndView mv = new ModelAndView("crew/offer");
+        long crewId = Long.parseLong(req.getParameter("crewId"));
+        Crew crew = crewService.getObjectById(crewId);
+        String menu = StringUtil.trim(req.getParameter("menu"));
+        String sMenu = StringUtil.trim(req.getParameter("sMenu"));
+        List<CrewDocument> list = documentDao.getOfferLetters(crewId);
+        mv.addObject("crew", crew);
+        mv.addObject("crewId", crewId);
+        mv.addObject("list", list);
+        mv.addObject("menu", menu);
+        mv.addObject("sMenu", sMenu);
+        mv.addObject("sMenu", sMenu);
+
+        List<DocumentType> docTypes = docTypeDao.findAll();
+        DocumentType offerLetterDT = docTypes.stream().filter(d -> d.getDocumentPool().equals(DocumentPool.OFFER_LETTER)).collect(Collectors.toList()).get(0);
+        mv.addObject("offerLetterDT", offerLetterDT);
+        return mv;
+    }
+    @PostMapping(value = "/document/add")
+    public ModelAndView addOfferLetter(HttpServletRequest req, Model model) {
+        ModelAndView mv = null;
+        String menu = StringUtil.trim(req.getParameter("menu"));
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        if (crewId > 0) {
+            mv = new ModelAndView("redirect:/crew/offer?menu=hist&sMenu=offer&crewId=" + crewId);
+            Crew crew = crewService.getById(crewId);
+            mv.addObject("crew", crew);
+            Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+            long docTypeId = ParamUtil.parseInt(req.getParameter("docTypeId"), -1);
+            String vesselName = req.getParameter("vesselName");
+            Rank agreedRank = Rank.createFromId(ParamUtil.parseInt(req.getParameter("rankId"), -1));
+            double agreedWages = ParamUtil.parseDouble(req.getParameter("agreedWages"), 0);
+            DurationType durationType = DurationType.createFromId(ParamUtil.parseInt(req.getParameter("contractDurationType"), -1));
+            int durationValue = ParamUtil.parseInt(req.getParameter("contractDurationType"), 0);
+            Duration contractDuration = new Duration(durationType, durationValue);
+            LocalDate dateOfIssue = DateTimeUtil.convertToDate(req.getParameter("dateOfIssue"));
+
+            List<CrewDocument> offerLetters = documentDao.getOfferLetters(crewId);
+
+            if (ListUtil.isNotEmpty(offerLetters)) {
+                offerLetters.forEach(doc -> {
+                    if (doc.getFile() != null) {
+                        doc.setFileTitle(Base64.getEncoder().encodeToString(doc.getFile().getData()));
+                    }
+                });
+                mv.addObject("list", offerLetters);
+            }
+
+            DocumentType dt = docTypeDao.findById(docTypeId).get();
+            if (dt.getDocumentPool().getName().equals(DocumentPool.OFFER_LETTER.getName())) {
+                OfferLetter doc = new OfferLetter();
+                doc.setCrewId(crewId);
+                doc.setContractPeriod(contractDuration);
+                doc.setDocType(dt);
+                doc.setAgreedRank(agreedRank);
+                doc.setDateOfIssue(dateOfIssue);
+                doc.setDateOfExpiry(DateTimeUtil.calculateExpiryDate(contractDuration, dateOfIssue));
+                doc.setEnteredBy(emp);
+                doc.setEnteredDateTime(LocalDateTime.now());
+                doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+                documentDao.insert(doc);
+            }
+
+            mv.addObject("documentPools", DocumentPool.getList());
+            mv.addObject("flags", getFlags());
+            mv.addObject("action", StandardWebParameter.ADD);
+            mv.addObject("crewId", crewId);
+            mv.addObject("menu", menu);
+        }
+
+        return mv;
+    }
     @GetMapping(value = "/documents")
     public ModelAndView documentList(HttpServletRequest req, Model model) {
         ModelAndView mv = null;
@@ -427,7 +508,6 @@ public class CrewController {
             Crew crew = crewService.getById(crewId);
             mv.addObject("crew", crew);
             Employee emp = (Employee) req.getSession().getAttribute("currentUser");
-            String maker = emp.getEmpId();
             long docTypeId = ParamUtil.parseInt(req.getParameter("docTypeId"), -1);
             String nationalityFlagCode = req.getParameter("nationalityFlagCode");
             String docTypeName = req.getParameter("docTypeName");
@@ -464,7 +544,7 @@ public class CrewController {
                 doc.setFlag(flag);
                 doc.setDateOfIssue(LocalDate.now());
                 doc.setDateOfExpiry(LocalDate.now());
-                doc.setEnteredBy(maker);
+                doc.setEnteredBy(emp);
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
                 documentDao.insert(doc);
@@ -481,7 +561,7 @@ public class CrewController {
                 doc.setFlag(flag);
                 doc.setDateOfIssue(LocalDate.now());
                 doc.setDateOfExpiry(LocalDate.now());
-                doc.setEnteredBy(maker);
+                doc.setEnteredBy(emp);
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
                 documentDao.insert(doc);
@@ -498,7 +578,7 @@ public class CrewController {
                 doc.setFlag(flag);
                 doc.setDateOfIssue(LocalDate.now());
                 doc.setDateOfExpiry(LocalDate.now());
-                doc.setEnteredBy(maker);
+                doc.setEnteredBy(emp);
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
                 documentDao.insert(doc);
@@ -515,7 +595,7 @@ public class CrewController {
                 doc.setFlag(flag);
                 doc.setDateOfIssue(LocalDate.now());
                 doc.setDateOfExpiry(LocalDate.now());
-                doc.setEnteredBy(maker);
+                doc.setEnteredBy(emp);
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
                 documentDao.insert(doc);
@@ -764,10 +844,72 @@ public class CrewController {
     public ModelAndView bank(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/bank");
         long crewId = Long.parseLong(req.getParameter("crewId"));
+        String menu = StringUtil.trim(req.getParameter("menu"));
+        String sMenu = StringUtil.trim(req.getParameter("sMenu"));
         List<Bank> list = crewService.getBanks(crewId);
         mv.addObject("crewId", crewId);
         mv.addObject("list", list);
+        mv.addObject("sMenu", sMenu);
+        mv.addObject("crewId", crewId);
         return mv;
+    }
+
+    @PostMapping(value = "/bank/add")
+    public ModelAndView addBank(HttpServletRequest req,  @RequestParam("crewId") long crewId,
+                                @RequestParam("inputBankName") String bankName,
+                                @RequestParam("inputAccountNumber") String accountNumber,
+                                @RequestParam("inputSWIFT") String swift, @RequestParam("inputIFSC") String ifsc,
+                                @RequestParam("inputBranchAddress") String branchAddress,
+                                Model model) {
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        String maker = emp.getEmpId();
+        ModelAndView mv = new ModelAndView("redirect:/crew/bank?menu=personal&sMenu=bank&crewId=" + crewId);
+
+        //Add New Crew
+        Bank bank = new Bank();
+        bank.setIfscCode(ifsc);
+        bank.setSwiftCode(swift);
+        bank.setBankName(bankName);
+        bank.setAccountNumber(accountNumber);
+        bank.setBranchAddress(branchAddress);
+        bank.setPrimary(true);
+        bank.setEnteredByEmp(emp);
+        bank.setEnteredDateTime(DateTimeUtil.getNowDateTime());
+        crewService.addBank(crewId, bank);
+
+        return mv;
+    }
+
+    @PostMapping(value = "/bank/update.ajax")
+    public String updateBank(MultipartHttpServletRequest req, Model model) {
+        Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+        String maker = emp.getEmpId();
+        long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
+        String json = req.getParameter("modifiedFields");
+        JsonObject jsonObject = new Gson().fromJson(json, JsonObject.class);
+
+        BasicDBObject searchQuery = new BasicDBObject("_id", crewId);
+        BasicDBObject updateFields = new BasicDBObject();
+        jsonObject.entrySet().forEach(e -> {
+           updateFields.append(e.getKey(), e.getValue().getAsString());
+        });
+        BasicDBObject setQuery = new BasicDBObject();
+        setQuery.append("$set", updateFields);
+        db.getCollection(Collection.CREW, Crew.class).updateOne(searchQuery, setQuery);
+
+        //Audit
+       /* AuditTrail audit = new AuditTrail();
+        audit.setAction(StandardWebParameter.ADD);
+        audit.setActionBy(emp.getEmpId());
+        audit.setActionLocalDateTime(LocalDateTime.now());
+        audit.setCollection(Collection.CREW);
+        audit.setText("New Document - <b>" + (docToUpload.getDocName()) + "</b> added!");
+        audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
+        audit.setUniqueId(crew.getId());
+        auditTrailDao.insert(audit);*/
+
+        model.addAttribute("message", "success");
+        return model.toString();
     }
 
     /*

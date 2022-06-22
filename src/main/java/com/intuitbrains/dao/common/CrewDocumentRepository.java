@@ -15,6 +15,9 @@ public interface CrewDocumentRepository extends MongoRepository<CrewDocument, Lo
     @Query("{'$and': [{'crewId': ?0}, {'$or': [{'docType.documentPool': 'VISA'}, {'docType.documentPool': 'PASSPORT'}, {'docType.documentPool': 'License'}]}]}")
     public List<CrewDocument> getPassportVisaCDC(long crewId);
 
+    @Query("{'$and': [{'crewId': ?0}, {'docType.documentPool': 'Offer Letter'}]}")
+    public List<CrewDocument> getOfferLetters(long crewId);
+
     @Query("{'crewId': ?0}")
     public List<CrewDocument> getDocsByCrewId(long crewId);
 

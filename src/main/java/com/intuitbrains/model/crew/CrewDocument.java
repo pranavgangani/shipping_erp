@@ -6,6 +6,7 @@ import com.intuitbrains.common.Flag;
 import com.intuitbrains.dao.common.FieldStatus;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.category.DocumentType;
+import com.intuitbrains.model.company.Employee;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Transient;
 
@@ -48,7 +49,7 @@ public class CrewDocument {
     //Required when storing against Crew
     private List<Comment> comments;
 
-    private String enteredBy, updatedBy;
+    private Employee enteredBy, updatedBy;
     private LocalDateTime enteredDateTime, updatedDateTime;
 
     //Physical File
@@ -231,19 +232,19 @@ public class CrewDocument {
         return this.getFile() != null;
     }
 
-    public String getEnteredBy() {
+    public Employee getEnteredBy() {
         return enteredBy;
     }
 
-    public void setEnteredBy(String enteredBy) {
+    public void setEnteredBy(Employee enteredBy) {
         this.enteredBy = enteredBy;
     }
 
-    public String getUpdatedBy() {
+    public Employee getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(String updatedBy) {
+    public void setUpdatedBy(Employee updatedBy) {
         this.updatedBy = updatedBy;
     }
 
