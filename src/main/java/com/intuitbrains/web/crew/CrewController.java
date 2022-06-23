@@ -64,6 +64,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.BsonBinarySubType;
+import org.bson.conversions.Bson;
 import org.bson.types.Binary;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -359,23 +360,29 @@ public class CrewController {
     }
 
     @GetMapping(value = "/offer")
-    public ModelAndView offerLetters(HttpServletRequest req, Model model) {
+    public ModelAndView offerLetter(HttpServletRequest req, Model model) {
         ModelAndView mv = new ModelAndView("crew/offer");
-        long crewId = Long.parseLong(req.getParameter("crewId"));
-        Crew crew = crewService.getObjectById(crewId);
+        String action = StringUtil.trim(req.getParameter("action"));
         String menu = StringUtil.trim(req.getParameter("menu"));
         String sMenu = StringUtil.trim(req.getParameter("sMenu"));
-        List<CrewDocument> list = documentDao.getOfferLetters(crewId);
-        final List<OfferLetter> offerLetters = new ArrayList<>();
-        list.forEach(d -> {
-            if (d instanceof OfferLetter) {
-                offerLetters.add((OfferLetter) d);
-            }
-        });
+        long crewId = Long.parseLong(req.getParameter("crewId"));
 
-        mv.addObject("crew", crew);
+        if (StandardWebParameter.LIST.equals(action)) {
+            //Crew crew = crewService.getObjectById(crewId);
+            List<CrewDocument> list = documentDao.getOfferLetters(crewId);
+            final List<OfferLetter> offerLetters = new ArrayList<>();
+            list.forEach(d -> {
+                if (d instanceof OfferLetter) {
+                    offerLetters.add((OfferLetter) d);
+                }
+            });
+            //mv.addObject("crew", crew);
+            mv.addObject("list", offerLetters);
+
+        } else if (StandardWebParameter.VIEW.equals(action)) {
+
+        }
         mv.addObject("crewId", crewId);
-        mv.addObject("list", offerLetters);
         mv.addObject("menu", menu);
         mv.addObject("sMenu", sMenu);
         mv.addObject("sMenu", sMenu);
@@ -420,6 +427,7 @@ public class CrewController {
                 doc.setContractPeriod(contractDuration);
                 //doc.setDateOfExpiry(DateTimeUtil.calculateExpiryDate(contractDuration, dateOfIssue));
                 doc.setEnteredBy(emp);
+                doc.setStatus(CrewDocumentStatus.PENDING_APPROVAL);
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
                 documentDao.insert(doc);
@@ -428,6 +436,41 @@ public class CrewController {
         }
 
         return mv;
+    }
+
+    @PostMapping(value = "/offer/acceptReject.ajax")
+    public void acceptRejectOffer(MultipartHttpServletRequest req) {
+        try {
+            Employee emp = (Employee) req.getSession().getAttribute("currentUser");
+            long crewId = Long.parseLong(req.getParameter("crewId"));
+            long docId = Long.parseLong(req.getParameter("offerId"));
+            String action = StringUtil.trim(req.getParameter("action"));
+            CrewDocumentStatus status = null;
+            Bson updates = null;
+            if (action.equalsIgnoreCase(CrewDocumentStatus.APPROVED.getDesc())) {
+                status = CrewDocumentStatus.APPROVED;
+                updates = Updates.combine(
+                        Updates.set("status", status),
+                        Updates.set("approvedBy", emp),
+                        Updates.set("approvedDateTime", DateTimeUtil.getNowDateTime())
+                );
+                //Create Appointment Letter
+            } else if (action.equalsIgnoreCase(CrewDocumentStatus.REJECTED.getDesc())) {
+                status = CrewDocumentStatus.REJECTED;
+                updates = Updates.combine(
+                        Updates.set("status", status),
+                        Updates.set("rejectedBy", emp),
+                        Updates.set("rejectedDateTime", DateTimeUtil.getNowDateTime())
+                );
+            }
+            if (status != null) {
+                Bson filter = Filters.all("_id", docId);
+                db.getCollection(Collection.CREW_DOCUMENT, CrewDocument.class).updateMany(filter, updates);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @GetMapping(value = "/documents")

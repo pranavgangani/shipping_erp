@@ -45,12 +45,13 @@ public class CrewDocument {
 
     private int validity;
     private DurationType durationType;
+    private CrewDocumentStatus status;
 
     //Required when storing against Crew
     private List<Comment> comments;
 
-    private Employee enteredBy, updatedBy;
-    private LocalDateTime enteredDateTime, updatedDateTime;
+    private Employee enteredBy, updatedBy, deletedBy, approvedBy, rejectedBy, pendingApprovalBy, underReviewBy;
+    private LocalDateTime enteredDateTime, updatedDateTime, deletedDateTime, approvedDateTime, rejectedDateTime, pendingApprovalDateTime, underReviewDateTime;
 
     //Physical File
     private String fileTitle;
@@ -184,6 +185,14 @@ public class CrewDocument {
         this.durationType = durationType;
     }
 
+    public CrewDocumentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CrewDocumentStatus status) {
+        this.status = status;
+    }
+
     public String getFileTitle() {
         return fileTitle;
     }
@@ -262,6 +271,86 @@ public class CrewDocument {
 
     public void setUpdatedDateTime(LocalDateTime updatedDateTime) {
         this.updatedDateTime = updatedDateTime;
+    }
+
+    public Employee getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void setDeletedBy(Employee deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    public Employee getApprovedBy() {
+        return approvedBy;
+    }
+
+    public void setApprovedBy(Employee approvedBy) {
+        this.approvedBy = approvedBy;
+    }
+
+    public Employee getRejectedBy() {
+        return rejectedBy;
+    }
+
+    public void setRejectedBy(Employee rejectedBy) {
+        this.rejectedBy = rejectedBy;
+    }
+
+    public Employee getPendingApprovalBy() {
+        return pendingApprovalBy;
+    }
+
+    public void setPendingApprovalBy(Employee pendingApprovalBy) {
+        this.pendingApprovalBy = pendingApprovalBy;
+    }
+
+    public Employee getUnderReviewBy() {
+        return underReviewBy;
+    }
+
+    public void setUnderReviewBy(Employee underReviewBy) {
+        this.underReviewBy = underReviewBy;
+    }
+
+    public LocalDateTime getDeletedDateTime() {
+        return deletedDateTime;
+    }
+
+    public void setDeletedDateTime(LocalDateTime deletedDateTime) {
+        this.deletedDateTime = deletedDateTime;
+    }
+
+    public LocalDateTime getApprovedDateTime() {
+        return approvedDateTime;
+    }
+
+    public void setApprovedDateTime(LocalDateTime approvedDateTime) {
+        this.approvedDateTime = approvedDateTime;
+    }
+
+    public LocalDateTime getRejectedDateTime() {
+        return rejectedDateTime;
+    }
+
+    public void setRejectedDateTime(LocalDateTime rejectedDateTime) {
+        this.rejectedDateTime = rejectedDateTime;
+    }
+
+    public LocalDateTime getPendingApprovalDateTime() {
+        return pendingApprovalDateTime;
+    }
+
+    public void setPendingApprovalDateTime(LocalDateTime pendingApprovalDateTime) {
+        this.pendingApprovalDateTime = pendingApprovalDateTime;
+    }
+
+    public LocalDateTime getUnderReviewDateTime() {
+        return underReviewDateTime;
+    }
+
+    public void setUnderReviewDateTime(LocalDateTime underReviewDateTime) {
+        this.underReviewDateTime = underReviewDateTime;
     }
 
     @Override

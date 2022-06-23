@@ -20,6 +20,8 @@ VacancyDetails.openSelectCrewModal = function(vacancyId) {
 
 };
 
+
+
 VacancyDetails.getValidCrewToAssignVacancy = function(vacancyId) {
      var payload = {
           vacancyId : vacancyId

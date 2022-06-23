@@ -63,7 +63,7 @@
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">History
         </button>
         <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownHistory">
-            <a class="dropdown-item <c:if test="${sMenu == 'offer'}">active</c:if>" href="/crew/offer?menu=hist&sMenu=offer&crewId=${crewId}">Offer Letter</a>
+            <a class="dropdown-item <c:if test="${sMenu == 'offer'}">active</c:if>" href="/crew/offer?menu=hist&sMenu=offer&action=list&crewId=${crewId}">Offer Letter</a>
             <a class="dropdown-item <c:if test="${sMenu == 'appt'}">active</c:if>" href="/crew/appoint?menu=hist&sMenu=appt&crewId=${crewId}">App. Letter</a>
             <a class="dropdown-item" href="#!">Medical</a>
             <a class="dropdown-item" href="#!">Activity Log</a>

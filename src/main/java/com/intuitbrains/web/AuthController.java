@@ -75,7 +75,7 @@ public class AuthController {
             //System.out.println("auditTrails = " + auditTrails.size());
             mv.addObject("auditTrails", auditTrails);
         }
-        session.setAttribute("currentUser", user);
+        session.setAttribute("currentUser", getRestrictedEmpObj(user));
         session.setAttribute("fullName", user.getFullName());
 
         List<Crew> list = crewService.getList();
@@ -92,5 +92,13 @@ public class AuthController {
         return mv;
     }
 
-
+    private Employee getRestrictedEmpObj(Employee emp){
+        Employee newEmp = new Employee();
+        newEmp.setEmpId(emp.getEmpId());
+        newEmp.setFirstName(emp.getFirstName());
+        newEmp.setLastName(emp.getLastName());
+        newEmp.setMiddleName(emp.getMiddleName());
+        newEmp.setEmailId(emp.getEmailId());
+        return newEmp;
+    }
 }

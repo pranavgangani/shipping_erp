@@ -16,3 +16,11 @@ CrewDocument.openFileUploadModal = function(docId, docName, docTypeId) {
     jQuery(modal).modal('show');
     jQuery("#fileUploaderModalTitle").text(docName);
 }
+
+
+CrewDocument.approveOfferModal = function(vacancyId) {
+    var modal = "#approveOfferLetterModal";
+    VacancyDetails.getValidCrewToAssignVacancy(vacancyId);
+    $(modal).modal('show');
+
+};

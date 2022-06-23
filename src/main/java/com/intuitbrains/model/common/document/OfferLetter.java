@@ -12,7 +12,6 @@ public class OfferLetter extends Letter {
     private Rank agreedRank;
 
     private Duration contractPeriod;
-    private LocalDateTime acceptedDateTime, rejectedDateTime;
 
     public String getVesselName() {
         return vesselName;
@@ -36,22 +35,6 @@ public class OfferLetter extends Letter {
 
     public void setContractPeriod(Duration contractPeriod) {
         this.contractPeriod = contractPeriod;
-    }
-
-    public LocalDateTime getAcceptedDateTime() {
-        return acceptedDateTime;
-    }
-
-    public void setAcceptedDateTime(LocalDateTime acceptedDateTime) {
-        this.acceptedDateTime = acceptedDateTime;
-    }
-
-    public LocalDateTime getRejectedDateTime() {
-        return rejectedDateTime;
-    }
-
-    public void setRejectedDateTime(LocalDateTime rejectedDateTime) {
-        this.rejectedDateTime = rejectedDateTime;
     }
 
     public Rank getAgreedRank() {

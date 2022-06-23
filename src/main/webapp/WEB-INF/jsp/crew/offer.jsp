@@ -11,7 +11,7 @@
     <title>Crew Offer Letters :: ${crew.fileNum}</title>
 
     <%@ include file="../includes/header_includes.jsp" %>
-    <script src="../js/crew/crew_documents.js"></script>
+    <script src="../js/crew/offer_letter.js"></script>
     <%@ include file="file_upload_header.jsp" %>
 
 </head>
@@ -25,7 +25,7 @@
 
     <div id="layoutSidenav_content">
         <main>
-            <input type="hidden" id="crewId" name="crewId" value="${crew.id}">
+            <input type="hidden" id="crewId" name="crewId" value="${crewId}">
             <input type="hidden" id="contextPath" value="<%=request.getContextPath()%>">
             <input type="hidden" id="menu" value="${menu}">
             <input type="hidden" id="action" value="${action}">
@@ -54,6 +54,7 @@
                                             <th class="border-gray-200" scope="col">Rank</th>
                                             <th class="border-gray-200" scope="col">Agreed Wages</th>
                                             <th class="border-gray-200" scope="col">Contract Period</th>
+                                            <th class="border-gray-200" scope="col">Status</th>
                                             <th class="border-gray-200" scope="col">Actions</th>
                                         </tr>
                                         </thead>
@@ -61,22 +62,27 @@
                                         <c:forEach items="${list}" var="doc">
                                             <tr>
                                                 <td><label class="small mb-3">${doc.vesselName}</label></td>
-                                                <td><label class="small mb-3">${doc.agreedRank.name} (${doc.agreedRank.shortName})</label></td>
+                                                <td><label class="small mb-3">${doc.agreedRank.name}
+                                                    (${doc.agreedRank.shortName})</label></td>
                                                 <td><label class="small mb-3">${doc.agreedWages}</label></td>
-                                                <%--<td><label class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>
-                                                <td><label class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>--%>
-                                                <td><label class="small mb-3">${doc.contractPeriod.duration} ${doc.contractPeriod.durationType.typeName}</label></td>
+                                                    <%--<td><label class="small mb-3">${doc.dateOfIssue.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>
+                                                    <td><label class="small mb-3">${doc.dateOfExpiry.format( DateTimeFormatter.ofPattern("dd-MMM-yyyy"))}</label></td>--%>
+                                                <td><label
+                                                        class="small mb-3">${doc.contractPeriod.duration} ${doc.contractPeriod.durationType.typeName}</label>
+                                                </td>
+                                                <td><div class="ms-4">${doc.status.icon}</div></td>
                                                 <td>
                                                     <c:if test="${doc.file!=null}">
                                                         <a class="dropdown-item"
-                                                           href="/crew/document/download?documentId=${doc.id}">
+                                                           href="/document/download?action=download?documentId=${doc.id}">
                                                             <div class="page-header-icon"><i data-feather="file"></i>
                                                             </div>
                                                         </a>
                                                     </c:if>
-                                                    <%--<div class="page-header-icon"><i data-feather="user-plus"></i></div>
-                                                    <div class="page-header-icon"><i data-feather="user-plus"></i></div>--%>
-
+                                                    <button class="btn btn-primary"
+                                                            onclick="Offer_Letter.approveOfferModal(${doc.id})"
+                                                            type="button">Approve/Reject
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -97,7 +103,7 @@
 </div>
 
 <%@ include file="../includes/bottom_includes.jsp" %>
-<div class="modal fade" id="newDocModal" tabindex="-1" role="dialog" aria-labelledby="newNOKModalLabel"
+<div class="modal fade" id="newDocModal" tabindex="-1" role="dialog" aria-labelledby="newDocModalLabel"
      style="display: none;" aria-hidden="true">
 
     <div class="modal-dialog modal-lg" role="document">
@@ -116,10 +122,12 @@
                             <input type="hidden" name="docTypeId" value="${offerLetterDT.id}">
                             <div class="row gx-3 mb-3">
                                 <label class="small mb-3" for="vesselId">Select a Vessel</label>
-                                <select class="form-select" aria-label="Default select example" id="vesselId" name="vesselId">
+                                <select class="form-select" aria-label="Default select example" id="vesselId"
+                                        name="vesselId">
                                     <option selected disabled>Select a Vessel:</option>
                                     <c:forEach items="${vessels}" var="vessel">
-                                        <option value="${vessel.id}">${vessel.vesselOwner.ownerName} - ${vessel.vesselName}</option>
+                                        <option value="${vessel.id}">${vessel.vesselOwner.ownerName}
+                                            - ${vessel.vesselName}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -130,7 +138,9 @@
                                     <c:forEach var="optionGroup" items="${rankMap}">
                                         <optgroup label="${optionGroup.key}">
                                             <c:forEach var="option" items="${optionGroup.value}">
-                                                <option value="${option.id}">${option.name} (${option.rankSubCategory.name})</option>
+                                                <option value="${option.id}">${option.name}
+                                                    (${option.rankSubCategory.name})
+                                                </option>
                                             </c:forEach>
                                         </optgroup>
                                     </c:forEach>
@@ -138,17 +148,20 @@
                             </div>
                             <div class="row gx-3 mb-3">
                                 <label class="small mb-1" for="agreedWages">Wages</label>
-                                <input class="form-control" id="agreedWages" name="agreedWages" type="text" placeholder="Enter Wage" />
+                                <input class="form-control" id="agreedWages" name="agreedWages" type="text"
+                                       placeholder="Enter Wage"/>
                             </div>
                             <div class="mb-3">
                                 <label class="small mb-1" for="durationTypeId">Duration</label>
-                                <select class="form-select" aria-label="Default select example" id="durationTypeId" name="durationTypeId">
+                                <select class="form-select" aria-label="Default select example" id="durationTypeId"
+                                        name="durationTypeId">
                                     <option selected disabled>Select a Duration:</option>
                                     <c:forEach items="${durationTypes}" var="durationType">
                                         <option value="${durationType.id}">${durationType.typeName}</option>
                                     </c:forEach>
                                 </select>
-                                <input class="form-control" name="durationValue" id="durationValue" type="text" placeholder="Enter Duration Value" />
+                                <input class="form-control" name="durationValue" id="durationValue" type="text"
+                                       placeholder="Enter Duration Value"/>
                             </div>
                             <button class="btn btn-primary" type="submit">Add Offer Letter</button>
                         </form>
@@ -162,6 +175,10 @@
             </div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="approveOfferModal" tabindex="-1" role="dialog" aria-labelledby="approveOfferModalLabel"
+     style="display: none;" aria-hidden="true">
+
 </div>
 
 </body>
