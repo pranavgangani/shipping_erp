@@ -51,6 +51,8 @@ public enum DocumentPool {
     CBT_EPSS(29, "CBT/EPSS"),
     AWARD(30, "Award"),
     OFFER_LETTER(31, "Offer Letter"),
+
+    APPT_LETTER(32, "Appointment Letter"),
     OTHER(0, "Other");
 
 

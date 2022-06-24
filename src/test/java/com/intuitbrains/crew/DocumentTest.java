@@ -1006,4 +1006,15 @@ class DocumentTest {
         type.setName(DocumentPool.OFFER_LETTER.getName());
         docTypeDao.insert(type);
     }
+
+    @Test
+    void addAppointmentLetter() {
+        DocumentType type = new DocumentType();
+        type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
+        type.setDocumentCategory(DocumentCategory.EMPLOYMENT);
+        type.setDocumentPool(DocumentPool.APPT_LETTER);
+        type.setShortName("APPTMNT");
+        type.setName(DocumentPool.APPT_LETTER.getName());
+        docTypeDao.insert(type);
+    }
 }

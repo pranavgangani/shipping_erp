@@ -39,10 +39,7 @@ import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.model.common.Duration;
 import com.intuitbrains.model.common.DurationType;
-import com.intuitbrains.model.common.document.License;
-import com.intuitbrains.model.common.document.OfferLetter;
-import com.intuitbrains.model.common.document.Passport;
-import com.intuitbrains.model.common.document.Visa;
+import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.DocumentCategory;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.common.document.category.DocumentType;
@@ -455,6 +452,26 @@ public class CrewController {
                         Updates.set("approvedDateTime", DateTimeUtil.getNowDateTime())
                 );
                 //Create Appointment Letter
+
+                OfferLetter offerLetter = (OfferLetter)documentDao.findById(docId).get();
+                List<DocumentType> docTypes = docTypeDao.findAll();
+                DocumentType appointLetterDT = docTypes.stream().filter(d -> d.getDocumentPool().equals(DocumentPool.APPT_LETTER)).collect(Collectors.toList()).get(0);
+
+                AppointmentLetter doc = new AppointmentLetter();
+                doc.setCrewId(crewId);
+                doc.setDocType(appointLetterDT);
+                doc.setVesselName(offerLetter.getVesselName());
+                doc.setAgreedRank(offerLetter.getAgreedRank());
+                doc.setAgreedWages(offerLetter.getAgreedWages());
+                //doc.setDateOfIssue(dateOfIssue);
+                doc.setContractPeriod(offerLetter.getContractPeriod());
+                //doc.setDateOfExpiry(DateTimeUtil.calculateExpiryDate(contractDuration, dateOfIssue));
+                doc.setEnteredBy(emp);
+                doc.setStatus(CrewDocumentStatus.PENDING_APPROVAL);
+                doc.setEnteredDateTime(LocalDateTime.now());
+                doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+                documentDao.insert(doc);
+
             } else if (action.equalsIgnoreCase(CrewDocumentStatus.REJECTED.getDesc())) {
                 status = CrewDocumentStatus.REJECTED;
                 updates = Updates.combine(
