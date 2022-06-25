@@ -65,6 +65,7 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bson.BsonBinarySubType;
@@ -436,9 +437,9 @@ public class CrewController {
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
                 String uploadPath = req.getServletContext().getRealPath("");
-                try{
+                try {
                     generateOfferLetter(doc, crew, req.getServletContext().getRealPath(""));
-                }catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 documentDao.insert(doc);
@@ -467,7 +468,7 @@ public class CrewController {
                 );
                 //Create Appointment Letter
 
-                OfferLetter offerLetter = (OfferLetter)documentDao.findById(docId).get();
+                OfferLetter offerLetter = (OfferLetter) documentDao.findById(docId).get();
                 List<DocumentType> docTypes = docTypeDao.findAll();
                 DocumentType appointLetterDT = docTypes.stream().filter(d -> d.getDocumentPool().equals(DocumentPool.APPT_LETTER)).collect(Collectors.toList()).get(0);
 
@@ -772,7 +773,7 @@ public class CrewController {
     }
 
     @GetMapping("/document/download")
-    public ResponseEntity<Resource> downloadDowcument(HttpServletRequest req, Model model) throws Exception {
+    public ResponseEntity<Resource> downloadDocument(HttpServletRequest req, Model model) throws Exception {
         long documentId = ParamUtil.parseLong(req.getParameter("documentId"), -1);
         //model.addAttribute("message", "hello");
 
@@ -792,10 +793,15 @@ public class CrewController {
         //Path path = Paths.get(fileName);
         ByteArrayResource resource = new ByteArrayResource(doc.getFile().getData());
 
+        MediaType mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        String ext = FilenameUtils.getExtension(file.getName());
+        if (ext.contains("pdf")) {
+            mediaType = MediaType.APPLICATION_PDF;
+        }
         return ResponseEntity.ok()
                 .headers(header)
                 .contentLength(file.length())
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentType(mediaType)
                 .body(resource);
 
     }
@@ -1227,31 +1233,32 @@ public class CrewController {
         return flags;
     }
 
-    public void generateOfferLetter(OfferLetter offerLetter, Crew crew, String tempFilePath) throws JRException {
-        File jasperFile = new File(tempFilePath +  "\\jasper\\offer_letter.jasper");
-        String uploadPath = tempFilePath + File.separator + "temp" + File.separator + "offer_letter.pdf";
+    public void generateOfferLetter(OfferLetter offerLetter, Crew crew, String tempFilePath) throws JRException, IOException {
+        String jasperFilePath = getClass().getResource("/jasper/offer_letter.jasper").getPath();
+
+        String fileName = crew.getFileNum() + "_offer_letter.pdf";
+        String uploadPath = tempFilePath + File.separator + "temp" + File.separator + fileName;
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("crewName", crew.getFullName());
         parameters.put("rank", offerLetter.getAgreedRank().getName());
         parameters.put("agreedWages", String.valueOf(offerLetter.getAgreedWages()));
         parameters.put("vesselName", offerLetter.getVesselName());
-        parameters.put("contractPeriod", offerLetter.getContractPeriod());
+        parameters.put("contractPeriod", offerLetter.getContractPeriod().toString());
 
         List<Bank> banks = crew.getBanks();
-        if(ListUtil.isNotEmpty(banks)) {
-            Bank bank = (Bank)ListUtil.getFirstItem(banks);
+        if (ListUtil.isNotEmpty(banks)) {
+            Bank bank = (Bank) ListUtil.getFirstItem(banks);
             parameters.put("bankName", bank.getBankName());
-            parameters.put("accountNUmber", bank.getAccountNumber());
+            parameters.put("accountNumber", bank.getAccountNumber());
             parameters.put("beneficiaryName", bank.getBeneficiaryName());
         }
         //final JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(new ArrayList<>());
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFile.getPath(), parameters, new JREmptyDataSource());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, parameters, new JREmptyDataSource());
         JRPdfExporter exporter = new JRPdfExporter();
-
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(
-                new SimpleOutputStreamExporterOutput("offer_letter.pdf"));
+                new SimpleOutputStreamExporterOutput(fileName));
         SimplePdfReportConfiguration reportConfig
                 = new SimplePdfReportConfiguration();
         reportConfig.setSizePageToContent(true);
@@ -1269,7 +1276,12 @@ public class CrewController {
         exporter.exportReport();
         JasperExportManager.exportReportToPdfFile(jasperPrint, uploadPath);
 
-        offerLetter.setFile(new Binary(BsonBinarySubType.BINARY, uploadPath.getBytes()));
+        File tmpFile = new File(uploadPath);
+        byte[] fileContent = Files.readAllBytes(tmpFile.toPath());
+
+        offerLetter.setFile(new Binary(BsonBinarySubType.BINARY, fileContent));
+        offerLetter.setFileTitle(fileName);
+        tmpFile.delete();
 
     }
 }

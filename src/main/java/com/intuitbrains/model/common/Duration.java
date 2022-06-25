@@ -39,4 +39,9 @@ public class Duration {
     public int hashCode() {
         return Objects.hash(durationType, duration);
     }
+
+    @Override
+    public String toString() {
+        return duration + " " + durationType.getTypeName();
+    }
 }

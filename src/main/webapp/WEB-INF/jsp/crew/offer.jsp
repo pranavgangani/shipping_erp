@@ -74,7 +74,7 @@
                                                 <td>
                                                     <c:if test="${doc.file!=null}">
                                                         <a class="dropdown-item"
-                                                           href="/document/download?action=download?documentId=${doc.id}">
+                                                           href="/crew/document/download?action=download&documentId=${doc.id}">
                                                             <div class="page-header-icon"><i data-feather="file"></i>
                                                             </div>
                                                         </a>
