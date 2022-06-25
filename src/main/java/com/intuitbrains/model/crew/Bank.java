@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class Bank {
 	private int id;
-	private String bankName, accountNumber, micrCode, swiftCode, ifscCode, branchAddress;
+	private String beneficiaryName, bankName, accountNumber, micrCode, swiftCode, ifscCode, branchAddress;
 	private Employee enteredByEmp, updatedByEmp;
 	private LocalDateTime enteredDateTime, updatedDateTime;
 	private Flag flag;
@@ -19,6 +19,14 @@ public class Bank {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getBeneficiaryName() {
+		return beneficiaryName;
+	}
+
+	public void setBeneficiaryName(String beneficiaryName) {
+		this.beneficiaryName = beneficiaryName;
 	}
 
 	public String getBankName() {

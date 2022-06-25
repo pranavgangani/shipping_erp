@@ -57,6 +57,13 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -401,6 +408,7 @@ public class CrewController {
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         if (crewId > 0) {
             mv = new ModelAndView("redirect:/crew/offer?menu=" + menu + "&sMenu=" + sMenu + "&crewId=" + crewId);
+            Crew crew = crewService.getObjectById(crewId);
             Employee emp = (Employee) req.getSession().getAttribute("currentUser");
             long docTypeId = ParamUtil.parseInt(req.getParameter("docTypeId"), -1);
             long vesselId = ParamUtil.parseLong(req.getParameter("vesselId"), -1);
@@ -427,6 +435,12 @@ public class CrewController {
                 doc.setStatus(CrewDocumentStatus.PENDING_APPROVAL);
                 doc.setEnteredDateTime(LocalDateTime.now());
                 doc.setId(sequenceGenerator.generateSequence(CrewDocument.SEQUENCE_NAME));
+                String uploadPath = req.getServletContext().getRealPath("");
+                try{
+                    generateOfferLetter(doc, crew, req.getServletContext().getRealPath(""));
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
                 documentDao.insert(doc);
             }
 
@@ -1211,5 +1225,51 @@ public class CrewController {
             f.setEmoji(null);
         });
         return flags;
+    }
+
+    public void generateOfferLetter(OfferLetter offerLetter, Crew crew, String tempFilePath) throws JRException {
+        File jasperFile = new File(tempFilePath +  "\\jasper\\offer_letter.jasper");
+        String uploadPath = tempFilePath + File.separator + "temp" + File.separator + "offer_letter.pdf";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("crewName", crew.getFullName());
+        parameters.put("rank", offerLetter.getAgreedRank().getName());
+        parameters.put("agreedWages", String.valueOf(offerLetter.getAgreedWages()));
+        parameters.put("vesselName", offerLetter.getVesselName());
+        parameters.put("contractPeriod", offerLetter.getContractPeriod());
+
+        List<Bank> banks = crew.getBanks();
+        if(ListUtil.isNotEmpty(banks)) {
+            Bank bank = (Bank)ListUtil.getFirstItem(banks);
+            parameters.put("bankName", bank.getBankName());
+            parameters.put("accountNUmber", bank.getAccountNumber());
+            parameters.put("beneficiaryName", bank.getBeneficiaryName());
+        }
+        //final JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(new ArrayList<>());
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFile.getPath(), parameters, new JREmptyDataSource());
+        JRPdfExporter exporter = new JRPdfExporter();
+
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterOutput(
+                new SimpleOutputStreamExporterOutput("offer_letter.pdf"));
+        SimplePdfReportConfiguration reportConfig
+                = new SimplePdfReportConfiguration();
+        reportConfig.setSizePageToContent(true);
+        reportConfig.setForceLineBreakPolicy(false);
+
+        SimplePdfExporterConfiguration exportConfig
+                = new SimplePdfExporterConfiguration();
+        exportConfig.setMetadataAuthor("intuitbrains");
+        exportConfig.setEncrypted(true);
+        exportConfig.setAllowedPermissionsHint("PRINTING");
+
+        exporter.setConfiguration(reportConfig);
+        exporter.setConfiguration(exportConfig);
+
+        exporter.exportReport();
+        JasperExportManager.exportReportToPdfFile(jasperPrint, uploadPath);
+
+        offerLetter.setFile(new Binary(BsonBinarySubType.BINARY, uploadPath.getBytes()));
+
     }
 }

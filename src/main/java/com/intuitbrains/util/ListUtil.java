@@ -12,6 +12,22 @@ public class ListUtil {
         }
     }
 
+    public static Object getFirstItem(List list) {
+        if (list != null && !list.isEmpty()) {
+            return list.get(0);
+        } else {
+            return false;
+        }
+    }
+
+    public static Object getLastItem(List list) {
+        if (list != null && !list.isEmpty()) {
+            return list.get(list.size() - 1);
+        } else {
+            return false;
+        }
+    }
+
     public static boolean isEmpty(List list) {
         if (list != null && !list.isEmpty()) {
             return false;
