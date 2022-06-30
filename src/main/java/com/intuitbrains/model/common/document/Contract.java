@@ -2,11 +2,14 @@ package com.intuitbrains.model.common.document;
 
 import com.intuitbrains.model.common.document.category.EmploymentDocument;
 import com.intuitbrains.model.crew.ContractRule;
+import com.intuitbrains.model.company.compensation.Reimbursement;
+import com.intuitbrains.model.company.compensation.Remuneration;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class Contract extends EmploymentDocument {
+public class Contract extends EmploymentLetter {
+
     private List<ContractRule> contractRules;
     private LocalDate startDate, endDate;
 	public List<ContractRule> getContractRules() {
@@ -27,6 +30,5 @@ public class Contract extends EmploymentDocument {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
-    
-    
+
 }

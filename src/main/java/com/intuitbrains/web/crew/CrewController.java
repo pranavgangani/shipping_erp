@@ -43,6 +43,10 @@ import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.DocumentCategory;
 import com.intuitbrains.model.common.document.category.DocumentPool;
 import com.intuitbrains.model.common.document.category.DocumentType;
+import com.intuitbrains.model.company.compensation.Deduction;
+import com.intuitbrains.model.company.compensation.Reimbursement;
+import com.intuitbrains.model.company.compensation.Remuneration;
+import com.intuitbrains.model.company.compensation.RemunerationType;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.*;
@@ -1238,23 +1242,33 @@ public class CrewController {
 
         String fileName = crew.getFileNum() + "_offer_letter.pdf";
         String uploadPath = tempFilePath + File.separator + "temp" + File.separator + fileName;
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("crewName", crew.getFullName());
-        parameters.put("rank", offerLetter.getAgreedRank().getName());
-        parameters.put("agreedWages", String.valueOf(offerLetter.getAgreedWages()));
-        parameters.put("vesselName", offerLetter.getVesselName());
-        parameters.put("contractPeriod", offerLetter.getContractPeriod().toString());
+        Map<String, Object> params = new HashMap<>();
+        params.put("crewName", crew.getFullName());
+        params.put("rank", offerLetter.getAgreedRank().getName());
+        params.put("agreedWages", String.valueOf(offerLetter.getAgreedWages()));
+        params.put("vesselName", offerLetter.getVesselName());
+        params.put("contractPeriod", offerLetter.getContractPeriod().toString());
 
         List<Bank> banks = crew.getBanks();
         if (ListUtil.isNotEmpty(banks)) {
             Bank bank = (Bank) ListUtil.getFirstItem(banks);
-            parameters.put("bankName", bank.getBankName());
-            parameters.put("accountNumber", bank.getAccountNumber());
-            parameters.put("beneficiaryName", bank.getBeneficiaryName());
+            params.put("bankName", bank.getBankName());
+            params.put("accountNumber", bank.getAccountNumber());
+            params.put("beneficiaryName", bank.getBeneficiaryName());
         }
         //final JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(new ArrayList<>());
+        List<Remuneration> remunerations = new ArrayList<>();
+        remunerations.add(new Remuneration(RemunerationType.BASIC, 100.00d));
+        remunerations.add(new Remuneration(RemunerationType.FIXED_OVETIME, 200.00d));
+        remunerations.add(new Remuneration(RemunerationType.PENSION_FUND, 1000.00d));
+        List<Reimbursement> reimbursements = new ArrayList<>();
+        List<Deduction> deductions = new ArrayList<>();
+        params.put("remunerations", remunerations);
+        params.put("reimbursements", reimbursements);
+        params.put("deductions", deductions);
 
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, parameters, new JREmptyDataSource());
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperFilePath, params, new JREmptyDataSource());
         JRPdfExporter exporter = new JRPdfExporter();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
         exporter.setExporterOutput(

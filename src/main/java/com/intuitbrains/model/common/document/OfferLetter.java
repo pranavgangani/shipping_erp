@@ -6,7 +6,7 @@ import com.intuitbrains.model.crew.Rank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class OfferLetter extends Letter {
+public class OfferLetter extends EmploymentLetter {
     private String vesselName;
     private double agreedWages;
     private Rank agreedRank;

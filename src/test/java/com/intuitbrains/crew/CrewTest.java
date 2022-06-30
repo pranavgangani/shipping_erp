@@ -12,14 +12,21 @@ import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.main.CrewManagementApplication;
+import com.intuitbrains.model.common.Duration;
+import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.*;
+import com.intuitbrains.model.company.compensation.Deduction;
+import com.intuitbrains.model.company.compensation.Reimbursement;
+import com.intuitbrains.model.company.compensation.Remuneration;
+import com.intuitbrains.model.company.compensation.RemunerationType;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.*;
 import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.model.vessel.Vacancy;
 import com.intuitbrains.service.common.ContractDocumentGenerator;
+import com.intuitbrains.service.common.OfferLetterGenerator;
 import com.intuitbrains.service.common.SequenceGeneratorService;
 import com.intuitbrains.service.crew.CrewService;
 import com.intuitbrains.service.vessel.VesselService;
@@ -28,6 +35,7 @@ import com.intuitbrains.util.ListUtil;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import net.sf.jasperreports.engine.JRException;
 import org.bson.conversions.Bson;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -37,6 +45,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -567,6 +576,28 @@ class CrewTest {
         crewContractDao.insert(contract);
 
 
+    }
+
+    @Test
+    void generateOfferLetter() throws JRException, IOException {
+        Crew crew = crewDao.findById(4l).get();
+        OfferLetter offerLetter = new OfferLetter();
+        offerLetter.setVesselName("Some vessel name");
+        offerLetter.setAgreedRank(Rank.CAPTAIN);
+        offerLetter.setAgreedWages(1000);
+        offerLetter.setContractPeriod(new Duration(DurationType.MONTHS, 6));
+
+        List<Remuneration> remunerations = new ArrayList<>();
+        remunerations.add(new Remuneration(RemunerationType.BASIC, 100.00d));
+        remunerations.add(new Remuneration(RemunerationType.FIXED_OVETIME, 200.00d));
+        remunerations.add(new Remuneration(RemunerationType.PENSION_FUND, 1000.00d));
+        List<Reimbursement> reimbursements = new ArrayList<>();
+        List<Deduction> deductions = new ArrayList<>();
+        offerLetter.setRemunerations(remunerations);
+        offerLetter.setReimbursements(reimbursements);
+        offerLetter.setDeductions(deductions);
+        OfferLetterGenerator offerLetterGenerator = new OfferLetterGenerator(crew, offerLetter);
+        offerLetterGenerator.generate("E:\\");
     }
 
     @Test
