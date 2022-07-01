@@ -16,10 +16,7 @@ import com.intuitbrains.model.common.Duration;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.*;
-import com.intuitbrains.model.company.compensation.Deduction;
-import com.intuitbrains.model.company.compensation.Reimbursement;
-import com.intuitbrains.model.company.compensation.Remuneration;
-import com.intuitbrains.model.company.compensation.RemunerationType;
+import com.intuitbrains.model.company.compensation.*;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.*;
 import com.intuitbrains.model.vessel.Vessel;
@@ -592,10 +589,14 @@ class CrewTest {
         remunerations.add(new Remuneration(RemunerationType.FIXED_OVETIME, 200.00d));
         remunerations.add(new Remuneration(RemunerationType.PENSION_FUND, 1000.00d));
         List<Reimbursement> reimbursements = new ArrayList<>();
-        List<Deduction> deductions = new ArrayList<>();
+        reimbursements.add(new Reimbursement(ReimbursementType.JOINING_ALLOWANCE, 1001.00d));
+
+        //List<Deduction> deductions = new ArrayList<>();
+        //deductions.add(new Deduction(DeductionType.NIL, 0d));
+
         offerLetter.setRemunerations(remunerations);
         offerLetter.setReimbursements(reimbursements);
-        offerLetter.setDeductions(deductions);
+        offerLetter.setDeductions(null);
         OfferLetterGenerator offerLetterGenerator = new OfferLetterGenerator(crew, offerLetter);
         offerLetterGenerator.generate("E:\\");
     }
