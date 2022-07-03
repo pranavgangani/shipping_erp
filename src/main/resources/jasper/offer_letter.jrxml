@@ -297,7 +297,8 @@ If already holding account:]]></text>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="85" width="555" height="44" uuid="893117bb-3a9c-49ef-8122-bc3e5b46efb2"/>
+				<reportElement x="0" y="83" width="555" height="44" uuid="893117bb-3a9c-49ef-8122-bc3e5b46efb2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
@@ -319,7 +320,7 @@ If already holding account:]]></text>
 					</datasetRun>
 					<jr:columnGroup width="555" uuid="8b066967-cd88-4cdf-8ed4-d54993f168ee">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [3]"/>
-						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+						<jr:tableHeader height="30" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="555" height="30" uuid="2638d447-ab59-4bf6-8942-1926828516b7"/>
 								<text><![CDATA[Remuneration:]]></text>
@@ -327,13 +328,13 @@ If already holding account:]]></text>
 						</jr:tableHeader>
 						<jr:column width="230" uuid="942fb27b-5c72-4dd5-9749-a530078a36a1">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader height="30" rowSpan="1">
 								<textField>
 									<reportElement x="0" y="0" width="230" height="30" uuid="4cc45960-1af4-40b9-8191-6686b3442035"/>
 									<textFieldExpression><![CDATA["Wages of USD "+ $P{agreedWages} + " per month comprising :-"]]></textFieldExpression>
 								</textField>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="230" height="30" uuid="cdd97b17-3141-4ab4-b4d1-33c935864e11"/>
 									<textFieldExpression><![CDATA[$F{typeLabel}]]></textFieldExpression>
@@ -342,14 +343,14 @@ If already holding account:]]></text>
 						</jr:column>
 						<jr:column width="132" uuid="cbd832f9-d824-487d-adb3-aac4ff77bf9e">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader height="30" rowSpan="1">
 								<staticText>
 									<reportElement x="0" y="0" width="132" height="30" uuid="9542929f-79c6-4446-9473-544f2fd36993"/>
 									<textElement textAlignment="Center"/>
 									<text><![CDATA[Wages]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="132" height="30" uuid="c685fac7-5524-4edf-b8f9-8f3eb867a0d4"/>
 									<textFieldExpression><![CDATA[$F{wages}]]></textFieldExpression>
@@ -358,14 +359,14 @@ If already holding account:]]></text>
 						</jr:column>
 						<jr:column width="193" uuid="7518375d-dc93-4a7d-9095-e76d97fc51b5">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-							<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<jr:columnHeader height="30" rowSpan="1">
 								<staticText>
 									<reportElement x="0" y="0" width="193" height="30" uuid="874d61f0-c624-486d-8e44-bcf208282e6c"/>
 									<textElement textAlignment="Center"/>
 									<text><![CDATA[Payment Frequency]]></text>
 								</staticText>
 							</jr:columnHeader>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="193" height="30" uuid="88055722-37a4-4bb7-b025-3876e4ca8a96"/>
 									<textFieldExpression><![CDATA[$F{paymentFrequencyLabel}]]></textFieldExpression>
@@ -392,7 +393,7 @@ If already holding account:]]></text>
 					</datasetRun>
 					<jr:columnGroup width="555" uuid="641e35b2-7343-4d4b-bdf3-b8cc41f43de8">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [3]"/>
-						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+						<jr:tableHeader height="30" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="555" height="30" uuid="dd976288-3354-4f12-af5b-7f522900ec83"/>
 								<text><![CDATA[Reimbursement:]]></text>
@@ -400,7 +401,7 @@ If already holding account:]]></text>
 						</jr:tableHeader>
 						<jr:column width="230" uuid="004522a6-552f-4f7c-bea3-e3162193f0d6">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="230" height="30" uuid="fd11b9ff-2e77-4e6d-a344-6f15257a2a07"/>
 									<textFieldExpression><![CDATA[$F{typeLabel}]]></textFieldExpression>
@@ -409,7 +410,7 @@ If already holding account:]]></text>
 						</jr:column>
 						<jr:column width="132" uuid="89d2b775-cc4f-4fb7-af28-7b8a986639a0">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="132" height="30" uuid="e3ee51e0-cb6a-41f7-aa25-aa0b8e9c16d6"/>
 									<textFieldExpression><![CDATA[$F{wages}]]></textFieldExpression>
@@ -418,7 +419,7 @@ If already holding account:]]></text>
 						</jr:column>
 						<jr:column width="193" uuid="fad5bb31-e7c9-4461-8e42-1091f86509a7">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="193" height="30" uuid="e0558ec2-3c65-41cf-a65f-a7a470671acb"/>
 									<textFieldExpression><![CDATA[$F{paymentFrequencyLabel}]]></textFieldExpression>
@@ -445,7 +446,7 @@ If already holding account:]]></text>
 					</datasetRun>
 					<jr:columnGroup width="555" uuid="859ee818-d895-4eaa-bab1-73254d583635">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Columns [3]"/>
-						<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
+						<jr:tableHeader height="30" rowSpan="1">
 							<staticText>
 								<reportElement x="0" y="0" width="555" height="30" uuid="de76ba55-0c51-419b-bb91-5b163b33b6f5"/>
 								<text><![CDATA[Deductions:]]></text>
@@ -453,7 +454,7 @@ If already holding account:]]></text>
 						</jr:tableHeader>
 						<jr:column width="230" uuid="d979c5d4-36f7-4f49-a26f-ea344d329b8f">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="230" height="30" uuid="7584d0a6-ec7c-4896-b213-9781d41fd220"/>
 									<textFieldExpression><![CDATA[$F{typeLabel}]]></textFieldExpression>
@@ -462,7 +463,7 @@ If already holding account:]]></text>
 						</jr:column>
 						<jr:column width="132" uuid="913c72f3-fbce-4c3e-96e6-985c24d49e1e">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="132" height="30" uuid="7ebf3198-6be2-40ce-9345-c1a8dfdcd98a"/>
 									<textFieldExpression><![CDATA[$F{wages}]]></textFieldExpression>
@@ -471,7 +472,7 @@ If already holding account:]]></text>
 						</jr:column>
 						<jr:column width="193" uuid="239b56d0-391f-4791-8904-80dfc45b281d">
 							<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-							<jr:detailCell style="Table_TD" height="30">
+							<jr:detailCell height="30">
 								<textField>
 									<reportElement x="0" y="0" width="193" height="30" uuid="014cb6c4-276c-4a15-8459-3cd63f044680"/>
 									<textFieldExpression><![CDATA[$F{paymentFrequencyLabel}]]></textFieldExpression>
