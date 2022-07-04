@@ -12,7 +12,7 @@ public class Flag {
 	
 	@Id
 	private ObjectId id;
-	private String name, code, image, emoji, unicode;
+	private String name, code, image, emoji, unicode, nationality;
 	
 	public ObjectId getId() {
 		return id;
@@ -50,8 +50,14 @@ public class Flag {
 	public void setUnicode(String unicode) {
 		this.unicode = unicode;
 	}
-	
-	
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
 	//private List<Certification> rankCertifications;
 	//private List<VesselCertification> shipCertifications;
 }

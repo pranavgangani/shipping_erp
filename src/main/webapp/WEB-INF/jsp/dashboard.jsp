@@ -10,18 +10,18 @@
 <meta name="author" content="" />
 <title>ShipMon :: Dashboard</title>
 <link
-	href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+	href="${request.contextPath}/css/style.css"
 	rel="stylesheet" />
 <link
-	href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"
+	href="${request.contextPath}/litepicker.css"
 	rel="stylesheet" />
-<link href="css/styles.css" rel="stylesheet" />
-<link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+<link href="${request.contextPath}/css/styles.css" rel="stylesheet" />
+<link rel="icon" type="image/x-icon" href="${request.contextPath}/assets/img/favicon.png" />
 <script data-search-pseudo-elements defer
-	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+	src="${request.contextPath}/js/all.min.js"
 	crossorigin="anonymous"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"
+	src="${request.contextPath}/js/feather.min.js"
 	crossorigin="anonymous"></script>
 
 

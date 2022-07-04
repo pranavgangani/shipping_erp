@@ -110,11 +110,11 @@
                                                     aria-label="Default select example">
                                                 <option selected disabled>Marital Status:</option>
                                                 <option
-                                                        <c:if test="${crew.maritalStatus=='single'}">selected</c:if>
+                                                        <c:if test="${crew.maritalStatus=='Single'}">selected</c:if>
                                                         value="single">Single
                                                 </option>
                                                 <option
-                                                        <c:if test="${crew.maritalStatus=='married'}">selected</c:if>
+                                                        <c:if test="${crew.maritalStatus=='Married'}">selected</c:if>
                                                         value="married">Married
                                                 </option>
                                             </select>
