@@ -9,6 +9,7 @@ import com.intuitbrains.dao.common.FieldStatus;
 import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.model.common.document.Contract;
+import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
@@ -110,7 +111,7 @@ public class CrewService {
         audit.setCollection(Collection.CREW);
         audit.setActionBy(crew.getEnteredBy());
         audit.setUniqueId(crew.getId());
-        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> added by " + employeeDao.findByEmpId(crew.getEnteredBy()).getFullName());
+        audit.setText("New Crew - <b>" + (crew.getFullName()) + "</b> added by " + employeeDao.findByEmpId(crew.getEnteredBy().getFullName()));
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         auditTrailDao.insert(audit);
         return crew;
@@ -130,9 +131,9 @@ public class CrewService {
 
     }
 
-    public Crew uploadCrewData(String uploadByEmpId, FileInputStream file) throws IOException {
+    public Crew uploadCrewData(Employee uploadByEmp, FileInputStream file) throws IOException {
         Crew crew = crewExcelService.readFromExcel(file);
-        crew.setEnteredBy(uploadByEmpId);
+        crew.setEnteredBy(uploadByEmp);
         List<CrewDocument> docsToUpload = crew.getExistingDocuments();
         crew.setExistingDocuments(null);//Don't store in Crew object
         this.addCrew(crew);
@@ -160,7 +161,7 @@ public class CrewService {
         audit.setActionBy(crew.getUpdatedBy());
         audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.CREW);
-        audit.setText("Updated Crew - <b>" + (crew.getFullName()) + "</b> by " + employeeDao.findByEmpId(crew.getEnteredBy()).getFullName());
+        audit.setText("Updated Crew - <b>" + (crew.getFullName()) + "</b> by " + employeeDao.findByEmpId(crew.getEnteredBy().getFullName()));
         audit.setId(sequenceGenerator.generateSequence(AuditTrail.SEQUENCE_NAME));
         audit.setUniqueId(crew.getId());
         auditTrailDao.insert(audit);
@@ -240,9 +241,9 @@ public class CrewService {
 
     public void addToAudit(Crew modifiedCrew) {
         List<CrewFieldAudit> audits = new LinkedList<>();
-        String maker = modifiedCrew.getEnteredBy();
+        Employee maker = modifiedCrew.getEnteredBy();
         CrewFieldStatus fs = modifiedCrew.getFieldStatus();
-        String enteredBy = modifiedCrew.getEnteredBy();
+        Employee enteredBy = modifiedCrew.getEnteredBy();
         long crewId = modifiedCrew.getId();
         Class clazz = modifiedCrew.getClass();
         Class fsClazz = fs.getClass();
@@ -279,11 +280,11 @@ public class CrewService {
 
                         crewFieldAudit.setCrewId(crewId);
                         crewFieldAudit.setFieldName(field.getFieldName());
-                        crewFieldAudit.setEnteredBy(enteredBy);
+                        crewFieldAudit.setEnteredBy(enteredBy.getEmpId());
                         crewFieldAudit.setEnteredDateTime(LocalDateTime.now());
                         audits.add(crewFieldAudit);
 
-                        setterMethod.invoke(fs, new FieldStatus(maker, now, null, null));
+                        setterMethod.invoke(fs, new FieldStatus(maker.getEmpId(), now, null, null));
 
                     }
 

@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -100,7 +101,11 @@ public class CrewExcelService {
 
 
             //Get Documents
-            //List<CrewDocument> mandatoryDocList = documentDao.findAll();
+            //List<CrewDocument> mandatoryDocList = documentDao.findAll();;
+            crew.setAvailableFromDate(DateTimeUtil.convertToLocalDate(dateAvailableFrom));
+            crew.setAcceptLowerRank(isLowerRank);
+            crew.setRank(Rank.createFromDesc(postAppliedFor));
+
             //Passport & Visa
             populatePassportVisa(sheet1, crew, documents);
             //CDC

@@ -283,7 +283,7 @@ public class CrewController {
         crew.setDistinguishingMark(distinguishMark);
         crew.setManningOffice(manningOffice);
 
-        crew.setEnteredBy(emp.getEmpId());
+        crew.setEnteredBy(emp);
         crewService.addCrew(crew);
         long crewId = crew.getId();
         System.out.println("New crewId ---> " + crewId);
@@ -1088,7 +1088,7 @@ public class CrewController {
             String newFilePath = uploadPath + file.getOriginalFilename();
             FileCopyUtils.copy(file.getBytes(), new File(newFilePath));
             FileInputStream fi = new FileInputStream(newFilePath);
-            crewService.uploadCrewData(emp.getEmpId(), fi);
+            crewService.uploadCrewData(emp, fi);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -1118,7 +1118,7 @@ public class CrewController {
             //Audit
             AuditTrail audit = new AuditTrail();
             audit.setAction(StandardWebParameter.ADD);
-            audit.setActionBy(emp.getEmpId());
+            audit.setActionBy(emp);
             audit.setActionLocalDateTime(LocalDateTime.now());
             audit.setCollection(Collection.CREW);
             audit.setText("New Document - <b>" + (docToUpload.getDocName()) + "</b> added!");

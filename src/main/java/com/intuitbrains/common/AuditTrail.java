@@ -1,5 +1,6 @@
 package com.intuitbrains.common;
 
+import com.intuitbrains.model.company.Employee;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
@@ -15,7 +16,7 @@ public class AuditTrail {
     private long id;
     private String collection;
     private String action;
-    private String actionBy;
+    private Employee actionBy;
     private LocalDateTime actionLocalDateTime;
     private String text;
     private long uniqueId;
@@ -46,11 +47,11 @@ public class AuditTrail {
         this.action = action;
     }
 
-    public String getActionBy() {
+    public Employee getActionBy() {
         return actionBy;
     }
 
-    public void setActionBy(String actionBy) {
+    public void setActionBy(Employee actionBy) {
         this.actionBy = actionBy;
     }
 

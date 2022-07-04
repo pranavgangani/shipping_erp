@@ -3,9 +3,11 @@ package com.intuitbrains.crew;
 import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
+import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.main.CrewManagementApplication;
 import com.intuitbrains.model.common.document.*;
+import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.CrewDocument;
 import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.*;
@@ -48,12 +50,15 @@ class ExcelReadTest {
     private FlagRepository flagDao;
     @Autowired
     private CrewService crewService;
+    @Autowired
+    private EmployeeRepository employeeDao;
 
     @Test
     public void readFromExcel() {
         try {
-            FileInputStream file = new FileInputStream("D:\\shipping_erp\\Pranav.xlsx");
-            crewService.uploadCrewData("IND001",file);
+            Employee makerEmp = employeeDao.findByEmpId("IND001");
+            FileInputStream file = new FileInputStream("E:\\dev\\shipping_erp\\template\\Pranav.xlsx");
+            crewService.uploadCrewData(makerEmp,file);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -176,7 +176,7 @@ public class VesselController {
         //Audit
         AuditTrail audit = new AuditTrail();
         audit.setAction(StandardWebParameter.ADD);
-        audit.setActionBy(empId);
+        audit.setActionBy(emp);
         audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.VESSEL);
         audit.setText("New Vessel - <b>" + (vessel.getVesselName()) + "</b> added!");
@@ -254,7 +254,7 @@ public class VesselController {
             //Audit
             AuditTrail audit = new AuditTrail();
             audit.setAction(StandardWebParameter.MODIFY);
-            audit.setActionBy(empId);
+            audit.setActionBy(user);
             audit.setActionLocalDateTime(LocalDateTime.now());
             audit.setCollection(Collection.VESSEL);
             audit.setText("Modified Vessel - <b>" + (vessel.getVesselName()) + "</b> added!");

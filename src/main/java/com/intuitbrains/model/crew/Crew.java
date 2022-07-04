@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.intuitbrains.common.*;
 import com.intuitbrains.model.common.document.Contract;
+import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
 import com.intuitbrains.model.vessel.Vessel;
 import com.intuitbrains.util.DateTimeUtil;
@@ -34,6 +35,7 @@ public class Crew extends Person {
     private String passportNumber, indosNumber;
     private String distinguishingMark;
     private Rank rank;
+    private boolean isAcceptLowerRank;
     private double height, weight;
     private String manningOffice;
     private long photoId;
@@ -77,7 +79,7 @@ public class Crew extends Person {
     private List<NextOfKin> nextOfKins;
     private List<Bank> banks;
 
-    private String interviewedBy, enteredBy, updatedBy;
+    private Employee interviewedBy, enteredBy, updatedBy;
     private LocalDateTime enteredDateTime, updatedDateTime;
 
     private int statusId;
@@ -208,6 +210,14 @@ public class Crew extends Person {
 
     public void setRank(Rank rank) {
         this.rank = rank;
+    }
+
+    public boolean isAcceptLowerRank() {
+        return isAcceptLowerRank;
+    }
+
+    public void setAcceptLowerRank(boolean acceptLowerRank) {
+        isAcceptLowerRank = acceptLowerRank;
     }
 
     public List<Experience> getEmploymentHistory() {
@@ -559,19 +569,19 @@ public class Crew extends Person {
         this.fieldStatus = fieldStatus;
     }
 
-    public String getEnteredBy() {
+    public Employee getEnteredBy() {
         return enteredBy;
     }
 
-    public void setEnteredBy(String enteredBy) {
+    public void setEnteredBy(Employee enteredBy) {
         this.enteredBy = enteredBy;
     }
 
-    public String getInterviewedBy() {
+    public Employee getInterviewedBy() {
         return interviewedBy;
     }
 
-    public void setInterviewedBy(String interviewedBy) {
+    public void setInterviewedBy(Employee interviewedBy) {
         this.interviewedBy = interviewedBy;
     }
 
@@ -663,11 +673,11 @@ public class Crew extends Person {
         this.historicalContracts = historicalContracts;
     }
 
-    public String getUpdatedBy() {
+    public Employee getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(String updatedBy) {
+    public void setUpdatedBy(Employee updatedBy) {
         this.updatedBy = updatedBy;
     }
 

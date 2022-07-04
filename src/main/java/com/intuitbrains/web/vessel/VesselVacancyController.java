@@ -145,7 +145,7 @@ public class VesselVacancyController {
         //Audit
         AuditTrail audit = new AuditTrail();
         audit.setAction(StandardWebParameter.ADD);
-        audit.setActionBy(emp.getEmpId());
+        audit.setActionBy(emp);
         audit.setActionLocalDateTime(LocalDateTime.now());
         audit.setCollection(Collection.VESSEL_VACANCY);
         audit.setText("New Vacancy of Rank <b>[" + Rank.createFromId(rankId).getName() + "]</b> - added for Vessel <b>[" + (vessel.getVesselName()) + "]</b>");

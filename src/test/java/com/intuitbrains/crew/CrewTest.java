@@ -139,7 +139,7 @@ class CrewTest {
 
         crew.setEducationHistory(new ArrayList<>(Arrays.asList(ssc, hsc)));
 
-        crew.setEnteredBy(employeeDao.findByEmailId("pgangani@saar.com").getEmpId());
+        crew.setEnteredBy(employeeDao.findByEmailId("pgangani@saar.com"));
         crewService.addCrew(crew);
 
 

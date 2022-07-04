@@ -87,9 +87,9 @@
                                                         Upload
                                                     </button>
                                                 </td>
-                                                <td><label class="small mb-3" for="makerBy" data-bs-toggle="tooltip"
+                                                <td><label class="small mb-3" for="enteredBy" data-bs-toggle="tooltip"
                                                            data-bs-placement="top"
-                                                           title="${exDoc.fieldStatus.makerDateTime}">${exDoc.fieldStatus.makerBy}</label>
+                                                           title="${exDoc.enteredBy.empId}">${exDoc.enteredBy.empId}</label>
                                                 </td>
                                                 <td>
                                                     <div class="form-check mb-3">
