@@ -2,7 +2,7 @@ var Bank_Details = {};
 
 jQuery(document).ready(function () {
     // jQuery('.form-select').select2();
-   // jQuery("#birthDate").datepicker();
+    // jQuery("#birthDate").datepicker();
     var action = jQuery("#action").val();
 
     // Setup dirty flag checks

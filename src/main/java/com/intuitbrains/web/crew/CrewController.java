@@ -37,6 +37,7 @@ import com.intuitbrains.dao.company.EmployeeRepository;
 import com.intuitbrains.dao.crew.CrewContractRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
+import com.intuitbrains.model.common.Address;
 import com.intuitbrains.model.common.Duration;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
@@ -266,14 +267,23 @@ public class CrewController {
         crew.setLastName(lName);
         crew.setMiddleName(mName);
         crew.setEmailId(emailId);
-        crew.setContact1(contact1);
-        crew.setContact2(contact2);
+
+        Address permAdd = new Address();
+        permAdd.setPhone1(contact1);
+        permAdd.setAddress(permAddress);
+        crew.setPermAddress(permAdd);
+
+        Address presentAdd = new Address();
+        presentAdd.setPhone1(contact1);
+        presentAdd.setAddress(presentAddress);
+        crew.setPresentAddress(presentAdd);
+
         crew.setNearestAirport(nearestAirport);
         crew.setMaritalStatus(maritalStatus);
-        crew.setPermAddress(permAddress);
+        crew.setPermAddress(permAdd);
         crew.setHeight(Double.parseDouble(height));
         crew.setWeight(Double.parseDouble(weight));
-        crew.setPresentAddress(presentAddress);
+        crew.setPresentAddress(presentAdd);
         crew.setNationalityFlag(flagDao.getByCode(nationalityFlagCode));
         crew.setDob(DateTimeUtil.convertToDate(dob));
         crew.setAvailableFromDate(DateTimeUtil.convertToDate(availableFromDate));
@@ -316,7 +326,6 @@ public class CrewController {
     @PostMapping(value = "/update.ajax", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public String updateCrew(MultipartHttpServletRequest req, Model model) {
         Employee emp = (Employee) req.getSession().getAttribute("currentUser");
-        String maker = emp.getEmpId();
         long crewId = ParamUtil.parseLong(req.getParameter("crewId"), -1);
         String json = req.getParameter("modifiedFields");
         JsonObject jsonObject = new Gson().fromJson(json, JsonObject.class);
@@ -326,11 +335,26 @@ public class CrewController {
         jsonObject.entrySet().forEach(e -> {
             if (e.getKey().equals("dob") || e.getKey().equals("availableFromDate")) {
                 updateFields.append(e.getKey(), DateTimeUtil.convertToDate(e.getValue().getAsString()));
-            } else {
+            }
+            else if (e.getKey().equals("nationalityFlag")) {
+                Flag flag = flagDao.getByCode(e.getValue().getAsString());
+                updateFields.append(e.getKey(), flag);
+            }
+            else if (e.getKey().equals("isAcceptLowerRank")) {
+                boolean isAcceptLowerRank = ParamUtil.parseBoolean(e.getValue().getAsString());
+                updateFields.append(e.getKey(), isAcceptLowerRank);
+            }
+            else {
                 updateFields.append(e.getKey(), e.getValue().getAsString());
             }
-
         });
+        if(!updateFields.isEmpty()) {
+            if(updateFields.size()==1 && updateFields.containsKey("statusId")) {
+                updateFields.append("statusId", Crew.Status.createFromId(updateFields.getInt("statusId")));
+            } else {
+                updateFields.append("statusId", Crew.Status.PENDING_REVIEW.getId());
+            }
+        }
         BasicDBObject setQuery = new BasicDBObject();
         setQuery.append("$set", updateFields);
         db.getCollection(Collection.CREW, Crew.class).updateMany(searchQuery, setQuery);
@@ -364,7 +388,7 @@ public class CrewController {
         mv.addObject("list", list);
         mv.addObject("menu", menu);
         mv.addObject("sMenu", sMenu);
-        mv.addObject("relationTypes", NextOfKin.RelationType.getList());
+        mv.addObject("relationTypes", RelationType.getList());
         return mv;
     }
 

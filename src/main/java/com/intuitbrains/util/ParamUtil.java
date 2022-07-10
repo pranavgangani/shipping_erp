@@ -44,6 +44,22 @@ public class ParamUtil {
         try {
             if (StringUtil.isNotEmpty(str)) {
                 result = str.trim().equalsIgnoreCase("true")
+                        || str.trim().equalsIgnoreCase("yes")
+                        || str.trim().equalsIgnoreCase("on")
+                        || str.trim().equalsIgnoreCase("checked");
+            }
+        } catch (Exception e) {
+
+        }
+        return result;
+
+    }
+    public static Boolean parseBoolean(String str) {
+        Boolean result = null;
+        try {
+            if (StringUtil.isNotEmpty(str)) {
+                result = str.trim().equalsIgnoreCase("true")
+                        || str.trim().equalsIgnoreCase("yes")
                         || str.trim().equalsIgnoreCase("on")
                         || str.trim().equalsIgnoreCase("checked");
             }

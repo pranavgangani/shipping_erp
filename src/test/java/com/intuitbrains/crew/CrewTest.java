@@ -12,6 +12,7 @@ import com.intuitbrains.dao.crew.CrewRepository;
 import com.intuitbrains.dao.vessel.VesselRepository;
 import com.intuitbrains.dao.vessel.VesselVacancyRepository;
 import com.intuitbrains.main.CrewManagementApplication;
+import com.intuitbrains.model.common.Address;
 import com.intuitbrains.model.common.Duration;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
@@ -100,7 +101,9 @@ class CrewTest {
         crew.setRank(Rank.CHIEF_ENGINEER);
         crew.setNationalityFlag(flag);
         //crew.setNationality("Indian");
-        crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
+        Address address = new Address();
+        address.setAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
+        crew.setPermAddress(address);
         crew.setPresentAddress(crew.getPermAddress());
         crew.setDistinguishingMark("Some mark on head");
 
@@ -161,7 +164,10 @@ class CrewTest {
         crew.setRank(Rank.JR_ENGINEER);
         crew.setDistinguishingMark("Some mark on head");
         crew.setNationalityFlag(flag);
-        crew.setPermAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
+
+        Address address = new Address();
+        address.setAddress("A/4 Brahma, Wagle Estate, Shree Nagar, Thane");
+        crew.setPermAddress(address);
         crew.setPresentAddress(crew.getPermAddress());
         crew.setEmailId("pranavgangani@gmail.com");
         crew.setPassportNumber("SLJALJLJ");
@@ -341,14 +347,14 @@ class CrewTest {
         NextOfKin nok1 = new NextOfKin();
         nok1.setNomineeName("Vrushali Rohan Tiwari");
         // nok1.setDateOfBirth("12-Mar-1983");
-        nok1.setRelationType(NextOfKin.RelationType.WIFE.getRelationTypeName());
+        nok1.setRelationType(RelationType.WIFE.getRelationTypeName());
         nok1.setAddress("Same as above");
         nok1.setPerOfAmount(60);
 
         NextOfKin nok2 = new NextOfKin();
         nok2.setNomineeName("Kanchan Pradeep Tiwari");
         //nok2.setDateOfBirth("12-Apr-1964");
-        nok2.setRelationType(NextOfKin.RelationType.MOTHER.getRelationTypeName());
+        nok2.setRelationType(RelationType.MOTHER.getRelationTypeName());
         nok2.setAddress("Same as above");
         nok2.setPerOfAmount(40);
 
@@ -356,13 +362,13 @@ class CrewTest {
         NextOfKin nok3 = new NextOfKin();
         nok3.setNomineeName("Tanishqa Tiwari");
         //nok3.setDateOfBirth("21-Oct-2012");
-        nok3.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
+        nok3.setRelationType(RelationType.DAUGHTER.getRelationTypeName());
         nok3.setAddress("Same as above");
 
         NextOfKin nok4 = new NextOfKin();
         nok4.setNomineeName("Shamika Tiwari");
         // nok4.setDateOfBirth("16-Jun-2015");
-        nok4.setRelationType(NextOfKin.RelationType.DAUGHTER.getRelationTypeName());
+        nok4.setRelationType(RelationType.DAUGHTER.getRelationTypeName());
         nok4.setAddress("Same as above");
 
         List<NextOfKin> nextOfKins = new LinkedList<>();

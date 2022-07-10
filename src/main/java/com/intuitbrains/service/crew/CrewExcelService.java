@@ -5,6 +5,7 @@ import com.intuitbrains.dao.common.CrewDocumentRepository;
 import com.intuitbrains.dao.common.DocumentTypeRepository;
 import com.intuitbrains.dao.common.FlagRepository;
 import com.intuitbrains.dao.crew.CrewRepository;
+import com.intuitbrains.model.common.Address;
 import com.intuitbrains.model.common.DurationType;
 import com.intuitbrains.model.common.document.*;
 import com.intuitbrains.model.common.document.category.EducationDocument;
@@ -13,7 +14,9 @@ import com.intuitbrains.model.common.document.category.DocumentType;
 import com.intuitbrains.model.crew.*;
 import com.intuitbrains.model.vessel.VesselSubType;
 import com.intuitbrains.util.DateTimeUtil;
+import com.intuitbrains.util.ParamUtil;
 import com.intuitbrains.util.StringUtil;
+import com.thoughtworks.qdox.model.expression.Add;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -76,15 +79,38 @@ public class CrewExcelService {
             CellReference permAddLine3Cell = new CellReference("B27");
             CellReference permAddPinCodeCell = new CellReference("H27");
             CellReference permAddTelCell = new CellReference("D28");
-            CellReference permAddNearAirportCell = new CellReference("D29");
+            CellReference nearAirportCell = new CellReference("D29");
 
             CellReference presentAddLine1Cell = new CellReference("B25");
             CellReference presentAddLine2Cell = new CellReference("B26");
             CellReference presentAddLine3Cell = new CellReference("B27");
             CellReference presentAddPinCodeCell = new CellReference("H27");
             CellReference presentAddTelCell = new CellReference("D28");
-            CellReference presentAddNearAirportCell = new CellReference("D29");
             CellReference howCometoKnowCell = new CellReference("J31");
+
+            String nationality = sheet1.getRow(nationalityCell.getRow()).getCell(nationalityCell.getCol()).getRichStringCellValue().getString();
+            String placeOfBirth = sheet1.getRow(placeOfBirthCell.getRow()).getCell(placeOfBirthCell.getCol()).getRichStringCellValue().getString();
+            String nearAirport = sheet1.getRow(nearAirportCell.getRow()).getCell(nearAirportCell.getCol()).getRichStringCellValue().getString();
+
+            Address permAddress = new Address();
+            String line = sheet1.getRow(permAddLine1Cell.getRow()).getCell(permAddLine1Cell.getCol()).getRichStringCellValue().getString();
+            line+=sheet1.getRow(permAddLine2Cell.getRow()).getCell(permAddLine2Cell.getCol()).getRichStringCellValue().getString();
+            line+=sheet1.getRow(permAddLine3Cell.getRow()).getCell(permAddLine3Cell.getCol()).getRichStringCellValue().getString();
+            permAddress.setPostalCode((int)(sheet1.getRow(permAddPinCodeCell.getRow()).getCell(permAddPinCodeCell.getCol()).getNumericCellValue()));
+            permAddress.setMob1(sheet1.getRow(permAddTelCell.getRow()).getCell(permAddTelCell.getCol()).getRichStringCellValue().getString());
+            permAddress.setAddress(line);
+
+            Address presentAddress = new Address();
+            line = sheet1.getRow(presentAddLine1Cell.getRow()).getCell(presentAddLine1Cell.getCol()).getRichStringCellValue().getString();
+            line+=sheet1.getRow(presentAddLine2Cell.getRow()).getCell(presentAddLine2Cell.getCol()).getRichStringCellValue().getString();
+            line+=sheet1.getRow(presentAddLine3Cell.getRow()).getCell(presentAddLine3Cell.getCol()).getRichStringCellValue().getString();
+            permAddress.setPostalCode((int)(sheet1.getRow(presentAddPinCodeCell.getRow()).getCell(presentAddPinCodeCell.getCol()).getNumericCellValue()));
+            presentAddress.setMob1(sheet1.getRow(presentAddTelCell.getRow()).getCell(presentAddTelCell.getCol()).getRichStringCellValue().getString());
+            presentAddress.setAddress(line);
+
+            crew.setPermAddress(permAddress);
+            crew.setPresentAddress(presentAddress);
+            crew.setReference(sheet1.getRow(howCometoKnowCell.getRow()).getCell(howCometoKnowCell.getCol()).getRichStringCellValue().getString());
 
             //Crew details
             crew.setFirstName(sheet1.getRow(fNameCell.getRow()).getCell(fNameCell.getCol()).getRichStringCellValue().getString());
@@ -411,7 +437,7 @@ public class CrewExcelService {
 
             if (docTypeStr.equalsIgnoreCase("Indian")) {
                 DocumentType dt = docTypeDao.findByName("Indian CDC");
-                NationalID cdc = new NationalID();
+                CDC cdc = new CDC();
                 cdc.setDateOfExpiry(doe);
                 cdc.setDocType(dt);
                 cdc.setDocNumber(docNum);
@@ -419,10 +445,11 @@ public class CrewExcelService {
                 cdc.setDateOfExpiry(doe);
                 cdc.setPlaceOfIssue(placeOfIssue);
                 cdc.setRemarks(remarks);
+                crew.setIndianCDCNumber(docNum);
                 crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("Liberian")) {
                 DocumentType dt = docTypeDao.findByName("Liberian CDC");
-                NationalID cdc = new NationalID();
+                CDC cdc = new CDC();
                 cdc.setDateOfExpiry(doe);
                 cdc.setDocType(dt);
                 cdc.setDocNumber(docNum);
@@ -433,7 +460,7 @@ public class CrewExcelService {
                 crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("Panama")) {
                 DocumentType dt = docTypeDao.findByName("Panama CDC");
-                NationalID cdc = new NationalID();
+                CDC cdc = new CDC();
                 cdc.setDocType(dt);
                 cdc.setDateOfExpiry(doe);
                 cdc.setDocNumber(docNum);
@@ -444,7 +471,7 @@ public class CrewExcelService {
                 crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("Others")) {
                 DocumentType dt = docTypeDao.findByName("Other CDC");
-                NationalID cdc = new NationalID();
+                CDC cdc = new CDC();
                 cdc.setDocType(dt);
                 cdc.setDateOfExpiry(doe);
                 cdc.setDocNumber(docNum);
@@ -455,7 +482,7 @@ public class CrewExcelService {
                 crewDocsToPopulate.add(cdc);
             } else if (docTypeStr.equalsIgnoreCase("INDOS")) {
                 DocumentType dt = docTypeDao.findByName("INDOS");
-                NationalID cdc = new NationalID();
+                CDC cdc = new CDC();
                 cdc.setDocType(dt);
                 cdc.setDateOfExpiry(doe);
                 cdc.setDocNumber(docNum);
@@ -467,7 +494,7 @@ public class CrewExcelService {
                 crew.setIndosNumber(String.valueOf(docNum));
             } else if (docTypeStr.equalsIgnoreCase("Yellow Fever")) {
                 DocumentType dt = docTypeDao.findByName("Yellow Fever");
-                Certificate cert = new Certificate();
+                YellowFever cert = new YellowFever();
                 cert.setDocType(dt);
                 cert.setDateOfExpiry(doe);
                 cert.setDocNumber(docNum);

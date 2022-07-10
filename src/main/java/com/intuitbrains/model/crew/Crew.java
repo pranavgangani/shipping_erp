@@ -1,5 +1,6 @@
 package com.intuitbrains.model.crew;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.intuitbrains.common.*;
+import com.intuitbrains.model.common.Address;
 import com.intuitbrains.model.common.document.Contract;
 import com.intuitbrains.model.company.Employee;
 import com.intuitbrains.model.crew.contract.TravelAndAccomodation;
@@ -19,6 +21,8 @@ import com.intuitbrains.util.ListUtil;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+
+import static java.math.BigDecimal.ROUND_HALF_UP;
 
 @org.springframework.data.mongodb.core.mapping.Document(collection = Collection.CREW)
 public class Crew extends Person {
@@ -30,13 +34,14 @@ public class Crew extends Person {
     private String fileNum;
     protected String firstName, middleName, lastName;
     protected String gender;
+    protected String reference;
     protected String userName, password, emailId;
 
-    private String passportNumber, indosNumber;
+    private String passportNumber, indosNumber, indianCDCNumber;
     private String distinguishingMark;
     private Rank rank;
     private boolean isAcceptLowerRank;
-    private double height, weight;
+    private double height, weight, bmi;
     private String manningOffice;
     private long photoId;
     private Flag nationalityFlag;
@@ -55,8 +60,7 @@ public class Crew extends Person {
     private List<Contract> historicalContracts;
 
     //Personal
-    private String permAddress, presentAddress;
-    private String contact1, contact2;
+    private Address permAddress, presentAddress;
     private String nearestAirport;
     private String maritalStatus;
 
@@ -100,6 +104,7 @@ public class Crew extends Person {
     public String getDefaultGivenName() {
         return (getLastName() + " " + getFirstName() + " " + getMiddleName());
     }
+
     public String getFirstName() {
         return firstName;
     }
@@ -272,6 +277,15 @@ public class Crew extends Person {
         this.indosNumber = indosNumber;
     }
 
+    public String getIndianCDCNumber() {
+        return indianCDCNumber;
+    }
+
+    @ACrew(name = CrewField.IND_CDC_NUM)
+    public void setIndianCDCNumber(String indianCDCNumber) {
+        this.indianCDCNumber = indianCDCNumber;
+    }
+
     public String getDistinguishingMark() {
         return distinguishingMark;
     }
@@ -316,40 +330,22 @@ public class Crew extends Person {
         this.photoId = photoId;
     }
 
-    public String getPermAddress() {
+    public Address getPermAddress() {
         return permAddress;
     }
 
     @ACrew(name = CrewField.PERMANENT_ADDRRESS)
-    public void setPermAddress(String permAddress) {
+    public void setPermAddress(Address permAddress) {
         this.permAddress = permAddress;
     }
 
-    public String getPresentAddress() {
+    public Address getPresentAddress() {
         return presentAddress;
     }
 
     @ACrew(name = CrewField.PRESENT_ADDRRESS)
-    public void setPresentAddress(String presentAddress) {
+    public void setPresentAddress(Address presentAddress) {
         this.presentAddress = presentAddress;
-    }
-
-    public String getContact1() {
-        return contact1;
-    }
-
-    @ACrew(name = CrewField.CONTACT_1)
-    public void setContact1(String contact1) {
-        this.contact1 = contact1;
-    }
-
-    public String getContact2() {
-        return contact2;
-    }
-
-    @ACrew(name = CrewField.CONTACT_2)
-    public void setContact2(String contact2) {
-        this.contact2 = contact2;
     }
 
     public String getNearestAirport() {
@@ -470,6 +466,27 @@ public class Crew extends Person {
         this.weight = weight;
     }
 
+    public double getBmi() {
+        BigDecimal bd = new BigDecimal(weight / ((height / 100) * (height / 100)));
+        bd.setScale(2, BigDecimal.ROUND_UP);
+        return bd.doubleValue();
+    }
+
+    public String getBmiRemark() {
+        String remark = "";
+        double bmi = getBmi();
+        if (bmi <= 18.5) {
+            remark = "Underweight";
+        } else if (bmi > 18.5 && bmi <= 25) {
+            remark = "Normal";
+        } else if (bmi > 25 && bmi <= 30) {
+            remark = "Overweight";
+        } else {
+            remark = "Obese";
+        }
+        return remark;
+    }
+
     public LocalDate getAvailableFromDate() {
         return availableFromDate;
     }
@@ -525,7 +542,7 @@ public class Crew extends Person {
             for (Experience exp : this.getEmploymentHistory()) {
                 LocalDate startDate = exp.getStartDate();
                 LocalDate endDate = exp.getEndDate();
-                months += (int)DateTimeUtil.differenceInMonths(startDate, endDate);
+                months += (int) DateTimeUtil.differenceInMonths(startDate, endDate);
             }
         }
         return months;
@@ -697,15 +714,24 @@ public class Crew extends Person {
         return updatedDateTime;
     }
 
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     public enum Status {
         NEW_RECRUIT(1, "New Recruit"),
-        PENDING_DOCS(2, "Pending Docs"),
-        SIGN_ON_READY(3, "Sign-On Ready"),
-        ASSIGNED(4, "Assigned"),
-        SIGNED_ON(5, "Signed-On"),
-        SIGNED_OFF(6, "Signed-Off"),
-        INJURED(7, "Injured"),
-        INACTIVE(8, "Inactive/Left");
+        PENDING_REVIEW(5, "Pending Review"),
+        PENDING_DOCS(10, "Pending Docs"),
+        SIGN_ON_READY(15, "Sign-On Ready"),
+        ASSIGNED(20, "Assigned"),
+        SIGNED_ON(25, "Signed-On"),
+        SIGNED_OFF(30, "Signed-Off"),
+        INJURED(35, "Injured"),
+        INACTIVE(0, "Inactive/Left");
 
         private int id;
         private String desc;

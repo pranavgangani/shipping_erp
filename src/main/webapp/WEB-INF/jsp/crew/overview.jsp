@@ -86,13 +86,13 @@
                                         <div class="col-md-4">
                                             <div class="ms-4">
                                                 <div class="small">Nationality</div>
-                                                <div class="text-xs text-muted">${crew.nationalityFlag.name}</div>
+                                                <div class="text-xs text-muted">${crew.nationalityFlag.name} (${crew.nationalityFlag.nationality})</div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="ms-4">
                                                 <div class="small">Rank</div>
-                                                <div class="text-xs text-muted">${crew.rank.name}</div>
+                                                <div class="text-xs text-muted">${crew.rank.shortName}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -171,8 +171,8 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="ms-4">
-                                                <div class="small">Available From Date</div>
-                                                <div class="text-xs text-muted">${crew.availableFromDate}</div>
+                                                <div class="small">BMI</div>
+                                                <div class="text-xs text-muted">${crew.bmi} (${crew.bmiRemark})</div>
                                             </div>
                                         </div>
                                     </div>
@@ -194,6 +194,20 @@
                                                 <div class="small">Passport Number</div>
                                                 <div class="text-xs text-muted">${crew.passportNumber}</div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row gx-3 mb-3">
+                                        <div class="col-md-4">
+                                            <div class="ms-4">
+                                                <div class="small">Available From Date</div>
+                                                <div class="text-xs text-muted">${crew.availableFromDate}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+
+                                        </div>
+                                        <div class="col-md-4">
+
                                         </div>
                                     </div>
                                 </div>

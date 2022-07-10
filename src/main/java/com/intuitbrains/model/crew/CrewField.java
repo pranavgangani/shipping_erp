@@ -9,6 +9,8 @@ public enum CrewField {
     PASSPORT_NUM("passportNumber"),
     PASSPORT_EXPIRY_DATE("passportExpirationDate"),
     INDOS_NUM("indosNumber"),
+
+    IND_CDC_NUM("indianCDCNumber"),
     INDOS_EXPIRY_DATE("indosExpirationDate"),
     MANNING_OFFICE("manningOffice"),
     DISTIN_MARK("distinguishingMark"),

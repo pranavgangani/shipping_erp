@@ -63,9 +63,11 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="accountNumber">Account Number</label>
-                                                <input class="form-control dirtycheck" id="accountNumber" name="accountNumber"
+                                                <input class="form-control dirtycheck" id="accountNumber"
+                                                       name="accountNumber"
                                                        type="text"
-                                                       placeholder="Enter Account Number" value="${bank.accountNumber}"/>
+                                                       placeholder="Enter Account Number"
+                                                       value="${bank.accountNumber}"/>
                                             </div>
 
                                         </div>
@@ -89,11 +91,14 @@
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="branchAddress">Branch Address</label>
                                                 <textarea name="branchAddress" id="branchAddress"
-                                                          class="lh-base form-control dirtycheck" placeholder="Enter Branch Address"
+                                                          class="lh-base form-control dirtycheck"
+                                                          placeholder="Enter Branch Address"
                                                           rows="3" cols="3">${bank.branchAddress}</textarea>
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Update</button>
+                                                <button class="btn btn-primary" type="button" data-bs-dismiss="modal">
+                                                    Update
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -135,20 +140,21 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputAccountNumber">Account Number</label>
-                                    <input class="form-control" id="inputAccountNumber" name="inputAccountNumber" type="text"
-                                           placeholder="Enter your Account Number" />
+                                    <input class="form-control" id="inputAccountNumber" name="inputAccountNumber"
+                                           type="text"
+                                           placeholder="Enter your Account Number"/>
                                 </div>
                             </div>
                             <div class="row gx-3 mb-3">
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputSWIFT">SWIFT Code</label>
                                     <input class="form-control" id="inputSWIFT" name="inputSWIFT" type="text"
-                                           placeholder="Enter SWIFT Code of Bank" />
+                                           placeholder="Enter SWIFT Code of Bank"/>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="small mb-1" for="inputIFSC">IFSC Code</label>
                                     <input class="form-control" id="inputIFSC" name="inputIFSC" type="text"
-                                           placeholder="Enter IFSC Code of Bank" />
+                                           placeholder="Enter IFSC Code of Bank"/>
                                 </div>
                             </div>
                             <div class="mb-3">

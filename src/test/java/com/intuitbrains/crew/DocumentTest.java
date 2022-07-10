@@ -344,7 +344,7 @@ class DocumentTest {
         DocumentType type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.STCW);
         type.setShortName("EFA");
         type.setName("Elementary First Aid - STCW 2010 Basic Safety Training");
         docTypeDao.insert(type);
@@ -352,7 +352,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.STCW);
         type.setShortName("FPFF");
         type.setName("Fire Prevention and Fire Fighting - STCW 2010 Basic Safety Training");
         docTypeDao.insert(type);
@@ -360,7 +360,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.STCW);
         type.setShortName("PST");
         type.setName("Personal Survival Techniques - STCW 2010 Basic Safety Training");
         docTypeDao.insert(type);
@@ -368,7 +368,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.STCW);
         type.setShortName("PSSR");
         type.setName("Personal Safety and Social Responsibility - STCW 2010 Basic Safety Training");
         docTypeDao.insert(type);
@@ -376,7 +376,7 @@ class DocumentTest {
         type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.STCW);
         type.setShortName("PSA");
         type.setName("Proficiency in Security Awareness - STCW 2010 Basic Safety Training");
         docTypeDao.insert(type);
@@ -754,7 +754,7 @@ class DocumentTest {
         DocumentType type = new DocumentType();
         type.setId(sequenceGenerator.generateSequence(DocumentType.SEQUENCE_NAME));
         type.setDocumentCategory(DocumentCategory.TRAINING);
-        type.setDocumentPool(DocumentPool.CERTIFICATE);
+        type.setDocumentPool(DocumentPool.STCW);
         type.setShortName("STCW 2010");
         type.setName("STCW 2010 Basic Safety Training");
         type.setDesc("International Convention on Standards of Training, Certification and Watchkeeping for Seafarers (STCW), 1978 sets minimum qualification standards for masters, officers and watch personnel on seagoing merchant ships and large yachts.");

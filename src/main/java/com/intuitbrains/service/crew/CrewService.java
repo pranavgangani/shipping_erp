@@ -36,6 +36,7 @@ import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.elemMatch;
@@ -69,7 +70,9 @@ public class CrewService {
         Bson filter = Filters.empty();
         collection.find(filter).projection(projection).into(crewList);
         return crewList;*/
-        return crewDao.findAll();
+        return crewDao.findAll().stream()
+                .sorted(Comparator.comparing(Crew::getEnteredDateTime).reversed())
+                .collect(Collectors.toList());
     }
 
     public List<Crew> getFilteredList(Crew filterCrew) {

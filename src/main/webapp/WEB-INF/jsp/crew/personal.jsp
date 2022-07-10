@@ -120,10 +120,10 @@
                                             </select>
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="small mb-1" for="nationalityFlagCode">Nationality</label>
+                                            <label class="small mb-1" for="nationalityFlag">Nationality</label>
                                             <select class="form-select dirtycheck"
-                                                    aria-label="Default select example" id="nationalityFlagCode"
-                                                    name="nationalityFlagCode">
+                                                    aria-label="Default select example" id="nationalityFlag"
+                                                    name="nationalityFlag">
                                                 <option selected disabled>Select Nationality:</option>
                                                 <c:forEach items="${flags}" var="flag">
                                                     <option
@@ -231,8 +231,7 @@
                                             <span class="input-group-text"><i class="text-primary"
                                                                               data-feather="calendar"></i></span>
                                                 <input name="dob" class="form-control dirtycheck"
-                                                       id="dob"
-                                                       placeholder="Select date" value="${crew.dob}"/>
+                                                       id="dob" placeholder="Select date" value="${crew.dob}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -280,16 +279,34 @@
                                             </select>
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="small mb-1" for="manningOffice">Manning Office</label>
-                                            <input class="form-control dirtycheck" name="manningOffice"
-                                                   id="manningOffice" type="text"
-                                                   value="${crew.manningOffice}"/>
+                                            <label class="small mb-1" for="isAcceptLowerRank">Accepts Lower Rank?</label>
+                                            <select class="form-select" id="isAcceptLowerRank" name="isAcceptLowerRank">
+                                                <option selected disabled>&nbsp;</option>
+                                                <option  <c:if test="${crew.acceptLowerRank}">selected</c:if> value="Yes">Yes</option>
+                                                <option  <c:if test="${!crew.acceptLowerRank}">selected</c:if> value="No">No</option>
+                                            </select>
                                         </div>
+
+                                    </div>
+
+                                    <div class="row gx-3 mb-3">
                                         <div class="col-md-4">
                                             <label class="small mb-1" for="passportNumber">Passport Number</label>
                                             <input class="form-control dirtycheck" name="passportNumber"
                                                    id="passportNumber" type="text"
-                                                   placeholder="Enter Passport Number" value="${crew.passportNumber}"/>
+                                                   placeholder="Enter Passport Number" value="${crew.passportNumber}" readonly/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="small mb-1" for="indosNumber">INDOS Number</label>
+                                            <input class="form-control dirtycheck" name="indosNumber"
+                                                   id="indosNumber" type="text"
+                                                   placeholder="Enter INDOS Number" value="${crew.indosNumber}" readonly/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="small mb-1" for="indianCDCNumber">Indian CDC Number</label>
+                                            <input class="form-control dirtycheck" name="indianCDCNumber"
+                                                   id="indianCDCNumber" type="text"
+                                                   placeholder="Enter Passport Number" value="${crew.indianCDCNumber}" readonly/>
                                         </div>
                                     </div>
                                 </div>
